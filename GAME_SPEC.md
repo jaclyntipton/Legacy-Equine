@@ -21,3 +21,7 @@ One real day advances game age by 30 days. Breeding starts at age three and ends
 ## Alpha 0.2 candidates
 
 Automated shows, horse trading, stud services between players, tack catalog and equipment UI, admin custom-horse UI, messaging, and community spaces.
+
+## Visual direction
+
+Legacy Equine uses a welcoming purple and lilac game-world palette, rounded typography, soft cards, prominent horse artwork, playful currency presentation, and accessible purple focus states. The intended mood is a polished modern continuation of social browser horse games: warm and lightly nostalgic, never corporate, sterile, or preschool-like. Shared CSS tokens control color, radius, and shadow values so future screens stay visually consistent.

@@ -12,6 +12,8 @@
 
 Configuration lives in `lib/game/config.ts`. New stables receive 3,000 LE Dollars. The introductory store permits three foundation purchases at 1,000 each. Normal foundation stats are 10–15 with a 6% outlier roll spanning 7–18. Every random process accepts a seeded generator.
 
+For Ready-to-Play reliability, the first store horse has a random sex and the second is guaranteed to be the complementary sex. The third is random. This Legacy Equine modernization prevents a new account from being locked out of breeding by three same-sex rolls.
+
 Training raises one base stat by one, once per 20 real hours per horse. No care meters exist. Foals arrive immediately. Each foal stat is the rounded parental average plus an independent integer roll from −6 to +6, floored at one. A configurable 25% chance of a one-point regression is applied: the 100,000-breeding simulation showed that the floor otherwise produced a 2.47-point upward drift after ten generations. This preserves the parental-average model while offsetting that boundary effect. The mare receives a ten-real-day cooldown. No generational bonus is applied.
 
 One real day advances game age by 30 days. Breeding starts at age three and ends at age 30. Horses and pedigree records are never deleted due to age.

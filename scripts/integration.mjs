@@ -10,7 +10,7 @@ try{
  r=await a.client.rpc("initialize_stable",{stable_name:"Duplicate Attempt"});assert.ifError(r.error);assert.equal(r.data.stable_number,firstNumber);
  let q=await admin.from("currency_ledger").select("*").eq("stable_id",a.id).eq("reason","Starting funds");assert.equal(q.data.length,1);
  r=await b.client.rpc("initialize_stable",{stable_name:"Sequence Farm"});assert.ifError(r.error);assert.ok(r.data.stable_number>firstNumber);
- const bought=[];for(let i=0;i<3;i++){r=await a.client.rpc("purchase_foundation_horse");assert.ifError(r.error);bought.push(r.data)}
+ const bought=[];for(let i=0;i<3;i++){r=await a.client.rpc("purchase_foundation_horse");assert.ifError(r.error);bought.push(r.data)}assert.notEqual(bought[0].sex,bought[1].sex);
  r=await a.client.rpc("purchase_foundation_horse");assert.ok(r.error);q=await admin.from("stables").select("balance,foundation_purchases").eq("id",a.id).single();assert.deepEqual(q.data,{balance:0,foundation_purchases:3});
  const strangerUpdate=await b.client.from("horses").update({name:"Stolen"}).eq("id",bought[0].id).select();assert.equal(strangerUpdate.data.length,0);
  r=await a.client.rpc("train_horse",{target_horse:bought[0].id,stat_name:"Speed"});assert.ifError(r.error);r=await a.client.rpc("train_horse",{target_horse:bought[0].id,stat_name:"Speed"});assert.ok(r.error);

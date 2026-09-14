@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:balance": "vitest run tests/balance.test.ts"
+    ,"test:integration": "node scripts/integration.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

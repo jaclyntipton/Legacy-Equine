@@ -1,0 +1,16 @@
+export const GAME = {
+  currencyName: "LE Dollars",
+  startingBalance: 3000,
+  foundationPrice: 1000,
+  foundationLimit: 3,
+  foundationBreeds: ["Thoroughbred", "Arabian", "Warmblood", "Quarter Horse"],
+  colors: ["Bay", "Chestnut", "Black", "Gray", "Palomino"],
+  stats: ["Agility", "Speed", "Endurance", "Temperament", "Strength", "Intelligence", "Conformation"],
+  foundation: { minimum: 10, maximum: 15, outlierChance: 0.06, outlierMinimum: 7, outlierMaximum: 18 },
+  breedingVariance: 6,
+  breedingRegressionChance: 0.25,
+  mareCooldownDays: 10,
+  training: { gain: 1, cooldownHours: 20 },
+  age: { gameDaysPerRealDay: 30, breedingMinimumYears: 3, retirementYears: 30 },
+  defaultStudFee: 100,
+} as const;

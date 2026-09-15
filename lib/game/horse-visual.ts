@@ -1,6 +1,6 @@
 export type VisualPhenotype = {
   breed:string;sex:string;age_years:number;color:string;body:string;coat:string;mane_tail:string;pattern:string;
-  height_range?:string;movement?:string;temperament?:string;breed_constraints?:string;
+  height_range?:string;height_hands?:number;movement?:string;temperament?:string;breed_constraints?:string;
   lighting?:string;
   face_marking:string;left_front:string;right_front:string;left_hind:string;right_hind:string;pose:string;view:string;background:string;
 };
@@ -16,6 +16,7 @@ Age: ${v.age_years} years old, a young adult horse
 ${sexAnatomyConstraint(v.sex)}
 Breed and body: ${v.body}
 Breed height/proportion: ${v.height_range ?? "proportionate to the breed"}
+Individual genetically expressed mature height: ${v.height_hands ? `${v.height_hands.toFixed(1)} hands at the withers; make limb length, barrel depth, bone, and overall scale internally consistent with this exact height and breed` : "breed-appropriate mature height"}
 Characteristic way of going: ${v.movement ?? "balanced natural movement"}
 Breed character and expression: ${v.temperament ?? "alert natural expression"}
 Registry-informed constraints and breed differentiation: ${v.breed_constraints ?? "avoid caricature and preserve functional conformation"}
@@ -30,4 +31,4 @@ Scene/backdrop: ${v.background}
 Lighting and clarity: ${v.lighting ?? "bright neutral daylight, crisp coat detail, clean highlights, accurate coat color, strong natural contrast, and no color cast"}
 Style/medium: polished realistic digital equine portrait with natural coat texture and anatomically correct conformation
 Composition/framing: landscape 4:3, full horse entirely visible, generous clear space around ears, nose, hooves, and tail
-Constraints: sex and genital anatomy must match the stated sex with no ambiguity or contradictory anatomy; do not produce a generic all-purpose AI horse; do not default every breed to the same warmblood or stock-horse anatomy; do not confuse this breed with the other Legacy Equine Foundation breeds (Arabian, Thoroughbred, Quarter Horse, Hanoverian, Appaloosa, Morgan, Rocky Mountain Horse, Tennessee Walking Horse); preserve sound functional anatomy without caricature; pure neutral white RGB 255 255 255 background only—no gray, beige, ivory, cream, lavender, color cast, vignette, muddy cast, gradient, visible horizon, or colored rectangle; markings must stay on the specified face and legs; no rider; no tack; no handler; no props; no text; no logo; no watermark; exactly one horse.`}
+Constraints: anatomically correct horse with exactly one head, two proportionate ears, four complete legs, four correctly formed knees/hocks/fetlocks, and four separate realistic hooves; no extra, missing, fused, duplicated, floating, bent, or malformed body parts; natural spine, neck attachment, shoulder, barrel, pelvis, joints, and weight-bearing stance; sex and anatomy must match the stated sex with no ambiguity or contradictory anatomy; do not produce a generic all-purpose AI horse; do not default every breed to the same warmblood or stock-horse anatomy; do not confuse this breed with the other Legacy Equine Foundation breeds (Arabian, Thoroughbred, Quarter Horse, Hanoverian, Appaloosa, Morgan, Rocky Mountain Horse, Tennessee Walking Horse); preserve sound functional anatomy without caricature; pure neutral white RGB 255 255 255 background only—no gray, beige, ivory, cream, lavender, color cast, vignette, muddy cast, gradient, visible horizon, or colored rectangle; markings must stay on the specified face and legs; no rider; no tack; no handler; no props; no text; no logo; no watermark; exactly one horse.`}

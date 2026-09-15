@@ -91,3 +91,7 @@ Community Admins and the Owner can create, rename, reorder, deactivate, archive,
 # Legacy Equine Bank
 
 The player-facing financial area is the **Bank**, permanently available in the main game navigation. It shows Current Balance, lifetime LED Earned and Spent, and paginated transaction history with game-friendly descriptions, categories, dates, direction, related entities, and resulting balances. “Ledger” remains internal accounting terminology only. Treasury and Show Fund retain their institutional names. LED is closed-loop: future USD → LED purchase is permitted, while cash-out, withdrawal, redemption, and LED → USD are permanently prohibited.
+
+# Horse Artwork Quality Assurance
+
+System-generated horse artwork may contain only the horse and the approved empty neutral/transparent background. Prompts explicitly prohibit signatures, watermarks, artist marks, text, pseudo-text, letters, numbers, logos, symbols, and writing. Before upload, a separate visual QA step checks those artifacts, anatomy and limb count, breed/color/pattern/marking phenotype, genitalia, composition, and background. Rejected images are audited and requeued without changing the horse ID, ownership, genetics, stats, markings, phenotype, or other gameplay data.

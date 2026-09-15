@@ -53,3 +53,7 @@ Shows use `show_disciplines`, `show_tiers`, `show_placement_rules`, `player_show
 ## Player Bank
 
 `currency_ledger` remains the authoritative append-only player accounting record. `get_bank_activity` projects it into paginated, categorized, player-friendly Bank entries and derives the balance resulting from each transaction without duplicating accounting state. `get_bank_summary` calculates lifetime income and spending. The Bank UI never exposes a withdrawal path; any future LED purchase system is one-way into the closed game economy.
+
+## Artwork QA gate
+
+The image worker generates a candidate, submits the candidate plus the persisted structured phenotype to a vision-capable QA model, and uploads only an approved result. `horse_image_qa_reviews` records each structured decision. Rejection returns the existing job to the bounded retry flow while leaving the authoritative horse row untouched. The completion RPC replaces only system-generated artwork and continues to protect concurrent player uploads.

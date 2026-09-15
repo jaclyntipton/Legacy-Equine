@@ -284,26 +284,10 @@ export default function Home() {
     else setInventory((data ?? []) as StoreHorse[]);
   }, []);
   const generateStoreArtwork = useCallback(async () => {
-    if (artworkWorker.current) return artworkWorker.current;
-    artworkWorker.current = (async () => {
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      if (!token) return;
-      const response = await fetch("/api/store-horse-images/generate", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.ok) {
-        const result = await response.json() as { completed?: number };
-        await loadStore();
-        if ((result.completed ?? 0) > 0 && user) {
-          const { data: owned } = await supabase.from("horses").select("*").eq("owner_id", user.id).order("created_at");
-          setHorses((owned ?? []) as Horse[]);
-        }
-      }
-    })().finally(() => { artworkWorker.current = null; });
-    return artworkWorker.current;
-  }, [loadStore, user]);
+    // Production per-horse AI generation is retired. Visuals are assigned
+    // deterministically from approved library assets by the database.
+    return artworkWorker.current ?? Promise.resolve();
+  }, []);
   const openStore = () => setView("store");
   const loadSanctuary = useCallback(async()=>{const{data,error}=await supabase.rpc("get_sanctuary_horses",{search_text:"",breed_filter:"",sex_filter:"",retired_year:null});if(error)setNotice(error.message);else setSanctuary((data??[])as SanctuaryHorse[])},[]);
   useEffect(() => {
@@ -1656,15 +1640,8 @@ function AdminConsole({
         horse_image_url: image,
       });
       return { error };
-    }, `${name} was created. Its artwork is being generated.`);
+    }, `${name} was created with its permanent Legacy Equine visual identity.`);
     if (created && !image) {
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      if (token)
-        await fetch("/api/store-horse-images/generate", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-        });
       changed();
     }
   };

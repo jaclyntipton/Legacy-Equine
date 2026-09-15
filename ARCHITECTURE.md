@@ -68,6 +68,8 @@ Public read RPCs project this source of truth without redundant counters: `get_h
 
 ## Artwork QA gate
 
+The previous per-horse AI worker is a disabled compatibility endpoint and cannot claim jobs or spend generation credits. `horse_visual_assets` is the source-controlled-by-data library for human-reviewed body templates and transparent phenotype layers. `assign_horse_visual` deterministically selects a breed/sex body template from the horse UUID, stores a permanent template key and visual fingerprint, and resolves display priority as player custom artwork → cached deterministic LE composite → Foundation fallback. `get_horse_visual_layers` returns an ordered, approved-only layer manifest for deterministic compositing/caching. Admin asset upload, replacement, approval, rejection, activation, deactivation, and combination preview require no source change.
+
 The image worker generates a candidate, submits the candidate plus the persisted structured phenotype to a vision-capable QA model, and uploads only an approved result. QA returns separate required verdicts for base coat, color pattern, and individual markings so a visually dominant white pattern cannot conceal an incorrect underlying coat; coat-specific prompts also encode required pigment points such as a bay horse's black mane, tail, ear rims, and uncovered lower legs. `horse_image_qa_reviews` records each structured decision. Rejection returns the existing job to the bounded retry flow while leaving the authoritative horse row untouched. The completion RPC replaces only system-generated artwork and continues to protect concurrent player uploads.
 
 ## Horse profile views

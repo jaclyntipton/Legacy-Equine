@@ -1,123 +1,47 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { placingLabel } from "@/lib/game/show-engine";
 import { FormField } from "./form-field";
 
 const supabase = createClient();
 type Horse = { id: string; name: string; breed: string; career_points: number };
-type Show = { id: string; name: string; discipline: string; tier: string; run_at: string; entry_fee: number; max_entries: number | null; entry_count: number; description: string; creator_name: string; creator_account: number; status: string };
+type Show = { id: string; name: string; discipline: string; tier: string; run_at: string; entry_fee: number; max_entries: number | null; entry_count: number; description: string; creator_name: string; creator_account: number; status: string; discipline_id: string; tier_id: string; purse: number };
+type ArchiveShow = Pick<Show,"id"|"name"|"discipline"|"tier"|"run_at"|"entry_count"|"purse"|"creator_name"|"creator_account">;
 type Ref = { id: string; name: string };
+type MyEntry = { id:string;horse_id:string;entered_at:string;horses:{name:string}|null;player_shows:{id:string;name:string;run_at:string;status:string;discipline_id:string;tier_id:string}|null };
+type ResultRow = {result_id:string;horse_id:string;horse_name:string;owner_name:string;owner_account:number;placement:number;score:number;prize:number;career_points:number;breakdown:Record<string,{base:number;training:number;tack:number;farrier:number;massage:number;service:number;effective:number}>};
+type ResultPage = {show:{id:string;name:string;discipline:string;tier:string;run_at:string;host_name:string;host_account:number;entries:number;purse:number};results:ResultRow[]};
+type View = "upcoming"|"create"|"entries"|"archive";
+const money=(value:number)=>new Intl.NumberFormat("en-US").format(value);
 
 export function PlayerShows({ horses, notify, refreshAccount }: { horses: Horse[]; notify: (s: string) => void; refreshAccount: () => void }) {
-  const [shows, setShows] = useState<Show[]>([]);
-  const [disciplines, setDisciplines] = useState<Ref[]>([]);
-  const [tiers, setTiers] = useState<Ref[]>([]);
-  const [creating, setCreating] = useState(false);
-  const [name, setName] = useState("");
-  const [discipline, setDiscipline] = useState("racing");
-  const [tier, setTier] = useState("novice");
-  const [date, setDate] = useState("");
-  const [fee, setFee] = useState(0);
-  const [max, setMax] = useState("");
-  const [description, setDescription] = useState("");
-  const [choices, setChoices] = useState<Record<string, string>>({});
+  const [shows,setShows]=useState<Show[]>([]),[disciplines,setDisciplines]=useState<Ref[]>([]),[tiers,setTiers]=useState<Ref[]>([]),[entries,setEntries]=useState<MyEntry[]>([]),[archive,setArchive]=useState<ArchiveShow[]>([]);
+  const [view,setView]=useState<View>("upcoming"),[results,setResults]=useState<ResultPage|null>(null),[choices,setChoices]=useState<Record<string,string>>({});
+  const [disciplineFilter,setDisciplineFilter]=useState(""),[tierFilter,setTierFilter]=useState(""),[search,setSearch]=useState(""),[archiveDiscipline,setArchiveDiscipline]=useState(""),[archiveTier,setArchiveTier]=useState(""),[sort,setSort]=useState("newest");
+  const [name,setName]=useState(""),[discipline,setDiscipline]=useState("racing"),[tier,setTier]=useState("novice"),[date,setDate]=useState(""),[fee,setFee]=useState(0),[max,setMax]=useState(""),[description,setDescription]=useState("");
 
-  const load = useCallback(async () => {
-    const [{ data: s, error }, { data: d }, { data: t }] = await Promise.all([
-      supabase.rpc("get_player_shows"),
-      supabase.from("show_disciplines").select("id,name").eq("active", true),
-      supabase.from("show_tiers").select("id,name").eq("active", true).order("sort_order"),
-    ]);
-    if (error) notify(error.message);
-    setShows((s ?? []) as Show[]);
-    setDisciplines((d ?? []) as Ref[]);
-    setTiers((t ?? []) as Ref[]);
-  }, [notify]);
+  const load=useCallback(async()=>{const {data:{user}}=await supabase.auth.getUser();const [{data:s,error},{data:d},{data:t},{data:e}]=await Promise.all([supabase.rpc("get_player_shows"),supabase.from("show_disciplines").select("id,name").eq("active",true).order("name"),supabase.from("show_tiers").select("id,name").eq("active",true).order("sort_order"),user?supabase.from("player_show_entries").select("id,horse_id,entered_at,horses(name),player_shows(id,name,run_at,status,discipline_id,tier_id)").eq("owner_id",user.id).order("entered_at",{ascending:false}):Promise.resolve({data:[]})]);if(error)notify(error.message);setShows((s??[])as Show[]);setDisciplines((d??[])as Ref[]);setTiers((t??[])as Ref[]);setEntries((e??[])as unknown as MyEntry[])},[notify]);
+  const loadArchive=useCallback(async()=>{const {data,error}=await supabase.rpc("get_show_archive",{search_text:search,filter_discipline:archiveDiscipline,filter_tier:archiveTier,filter_host:null,sort_mode:sort});if(error)notify(error.message);else setArchive((data??[])as ArchiveShow[])},[search,archiveDiscipline,archiveTier,sort,notify]);
+  useEffect(()=>{const timer=setTimeout(()=>void load(),0);return()=>clearTimeout(timer)},[load]);
+  useEffect(()=>{if(view!=="archive")return;const timer=setTimeout(()=>void loadArchive(),150);return()=>clearTimeout(timer)},[view,loadArchive]);
+  const valid=name.trim().length>=3&&Boolean(date)&&fee>=0&&(!max||Number(max)>=2);
+  const visible=useMemo(()=>shows.filter(show=>(!disciplineFilter||show.discipline_id===disciplineFilter)&&(!tierFilter||show.tier_id===tierFilter)),[shows,disciplineFilter,tierFilter]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => void load(), 0);
-    return () => clearTimeout(timer);
-  }, [load]);
+  const create=async()=>{if(!valid)return;const{error}=await supabase.rpc("create_player_show",{show_name:name,target_discipline:discipline,target_tier:tier,target_run_date:date,new_entry_fee:fee,new_max_entries:max?Number(max):null,new_description:description});notify(error?.message??"Show created for midnight Eastern Time.");if(!error){setView("upcoming");await load();refreshAccount()}};
+  const enter=async(showId:string)=>{const horse=choices[showId];if(!horse)return;const{error}=await supabase.rpc("enter_player_show",{target_show:showId,target_horse:horse});notify(error?.message??"Show entry confirmed and eligibility snapshotted.");if(!error){await load();refreshAccount()}};
+  const openResults=async(showId:string)=>{const{data,error}=await supabase.rpc("get_show_results",{target_show:showId});if(error)notify(error.message);else setResults(data as ResultPage)};
 
-  const valid = name.trim().length >= 3 && Boolean(date) && fee >= 0 && (!max || Number(max) >= 2);
-
-  const create = async () => {
-    if (!valid) return;
-    const { error } = await supabase.rpc("create_player_show", {
-      show_name: name,
-      target_discipline: discipline,
-      target_tier: tier,
-      target_run_date: date,
-      new_entry_fee: fee,
-      new_max_entries: max ? Number(max) : null,
-      new_description: description,
-    });
-    notify(error?.message ?? "Show created for midnight Eastern Time.");
-    if (!error) {
-      setCreating(false);
-      await load();
-      refreshAccount();
-    }
-  };
-
-  const enter = async (showId: string) => {
-    const horse = choices[showId];
-    if (!horse) return;
-    const { error } = await supabase.rpc("enter_player_show", { target_show: showId, target_horse: horse });
-    notify(error?.message ?? "Show entry confirmed and tier eligibility snapshotted.");
-    if (!error) {
-      await load();
-      refreshAccount();
-    }
-  };
-
+  if(results)return <ShowResultsPage page={results} back={()=>setResults(null)}/>;
   return <>
-    <header className="title">
-      <p className="eyebrow">PLAYER-HOSTED COMPETITION</p>
-      <h2>Legacy Equine Shows</h2>
-      <p>Deterministic, stat-based competition. Tack and active approved service effects count; random rolls do not.</p>
-      <button className="primary" onClick={() => setCreating(!creating)}>{creating ? "Close Creator" : "Create Show"}</button>
-    </header>
-    {creating && <section className="panel showcreator">
-      <h2>Create a Show</h2>
-      <form className="show-form" onSubmit={(event) => { event.preventDefault(); void create(); }}>
-        <div className="show-form-columns">
-          <div className="show-form-column">
-            <FormField id="show-name" label="Show Name">
-              <input id="show-name" required minLength={3} value={name} onChange={(event) => setName(event.target.value)} />
-            </FormField>
-            <FormField id="show-tier" label="Career Point Tier">
-              <select id="show-tier" value={tier} onChange={(event) => setTier(event.target.value)}>{tiers.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select>
-            </FormField>
-            <FormField id="show-fee" label="Entry Fee (LED)" helper="Optional — leave at 0 for a free show.">
-              <input id="show-fee" type="number" min={0} required value={fee} onChange={(event) => setFee(Number(event.target.value))} />
-            </FormField>
-          </div>
-          <div className="show-form-column">
-            <FormField id="show-discipline" label="Discipline">
-              <select id="show-discipline" value={discipline} onChange={(event) => setDiscipline(event.target.value)}>{disciplines.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select>
-            </FormField>
-            <FormField id="show-date" label="Run Date" helper="Runs at 12:00 AM Eastern Time.">
-              <input id="show-date" type="date" required value={date} onChange={(event) => setDate(event.target.value)} />
-            </FormField>
-            <FormField id="show-maximum" label="Maximum Entries" helper="Optional — leave blank for no maximum.">
-              <input id="show-maximum" type="number" min={2} placeholder="No maximum" value={max} onChange={(event) => setMax(event.target.value)} />
-            </FormField>
-          </div>
-        </div>
-        <FormField id="show-description" label="Description">
-          <textarea id="show-description" rows={4} value={description} onChange={(event) => setDescription(event.target.value)} />
-        </FormField>
-        <div className="show-form-actions">
-          {!valid && <p className="form-status" role="status">Add a show name and run date to create the show.</p>}
-          <button className="primary" type="submit" disabled={!valid}>Create Show</button>
-        </div>
-      </form>
-    </section>}
-    <div className="featuregrid">{shows.map((show) => <article className="featurecard showcard" key={show.id}>
-      <div className="showmark">◇</div><div><p className="eyebrow">{show.discipline} · {show.tier}</p><h3>{show.name}</h3><p>{show.description || "A player-hosted Legacy Equine competition."}</p><p><b>Hosted by {show.creator_name} #{show.creator_account}</b></p><p>{new Date(show.run_at).toLocaleString([], { timeZone: "America/New_York" })} · {show.entry_count}{show.max_entries ? ` / ${show.max_entries}` : ""} entries · {show.entry_fee} LED</p>{show.status === "open" && <><select aria-label={`Horse for ${show.name}`} value={choices[show.id] ?? ""} onChange={(event) => setChoices({ ...choices, [show.id]: event.target.value })}><option value="">Choose an eligible horse…</option>{horses.map((horse) => <option value={horse.id} key={horse.id}>{horse.name} · {horse.career_points ?? 0} Career Points</option>)}</select><button className="primary" disabled={!choices[show.id]} onClick={() => enter(show.id)}>Enter Show</button></>}</div>
-    </article>)}</div>
-    {!shows.length && <p className="featurehint">No player-created shows yet. Host the first one.</p>}
+    <header className="title"><p className="eyebrow">DETERMINISTIC EQUESTRIAN COMPETITION</p><h2>Legacy Equine Shows</h2><p>Discipline-specific effective stats decide every placing. Highest average wins—there is no hidden randomness.</p></header>
+    <nav className="showsnav" aria-label="Show sections">{([['upcoming','Upcoming Shows'],['create','Create Show'],['entries','My Entries'],['archive','Results / Archive']] as [View,string][]).map(([id,label])=><button key={id} className={view===id?"active":""} onClick={()=>setView(id)}>{label}</button>)}</nav>
+    {view==="upcoming"&&<><section className="showfilters"><select aria-label="Filter upcoming shows by discipline" value={disciplineFilter} onChange={e=>setDisciplineFilter(e.target.value)}><option value="">All disciplines</option>{disciplines.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select><select aria-label="Filter upcoming shows by tier" value={tierFilter} onChange={e=>setTierFilter(e.target.value)}><option value="">All tiers</option>{tiers.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></section><div className="showlist">{visible.map(show=><article className="showrow" key={show.id}><div className="showmark">◇</div><div><p className="eyebrow">{show.discipline} · {show.tier}</p><h3>{show.name}</h3><p>{new Date(show.run_at).toLocaleString([],{timeZone:"America/New_York",dateStyle:"medium",timeStyle:"short"})} · Hosted by {show.creator_name} #{show.creator_account}</p></div><div className="shownumbers"><span><b>{money(show.entry_fee)}</b> Entry LED</span><span><b>{money(show.purse)}</b> Purse</span><span><b>{show.entry_count}{show.max_entries?` / ${show.max_entries}`:""}</b> Entries</span></div><div className="showenter"><select aria-label={`Horse for ${show.name}`} value={choices[show.id]??""} onChange={e=>setChoices({...choices,[show.id]:e.target.value})}><option value="">Choose eligible horse…</option>{horses.map(h=><option value={h.id} key={h.id}>{h.name} · {h.career_points} CP</option>)}</select><button className="primary" disabled={!choices[show.id]} onClick={()=>enter(show.id)}>Enter Show</button></div></article>)}</div>{!visible.length&&<p className="featurehint">No upcoming shows match these filters.</p>}</>}
+    {view==="create"&&<section className="panel showcreator"><h2>Create a Show</h2><form className="show-form" onSubmit={e=>{e.preventDefault();void create()}}><div className="show-form-columns"><div className="show-form-column"><FormField id="show-name" label="Show Name"><input id="show-name" required minLength={3} value={name} onChange={e=>setName(e.target.value)}/></FormField><FormField id="show-tier" label="Career Point Tier"><select id="show-tier" value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(x=><option value={x.id} key={x.id}>{x.name}</option>)}</select></FormField><FormField id="show-fee" label="Entry Fee (LED)" helper="Optional — leave at 0 for a free show."><input id="show-fee" type="number" min={0} required value={fee} onChange={e=>setFee(Number(e.target.value))}/></FormField></div><div className="show-form-column"><FormField id="show-discipline" label="Discipline"><select id="show-discipline" value={discipline} onChange={e=>setDiscipline(e.target.value)}>{disciplines.map(x=><option value={x.id} key={x.id}>{x.name}</option>)}</select></FormField><FormField id="show-date" label="Run Date" helper="Runs at 12:00 AM Eastern Time."><input id="show-date" type="date" required value={date} onChange={e=>setDate(e.target.value)}/></FormField><FormField id="show-maximum" label="Maximum Entries" helper="Optional — leave blank for no maximum."><input id="show-maximum" type="number" min={2} placeholder="No maximum" value={max} onChange={e=>setMax(e.target.value)}/></FormField></div></div><FormField id="show-description" label="Description"><textarea id="show-description" rows={4} value={description} onChange={e=>setDescription(e.target.value)}/></FormField><div className="show-form-actions">{!valid&&<p className="form-status" role="status">Add a show name and run date to create the show.</p>}<button className="primary" type="submit" disabled={!valid}>Create Show</button></div></form></section>}
+    {view==="entries"&&<section className="panel"><p className="eyebrow">YOUR COMPETITION SCHEDULE</p><h2>My Entries</h2><div className="myentries">{entries.map(entry=><article key={entry.id}><div><b>{entry.horses?.name}</b><span>{entry.player_shows?.name}</span></div><span>{entry.player_shows?.discipline_id.replaceAll('_',' ')} · {entry.player_shows?.tier_id}</span><time>{new Date(entry.player_shows!.run_at).toLocaleDateString()}</time><em className={entry.player_shows?.status}>{entry.player_shows?.status==='complete'?'Completed':'Entered'}</em>{entry.player_shows?.status==='complete'&&<button onClick={()=>openResults(entry.player_shows!.id)}>View Results</button>}</article>)}</div>{!entries.length&&<p className="featurehint">You have not entered a show yet.</p>}</section>}
+    {view==="archive"&&<><section className="showarchivefilters"><input aria-label="Search show archive" placeholder="Search show, horse, stable, or discipline…" value={search} onChange={e=>setSearch(e.target.value)}/><select aria-label="Archive discipline" value={archiveDiscipline} onChange={e=>setArchiveDiscipline(e.target.value)}><option value="">All disciplines</option>{disciplines.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select><select aria-label="Archive tier" value={archiveTier} onChange={e=>setArchiveTier(e.target.value)}><option value="">All tiers</option>{tiers.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select><select aria-label="Sort archive" value={sort} onChange={e=>setSort(e.target.value)}><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="largest_purse">Largest Purse</option><option value="most_entries">Most Entries</option></select></section><div className="showarchive">{archive.map(show=><button key={show.id} onClick={()=>openResults(show.id)}><span><b>{show.name}</b><small>{show.discipline} · {show.tier} · {new Date(show.run_at).toLocaleDateString()}</small></span><span><b>{money(show.purse)} LED</b><small>{show.entry_count} entries · {show.creator_name} #{show.creator_account}</small></span><em>View Results →</em></button>)}</div>{!archive.length&&<p className="featurehint">No completed shows match this search.</p>}</>}
   </>;
 }
+
+function ShowResultsPage({page,back}:{page:ResultPage;back:()=>void}){return <><button className="back" onClick={back}>← Back to Show Archive</button><header className="showresulttitle"><p className="eyebrow">PERMANENT SHOW RESULTS</p><h1>{page.show.name}</h1><p>{page.show.discipline} · {page.show.tier}</p><div><span>Hosted by <b>{page.show.host_name} #{page.show.host_account}</b></span><span>Run <b>{new Date(page.show.run_at).toLocaleDateString()}</b></span><span>Entries <b>{page.show.entries}</b></span><span>Purse <b>{money(page.show.purse)} LED</b></span></div></header><section className="resultlist"><h2>Results</h2>{page.results.map(row=><article key={row.result_id} className={row.placement<=3?`podium p${row.placement}`:""}><div className="placing"><b>{placingLabel(row.placement)}</b><span>{row.placement===1?'🏆 ':''}{row.placement}{row.placement===1?'st':row.placement===2?'nd':row.placement===3?'rd':'th'}</span></div><div><h3>{row.horse_name}</h3><p>{row.owner_name} #{row.owner_account}</p></div><div className="resultnumbers"><span>Score <b>{Number(row.score).toFixed(2)}</b></span><span>Prize <b>{money(row.prize)} LED</b></span><span>Career Points <b>+{row.career_points}</b></span></div><details><summary>Score Breakdown</summary>{Object.entries(row.breakdown).map(([stat,value])=><p key={stat}><b>{stat}: {value.effective}</b><span>Base {value.base} · Training +{value.training} · Tack +{value.tack} · Farrier +{value.farrier} · Other services +{value.service-value.farrier}</span></p>)}<strong>Average: {Number(row.score).toFixed(2)}</strong></details></article>)}</section></>}

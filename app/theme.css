@@ -39,7 +39,7 @@ main { max-width:1220px }.notice { background:#fff;border:1px solid #e1d5f3;bord
 .cardfoot { display:flex;justify-content:space-between;align-items:end;border-top:1px solid var(--line);padding-top:12px }.cardfoot em{font-size:10px;color:#7b55bd;font-style:normal;font-weight:800}
 .store { grid-template-columns:1.1fr 1fr }.store-art{min-height:510px;background:#e5daf4}.store-art span{border-radius:999px;background:#5b368acc}.store>div:last-child{padding:58px}
 .price { background:#f3edfb;border-radius:17px;padding:14px 18px;margin:22px 0 }.price b{color:#583680}
-.profile { grid-template-columns:minmax(330px,1.2fr) 1.35fr 170px;padding:24px;background:#fff;gap:34px }.portrait{height:430px;border-radius:20px;background:#eee8f6;overflow:hidden}.portrait img{height:365px}
+.profile { grid-template-columns:minmax(330px,1.2fr) 1.35fr 170px;padding:24px;background:#fff;gap:34px }.portrait{height:430px;border-radius:20px;background:var(--cream);overflow:hidden}.portrait img{height:365px;background:var(--cream);object-fit:contain}
 .portrait label{background:#f5f0fb;padding:10px 14px}.portrait input,.profile textarea,.breed select,.authcard input{border:1px solid #ddcfef;border-radius:12px}
 .nameedit{font:850 48px var(--display);color:#3f2b59}.ownerline{display:inline-block;background:#eee6fa;color:#68469a;border-radius:999px;padding:7px 11px;font-size:10px;font-weight:800}
 .points{border:0;background:#f3edfb;border-radius:20px;padding:24px 14px;height:max-content}.points b{font-family:var(--display);color:#60408c}.points span{font-size:10px;text-transform:none;letter-spacing:0}.points small{background:#edf7ea;border-radius:999px;padding:7px;letter-spacing:0}
@@ -61,8 +61,9 @@ footer{background:#42296b;color:#d8cbea;border-top:5px solid #a783d7}.profiletab
 @media(max-width:760px){.featuregrid,.mediaidentitygrid,.horseuploads{grid-template-columns:1fr}.featurecard{grid-template-columns:120px 1fr}.showcard{grid-template-columns:75px 1fr}.inlineform{grid-template-columns:1fr}.forumpost.replypost{margin-left:15px}.mediaupload{grid-template-columns:105px 1fr}}
 
 /* Generated portraits are 3:2; matching the frame removes colored side bands. */
-.storeimage{height:auto;aspect-ratio:3/2;background:#fff}
-.storeimage img{display:block;object-fit:cover}
-.previewart{min-height:0;align-self:start;background:#fff}
-.previewart img{display:block;width:100%;height:auto;object-fit:cover}
+.storeimage{height:auto;aspect-ratio:3/2;background:var(--cream)}
+.storeimage img{display:block;object-fit:contain;background:var(--cream)}
+.previewart{min-height:0;align-self:start;background:var(--cream)}
+.previewart img{display:block;width:100%;height:auto;object-fit:contain;background:var(--cream)}
+.genetics-disclosure{margin-top:20px}.genetics-disclosure>summary{cursor:pointer;list-style:none;padding:20px 24px;font:850 20px var(--display);color:var(--purple-700)}.genetics-disclosure>summary::-webkit-details-marker{display:none}.genetics-disclosure>summary:after{content:"＋";float:right}.genetics-disclosure[open]>summary:after{content:"−"}.genetics-content{padding:0 24px 24px}.genetics-content .storestats{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:760px){.professiongrid{grid-template-columns:1fr}.servicelist article{grid-template-columns:1fr}}

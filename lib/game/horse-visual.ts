@@ -29,7 +29,7 @@ Genetic coat pattern: ${v.pattern}
 Persistent facial marking: ${v.face_marking}
 Persistent leg markings: left front ${v.left_front}; right front ${v.right_front}; left hind ${v.left_hind}; right hind ${v.right_hind}
 Pose and view: ${v.pose}; ${v.view}
-Scene/backdrop: none. Isolate the horse on a genuinely transparent alpha background with no room, floor, horizon, landscape, studio sweep, rectangle, or colored field.
+Scene/backdrop: none. Isolate the horse on a genuinely transparent alpha background with no room, floor, horizon, landscape, studio sweep, rectangle, colored field, or simulated gray-and-white transparency checkerboard.
 Lighting and clarity: ${v.lighting ?? "bright neutral daylight, crisp coat detail, clean highlights, accurate coat color, strong natural contrast, and no color cast"}
 Style/medium: polished semi-realistic Legacy Equine game illustration; slightly stylized/cartoon-clean edges are welcome when they improve breed, anatomy, marking, and color accuracy; retain believable conformation and natural coat detail
 Composition/framing: landscape 4:3, full horse entirely visible, generous clear space around ears, nose, hooves, and tail

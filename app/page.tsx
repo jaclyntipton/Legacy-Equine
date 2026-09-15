@@ -11,6 +11,7 @@ import { CommunityChat } from "@/app/community-chat";
 import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
 import { HorseImageTemplates } from "@/app/horse-image-templates";
+import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
@@ -468,7 +469,7 @@ export default function Home() {
             className={view === "stable" ? "active" : ""}
             onClick={() => setView("stable")}
           >
-            <span>♞</span>Stable Home
+            <NavIcon name="barn"/>Stable Home
           </button>
           <button
             className={
@@ -476,46 +477,46 @@ export default function Home() {
             }
             onClick={openStore}
           >
-            <span>✦</span>LE Store
+            <NavIcon name="store"/>LE Store
           </button>
           <button
             className={view === "training" ? "active" : ""}
             onClick={() => setView("training")}
           >
-            <span>↗</span>Training
+            <NavIcon name="round-pen"/>Training
           </button>
           <button
             className={view === "shows" ? "active" : ""}
             onClick={() => setView("shows")}
           >
-            <span>◇</span>Shows
+            <NavIcon name="trophy"/>Shows
           </button>
           <button
             className={view === "market" ? "active" : ""}
             onClick={() => setView("market")}
           >
-            <span>⌂</span>Marketplace
+            <NavIcon name="sale-tag"/>Marketplace
           </button>
           <button
             className={view === "professions" ? "active" : ""}
             onClick={() => setView("professions")}
           >
-            <span>✚</span>Professions
+            <NavIcon name="toolbox"/>Professions
           </button>
           <button
             className={view === "community" ? "active" : ""}
             onClick={() => setView("community")}
           >
-            <span>◎</span>Community
+            <NavIcon name="bulletin"/>Community
           </button>
           <button
             className={view === "bank" ? "active" : ""}
             onClick={() => setView("bank")}
           >
-            <span>◉</span>Bank
+            <NavIcon name="coin"/>Bank
           </button>
           <button className={view === "sanctuary" ? "active" : ""} onClick={() => setView("sanctuary")}>
-            <span>♡</span>Sanctuary
+            <NavIcon name="heart"/>Sanctuary
           </button>
         </nav>
         <div className="sidebar-note">ALPHA 0.1</div>

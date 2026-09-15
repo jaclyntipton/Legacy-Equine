@@ -38,6 +38,8 @@ Named cross outcomes carry their recognition basis and source. “Formal registr
 
 Training raises one base stat by one, once per 20 real hours per horse. No care meters exist. Foals arrive immediately. Each foal stat is the rounded parental average plus an independent integer roll from −6 to +6, floored at one. A configurable 25% chance of a one-point regression is applied: the 100,000-breeding simulation showed that the floor otherwise produced a 2.47-point upward drift after ten generations. This preserves the parental-average model while offsetting that boundary effect. The mare receives a ten-real-day cooldown. No generational bonus is applied.
 
+Breeding age is derived exclusively from each horse's authoritative `birth_date` using the normal accelerated game clock (30 game days per real day). Mares and stallions are eligible from exact age 3 through the completion of age 25 (`3 <= age < 26`). Before every breeding, the server locks and independently validates both parents; younger, age-26-or-older, or retired horses cannot create a foal, incur a fee, or receive a cooldown. Existing pedigrees, progeny, and breeding records remain visible permanently.
+
 One real day advances game age by 30 days. Breeding starts at age three and ends at age 30. Horses and pedigree records are never deleted due to age.
 
 ## Alpha 0.2 candidates

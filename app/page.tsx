@@ -130,8 +130,8 @@ const canTrain = (h: Horse) =>
     GAME.training.cooldownHours * 3600000;
 const canBreed = (h: Horse) =>
   !h.retired &&
-  age(h) >= 3 &&
-  age(h) < 30 &&
+  age(h) >= GAME.age.breedingMinimumYears &&
+  age(h) < GAME.age.breedingMaximumYears + 1 &&
   (h.sex === "Stallion" ||
     !h.last_bred_at ||
     Date.now() - new Date(h.last_bred_at).getTime() >=

@@ -23,5 +23,9 @@ export const effectiveStats = (horse: Horse): Stats => Object.fromEntries(GAME.s
 export const overall = (horse: Horse) => Object.values(effectiveStats(horse)).reduce((a, b) => a + b, 0);
 export const gameAge = (horse: Horse, now = new Date()) => Math.max(0, (now.getTime() - new Date(horse.birthDate).getTime()) / 86400000 * GAME.age.gameDaysPerRealDay / 365.25);
 export const cooldownEnds = (mare: Horse) => mare.lastBredAt ? new Date(new Date(mare.lastBredAt).getTime() + GAME.mareCooldownDays * 86400000) : null;
-export const canBreed = (horse: Horse, now = new Date()) => !horse.retired && gameAge(horse, now) >= GAME.age.breedingMinimumYears && gameAge(horse, now) < GAME.age.retirementYears && (horse.sex === "Stallion" || !cooldownEnds(horse) || cooldownEnds(horse)!.getTime() <= now.getTime());
+export const isBreedingAge = (horse: Horse, now = new Date()) => {
+  const age = gameAge(horse, now);
+  return age >= GAME.age.breedingMinimumYears && age < GAME.age.breedingMaximumYears + 1;
+};
+export const canBreed = (horse: Horse, now = new Date()) => !horse.retired && isBreedingAge(horse, now) && (horse.sex === "Stallion" || !cooldownEnds(horse) || cooldownEnds(horse)!.getTime() <= now.getTime());
 export const canTrain = (horse: Horse, now = new Date()) => !horse.lastTrainedAt || now.getTime() - new Date(horse.lastTrainedAt).getTime() >= GAME.training.cooldownHours * 3600000;

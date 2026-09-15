@@ -12,6 +12,6 @@ export const GAME = {
   breedingRegressionChance: 0.25,
   mareCooldownDays: 10,
   training: { gain: 1, cooldownHours: 20 },
-  age: { gameDaysPerRealDay: 30, breedingMinimumYears: 3, retirementYears: 30 },
+  age: { gameDaysPerRealDay: 30, breedingMinimumYears: 3, breedingMaximumYears: 25, retirementYears: 30 },
   defaultStudFee: 100,
 } as const;

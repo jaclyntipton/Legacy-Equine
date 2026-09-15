@@ -60,7 +60,7 @@ footer{background:#42296b;color:#d8cbea;border-top:5px solid #a783d7}.profiletab
 @media(max-width:760px){.featuregrid,.mediaidentitygrid,.horseuploads{grid-template-columns:1fr}.featurecard{grid-template-columns:120px 1fr}.showcard{grid-template-columns:75px 1fr}.inlineform{grid-template-columns:1fr}.forumpost.replypost{margin-left:15px}.mediaupload{grid-template-columns:105px 1fr}}
 
 /* Generated portraits are 3:2; matching the frame removes colored side bands. */
-.storeimage{height:auto;aspect-ratio:3/2;background:#f8f4fb}
+.storeimage{height:auto;aspect-ratio:3/2;background:#fff}
 .storeimage img{display:block;object-fit:cover}
-.previewart{min-height:0;align-self:start;background:#f8f4fb}
+.previewart{min-height:0;align-self:start;background:#fff}
 .previewart img{display:block;width:100%;height:auto;object-fit:cover}

@@ -22,7 +22,7 @@ Persistent facial marking: ${v.face_marking}
 Persistent leg markings: left front ${v.left_front}; right front ${v.right_front}; left hind ${v.left_hind}; right hind ${v.right_hind}
 Pose and view: ${v.pose}; ${v.view}
 Scene/backdrop: ${v.background}
-Lighting and clarity: ${v.lighting ?? "high-key soft daylight, crisp coat detail, clean highlights, natural contrast, and no gray haze"}
+Lighting and clarity: ${v.lighting ?? "bright neutral daylight, crisp coat detail, clean highlights, accurate coat color, strong natural contrast, and no color cast"}
 Style/medium: polished realistic digital equine portrait with natural coat texture and anatomically correct conformation
 Composition/framing: landscape 4:3, full horse entirely visible, generous clear space around ears, nose, hooves, and tail
-Constraints: accurately distinguish breed body type without caricature; bright seamless warm ivory background only—no gray, charcoal, vignette, muddy cast, dark gradient, visible horizon, or colored rectangle; markings must stay on the specified face and legs; no rider; no tack; no handler; no props; no text; no logo; no watermark; exactly one horse.`}
+Constraints: accurately distinguish breed body type without caricature; pure neutral white RGB 255 255 255 background only—no gray, beige, ivory, cream, lavender, color cast, vignette, muddy cast, gradient, visible horizon, or colored rectangle; markings must stay on the specified face and legs; no rider; no tack; no handler; no props; no text; no logo; no watermark; exactly one horse.`}

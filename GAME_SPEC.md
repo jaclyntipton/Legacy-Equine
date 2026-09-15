@@ -81,3 +81,9 @@ Professional enrollment is permanent and costs 500 LED for Farrier, Trainer, and
 Any stable may create a show with a name, data-driven discipline, Career Point tier, future date, entry fee, optional entry cap, and description. Shows run at midnight in `America/New_York`, with server-side processing. Eligibility is snapshotted when the horse enters; the default limit is one horse per owner per show.
 
 Performance is deterministic: configured weighted base stats plus tack bonuses plus active qualifying service effects. Tie-break order is total score, base contribution, Career Points at entry, entry time, then horse ID. Career Points are progression values separate from genetics and base stats. Entries and results remain permanent. Entry fees form the purse; authorized Show Fund allocations may supplement it.
+
+# Community Chat Rooms
+
+Community consists of database-managed rooms with persistent, paginated message history and near-real-time updates. Authenticated stable identity, permanent account number, avatar, and Community role are supplied by the server. Players cannot create rooms or impersonate another identity. Initial rooms are General, Horse Sales & Breeding, Shows, Artwork, Professional Services, and Help.
+
+Community Admins and the Owner can create, rename, reorder, deactivate, archive, lock, and make rooms read-only. Moderators, Admins, and the Owner can hide or restore messages and issue room or global timeouts. Moderation and room administration are audited rather than silently deleted. Community roles never grant Treasury authority. Messages are plain text, limited to 1,000 characters, rate-limited, and protected against duplicate spam.

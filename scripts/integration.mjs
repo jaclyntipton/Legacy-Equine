@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
 if(!url||!key||!process.env.SUPABASE_ANON_KEY)throw new Error("Missing integration credentials");
-const admin=createClient(url,key,{auth:{persistSession:false}});const stamp=Date.now();const password=`LE-${stamp}-Test!`;const ids=[];
+const admin=createClient(url,key,{auth:{persistSession:false}});const stamp=Date.now();const password=`LE-${stamp}-Test!`;const ids=[],mediaPaths=[];
 
 async function makeUser(n){
   const email=`legacy-equine-test-${stamp}-${n}@example.com`;
@@ -25,6 +25,7 @@ try{
   for(const [player,name,suffix] of [[a,"Integration Acres Updated","a"],[b,"Sequence Farm","b"],[c,"Boundary Ranch","c"]]){const profile=await player.client.rpc("update_stable_profile",{new_name:name,new_username:`it_${stamp}_${suffix}`,new_bio:"Automated QA stable"});assert.ifError(profile.error);assert.equal(profile.data.name,name);assert.equal(profile.data.username,`it_${stamp}_${suffix}`);}
   const duplicateUsername=await b.client.rpc("update_stable_profile",{new_name:"Sequence Farm",new_username:`it_${stamp}_a`,new_bio:""});assert.ok(duplicateUsername.error);assert.match(duplicateUsername.error.message,/taken/i);
   let optionalUsername=await b.client.rpc("update_stable_profile",{new_name:"Renamed Without Username",new_username:"",new_bio:""});assert.ifError(optionalUsername.error);assert.equal(optionalUsername.data.username,null);optionalUsername=await b.client.rpc("update_stable_profile",{new_name:"Sequence Farm",new_username:`it_${stamp}_b`,new_bio:"Automated QA stable"});assert.ifError(optionalUsername.error);
+  const pixel=Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=","base64"),ranchPath=`${a.id}/ranches/${stamp}.png`,avatarPath=`${a.id}/avatars/${stamp}.png`;let media=await a.client.storage.from("legacy-equine-media").upload(ranchPath,pixel,{contentType:"image/png"});assert.ifError(media.error);mediaPaths.push(ranchPath);media=await a.client.storage.from("legacy-equine-media").upload(avatarPath,pixel,{contentType:"image/png"});assert.ifError(media.error);mediaPaths.push(avatarPath);const forbiddenMedia=await b.client.storage.from("legacy-equine-media").upload(`${a.id}/avatars/forbidden-${stamp}.png`,pixel,{contentType:"image/png"});assert.ok(forbiddenMedia.error);const ranchUrl=a.client.storage.from("legacy-equine-media").getPublicUrl(ranchPath).data.publicUrl,avatarUrl=a.client.storage.from("legacy-equine-media").getPublicUrl(avatarPath).data.publicUrl;const images=await a.client.rpc("update_stable_images",{new_ranch_image_url:ranchUrl,new_avatar_url:avatarUrl});assert.ifError(images.error);assert.equal(images.data.ranch_image_url,ranchUrl);assert.equal(images.data.avatar_url,avatarUrl);
 
   const first=await a.client.rpc("get_store_inventory");assert.ifError(first.error);assert.equal(first.data.length,6);
   const second=await b.client.rpc("get_store_inventory");assert.ifError(second.error);assert.deepEqual(second.data.map(horseIdentity),first.data.map(horseIdentity));
@@ -42,6 +43,7 @@ try{
   q=await admin.from("currency_ledger").select("amount,horse_id").eq("stable_id",winner.id).lt("amount",0);assert.equal(q.data.length,3);assert.equal(q.data.reduce((sum,x)=>sum+x.amount,0),-3000);assert.ok(q.data.every(x=>bought.some(h=>h.id===x.horse_id)));
 
   const stranger=winner.id===a.id?b:a;const strangerUpdate=await stranger.client.from("horses").update({name:"Stolen"}).eq("id",bought[0].id).select();assert.equal(strangerUpdate.data.length,0);
+  const horsePath=`${winner.id}/horses/${bought[0].id}-${stamp}.png`;media=await winner.client.storage.from("legacy-equine-media").upload(horsePath,pixel,{contentType:"image/png"});assert.ifError(media.error);mediaPaths.push(horsePath);const horseUrl=winner.client.storage.from("legacy-equine-media").getPublicUrl(horsePath).data.publicUrl;const horseImage=await winner.client.rpc("update_horse_profile",{target_horse:bought[0].id,new_name:bought[0].name,new_biography:"",new_image_url:horseUrl});assert.ifError(horseImage.error);assert.equal(horseImage.data.image_url,horseUrl);assert.notEqual(horseUrl,ranchUrl);assert.notEqual(horseUrl,avatarUrl);
   let trained=await winner.client.rpc("train_horse",{target_horse:bought[0].id,stat_name:"Speed"});assert.ifError(trained.error);trained=await winner.client.rpc("train_horse",{target_horse:bought[0].id,stat_name:"Speed"});assert.ok(trained.error);
   await admin.from("horses").update({sex:"Stallion",stud_fee:0}).eq("id",bought[0].id);await admin.from("horses").update({sex:"Mare"}).eq("id",bought[1].id);
   let bred=await winner.client.rpc("breed_horses",{stallion_id:bought[0].id,mare_id:bought[1].id});assert.ifError(bred.error);assert.equal(bred.data.sire_id,bought[0].id);assert.equal(bred.data.dam_id,bought[1].id);for(const value of Object.values(bred.data.stats))assert.ok(Number.isInteger(value)&&value>=1);
@@ -61,8 +63,9 @@ try{
   if(boundary[0].error){assert.match(boundary[0].error.message,/just purchased|no longer available/i);q=await admin.from("store_inventory").select("status").eq("id",boundaryTarget.inventory_id).single();assert.equal(q.data.status,"expired");}
   else{assert.deepEqual(horseIdentity(boundary[0].data),boundaryIdentity);q=await admin.from("horses").select("owner_id").eq("id",boundaryTarget.horse_id).single();assert.equal(q.data.owner_id,c.id);}
 
-  console.log("Production integration checks passed: profiles, training, shows, marketplace, community, inventory, locking, ledger, and limits");
+  console.log("Production integration checks passed: isolated media, profiles, training, shows, marketplace, community, inventory, locking, ledger, and limits");
 }finally{
+  if(mediaPaths.length)await admin.storage.from("legacy-equine-media").remove(mediaPaths);
   for(const id of ids){
     await admin.from("forum_posts").delete().eq("stable_id",id);await admin.from("competition_entries").delete().eq("stable_id",id);await admin.from("marketplace_listings").delete().or(`seller_id.eq.${id},buyer_id.eq.${id}`);await admin.from("training_log").delete().eq("stable_id",id);await admin.from("currency_ledger").delete().eq("stable_id",id);await admin.from("breeding_records").delete().eq("owner_id",id);await admin.from("inventory").delete().eq("owner_id",id);
     await admin.from("store_inventory").delete().eq("sold_to",id);await admin.from("horses").delete().eq("owner_id",id);await admin.from("stables").delete().eq("id",id);await admin.auth.admin.deleteUser(id);

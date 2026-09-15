@@ -17,3 +17,5 @@ Foundation inventory is persisted in `horses` plus `store_inventory`; store-owne
 ## Player systems
 
 Stable profiles keep immutable `account_number` identity separate from editable names, biographies, and case-insensitively unique community usernames. Shows use the existing competition tables and server-authoritative scoring RPCs. `marketplace_listings` records active, sold, and cancelled offers; checkout locks the listing and both accounts, transfers the existing horse, and writes balanced buyer/seller ledger entries in one transaction. `forum_posts` stores conversations and replies while read RPCs join only the public identity fields needed by the community UI. Direct table writes remain unavailable to normal clients.
+
+Player media uses the dedicated public `legacy-equine-media` Supabase Storage bucket. Object paths begin with the authenticated user ID and storage policies prevent cross-account inserts, updates, and deletion. Ranch images and avatars are separate stable columns; horse images remain attached to individual horse rows. Upload validation permits image MIME types only and caps files at 5 MB.

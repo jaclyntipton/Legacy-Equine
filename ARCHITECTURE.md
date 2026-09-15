@@ -14,6 +14,8 @@ Age is derived from `birth_date` and the configured clock rather than mass-updat
 
 `horses.genetics` stores allele pairs as JSONB and `horses.breed_composition` stores fractional ancestry independently from the displayed breed label. Foundation generation creates the genotype first and derives the visible color from it. Breeding locks both parents, independently selects one allele from each parent at every locus, rejects a modeled lethal result before any balance or cooldown mutation, and then persists that exact genotype and phenotype on the foal. This makes previews probabilistic while the resulting foal remains permanent and reproducible from its stored genes.
 
+Store artwork uses a genotype → calculated phenotype → structured visual description → image-worker pipeline. Persistent `markings` and `visual_phenotype` live on the horse; `store_horse_image_jobs` tracks retryable generation independently. The authenticated Next.js worker claims jobs with the Supabase service role, sends only the structured phenotype plus the approved style-reference image through Vercel AI Gateway, stores the finished asset in `legacy-equine-media`, and atomically replaces that horse's placeholder URL. AI failures never mutate horse gameplay data. The same queue accepts Admin Custom horses and is ready for future foal generation.
+
 `get_breeding_genetic_preview` computes locus-level inheritance and combined lethal probability from the selected pair. It is informational; `breed_horses` repeats all ownership, eligibility, lethal, balance, and cooldown enforcement transactionally. `breed_cross_rules` separates documented breed naming from genetics, while breed composition is combined mathematically over generations.
 
 ## Shared LE Store inventory

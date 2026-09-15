@@ -1,7 +1,7 @@
 import {describe,expect,it} from "vitest";
 import {competitionScore,competitionTier,placingLabel,PROVISIONAL_DISCIPLINE_STATS,rankDeterministically,type EffectiveBreakdown,type CompetitionTier} from "../lib/game/show-engine";
 
-const effective=(values:Record<string,number>,tack:Record<string,number>={}):EffectiveBreakdown=>Object.fromEntries(Object.entries(values).map(([stat,base])=>[stat,{base,training:0,tack:tack[stat]??0,service:0,effective:base+(tack[stat]??0)}]));
+const effective=(values:Record<string,number>,tack:Record<string,number>={}):EffectiveBreakdown=>Object.fromEntries(Object.entries(values).map(([stat,developed])=>[stat,{birth:developed,development:0,developed,tack:tack[stat]??0,service:0,effective:developed+(tack[stat]??0)}]));
 
 describe("Legacy Equine show engine",()=>{
   const tiers:CompetitionTier[]=[{id:"novice",name:"Novice",minimum_points:0,maximum_points:99,sort_order:1},{id:"intermediate",name:"Intermediate",minimum_points:100,maximum_points:249,sort_order:2},{id:"advanced",name:"Advanced",minimum_points:250,maximum_points:499,sort_order:3},{id:"elite",name:"Elite",minimum_points:500,maximum_points:null,sort_order:4}];

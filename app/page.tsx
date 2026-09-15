@@ -26,6 +26,7 @@ type Horse = {
   dam_id: string | null;
   generation: number;
   career_points: number;
+  birth_stats: Record<string, number>;
   stats: Record<string, number>;
   genetics: Record<string, string[]>;
   height_genetics: Record<string, string[]>;
@@ -1132,13 +1133,6 @@ function StorePreview({
             {GAME.stats.map((s) => (
               <div key={s}>
                 <span>{s}</span>
-                <i>
-                  <em
-                    style={{
-                      width: `${Math.min(100, (h.stats[s] / 20) * 100)}%`,
-                    }}
-                  />
-                </i>
                 <b>{h.stats[s]}</b>
               </div>
             ))}
@@ -2056,11 +2050,6 @@ function LegacyHorsePage({
             <div key={s}>
               <span>
                 {s}
-                <i
-                  style={{
-                    width: `${Math.min(100, (h.stats[s] / 30) * 100)}%`,
-                  }}
-                />
               </span>
               <strong>{h.stats[s]}</strong>
               <em>+{h.tack_bonuses[s] ?? 0} tack</em>

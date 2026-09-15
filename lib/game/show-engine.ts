@@ -13,7 +13,7 @@ export const PROVISIONAL_DISCIPLINE_STATS = {
   cross_country: ["Endurance", "Agility", "Strength", "Temperament"],
 } as const;
 
-export type EffectiveBreakdown = Record<string, { base: number; training: number; tack: number; service: number; effective: number }>;
+export type EffectiveBreakdown = Record<string, { birth: number; development: number; developed: number; tack: number; farrier?:number; massage?:number; service: number; effective: number }>;
 export type CompetitionTier={id:string;name:string;minimum_points:number;maximum_points:number|null;sort_order:number};
 export const competitionTier=(points:number,tiers:CompetitionTier[])=>[...tiers].sort((a,b)=>a.sort_order-b.sort_order).find(t=>points>=t.minimum_points&&(t.maximum_points==null||points<=t.maximum_points))??null;
 export const competitionScore = (stats: readonly string[], breakdown: EffectiveBreakdown) =>

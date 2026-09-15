@@ -1,2 +1,27 @@
-import { describe,it,expect } from "vitest"; import { createFoal,createFoundationHorse } from "../lib/game/simulation"; import { seededRandom } from "../lib/game/random"; import { GAME } from "../lib/game/config";
-describe("100,000 breeding balance simulation",()=>{it("does not create runaway inflation over ten generations",()=>{const r=seededRandom(20260914);let population=Array.from({length:200},()=>createFoundationHorse(r));const initial=population.flatMap(h=>Object.values(h.stats)).reduce((a,b)=>a+b,0)/(population.length*GAME.stats.length);for(let generation=0;generation<10;generation++){const next=[];for(let i=0;i<10000;i++){const sire={...population[Math.floor(r()*population.length)],sex:"Stallion" as const};const dam={...population[Math.floor(r()*population.length)],sex:"Mare" as const};next.push(createFoal(sire,dam,r));}population=next;}const values=population.flatMap(h=>Object.values(h.stats));const mean=values.reduce((a,b)=>a+b,0)/values.length;console.info({breedings:100000,initialMean:initial,finalMean:mean,min:Math.min(...values),max:Math.max(...values)});expect(mean-initial).toBeLessThan(2);expect(mean).toBeGreaterThan(initial-2);});});
+import {describe,expect,it} from "vitest";
+import {GAME} from "../lib/game/config";
+import {createFoal,createFoundationHorse,developHorse} from "../lib/game/simulation";
+import {seededRandom} from "../lib/game/random";
+
+describe("100,000 breeding line-improvement simulation",()=>{
+  it("models intentional linear generational growth without temporary inheritance",()=>{
+    const random=seededRandom(20260914);
+    let population=Array.from({length:200},()=>createFoundationHorse(random));
+    const generationMeans:number[]=[];
+    for(let generation=0;generation<10;generation++){
+      const developed=population.map(h=>developHorse(h,Object.fromEntries(GAME.stats.map(stat=>[stat,20]))));
+      const next=[];
+      for(let i=0;i<10000;i++){
+        const sire={...developed[Math.floor(random()*developed.length)],sex:"Stallion" as const,tackBonuses:Object.fromEntries(GAME.stats.map(stat=>[stat,999]))};
+        const dam={...developed[Math.floor(random()*developed.length)],sex:"Mare" as const};
+        next.push(createFoal(sire,dam,random));
+      }
+      population=next;
+      generationMeans.push(population.flatMap(h=>Object.values(h.birthStats)).reduce((a,b)=>a+b,0)/(population.length*GAME.stats.length));
+    }
+    console.info({breedings:100000,generationMeans});
+    expect(generationMeans.at(-1)!).toBeGreaterThan(generationMeans[0]+150);
+    expect(generationMeans.at(-1)!).toBeLessThan(generationMeans[0]+250);
+    expect(Math.max(...population.flatMap(h=>Object.values(h.birthStats)))).toBeGreaterThan(100);
+  });
+});

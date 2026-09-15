@@ -3,7 +3,7 @@ import { canBreed, isBreedingAge } from "./simulation";
 import type { Horse } from "./types";
 import { GAME } from "./config";
 const now=new Date("2026-09-15T12:00:00.000Z");
-const horseAt=(years:number,sex:"Mare"|"Stallion"):Horse=>({id:`${sex}-${years}`,name:"Boundary Horse",breed:"Morgan",sex,color:"Bay",origin:"Bred",birthDate:new Date(now.getTime()-years*365.25*86400000/GAME.age.gameDaysPerRealDay).toISOString(),createdAt:now.toISOString(),sireId:null,damId:null,generation:1,stats:Object.fromEntries(GAME.stats.map(stat=>[stat,12])),tackBonuses:{},biography:"",imageUrl:"",studFee:100,lastBredAt:null,lastTrainedAt:null,retired:false});
+const horseAt=(years:number,sex:"Mare"|"Stallion"):Horse=>({id:`${sex}-${years}`,name:"Boundary Horse",breed:"Morgan",sex,color:"Bay",origin:"Bred",birthDate:new Date(now.getTime()-years*365.25*86400000/GAME.age.gameDaysPerRealDay).toISOString(),createdAt:now.toISOString(),sireId:null,damId:null,generation:1,birthStats:Object.fromEntries(GAME.stats.map(stat=>[stat,12])),stats:Object.fromEntries(GAME.stats.map(stat=>[stat,12])),tackBonuses:{},biography:"",imageUrl:"",studFee:100,lastBredAt:null,lastTrainedAt:null,retired:false});
 describe.each(["Mare","Stallion"] as const)("%s breeding-age boundaries",sex=>{
  it("rejects age 2 and immediately before age 3",()=>{expect(canBreed(horseAt(2,sex),now)).toBe(false);expect(isBreedingAge(horseAt(3-1e-7,sex),now)).toBe(false)});
  it("accepts exact age 3 and all of displayed age 25",()=>{expect(canBreed(horseAt(3,sex),now)).toBe(true);expect(canBreed(horseAt(25,sex),now)).toBe(true);expect(canBreed(horseAt(26-1e-7,sex),now)).toBe(true)});

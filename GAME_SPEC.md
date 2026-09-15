@@ -5,8 +5,9 @@
 - **Confirmed inspiration:** ownership, training, breeding, pedigrees, and community are the intended genre pillars; no proprietary implementation is reproduced.
 - **Strong player recollection:** foundation horses cost approximately 1,000 and mares rested roughly one to two weeks.
 - **Legacy Equine modernization:** timestamp-derived aging, permanent audit ledger, responsive interface, and server-authoritative actions.
-- **Provisional:** seven stats are Agility, Speed, Endurance, Temperament, Strength, Intelligence, and Conformation. The last three await archival confirmation.
-- **Unresolved:** exact historical aging rate, training tickets, retirement thresholds, and original stat names.
+- **Primary-source confirmed:** Ludus Equinus used exactly seven separate horse stats. Surviving player-bred Quarter Horse artwork for “Flying On My Raptor” records seven birth values: 218, 220, 220, 400, 224, 270, and 220.
+- **Provisional names:** Legacy Equine currently uses Agility, Speed, Endurance, Temperament, Strength, Intelligence, and Conformation. The count is confirmed; the exact historical names and order remain under archival investigation, so definitions stay data-driven and renameable without changing horse records.
+- **Unresolved:** exact historical aging rate, training tickets, retirement thresholds, and original stat names/order.
 
 ## Alpha rules
 
@@ -40,7 +41,7 @@ Crossbred foals retain ancestry percentages across generations. Current registry
 
 Named cross outcomes carry their recognition basis and source. “Formal registry,” “registration pathway,” and “documented named cross” are deliberately distinct: the game never implies that every genetic cross is automatically eligible for real-world papers. Breed artwork likewise uses registry-sourced conformation, movement, temperament, height, and restriction data. Individual genetics remain the source of truth for color and pattern.
 
-Training raises one base stat by one, once per 20 real hours per horse. No care meters exist. Foals arrive immediately. Each foal stat is the rounded parental average plus an independent integer roll from −6 to +6, floored at one. A configurable 25% chance of a one-point regression is applied: the 100,000-breeding simulation showed that the floor otherwise produced a 2.47-point upward drift after ten generations. This preserves the parental-average model while offsetting that boundary effect. The mare receives a ten-real-day cooldown. No generational bonus is applied.
+Training raises one Developed Stat by one, once per 20 real hours per horse, and never changes its Birth Stat. No care meters exist. Foals arrive immediately. Each foal Birth Stat is the rounded average of the sire's and dam's Developed values plus an independently configured inheritance roll, currently −6 to +6, floored at one. Tack, Farrier, massage/condition, and all other temporary modifiers are excluded from inheritance. There is no regression toward Foundation values: intentional line improvement across developed generations is core gameplay. The mare receives a ten-real-day cooldown. No arbitrary 100-point stat cap exists.
 
 Breeding age is derived exclusively from each horse's authoritative `birth_date` using the normal accelerated game clock (30 game days per real day). Mares and stallions are eligible from exact age 3 through the completion of age 25 (`3 <= age < 26`). Before every breeding, the server locks and independently validates both parents; younger, age-26-or-older, or retired horses cannot create a foal, incur a fee, or receive a cooldown. Existing pedigrees, progeny, and breeding records remain visible permanently.
 
@@ -69,7 +70,7 @@ Each profession progresses independently through exactly Basic, Proficient, Adva
 
 Certified players choose prices inside administrator-configured ranges, can offer services to other stables, and can self-service their horses. Paid services transfer LED atomically; self-service never creates LED and initially earns 50% qualifying credit. Horse/service cooldowns prevent farming. Certification, lifetime client and self-service records, availability, and permanent horse service history are retained.
 
-Horse stats are always visible. Effective values must expose layers separately: inherited base, permanent development, tack, farrier, massage/condition, and other temporary effects. Temporary service effects never modify genetic or breeding values.
+Horse stats are always visible. Each of the exactly seven data-driven stats exposes an immutable Birth value, permanent Development, derived Developed value, tack, Farrier, massage/condition, other temporary effects, and derived Effective value. Breeding uses Developed Stats; shows use Effective Stats. Temporary service and equipment effects never modify genetic or breeding values. Stats may legitimately exceed 100 or 400 through long-term line improvement and are never rendered as percentages of a fixed ceiling.
 
 # Horse Height
 

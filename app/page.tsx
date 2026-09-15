@@ -13,6 +13,7 @@ import { HorseProfile as HorsePage } from "@/app/horse-profile";
 
 type Horse = {
   id: string;
+  owner_id: string | null;
   name: string;
   breed: string;
   sex: "Mare" | "Stallion";
@@ -31,6 +32,7 @@ type Horse = {
   tack_bonuses: Record<string, number>;
   biography: string;
   image_url: string;
+  image_generation_status?: string;
   stud_fee: number;
   last_bred_at: string | null;
   last_trained_at: string | null;
@@ -758,9 +760,12 @@ export default function Home() {
           {horse && view === "horse" && (
             <>
               <HorsePage
+                key={`${horse.id}:${horse.image_url}`}
                 h={horse}
                 horses={horses}
                 stableName={`${stable.name} · #${stable.account_number}`}
+                canEdit={horse.owner_id === user.id}
+                isAdmin={stable.is_admin}
                 openHorse={(relative) => {
                   const profileHorse = relative as Horse;
                   setHorses((current) =>
@@ -771,6 +776,21 @@ export default function Home() {
                   open(profileHorse);
                 }}
                 openProfessions={() => setView("professions")}
+                reportImageFailure={(failedUrl) => {
+                  void supabase.rpc("report_missing_horse_image", {
+                    target_horse: horse.id,
+                    failed_url: failedUrl,
+                  });
+                }}
+                regenerateImage={() => {
+                  void action(async () => {
+                    const { error } = await supabase.rpc("admin_regenerate_horse_image", {
+                      target_horse: horse.id,
+                    });
+                    if (!error) void generateStoreArtwork();
+                    return { error };
+                  }, "Fresh artwork has been queued for this horse.");
+                }}
                 save={(name, bio, img) =>
                   action(async () => {
                     const { error } = await supabase.rpc(

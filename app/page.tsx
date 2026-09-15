@@ -5,8 +5,10 @@ import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { GAME } from "@/lib/game/config";
 import { ProfessionalCenter } from "@/app/professions";
+import { PlayerShows } from "@/app/shows-v2";
+import { TreasuryDashboard } from "@/app/treasury";
 
-type Horse={id:string;name:string;breed:string;sex:"Mare"|"Stallion";color:string;origin:"Foundation"|"Bred"|"Admin Custom";birth_date:string;sire_id:string|null;dam_id:string|null;generation:number;stats:Record<string,number>;genetics:Record<string,string[]>;height_genetics:Record<string,string[]>;mature_height_hands:number;breed_composition:Record<string,number>;tack_bonuses:Record<string,number>;biography:string;image_url:string;stud_fee:number;last_bred_at:string|null;last_trained_at:string|null;retired:boolean};
+type Horse={id:string;name:string;breed:string;sex:"Mare"|"Stallion";color:string;origin:"Foundation"|"Bred"|"Admin Custom";birth_date:string;sire_id:string|null;dam_id:string|null;generation:number;career_points:number;stats:Record<string,number>;genetics:Record<string,string[]>;height_genetics:Record<string,string[]>;mature_height_hands:number;breed_composition:Record<string,number>;tack_bonuses:Record<string,number>;biography:string;image_url:string;stud_fee:number;last_bred_at:string|null;last_trained_at:string|null;retired:boolean};
 type Stable={account_number:number;name:string;username:string|null;bio:string;ranch_image_url:string;avatar_url:string;balance:number;foundation_purchases:number;created_at:string;is_admin:boolean};
 type AdminStable={id:string;account_number:number;name:string;username:string|null;balance:number;is_admin:boolean};
 type Ledger={id:string;amount:number;reason:string;created_at:string};
@@ -33,11 +35,13 @@ return <div className="shell"><aside className="game-sidebar"><button className=
 {view==="ledger"&&<><Title title="Transaction Ledger" sub="A permanent record of every LE Dollar"/><section className="panel">{ledger.map(l=><div className="ledger" key={l.id}><span>{l.reason}<small>{new Date(l.created_at).toLocaleString()}</small></span><b className={l.amount<0?"debit":"credit"}>{l.amount>0?"+":""}${money(l.amount)}</b></div>)}</section></>}
 {view==="professions"&&<ProfessionalCenter horses={horses} notify={setNotice} refresh={()=>void load(user)}/>}
 {view==="training"&&<TrainingCenter horses={horses} open={open} train={async(h,s)=>action(async()=>{const{error}=await supabase.rpc("train_horse",{target_horse:h.id,stat_name:s});return{error}},`${h.name} gained +1 ${s}.`)}/>}
-{view==="shows"&&<ShowsView shows={shows} horses={horses} enter={async(show,horse)=>{await action(async()=>{const{error}=await supabase.rpc("enter_show",{target_competition:show,target_horse:horse});return{error}},"Show entry confirmed.");await loadShows()}}/>}
+{view==="shows"&&(
+  <PlayerShows horses={horses} notify={setNotice} refreshAccount={()=>void load(user)}/>
+)}
 {view==="market"&&<MarketplaceView listings={market} horses={horses} balance={stable.balance} list={async(h,p)=>{await action(async()=>{const{error}=await supabase.rpc("list_horse_for_sale",{target_horse:h,asking_price:p});return{error}},"Horse listed in the marketplace.");await loadMarket()}} buy={async id=>{await action(async()=>{const{error}=await supabase.rpc("buy_marketplace_horse",{target_listing:id});return{error}},"Marketplace purchase complete.");await loadMarket()}}/>}
 {view==="community"&&<CommunityView posts={posts} username={stable.username} post={async(body,parent)=>{await action(async()=>{const{error}=await supabase.rpc("create_forum_post",{post_body:body,reply_to:parent});return{error}},"Your message was posted.");await loadPosts()}} settings={()=>setView("settings")}/>} {/* Community */}
 {view==="settings"&&<SettingsView stable={stable} horses={horses} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)} uploadHorse={uploadHorseMedia}/>} {/* Settings */}
-{view==="admin"&&stable.is_admin&&<AdminConsole ownerAccount={stable.account_number===1} currentUserId={user.id} changed={()=>load(user)}/>} {/* Admin */}
+{view==="admin"&&stable.is_admin&&<><AdminConsole ownerAccount={stable.account_number===1} currentUserId={user.id} changed={()=>load(user)}/><TreasuryDashboard/></>} {/* Admin */}
 {horse&&view==="horse"&&<><HorsePage h={horse} horses={horses} openView={setView} save={(name,bio,img)=>action(async()=>{const{error}=await supabase.rpc("update_horse_profile",{target_horse:horse.id,new_name:name,new_biography:bio,new_image_url:img});return{error}},"Horse profile saved.")} train={stat=>action(async()=>{const{error}=await supabase.rpc("train_horse",{target_horse:horse.id,stat_name:stat});return{error}},`${horse.name} gained +1 ${stat}.`)} breed={mare=>breedWithWarning(horse.id,mare)}/><GeneticsPanel h={horse} horses={horses}/></>} {horse&&view==="pedigree"&&<Pedigree h={horse} horses={horses} open={open}/>} {horse&&view==="progeny"&&<><Title title={`${horse.name} · Progeny`} sub="Permanent offspring record"/><div className="horsegrid">{horses.filter(x=>x.sire_id===horse.id||x.dam_id===horse.id).map(x=><Card key={x.id} h={x} open={open}/>)}</div></>}
 </main><footer>LEGACY EQUINE · ALPHA 0.1 <span>Original browser horse simulation</span></footer></div></div>}
 

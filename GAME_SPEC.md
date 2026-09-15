@@ -68,3 +68,16 @@ Horse stats are always visible. Effective values must expose layers separately: 
 # Horse Height
 
 Height uses standard equine hand notation: one hand is four inches, and the suffix is inches rather than a base-ten decimal. Valid progressions are `14h`, `14.1h`, `14.2h`, `14.3h`, then `15h`. Values such as `14.4h` through `14.9h` are invalid and must normalize into the next hand. Breed-specific minimum and maximum heights remain data-driven so future breeds can extend the supported range.
+A hand is four inches. Heights are stored as total inches and displayed in canonical hands notation (`14h`, `14.1h`, `14.2h`, `14.3h`, `15h`) rather than decimal hands.
+
+# Closed-loop LED Economy
+
+LE Dollars are game currency only. LED can never be withdrawn, redeemed, cashed out, converted back to USD, or treated as money or property. Any future USD purchase of LED is one-way. The Legacy Equine Treasury and Legacy Equine Show Fund are persistent institutional balances, never player accounts, and every inflow/outflow is recorded in the system-fund ledger.
+
+Professional enrollment is permanent and costs 500 LED for Farrier, Trainer, and Equine Massage Therapist, or 750 LED for Veterinarian. Certification exams cost 250 / 500 / 1,000 / 2,000 LED by level. Submission charges the fee transactionally and failures do not refund it. Insufficient funds never remove study progress. These fees split by configurable percentages, initially 50% Show Fund and 50% Treasury.
+
+# Player-created Shows
+
+Any stable may create a show with a name, data-driven discipline, Career Point tier, future date, entry fee, optional entry cap, and description. Shows run at midnight in `America/New_York`, with server-side processing. Eligibility is snapshotted when the horse enters; the default limit is one horse per owner per show.
+
+Performance is deterministic: configured weighted base stats plus tack bonuses plus active qualifying service effects. Tie-break order is total score, base contribution, Career Points at entry, entry time, then horse ID. Career Points are progression values separate from genetics and base stats. Entries and results remain permanent. Entry fees form the purse; authorized Show Fund allocations may supplement it.

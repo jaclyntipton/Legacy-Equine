@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element, react-hooks/static-components */
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { GAME } from "@/lib/game/config";
@@ -185,7 +185,16 @@ export default function Home() {
       | "admin"
     >("stable"),
     [selected, setSelected] = useState<string | null>(null),
-    [storeSelected, setStoreSelected] = useState<string | null>(null);
+    [storeSelected, setStoreSelected] = useState<string | null>(null),
+    [horseQuery, setHorseQuery] = useState(""),
+    [horseBreed, setHorseBreed] = useState("all"),
+    [horseSex, setHorseSex] = useState("all"),
+    [horseOrigin, setHorseOrigin] = useState("all"),
+    [horseAge, setHorseAge] = useState("all"),
+    [horseTier, setHorseTier] = useState("all"),
+    [horseBreeding, setHorseBreeding] = useState("all"),
+    [horseSort, setHorseSort] = useState("name"),
+    [horseView, setHorseView] = useState<"cards" | "compact">("cards");
   const load = useCallback(async (u: User | null) => {
     setUser(u);
     if (!u) {
@@ -233,6 +242,15 @@ export default function Home() {
     setLoading(false);
   };
   const horse = horses.find((h) => h.id === selected) || null;
+  const visibleHorses = useMemo(() => {
+    const tierName = (points: number) => points >= 500 ? "Elite" : points >= 250 ? "Advanced" : points >= 100 ? "Intermediate" : "Novice";
+    const filtered = horses.filter((h) => {
+      const years = age(h);
+      const ageMatch = horseAge === "all" || (horseAge === "young" && years < 3) || (horseAge === "breeding" && years >= 3 && years < 26) || (horseAge === "senior" && years >= 26);
+      return h.name.toLowerCase().includes(horseQuery.trim().toLowerCase()) && (horseBreed === "all" || h.breed === horseBreed) && (horseSex === "all" || h.sex === horseSex) && (horseOrigin === "all" || h.origin === horseOrigin) && ageMatch && (horseTier === "all" || tierName(h.career_points) === horseTier) && (horseBreeding === "all" || (horseBreeding === "eligible") === canBreed(h));
+    });
+    return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);
+  }, [horses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort]);
   const open = (h: Horse) => {
     setSelected(h.id);
     setView("horse");
@@ -572,11 +590,16 @@ export default function Home() {
                 sub="Your persistent Legacy Equine bloodline"
               />
               {horses.length ? (
-                <div className="horsegrid">
-                  {horses.map((h) => (
-                    <Card key={h.id} h={h} open={open} />
+                <>
+                  <HorseListTools horses={horses} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
+                  <p className="horsecount">Showing {visibleHorses.length} of {horses.length} horses</p>
+                  <div className={`horsegrid ${horseView}`}>
+                  {visibleHorses.map((h) => (
+                    <Card key={h.id} h={h} open={open} compact={horseView === "compact"} />
                   ))}
-                </div>
+                  </div>
+                  {!visibleHorses.length&&<p className="panel featurehint">No horses match these filters.</p>}
+                </>
               ) : (
                 <Empty go={() => setView("store")} />
               )}
@@ -938,34 +961,30 @@ function Empty({ go }: { go: () => void }) {
     </div>
   );
 }
-function Card({ h, open }: { h: Horse; open: (h: Horse) => void }) {
+const listStatLabels: Record<string,string>={Agility:"AGI",Speed:"SPD",Endurance:"END",Temperament:"TMP",Strength:"STR",Intelligence:"INT",Conformation:"CON"};
+function showTier(points:number){return points>=500?"Elite":points>=250?"Advanced":points>=100?"Intermediate":"Novice"}
+function HorseListTools({horses,query,setQuery,breed,setBreed,sex,setSex,origin,setOrigin,ageFilter,setAge,tier,setTier,breeding,setBreeding,sort,setSort,viewMode,setViewMode}:{horses:Horse[];query:string;setQuery:(v:string)=>void;breed:string;setBreed:(v:string)=>void;sex:string;setSex:(v:string)=>void;origin:string;setOrigin:(v:string)=>void;ageFilter:string;setAge:(v:string)=>void;tier:string;setTier:(v:string)=>void;breeding:string;setBreeding:(v:string)=>void;sort:string;setSort:(v:string)=>void;viewMode:"cards"|"compact";setViewMode:(v:"cards"|"compact")=>void}){
+ const breeds=[...new Set(horses.map(h=>h.breed))].sort(),origins=[...new Set(horses.map(h=>h.origin))].sort();
+ return <section className="horsetools" aria-label="Search, filter, and sort horses"><div className="horseviewtoggle"><button className={viewMode==="cards"?"active":""} onClick={()=>setViewMode("cards")}>Cards</button><button className={viewMode==="compact"?"active":""} onClick={()=>setViewMode("compact")}>Compact</button></div><input aria-label="Search horses by name" placeholder="Search horse names…" value={query} onChange={e=>setQuery(e.target.value)}/><select aria-label="Filter by breed" value={breed} onChange={e=>setBreed(e.target.value)}><option value="all">All breeds</option>{breeds.map(x=><option key={x}>{x}</option>)}</select><select aria-label="Filter by sex" value={sex} onChange={e=>setSex(e.target.value)}><option value="all">All sexes</option><option>Mare</option><option>Stallion</option></select><select aria-label="Filter by age" value={ageFilter} onChange={e=>setAge(e.target.value)}><option value="all">All ages</option><option value="young">Under 3</option><option value="breeding">Age 3–25</option><option value="senior">Age 26+</option></select><select aria-label="Filter by origin" value={origin} onChange={e=>setOrigin(e.target.value)}><option value="all">All origins</option>{origins.map(x=><option key={x}>{x}</option>)}</select><select aria-label="Filter by show tier" value={tier} onChange={e=>setTier(e.target.value)}><option value="all">All show tiers</option>{["Novice","Intermediate","Advanced","Elite"].map(x=><option key={x}>{x}</option>)}</select><select aria-label="Filter by breeding eligibility" value={breeding} onChange={e=>setBreeding(e.target.value)}><option value="all">Any breeding status</option><option value="eligible">Breeding eligible</option><option value="ineligible">Not eligible</option></select><select aria-label="Sort horses" value={sort} onChange={e=>setSort(e.target.value)}><option value="name">Sort: Name</option><option value="age">Sort: Age</option><option value="newest">Sort: Newest</option><option value="career">Sort: Career Points</option>{GAME.stats.map(x=><option value={x} key={x}>Sort: {x}</option>)}</select></section>
+}
+function Card({ h, open, compact=false }: { h: Horse; open: (h: Horse) => void;compact?:boolean }) {
+  const [openStat,setOpenStat]=useState<string|null>(null);
   return (
-    <button className="horsecard" onClick={() => open(h)}>
+    <article className={`horsecard ${compact?"compact":""}`} onClick={() => open(h)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")open(h)}} role="button" tabIndex={0} aria-label={`View ${h.name}`}>
       <div className="horsepic">
         {h.image_url ? <img src={h.image_url} alt={h.name} /> : "♞"}
         <span>{h.origin}</span>
       </div>
-      <div>
-        <p className="eyebrow">
-          {h.breed} · {h.sex}
-        </p>
+      <div className="horsecardbody">
         <h3>{h.name}</h3>
-        <p>
-          {h.color} · {age(h).toFixed(1)} years ·{" "}
-          {handHeight(h.mature_height_hands)}
-        </p>
-        <div className="cardstats">
-          <span>⚡ {h.stats.Speed} Speed</span>
-          <span>✦ {h.stats.Agility} Agility</span>
-        </div>
+        <p className="horseidentity">{h.breed} · {h.sex} · {age(h).toFixed(1)} years · {h.color} · {handHeight(h.mature_height_hands)}</p>
+        <div className="cardstats" aria-label="All horse stats">{GAME.stats.map(stat=>{const base=h.stats[stat]??0,tack=h.tack_bonuses[stat]??0,effective=base+tack,shown=openStat===stat;return <button key={stat} aria-expanded={shown} onClick={e=>{e.stopPropagation();setOpenStat(shown?null:stat)}} onBlur={()=>setOpenStat(null)}><b>{listStatLabels[stat]}</b> {effective}<aside className={shown?"open":""}><strong>{stat}</strong><small>Base: {base}</small><small>Tack: +{tack}</small><small>Effective: {effective}</small></aside></button>})}</div>
         <div className="cardfoot">
-          <b>
-            {overall(h)} <small>PTS</small>
-          </b>
+          <span><b>{h.career_points??0}</b> Career Points · {showTier(h.career_points??0)}</span>
           <em>View horse →</em>
         </div>
       </div>
-    </button>
+    </article>
   );
 }
 function storeAge(h: StoreHorse) {

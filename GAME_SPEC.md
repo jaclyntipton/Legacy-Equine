@@ -24,7 +24,11 @@ One real day advances game age by 30 days. Breeding starts at age three and ends
 
 ## Alpha 0.2 candidates
 
-Automated shows, horse trading, stud services between players, tack catalog and equipment UI, admin custom-horse UI, messaging, and community spaces.
+Stud services between players, tack catalog and equipment UI, direct messaging, admin custom-horse tools, show seasons, and richer community moderation.
+
+## Player features
+
+Every account may change its stable name and biography while retaining its permanent LE account number. A unique 3–24 character username identifies the player in community conversations. The Training Center exposes the existing 20-hour stat-training loop. Automated shows accept owned horses and calculate discipline-specific entry scores. The shared player marketplace transfers the exact listed horse and LE Dollars transactionally between buyer and seller. Community posts and replies are persistent and attributed to username, stable, and historical account number.
 
 ## Visual direction
 

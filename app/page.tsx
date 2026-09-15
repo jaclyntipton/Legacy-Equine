@@ -738,7 +738,15 @@ export default function Home() {
                 h={horse}
                 horses={horses}
                 stableName={`${stable.name} · #${stable.account_number}`}
-                openHorse={(relative) => open(relative as Horse)}
+                openHorse={(relative) => {
+                  const profileHorse = relative as Horse;
+                  setHorses((current) =>
+                    current.some((candidate) => candidate.id === profileHorse.id)
+                      ? current
+                      : [...current, profileHorse],
+                  );
+                  open(profileHorse);
+                }}
                 openProfessions={() => setView("professions")}
                 save={(name, bio, img) =>
                   action(async () => {

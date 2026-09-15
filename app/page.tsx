@@ -11,6 +11,7 @@ import { CommunityChat } from "@/app/community-chat";
 import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
 import { HorseImageTemplates } from "@/app/horse-image-templates";
+import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -1016,7 +1017,7 @@ function Empty({ go }: { go: () => void }) {
   );
 }
 function HorseArtworkImage({url,alt}:{url:string;alt:string}) {
-  return <img src={url||"/foundation-horse.png"} alt={alt}/>;
+  return <ContainedHorseArtwork url={url} alt={alt}/>;
 }
 function HorseListTools({horses,tiers,query,setQuery,breed,setBreed,sex,setSex,origin,setOrigin,ageFilter,setAge,tier,setTier,breeding,setBreeding,sort,setSort,viewMode,setViewMode}:{horses:Horse[];tiers:CompetitionTier[];query:string;setQuery:(v:string)=>void;breed:string;setBreed:(v:string)=>void;sex:string;setSex:(v:string)=>void;origin:string;setOrigin:(v:string)=>void;ageFilter:string;setAge:(v:string)=>void;tier:string;setTier:(v:string)=>void;breeding:string;setBreeding:(v:string)=>void;sort:string;setSort:(v:string)=>void;viewMode:"cards"|"compact";setViewMode:(v:"cards"|"compact")=>void}){
  const breeds=[...new Set(horses.map(h=>h.breed))].sort(),origins=[...new Set(horses.map(h=>h.origin))].sort();
@@ -1945,7 +1946,7 @@ function MediaUpload({
     <article className={`mediaupload ${shape}`}>
       <div className="mediapreview">
         {image ? (
-          <img src={image} alt={title} />
+          shape === "horse" ? <ContainedHorseArtwork url={image} alt={title}/> : <img src={image} alt={title} />
         ) : (
           <span>
             {shape === "avatar" ? "☺" : shape === "horse" ? "♞" : "⌂"}

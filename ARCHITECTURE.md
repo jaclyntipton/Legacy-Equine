@@ -73,3 +73,5 @@ The image worker generates a candidate, submits the candidate plus the persisted
 ## Horse profile views
 
 The client horse profile is a tab-state view keyed by URL hash, allowing deep links without duplicating the horse record. Supporting records are read from `training_log`, `horse_service_records`, `player_show_entries`, `player_show_results`, and public horse ancestry/progeny rows. Stat breakdowns derive permanent training from the immutable training log and keep tack and active service effects separate from inherited/current values.
+
+`ContainedHorseArtwork` is the single full-body image boundary. Its fixed responsive host and padded absolute inner frame apply centered `object-fit: contain` independently of source aspect ratio or format, with the Foundation asset as the recovery candidate. Contexts control only box dimensions; they may never switch full-horse artwork to `cover`.

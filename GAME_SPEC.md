@@ -92,6 +92,10 @@ Performance is deterministic. Competition Score is the weighted average—not th
 
 Completed result rows are permanent and authoritative. They snapshot horse name plus owner stable name/account at competition time, preserve the effective-stat breakdown, score, placing, Career Points, and LED prize, and are idempotent under processing retries. Public horse Show Records derive Starts, Wins, Places, Shows, other placings, Career Points, earnings, rates, discipline records, and history from those rows. Completed shows remain searchable in the permanent Show Archive. Show-age limits remain independently configurable/provisional and must not inherit breeding-age rules by assumption.
 
+Players may enter every owned horse independently eligible for a show; there is no per-owner entry cap. The multi-horse selector separates eligible, already-entered, and ineligible horses with reasons, and previews the per-horse fee, batch total, current balance, and resulting balance. `enter_player_show_batch` validates and locks the entire distinct horse set, show, total horse-entry maximum, and account balance before creating or charging anything. A failed validation rolls back the full batch. Each horse receives its own entry and ledger charge.
+
+Competition tiers are strict, database-driven Career Point divisions. `get_horse_competition_tier` is authoritative for new entry eligibility, so horses cannot enter above or below their current division. Entry rows permanently snapshot Career Points and tier at entry; a later level-up affects future entries without invalidating a previously legitimate entry. Multiple horses from one stable are scored independently and may earn Win, Place, and Show together.
+
 # Community Chat Rooms
 
 Community consists of database-managed rooms with persistent, paginated message history and near-real-time updates. Authenticated stable identity, permanent account number, avatar, and Community role are supplied by the server. Players cannot create rooms or impersonate another identity. Initial rooms are General, Horse Sales & Breeding, Shows, Artwork, Professional Services, and Help.

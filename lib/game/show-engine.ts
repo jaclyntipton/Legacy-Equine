@@ -14,6 +14,8 @@ export const PROVISIONAL_DISCIPLINE_STATS = {
 } as const;
 
 export type EffectiveBreakdown = Record<string, { base: number; training: number; tack: number; service: number; effective: number }>;
+export type CompetitionTier={id:string;name:string;minimum_points:number;maximum_points:number|null;sort_order:number};
+export const competitionTier=(points:number,tiers:CompetitionTier[])=>[...tiers].sort((a,b)=>a.sort_order-b.sort_order).find(t=>points>=t.minimum_points&&(t.maximum_points==null||points<=t.maximum_points))??null;
 export const competitionScore = (stats: readonly string[], breakdown: EffectiveBreakdown) =>
   stats.reduce((sum, stat) => sum + (breakdown[stat]?.effective ?? 0), 0) / stats.length;
 export const placingLabel = (placement: number) => placement === 1 ? "WIN" : placement === 2 ? "PLACE" : placement === 3 ? "SHOW" : `${placement}TH`;

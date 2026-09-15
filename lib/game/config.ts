@@ -4,7 +4,7 @@ export const GAME = {
   foundationPrice: 1000,
   baseStableCapacity: 5,
   stallPackage: { quantity: 5, priceUsdCents: 499 },
-  foundationBreeds: ["Thoroughbred", "Arabian", "Quarter Horse", "Hanoverian", "Appaloosa", "Morgan", "Rocky Mountain Horse", "Tennessee Walking Horse"],
+  foundationBreeds: ["Thoroughbred", "Arabian", "Quarter Horse", "American Paint Horse", "Hanoverian", "Appaloosa", "Morgan", "Rocky Mountain Horse", "Tennessee Walking Horse"],
   store: { inventorySize: 6, minimumSize: 5, maximumSize: 8, rotationMinutes: 60 },
   colors: ["Bay", "Chestnut", "Black", "Gray", "Palomino"],
   stats: ["Agility", "Speed", "Endurance", "Temperament", "Strength", "Intelligence", "Conformation"],

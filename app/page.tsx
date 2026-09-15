@@ -11,6 +11,7 @@ import { CommunityChat } from "@/app/community-chat";
 import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
 import { HorseImageTemplates } from "@/app/horse-image-templates";
+import { BreedGeneticsAdmin } from "@/app/breed-genetics-admin";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
@@ -1675,6 +1676,7 @@ function AdminConsole({
       />
       {message && <div className="notice">✦ {message}</div>}
       <HorseImageTemplates notify={setMessage} changed={changed}/>
+      <BreedGeneticsAdmin notify={setMessage}/>
       <section className="panel settingsform">
         <p className="eyebrow">LE ECONOMY</p>
         <h2>Adjust a stable balance</h2>

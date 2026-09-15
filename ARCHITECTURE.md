@@ -64,7 +64,7 @@ Public read RPCs project this source of truth without redundant counters: `get_h
 
 ## Artwork QA gate
 
-The image worker generates a candidate, submits the candidate plus the persisted structured phenotype to a vision-capable QA model, and uploads only an approved result. `horse_image_qa_reviews` records each structured decision. Rejection returns the existing job to the bounded retry flow while leaving the authoritative horse row untouched. The completion RPC replaces only system-generated artwork and continues to protect concurrent player uploads.
+The image worker generates a candidate, submits the candidate plus the persisted structured phenotype to a vision-capable QA model, and uploads only an approved result. QA returns separate required verdicts for base coat, color pattern, and individual markings so a visually dominant white pattern cannot conceal an incorrect underlying coat; coat-specific prompts also encode required pigment points such as a bay horse's black mane, tail, ear rims, and uncovered lower legs. `horse_image_qa_reviews` records each structured decision. Rejection returns the existing job to the bounded retry flow while leaving the authoritative horse row untouched. The completion RPC replaces only system-generated artwork and continues to protect concurrent player uploads.
 
 ## Horse profile views
 

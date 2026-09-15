@@ -11,6 +11,10 @@ export function sexAnatomyConstraint(sex:string){return sex.toLowerCase()==="mar
 
 export function formatHandHeight(value:number){const whole=Math.floor(value),inches=Math.round((value-whole)*10),total=whole*4+inches,hands=Math.floor(total/4),remainder=total%4;return `${hands}${remainder?`.${remainder}`:""}h`}
 
+export function patternMaySubsumeMarkings(pattern:string,color=""){return /splashed white|tobiano|overo|tovero|sabino/i.test(`${pattern} ${color}`)}
+
+export function coatAccuracyConstraint(color:string,coat="",maneTail=""){const value=color.toLowerCase();let base=value.includes("bay")?"BAY BASE IS MANDATORY: clearly brown/mahogany body pigment, NEVER orange, cinnamon, copper, or red; genetically jet-black mane, jet-black tail, black ear rims, and black lower-leg points wherever white patterning does not cover them. The brown body and black points must be visibly distinct. Any red/copper mane or tail, or a uniformly red body and legs, means chestnut/sorrel and is WRONG.":value.includes("chestnut")||value.includes("sorrel")?"CHESTNUT/SORREL BASE: red/copper body with red or flaxen mane and tail and absolutely no genetically black bay points.":value.includes("black")?"BLACK BASE: black body, mane, tail, ear rims, and lower legs; do not substitute dark bay or chestnut.":value.includes("palomino")?"PALOMINO BASE: gold body with cream/flaxen mane and tail and no black bay points.":"Render the named genetic base coat literally without substituting a visually similar color.";if(value.includes("splashed white"))base+=" SPLASHED WHITE PATTERN: bold irregular white rises upward from the legs and underside, often with a broad white face, while all remaining pigmented areas MUST retain the stated base-coat pigment. Pattern-created white may extend beyond separately listed leg or face markings.";return `${base} Database coat description: ${coat||color}. Database mane/tail description: ${maneTail||"coat-appropriate"}.`}
+
 export function buildHorseImagePrompt(v:VisualPhenotype){return `Use case: polished game character illustration
 Asset type: persistent Legacy Equine individual horse profile artwork
 Primary request: Create a new, distinct, anatomically believable ${v.breed} ${v.sex.toLowerCase()} matching every structured visual trait below. Breed identity and the exact listed coat phenotype are strict requirements.
@@ -25,6 +29,7 @@ Registry-informed constraints and breed differentiation: ${v.breed_constraints ?
 Genetically calculated color/phenotype — MUST MATCH EXACTLY: ${v.color}
 Coat appearance — MUST visually read as this listed color without substitution: ${v.coat}
 Mane and tail: ${v.mane_tail}
+Critical base-coat verification: ${coatAccuracyConstraint(v.color,v.coat,v.mane_tail)}
 Genetic coat pattern: ${v.pattern}
 Persistent facial marking: ${v.face_marking}
 Persistent leg markings: left front ${v.left_front}; right front ${v.right_front}; left hind ${v.left_hind}; right hind ${v.right_hind}

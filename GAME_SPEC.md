@@ -108,7 +108,7 @@ The player-facing financial area is the **Bank**, permanently available in the m
 
 # Horse Artwork Quality Assurance
 
-System-generated horse artwork may contain only the horse and the approved empty neutral/transparent background. Prompts explicitly prohibit signatures, watermarks, artist marks, text, pseudo-text, letters, numbers, logos, symbols, and writing. Before upload, a separate visual QA step checks those artifacts, anatomy and limb count, breed/color/pattern/marking phenotype, genitalia, composition, and background. Rejected images are audited and requeued without changing the horse ID, ownership, genetics, stats, markings, phenotype, or other gameplay data.
+System-generated horse artwork may contain only the horse and the approved empty neutral/transparent background. Prompts explicitly prohibit signatures, watermarks, artist marks, text, pseudo-text, letters, numbers, logos, symbols, and writing. Before upload, a separate visual QA step checks those artifacts, anatomy and limb count, breed/color/pattern/marking phenotype, genitalia, composition, and background. Base coat, mane/tail and points, white pattern, and individual markings are validated independently: white patterning never excuses an incorrect underlying pigment, and a bay horse must retain genetically black mane, tail, ear rims, and uncovered lower-leg points. Rejected images are audited and requeued without changing the horse ID, ownership, genetics, stats, markings, phenotype, or other gameplay data.
 
 # Horse Profile Navigation
 

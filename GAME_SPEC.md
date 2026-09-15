@@ -14,7 +14,9 @@ Configuration lives in `lib/game/config.ts`. New stables receive 3,000 LE Dollar
 
 Public LE account numbers are permanent, positive, unique, and assigned atomically in genuine stable-creation order from #1. Twisted Tree Ranch is LE Account #1. Numbers are never edited or recycled. Service-role-marked automated test identities receive no public number and never advance the production sequence.
 
-For Ready-to-Play reliability, the first store horse has a random sex and the second is guaranteed to be the complementary sex. The third is random. This Legacy Equine modernization prevents a new account from being locked out of breeding by three same-sex rolls.
+### Shared LE Store inventory
+
+The production LE Store maintains six globally shared Foundation horses, configurable from five to eight. Each is a real, server-generated horse with persistent identity, name, breed, sex, age, color, stats, artwork, price, and generation time before purchase. Players inspect every stat and purchase the exact horse shown. Inventory rotates after 60 minutes when next accessed; unsold rows become historical `expired` records. A sale atomically locks and transfers that horse, records payment, marks its inventory record sold, and fills only the empty slot. The three-horse introductory account limit remains distinct from global inventory size.
 
 Training raises one base stat by one, once per 20 real hours per horse. No care meters exist. Foals arrive immediately. Each foal stat is the rounded parental average plus an independent integer roll from −6 to +6, floored at one. A configurable 25% chance of a one-point regression is applied: the 100,000-breeding simulation showed that the floor otherwise produced a 2.47-point upward drift after ten generations. This preserves the parental-average model while offsetting that boundary effect. The mare receives a ten-real-day cooldown. No generational bonus is applied.
 

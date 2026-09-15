@@ -10,6 +10,12 @@ The current local Alpha runs in a transparent browser-persistence mode so the co
 
 Age is derived from `birth_date` and the configured clock rather than mass-updating rows. Cooldown eligibility similarly derives from `last_bred_at`, so time progresses without cron jobs.
 
+## Genetics and breed identity
+
+`horses.genetics` stores allele pairs as JSONB and `horses.breed_composition` stores fractional ancestry independently from the displayed breed label. Foundation generation creates the genotype first and derives the visible color from it. Breeding locks both parents, independently selects one allele from each parent at every locus, rejects a modeled lethal result before any balance or cooldown mutation, and then persists that exact genotype and phenotype on the foal. This makes previews probabilistic while the resulting foal remains permanent and reproducible from its stored genes.
+
+`get_breeding_genetic_preview` computes locus-level inheritance and combined lethal probability from the selected pair. It is informational; `breed_horses` repeats all ownership, eligibility, lethal, balance, and cooldown enforcement transactionally. `breed_cross_rules` separates documented breed naming from genetics, while breed composition is combined mathematically over generations.
+
 ## Shared LE Store inventory
 
 Foundation inventory is persisted in `horses` plus `store_inventory`; store-owned horses have no player owner until checkout. `store_settings` configures the 5–8 supported inventory size (default six), 60-minute rotation, and price. `foundation_breeds` is data-driven. Reads call `get_store_inventory`, which refreshes expired stock under a transaction-scoped advisory lock. Checkout locks the inventory, stable, and horse rows, transfers the exact viewed horse, records the ledger entry, marks the listing sold, and creates one replacement. Sold and expired listing rows remain as audit history. Competing purchases and rotations serialize on the same advisory lock.

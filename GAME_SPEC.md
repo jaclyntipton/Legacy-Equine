@@ -30,6 +30,8 @@ Before breeding, the server returns exact Mendelian percentages for inherited va
 
 Crossbred foals retain ancestry percentages across generations. Current registry-style display rules include Anglo-Arabian, Appendix Quarter Horse, Quarab, Morab, and AraAppaloosa; other crosses receive an honest `Parent Breed × Parent Breed Cross` label rather than an invented registry name. The rule table is data-driven so additional documented registries can be added later.
 
+Named cross outcomes carry their recognition basis and source. “Formal registry,” “registration pathway,” and “documented named cross” are deliberately distinct: the game never implies that every genetic cross is automatically eligible for real-world papers. Breed artwork likewise uses registry-sourced conformation, movement, temperament, height, and restriction data. Individual genetics remain the source of truth for color and pattern.
+
 Training raises one base stat by one, once per 20 real hours per horse. No care meters exist. Foals arrive immediately. Each foal stat is the rounded parental average plus an independent integer roll from −6 to +6, floored at one. A configurable 25% chance of a one-point regression is applied: the 100,000-breeding simulation showed that the floor otherwise produced a 2.47-point upward drift after ten generations. This preserves the parental-average model while offsetting that boundary effect. The mare receives a ten-real-day cooldown. No generational bonus is applied.
 
 One real day advances game age by 30 days. Breeding starts at age three and ends at age 30. Horses and pedigree records are never deleted due to age.

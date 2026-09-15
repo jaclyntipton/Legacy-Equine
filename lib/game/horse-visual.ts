@@ -1,5 +1,6 @@
 export type VisualPhenotype = {
   breed:string;sex:string;age_years:number;color:string;body:string;coat:string;mane_tail:string;pattern:string;
+  height_range?:string;movement?:string;temperament?:string;breed_constraints?:string;
   face_marking:string;left_front:string;right_front:string;left_hind:string;right_hind:string;pose:string;view:string;background:string;
 };
 
@@ -8,6 +9,10 @@ Asset type: persistent Legacy Equine store-horse profile artwork
 Primary request: Create a new, distinct, realistic ${v.breed} ${v.sex.toLowerCase()} matching every structured visual trait below. Use the supplied Foundation Horse image only as the reference for realism, finish, studio lighting, neutral backdrop, full-body framing, and overall Legacy Equine art direction; do not copy that reference horse's coat, markings, sex, or conformation.
 Age: ${v.age_years} years old, a young adult horse
 Breed and body: ${v.body}
+Breed height/proportion: ${v.height_range ?? "proportionate to the breed"}
+Characteristic way of going: ${v.movement ?? "balanced natural movement"}
+Breed character and expression: ${v.temperament ?? "alert natural expression"}
+Registry-informed constraints: ${v.breed_constraints ?? "avoid caricature and preserve functional conformation"}
 Genetically calculated color/phenotype: ${v.color}
 Coat appearance: ${v.coat}
 Mane and tail: ${v.mane_tail}

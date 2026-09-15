@@ -1,0 +1,134 @@
+/* Shared field layout. Keep labels, controls, help, and errors in a predictable stack. */
+.form-field,
+.adminformgrid > label,
+.adminstatgrid > label,
+.settingsform > label:not(.availability):not(.uploadbutton),
+.chatadmin > label:not(.roomchecks),
+.breed > label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  color: #5c486d;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea,
+.adminformgrid > label > input,
+.adminformgrid > label > select,
+.adminformgrid > label > textarea,
+.adminstatgrid > label > input,
+.adminstatgrid > label > select,
+.settingsform > label > input,
+.settingsform > label > select,
+.settingsform > label > textarea,
+.chatadmin > label > input,
+.chatadmin > label > select,
+.chatadmin > label > textarea,
+.breed > label > input,
+.breed > label > select,
+.breed > label > textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  border: 1px solid #d9cbe8;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  padding: 12px 14px;
+  line-height: 1.35;
+}
+
+.form-field select,
+.adminformgrid > label > select,
+.settingsform > label > select,
+.chatadmin > label > select,
+.breed > label > select {
+  padding-right: 38px;
+}
+
+.form-field textarea,
+.adminformgrid > label > textarea,
+.settingsform > label > textarea,
+.chatadmin > label > textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+.form-helper {
+  display: block;
+  color: #8b7a96;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.form-grid,
+.adminformgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 28px;
+  row-gap: 22px;
+}
+
+.showcreator {
+  max-width: 920px;
+}
+
+.show-form {
+  display: grid;
+  gap: 24px;
+}
+
+.show-form-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.show-form-column {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+}
+
+.show-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.show-form-actions .primary {
+  min-width: 150px;
+  margin: 0;
+}
+
+.form-status {
+  margin: 0 auto 0 0;
+  color: #7e7088;
+  font-size: 10px;
+}
+
+@media (max-width: 760px) {
+  .form-grid,
+  .adminformgrid,
+  .show-form-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .show-form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .show-form-actions .primary {
+    width: 100%;
+  }
+}

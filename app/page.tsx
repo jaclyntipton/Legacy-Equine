@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element, react-hooks/static-components */
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { GAME } from "@/lib/game/config";
@@ -198,6 +198,7 @@ export default function Home() {
     [horseBreeding, setHorseBreeding] = useState("all"),
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards");
+  const artworkWorker = useRef<Promise<void> | null>(null);
   const load = useCallback(async (u: User | null) => {
     setUser(u);
     if (!u) {
@@ -264,21 +265,25 @@ export default function Home() {
     else setInventory((data ?? []) as StoreHorse[]);
   }, []);
   const generateStoreArtwork = useCallback(async () => {
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-    if (!token) return;
-    const response = await fetch("/api/store-horse-images/generate", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (response.ok) {
-      const result = await response.json() as { completed?: number };
-      await loadStore();
-      if ((result.completed ?? 0) > 0 && user) {
-        const { data } = await supabase.from("horses").select("*").eq("owner_id", user.id).order("created_at");
-        setHorses((data ?? []) as Horse[]);
+    if (artworkWorker.current) return artworkWorker.current;
+    artworkWorker.current = (async () => {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) return;
+      const response = await fetch("/api/store-horse-images/generate", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const result = await response.json() as { completed?: number };
+        await loadStore();
+        if ((result.completed ?? 0) > 0 && user) {
+          const { data: owned } = await supabase.from("horses").select("*").eq("owner_id", user.id).order("created_at");
+          setHorses((owned ?? []) as Horse[]);
+        }
       }
-    }
+    })().finally(() => { artworkWorker.current = null; });
+    return artworkWorker.current;
   }, [loadStore, user]);
   const openStore = () => setView("store");
   useEffect(() => {
@@ -295,6 +300,12 @@ export default function Home() {
     }, 0);
     return () => clearTimeout(timer);
   }, [user, view, loadStore, generateStoreArtwork]);
+  const artworkPending = horses.some((candidate) => !isUniqueHorseArtwork(candidate.image_url)) || inventory.some((candidate) => !isUniqueHorseArtwork(candidate.image_url));
+  useEffect(() => {
+    if (!user || !artworkPending) return;
+    const timer = window.setInterval(() => void generateStoreArtwork(), 30_000);
+    return () => window.clearInterval(timer);
+  }, [user, artworkPending, generateStoreArtwork]);
   const storeHorse =
     inventory.find((h) => h.inventory_id === storeSelected) || null;
   const purchase = async (id: string) => {

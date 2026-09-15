@@ -57,3 +57,7 @@ Shows use `show_disciplines`, `show_tiers`, `show_placement_rules`, `player_show
 ## Artwork QA gate
 
 The image worker generates a candidate, submits the candidate plus the persisted structured phenotype to a vision-capable QA model, and uploads only an approved result. `horse_image_qa_reviews` records each structured decision. Rejection returns the existing job to the bounded retry flow while leaving the authoritative horse row untouched. The completion RPC replaces only system-generated artwork and continues to protect concurrent player uploads.
+
+## Horse profile views
+
+The client horse profile is a tab-state view keyed by URL hash, allowing deep links without duplicating the horse record. Supporting records are read from `training_log`, `horse_service_records`, `player_show_entries`, `player_show_results`, and public horse ancestry/progeny rows. Stat breakdowns derive permanent training from the immutable training log and keep tack and active service effects separate from inherited/current values.

@@ -9,6 +9,7 @@ import { PlayerShows } from "@/app/shows-v2";
 import { TreasuryDashboard } from "@/app/treasury";
 import { CommunityChat } from "@/app/community-chat";
 import { Bank } from "@/app/bank";
+import { HorseProfile as HorsePage } from "@/app/horse-profile";
 
 type Horse = {
   id: string;
@@ -736,7 +737,9 @@ export default function Home() {
               <HorsePage
                 h={horse}
                 horses={horses}
-                openView={setView}
+                stableName={`${stable.name} · #${stable.account_number}`}
+                openHorse={(relative) => open(relative as Horse)}
+                openProfessions={() => setView("professions")}
                 save={(name, bio, img) =>
                   action(async () => {
                     const { error } = await supabase.rpc(
@@ -762,7 +765,6 @@ export default function Home() {
                 }
                 breed={(mare) => breedWithWarning(horse.id, mare)}
               />
-              <GeneticsPanel h={horse} horses={horses} />
             </>
           )}{" "}
           {horse && view === "pedigree" && (
@@ -1875,7 +1877,7 @@ function MediaUpload({
     </article>
   );
 }
-function HorsePage({
+function LegacyHorsePage({
   h,
   horses,
   openView,

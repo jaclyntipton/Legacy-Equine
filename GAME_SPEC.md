@@ -95,3 +95,7 @@ The player-facing financial area is the **Bank**, permanently available in the m
 # Horse Artwork Quality Assurance
 
 System-generated horse artwork may contain only the horse and the approved empty neutral/transparent background. Prompts explicitly prohibit signatures, watermarks, artist marks, text, pseudo-text, letters, numbers, logos, symbols, and writing. Before upload, a separate visual QA step checks those artifacts, anatomy and limb count, breed/color/pattern/marking phenotype, genitalia, composition, and background. Rejected images are audited and requeued without changing the horse ID, ownership, genetics, stats, markings, phenotype, or other gameplay data.
+
+# Horse Profile Navigation
+
+Horse profiles use independent, URL-addressable views for Overview, Stats, Training, Shows, Farrier, Health, Pedigree, Progeny, and Breeding. Overview remains horse-focused and always exposes all seven effective stats through one compact AGI/SPD/END/TMP/STR/INT/CON strip. Hover and tap breakdowns disclose base, permanent training, tack, Farrier, condition/service, and effective values. Detailed stat bars contain no training controls; all training actions, cooldowns, and history live in Training. Show records, professional care, ancestry, offspring, and breeding controls appear only in their respective views.

@@ -10,6 +10,7 @@ import { TreasuryDashboard } from "@/app/treasury";
 import { CommunityChat } from "@/app/community-chat";
 import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
+import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 
 type Horse = {
   id: string;
@@ -270,8 +271,15 @@ export default function Home() {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     });
-    if (response.ok) await loadStore();
-  }, [loadStore]);
+    if (response.ok) {
+      const result = await response.json() as { completed?: number };
+      await loadStore();
+      if ((result.completed ?? 0) > 0 && user) {
+        const { data } = await supabase.from("horses").select("*").eq("owner_id", user.id).order("created_at");
+        setHorses((data ?? []) as Horse[]);
+      }
+    }
+  }, [loadStore, user]);
   const openStore = () => setView("store");
   useEffect(() => {
     if (!user) return;
@@ -981,24 +989,26 @@ function Empty({ go }: { go: () => void }) {
     </div>
   );
 }
-const listStatLabels: Record<string,string>={Agility:"AGI",Speed:"SPD",Endurance:"END",Temperament:"TMP",Strength:"STR",Intelligence:"INT",Conformation:"CON"};
 function showTier(points:number){return points>=500?"Elite":points>=250?"Advanced":points>=100?"Intermediate":"Novice"}
+function HorseArtworkImage({url,alt}:{url:string;alt:string}) {
+  return isUniqueHorseArtwork(url)
+    ? <img src={url} alt={alt}/>
+    : <span className="horseartpending" role="img" aria-label={`${alt} unique artwork is generating`}><b>♞</b><small>Unique artwork generating…</small></span>;
+}
 function HorseListTools({horses,query,setQuery,breed,setBreed,sex,setSex,origin,setOrigin,ageFilter,setAge,tier,setTier,breeding,setBreeding,sort,setSort,viewMode,setViewMode}:{horses:Horse[];query:string;setQuery:(v:string)=>void;breed:string;setBreed:(v:string)=>void;sex:string;setSex:(v:string)=>void;origin:string;setOrigin:(v:string)=>void;ageFilter:string;setAge:(v:string)=>void;tier:string;setTier:(v:string)=>void;breeding:string;setBreeding:(v:string)=>void;sort:string;setSort:(v:string)=>void;viewMode:"cards"|"compact";setViewMode:(v:"cards"|"compact")=>void}){
  const breeds=[...new Set(horses.map(h=>h.breed))].sort(),origins=[...new Set(horses.map(h=>h.origin))].sort();
  return <section className="horsetools" aria-label="Search, filter, and sort horses"><div className="horseviewtoggle"><button className={viewMode==="cards"?"active":""} onClick={()=>setViewMode("cards")}>Cards</button><button className={viewMode==="compact"?"active":""} onClick={()=>setViewMode("compact")}>Compact</button></div><input aria-label="Search horses by name" placeholder="Search horse names…" value={query} onChange={e=>setQuery(e.target.value)}/><select aria-label="Filter by breed" value={breed} onChange={e=>setBreed(e.target.value)}><option value="all">All breeds</option>{breeds.map(x=><option key={x}>{x}</option>)}</select><select aria-label="Filter by sex" value={sex} onChange={e=>setSex(e.target.value)}><option value="all">All sexes</option><option>Mare</option><option>Stallion</option></select><select aria-label="Filter by age" value={ageFilter} onChange={e=>setAge(e.target.value)}><option value="all">All ages</option><option value="young">Under 3</option><option value="breeding">Age 3–25</option><option value="senior">Age 26+</option></select><select aria-label="Filter by origin" value={origin} onChange={e=>setOrigin(e.target.value)}><option value="all">All origins</option>{origins.map(x=><option key={x}>{x}</option>)}</select><select aria-label="Filter by show tier" value={tier} onChange={e=>setTier(e.target.value)}><option value="all">All show tiers</option>{["Novice","Intermediate","Advanced","Elite"].map(x=><option key={x}>{x}</option>)}</select><select aria-label="Filter by breeding eligibility" value={breeding} onChange={e=>setBreeding(e.target.value)}><option value="all">Any breeding status</option><option value="eligible">Breeding eligible</option><option value="ineligible">Not eligible</option></select><select aria-label="Sort horses" value={sort} onChange={e=>setSort(e.target.value)}><option value="name">Sort: Name</option><option value="age">Sort: Age</option><option value="newest">Sort: Newest</option><option value="career">Sort: Career Points</option>{GAME.stats.map(x=><option value={x} key={x}>Sort: {x}</option>)}</select></section>
 }
 function Card({ h, open, compact=false }: { h: Horse; open: (h: Horse) => void;compact?:boolean }) {
-  const [openStat,setOpenStat]=useState<string|null>(null);
   return (
     <article className={`horsecard ${compact?"compact":""}`} onClick={() => open(h)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")open(h)}} role="button" tabIndex={0} aria-label={`View ${h.name}`}>
       <div className="horsepic">
-        {h.image_url ? <img src={h.image_url} alt={h.name} /> : "♞"}
+        <HorseArtworkImage url={h.image_url} alt={h.name}/>
         <span>{h.origin}</span>
       </div>
       <div className="horsecardbody">
         <h3>{h.name}</h3>
         <p className="horseidentity">{h.breed} · {h.sex} · {age(h).toFixed(1)} years · {h.color} · {handHeight(h.mature_height_hands)}</p>
-        <div className="cardstats" aria-label="All horse stats">{GAME.stats.map(stat=>{const base=h.stats[stat]??0,tack=h.tack_bonuses[stat]??0,effective=base+tack,shown=openStat===stat;return <button key={stat} aria-expanded={shown} onClick={e=>{e.stopPropagation();setOpenStat(shown?null:stat)}} onBlur={()=>setOpenStat(null)}><b>{listStatLabels[stat]}</b> {effective}<aside className={shown?"open":""}><strong>{stat}</strong><small>Base: {base}</small><small>Tack: +{tack}</small><small>Effective: {effective}</small></aside></button>})}</div>
         <div className="cardfoot">
           <span><b>{h.career_points??0}</b> Career Points · {showTier(h.career_points??0)}</span>
           <em>View horse →</em>
@@ -1032,7 +1042,7 @@ function StoreCard({
   return (
     <article className="storecard">
       <button className="storeimage" onClick={view}>
-        <img src={h.image_url || "/foundation-horse.png"} alt={h.name} />
+        <HorseArtworkImage url={h.image_url} alt={h.name}/>
         <span>{h.sex}</span>
       </button>
       <div className="storecardbody">
@@ -1081,7 +1091,7 @@ function StorePreview({
       </button>
       <section className="storepreview">
         <div className="previewart">
-          <img src={h.image_url || "/foundation-horse.png"} alt={h.name} />
+          <HorseArtworkImage url={h.image_url} alt={h.name}/>
           <span>FOUNDATION HORSE</span>
         </div>
         <div className="previewinfo">
@@ -1143,7 +1153,7 @@ function TrainingCenter({
         <div className="featuregrid">
           {horses.map((h) => (
             <article className="featurecard" key={h.id}>
-              <img src={h.image_url || "/foundation-horse.png"} alt={h.name} />
+              <HorseArtworkImage url={h.image_url} alt={h.name}/>
               <div>
                 <p className="eyebrow">
                   {h.breed} · {h.sex}
@@ -1295,7 +1305,7 @@ function MarketplaceView({
         {listings.map((h) => (
           <article className="storecard" key={h.listing_id}>
             <div className="storeimage">
-              <img src={h.image_url || "/foundation-horse.png"} alt={h.name} />
+              <HorseArtworkImage url={h.image_url} alt={h.name}/>
               <span>{h.sex}</span>
             </div>
             <div className="storecardbody">
@@ -1520,7 +1530,7 @@ function SettingsView({
               key={h.id}
               title={h.name}
               description={`${h.breed} · ${h.sex}`}
-              image={h.image_url}
+              image={isUniqueHorseArtwork(h.image_url) ? h.image_url : ""}
               shape="horse"
               upload={(file) => uploadHorse(h, file)}
             />

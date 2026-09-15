@@ -1,8 +1,8 @@
 import {describe,expect,it} from "vitest";
-import {horseArtworkCandidates} from "../lib/game/horse-artwork";
+import {horseArtworkCandidates,isUniqueHorseArtwork} from "../lib/game/horse-artwork";
 describe("horse artwork recovery",()=>{
-  it("tries the horse image before the official fallback",()=>expect(horseArtworkCandidates("https://cdn.example/horse.png")).toEqual(["https://cdn.example/horse.png","/foundation-horse.png"]));
-  it("uses the Foundation image when no image exists",()=>expect(horseArtworkCandidates("")).toEqual(["/foundation-horse.png"]));
-  it("does not duplicate the official fallback",()=>expect(horseArtworkCandidates("/foundation-horse.png")).toEqual(["/foundation-horse.png"]));
-  it("treats whitespace as missing",()=>expect(horseArtworkCandidates("   ")).toEqual(["/foundation-horse.png"]));
+  it("uses an individual horse image",()=>expect(horseArtworkCandidates("https://cdn.example/horse.png")).toEqual(["https://cdn.example/horse.png"]));
+  it("shows no image while unique artwork is pending",()=>expect(horseArtworkCandidates("")).toEqual([]));
+  it("never exposes the Foundation reference as a portrait",()=>expect(horseArtworkCandidates("/foundation-horse.png")).toEqual([]));
+  it("recognizes absolute Foundation reference URLs",()=>expect(isUniqueHorseArtwork("https://game.example/foundation-horse.png?v=2")).toBe(false));
 });

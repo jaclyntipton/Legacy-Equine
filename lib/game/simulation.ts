@@ -12,7 +12,7 @@ export function createFoundationHorse(random: () => number, now = new Date()): H
   const sex = pick(random, ["Mare", "Stallion"] as const);
   const stats = Object.fromEntries(GAME.stats.map((stat) => [stat, foundationStat(random)]));
   const age = 2;
-  return { id: id(random), name: `Unnamed ${pick(random, ["Hope", "Promise", "Legacy", "Star"])}`, breed: pick(random, GAME.foundationBreeds), sex, color: pick(random, GAME.colors), origin: "Foundation", birthDate: new Date(now.getTime() - age * 365.25 * 86400000 / GAME.age.gameDaysPerRealDay).toISOString(), createdAt: now.toISOString(), sireId: null, damId: null, generation: 0, stats, tackBonuses: blankBonuses(), biography: "", imageUrl: "/foundation-horse.png", studFee: GAME.defaultStudFee, lastBredAt: null, lastTrainedAt: null, retired: false };
+  return { id: id(random), name: `Unnamed ${pick(random, ["Hope", "Promise", "Legacy", "Star"])}`, breed: pick(random, GAME.foundationBreeds), sex, color: pick(random, GAME.colors), origin: "Foundation", birthDate: new Date(now.getTime() - age * 365.25 * 86400000 / GAME.age.gameDaysPerRealDay).toISOString(), createdAt: now.toISOString(), sireId: null, damId: null, generation: 0, stats, tackBonuses: blankBonuses(), biography: "", imageUrl: "", studFee: GAME.defaultStudFee, lastBredAt: null, lastTrainedAt: null, retired: false };
 }
 export function createFoal(sire: Horse, dam: Horse, random: () => number, now = new Date()): Horse {
   if (sire.sex !== "Stallion" || dam.sex !== "Mare") throw new Error("Breeding requires a stallion and mare.");

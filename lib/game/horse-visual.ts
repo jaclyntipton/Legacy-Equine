@@ -9,6 +9,8 @@ export function sexAnatomyConstraint(sex:string){return sex.toLowerCase()==="mar
   ? "Sex: female mare. The horse must visibly and anatomically read as a mare, never a stallion. Do not add any male physical characteristics."
   : "Sex: intact male stallion. The horse must visibly and anatomically read as a stallion, with natural, discreet, correctly proportioned equine anatomy and nothing exaggerated."}
 
+export function formatHandHeight(value:number){const whole=Math.floor(value),inches=Math.round((value-whole)*10),total=whole*4+inches,hands=Math.floor(total/4),remainder=total%4;return `${hands}${remainder?`.${remainder}`:""}h`}
+
 export function buildHorseImagePrompt(v:VisualPhenotype){return `Use case: photorealistic-natural
 Asset type: persistent Legacy Equine individual horse profile artwork
 Primary request: Create a new, distinct, realistic ${v.breed} ${v.sex.toLowerCase()} matching every structured visual trait below. Breed identity is the highest-priority visual requirement. The horse must be recognizable as a ${v.breed} from silhouette, head, neck, torso, limb length, bone, and muscling before coat color is considered.
@@ -16,7 +18,7 @@ Age: ${v.age_years} years old, a young adult horse
 ${sexAnatomyConstraint(v.sex)}
 Breed and body: ${v.body}
 Breed height/proportion: ${v.height_range ?? "proportionate to the breed"}
-Individual genetically expressed mature height: ${v.height_hands ? `${v.height_hands.toFixed(1)} hands at the withers; make limb length, barrel depth, bone, and overall scale internally consistent with this exact height and breed` : "breed-appropriate mature height"}
+Individual genetically expressed mature height: ${v.height_hands ? `${formatHandHeight(v.height_hands)} at the withers; make limb length, barrel depth, bone, and overall scale internally consistent with this exact height and breed` : "breed-appropriate mature height"}
 Characteristic way of going: ${v.movement ?? "balanced natural movement"}
 Breed character and expression: ${v.temperament ?? "alert natural expression"}
 Registry-informed constraints and breed differentiation: ${v.breed_constraints ?? "avoid caricature and preserve functional conformation"}

@@ -64,3 +64,7 @@ Each profession progresses independently through exactly Basic, Proficient, Adva
 Certified players choose prices inside administrator-configured ranges, can offer services to other stables, and can self-service their horses. Paid services transfer LED atomically; self-service never creates LED and initially earns 50% qualifying credit. Horse/service cooldowns prevent farming. Certification, lifetime client and self-service records, availability, and permanent horse service history are retained.
 
 Horse stats are always visible. Effective values must expose layers separately: inherited base, permanent development, tack, farrier, massage/condition, and other temporary effects. Temporary service effects never modify genetic or breeding values.
+
+# Horse Height
+
+Height uses standard equine hand notation: one hand is four inches, and the suffix is inches rather than a base-ten decimal. Valid progressions are `14h`, `14.1h`, `14.2h`, `14.3h`, then `15h`. Values such as `14.4h` through `14.9h` are invalid and must normalize into the next hand. Breed-specific minimum and maximum heights remain data-driven so future breeds can extend the supported range.

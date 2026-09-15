@@ -10,6 +10,7 @@ import { TreasuryDashboard } from "@/app/treasury";
 import { CommunityChat } from "@/app/community-chat";
 import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
+import { HorseImageTemplates } from "@/app/horse-image-templates";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -317,7 +318,7 @@ export default function Home() {
     }, 0);
     return () => clearTimeout(timer);
   }, [user, view, loadStore, generateStoreArtwork]);
-  const artworkPending = horses.some((candidate) => !isUniqueHorseArtwork(candidate.image_url)) || inventory.some((candidate) => !isUniqueHorseArtwork(candidate.image_url));
+  const artworkPending = horses.some((candidate) => candidate.image_generation_status==="pending"||candidate.image_generation_status==="processing") || inventory.some((candidate) => !candidate.image_url);
   useEffect(() => {
     if (!user || !artworkPending) return;
     const timer = window.setInterval(() => void generateStoreArtwork(), 30_000);
@@ -1015,9 +1016,7 @@ function Empty({ go }: { go: () => void }) {
   );
 }
 function HorseArtworkImage({url,alt}:{url:string;alt:string}) {
-  return isUniqueHorseArtwork(url)
-    ? <img src={url} alt={alt}/>
-    : <span className="horseartpending" role="img" aria-label={`${alt} unique artwork is generating`}><b>♞</b><small>Unique artwork generating…</small></span>;
+  return <img src={url||"/foundation-horse.png"} alt={alt}/>;
 }
 function HorseListTools({horses,tiers,query,setQuery,breed,setBreed,sex,setSex,origin,setOrigin,ageFilter,setAge,tier,setTier,breeding,setBreeding,sort,setSort,viewMode,setViewMode}:{horses:Horse[];tiers:CompetitionTier[];query:string;setQuery:(v:string)=>void;breed:string;setBreed:(v:string)=>void;sex:string;setSex:(v:string)=>void;origin:string;setOrigin:(v:string)=>void;ageFilter:string;setAge:(v:string)=>void;tier:string;setTier:(v:string)=>void;breeding:string;setBreeding:(v:string)=>void;sort:string;setSort:(v:string)=>void;viewMode:"cards"|"compact";setViewMode:(v:"cards"|"compact")=>void}){
  const breeds=[...new Set(horses.map(h=>h.breed))].sort(),origins=[...new Set(horses.map(h=>h.origin))].sort();
@@ -1696,6 +1695,7 @@ function AdminConsole({
         sub="Server-secured custom creation, LE economy controls, and administrator access"
       />
       {message && <div className="notice">✦ {message}</div>}
+      <HorseImageTemplates notify={setMessage} changed={changed}/>
       <section className="panel settingsform">
         <p className="eyebrow">LE ECONOMY</p>
         <h2>Adjust a stable balance</h2>
@@ -1742,7 +1742,8 @@ function AdminConsole({
         <h2>Create a custom horse</h2>
         <p className="panelsub">
           Choose visible traits normally. Legacy Equine translates supported
-          choices into a valid genotype and generates matching artwork.
+          choices into a valid genotype and uses an approved anatomy template;
+          otherwise the safe official Foundation image is used.
         </p>
         <div className="adminformgrid">
           <label>
@@ -1841,7 +1842,7 @@ function AdminConsole({
           ))}
           <label>
             Existing image URL{" "}
-            <small>Optional; leave blank to generate artwork.</small>
+            <small>Optional; leave blank for approved-template artwork or the safe fallback.</small>
             <input value={image} onChange={(e) => setImage(e.target.value)} />
           </label>
         </div>

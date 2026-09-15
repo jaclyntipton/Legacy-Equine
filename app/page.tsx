@@ -51,6 +51,8 @@ type Stable = {
   created_at: string;
   is_admin: boolean;
 };
+type StableCapacity = {occupied:number;base_capacity:number;purchased_capacity:number;complimentary_capacity:number;total_capacity:number;unlimited:boolean;available:number|null};
+type SanctuaryHorse = {id:string;name:string;breed:string;sex:"Mare"|"Stallion";color:string;birth_date:string;image_url:string;career_points:number;sanctuary_retired_at:string;former_owner_name:string;former_owner_account:number;former_owner_id:string};
 type AdminStable = {
   id: string;
   account_number: number;
@@ -58,6 +60,9 @@ type AdminStable = {
   username: string | null;
   balance: number;
   is_admin: boolean;
+  stable_occupied: number;
+  stable_capacity: number;
+  unlimited_capacity: boolean;
 };
 type StoreHorse = {
   inventory_id: string;
@@ -164,6 +169,8 @@ async function uploadMedia(
 export default function Home() {
   const [user, setUser] = useState<User | null>(null),
     [stable, setStable] = useState<Stable | null>(null),
+    [capacity, setCapacity] = useState<StableCapacity | null>(null),
+    [sanctuary, setSanctuary] = useState<SanctuaryHorse[]>([]),
     [horses, setHorses] = useState<Horse[]>([]),
     [inventory, setInventory] = useState<StoreHorse[]>([]),
     [shows, setShows] = useState<Show[]>([]),
@@ -184,6 +191,8 @@ export default function Home() {
       | "market"
       | "community"
       | "professions"
+      | "sanctuary"
+      | "stalls"
       | "settings"
       | "admin"
     >("stable"),
@@ -207,7 +216,7 @@ export default function Home() {
       setLoading(false);
       return;
     }
-    const [{ data: s, error: stableError }, { data: h }] = await Promise.all([
+    const [{ data: s, error: stableError }, { data: h }, { data: c }] = await Promise.all([
         supabase
           .from("stables")
           .select(
@@ -220,10 +229,12 @@ export default function Home() {
           .select("*")
           .eq("owner_id", u.id)
           .order("created_at"),
+        supabase.rpc("get_my_stable_capacity"),
       ]);
     if (stableError) setNotice(stableError.message);
     setStable(s);
     setHorses((h ?? []) as Horse[]);
+    setCapacity((c ?? null) as StableCapacity | null);
     setLoading(false);
   }, []);
   useEffect(() => {
@@ -286,6 +297,7 @@ export default function Home() {
     return artworkWorker.current;
   }, [loadStore, user]);
   const openStore = () => setView("store");
+  const loadSanctuary = useCallback(async()=>{const{data,error}=await supabase.rpc("get_sanctuary_horses",{search_text:"",breed_filter:"",sex_filter:"",retired_year:null});if(error)setNotice(error.message);else setSanctuary((data??[])as SanctuaryHorse[])},[]);
   useEffect(() => {
     if (!user) return;
     const timer = setTimeout(() => {
@@ -306,6 +318,7 @@ export default function Home() {
     const timer = window.setInterval(() => void generateStoreArtwork(), 30_000);
     return () => window.clearInterval(timer);
   }, [user, artworkPending, generateStoreArtwork]);
+  useEffect(()=>{if(view==="sanctuary")void loadSanctuary()},[view,loadSanctuary]);
   const storeHorse =
     inventory.find((h) => h.inventory_id === storeSelected) || null;
   const purchase = async (id: string) => {
@@ -494,6 +507,9 @@ export default function Home() {
           >
             <span>◉</span>Bank
           </button>
+          <button className={view === "sanctuary" ? "active" : ""} onClick={() => setView("sanctuary")}>
+            <span>♡</span>Sanctuary
+          </button>
         </nav>
         <div className="sidebar-note">ALPHA 0.1</div>
       </aside>
@@ -580,15 +596,9 @@ export default function Home() {
               </section>
               <section className="stats">
                 <div>
-                  <small>HORSES OWNED</small>
-                  <b>{horses.length}</b>
-                </div>
-                <div>
-                  <small>FOUNDATION PURCHASES</small>
-                  <b>
-                    {stable.foundation_purchases}{" "}
-                    <em>/ {GAME.foundationLimit}</em>
-                  </b>
+                  <small>STABLE CAPACITY</small>
+                  <b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b>
+                  <button className="textbutton" onClick={()=>setView("stalls")}>+ Add Stalls</button>
                 </div>
                 <div>
                   <small>AVERAGE POINTS</small>
@@ -653,18 +663,13 @@ export default function Home() {
                     purchase={() => purchase(h.inventory_id)}
                     disabled={
                       loading ||
-                      stable.foundation_purchases >= 3 ||
+                      (!capacity?.unlimited && (capacity?.available ?? 0) < 1) ||
                       stable.balance < h.price
                     }
                   />
                 ))}
               </div>
-              <p className="storelimit">
-                Your stable may purchase {3 - stable.foundation_purchases} more
-                introductory Foundation{" "}
-                {3 - stable.foundation_purchases === 1 ? "horse" : "horses"}.
-                The shared store inventory rotates independently.
-              </p>
+              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>setView("stalls")}>Add Stalls</button> or <button onClick={()=>setView("sanctuary")}>Visit Sanctuary</button>.</>}</p>
             </>
           )}
           {storeHorse && view === "storehorse" && (
@@ -674,7 +679,7 @@ export default function Home() {
               purchase={() => purchase(storeHorse.inventory_id)}
               disabled={
                 loading ||
-                stable.foundation_purchases >= 3 ||
+                (!capacity?.unlimited && (capacity?.available ?? 0) < 1) ||
                 stable.balance < storeHorse.price
               }
             />
@@ -682,6 +687,8 @@ export default function Home() {
           {view === "bank" && (
             <Bank balance={stable.balance} notify={setNotice} />
           )}
+          {view === "stalls" && <StallExpansion capacity={capacity} notify={setNotice}/>} 
+          {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={horses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}
           {view === "professions" && (
             <ProfessionalCenter
               horses={horses}
@@ -1557,6 +1564,17 @@ function SettingsView({
     </>
   );
 }
+function StallExpansion({capacity,notify}:{capacity:StableCapacity|null;notify:(value:string)=>void}){
+ const [busy,setBusy]=useState(false),[pkg,setPkg]=useState<{stall_quantity:number;price_usd_cents:number}|null>(null);
+ useEffect(()=>{void supabase.from("stall_packages").select("stall_quantity,price_usd_cents").eq("id","permanent_5").maybeSingle().then(({data})=>setPkg(data))},[]);
+ const checkout=async()=>{setBusy(true);try{const{data}=await supabase.auth.getSession();const response=await fetch("/api/stalls/checkout",{method:"POST",headers:{Authorization:`Bearer ${data.session?.access_token??""}`}});const result=await response.json();if(!response.ok)throw new Error(result.error??"Secure checkout is unavailable");window.location.assign(result.url)}catch(error){notify(error instanceof Error?error.message:"Secure checkout is unavailable")}finally{setBusy(false)}};
+ return <><Title title="Expand Your Stable" sub="Permanent room for the horses in your Legacy Equine story"/><section className="panel settingsform"><p className="eyebrow">STABLE CAPACITY</p><h2>{capacity?.unlimited?"Unlimited":`${capacity?.occupied??0} / ${capacity?.total_capacity??GAME.baseStableCapacity} stalls occupied`}</h2>{!capacity?.unlimited&&<div className="adminformgrid"><div><small>Base Capacity</small><h3>{capacity?.base_capacity??5}</h3></div><div><small>Purchased Capacity</small><h3>+{capacity?.purchased_capacity??0}</h3></div><div><small>Admin / Promotional</small><h3>+{capacity?.complimentary_capacity??0}</h3></div></div>}</section>{!capacity?.unlimited&&pkg&&<section className="panel settingsform"><p className="eyebrow">ONE-TIME PURCHASE</p><h2>+{pkg.stall_quantity} Permanent Stalls</h2><h3>${(pkg.price_usd_cents/100).toFixed(2)} USD</h3><p className="panelsub">Permanent, account-bound stable capacity. This is not a subscription and cannot be converted into LED or cash.</p><button className="primary" disabled={busy} onClick={checkout}>{busy?"Opening secure checkout…":`Add ${pkg.stall_quantity} Stalls`}</button></section>}</>;
+}
+function SanctuaryView({horses,owned,retire}:{horses:SanctuaryHorse[];owned:Horse[];retire:(horse:Horse,name:string)=>Promise<void>}){
+ const [query,setQuery]=useState(""),[chosen,setChosen]=useState<Horse|null>(null),[archive,setArchive]=useState<SanctuaryHorse|null>(null),[confirmation,setConfirmation]=useState("");
+ const visible=horses.filter(h=>`${h.name} ${h.breed} ${h.former_owner_name}`.toLowerCase().includes(query.toLowerCase()));
+ return <><Title title="LE Equine Sanctuary" sub="The permanent historical home for horses retired from active gameplay"/><section className="panel settingsform"><p className="eyebrow">PERMANENT RETIREMENT</p><h2>Retire one of your horses</h2><p className="panelsub">A Sanctuary horse keeps its profile, pedigree, progeny, artwork, genetics, stats, and show history—but can never return to ownership, breeding, showing, sale, transfer, or service activity.</p><select value={chosen?.id??""} onChange={e=>{setChosen(owned.find(h=>h.id===e.target.value)??null);setConfirmation("")}}><option value="">Choose a horse…</option>{owned.map(h=><option key={h.id} value={h.id}>{h.name} · {h.breed}</option>)}</select>{chosen&&<><label>Type <b>{chosen.name}</b> to confirm<input value={confirmation} onChange={e=>setConfirmation(e.target.value)}/></label><button className="primary" disabled={confirmation!==chosen.name} onClick={async()=>{await retire(chosen,confirmation);setChosen(null);setConfirmation("")}}>Send to Sanctuary Permanently</button></>}</section><section className="panel"><p className="eyebrow">SANCTUARY DIRECTORY</p><h2>Legacy Equine history</h2><input placeholder="Search horse, breed, or former owner…" value={query} onChange={e=>setQuery(e.target.value)}/><div className="horsegrid compact">{visible.map(h=><article className="horsecard compact" role="button" tabIndex={0} onClick={()=>setArchive(h)} key={h.id}><div className="horsepic"><HorseArtworkImage url={h.image_url} alt={h.name}/><span>Sanctuary</span></div><div className="horsecardbody"><h3>{h.name}</h3><p>{h.breed} · {h.sex} · {h.color}</p><p><b>LE Equine Sanctuary</b><br/>Retired {new Date(h.sanctuary_retired_at).toLocaleDateString()}<br/>Formerly owned by {h.former_owner_name} #{h.former_owner_account}</p><small>{h.career_points} Career Points · View historical profile</small></div></article>)}</div>{!visible.length&&<p className="featurehint">No Sanctuary horses match this search.</p>}</section>{archive&&<div className="modalback" onClick={()=>setArchive(null)}><section className="modal" onClick={e=>e.stopPropagation()}><button className="close" onClick={()=>setArchive(null)}>×</button><HorseArtworkImage url={archive.image_url} alt={archive.name}/><p className="eyebrow">PERMANENTLY RETIRED</p><h2>{archive.name}</h2><p>{archive.breed} · {archive.sex} · {archive.color}</p><h3>LE Equine Sanctuary</h3><p>Retired {new Date(archive.sanctuary_retired_at).toLocaleDateString()}<br/>Formerly owned by {archive.former_owner_name} · LE Account #{archive.former_owner_account}</p><p>{archive.career_points} Career Points. Historical pedigree, progeny, and show records remain preserved in Legacy Equine.</p></section></div>}</>;
+}
 function AdminConsole({
   ownerAccount,
   currentUserId,
@@ -1570,6 +1588,8 @@ function AdminConsole({
     [message, setMessage] = useState(""),
     [target, setTarget] = useState(currentUserId),
     [amount, setAmount] = useState(10000),
+    [stallGrant,setStallGrant]=useState(10),
+    [stallReason,setStallReason]=useState("Admin benefit"),
     [name, setName] = useState("Admin Custom"),
     [species, setSpecies] = useState("Horse"),
     [breed, setBreed] = useState("Custom Breed"),
@@ -1860,7 +1880,13 @@ function AdminConsole({
         </button>
       </section>
       {ownerAccount && (
-        <section className="panel">
+        <><section className="panel settingsform">
+          <p className="eyebrow">OWNER CAPACITY CONTROL</p><h2>Permanent stall benefits</h2><p className="panelsub">Grant auditable complimentary stalls or explicitly change unlimited capacity. Ordinary administrators cannot use these controls.</p>
+          <label>Stable<select value={target} onChange={e=>setTarget(e.target.value)}>{accounts.map(a=><option key={a.id} value={a.id}>#{a.account_number} · {a.name} · {a.stable_occupied}/{a.unlimited_capacity?"Unlimited":a.stable_capacity}</option>)}</select></label>
+          <label>Complimentary stalls<input type="number" min={1} value={stallGrant} onChange={e=>setStallGrant(Number(e.target.value))}/></label><label>Reason<input value={stallReason} onChange={e=>setStallReason(e.target.value)}/></label>
+          <button className="primary" onClick={()=>run(async()=>{const{error}=await supabase.rpc("owner_grant_stalls",{target_stable:target,stall_count:stallGrant,grant_reason:stallReason});return{error}},`Granted ${stallGrant} permanent complimentary stalls.`)}>Grant Complimentary Stalls</button>
+          <div className="buttonrow"><button onClick={()=>run(async()=>{const{error}=await supabase.rpc("owner_set_unlimited_capacity",{target_stable:target,make_unlimited:true,change_reason:stallReason});return{error}},"Unlimited capacity granted.")}>Grant Unlimited</button><button disabled={accounts.find(a=>a.id===target)?.account_number===1} onClick={()=>run(async()=>{const{error}=await supabase.rpc("owner_set_unlimited_capacity",{target_stable:target,make_unlimited:false,change_reason:stallReason});return{error}},"Unlimited capacity revoked.")}>Revoke Unlimited</button></div>
+        </section><section className="panel">
           <p className="eyebrow">OWNER CONTROL</p>
           <h2>Designate administrators</h2>
           <p className="panelsub">
@@ -1896,7 +1922,7 @@ function AdminConsole({
               </div>
             ))}
           </div>
-        </section>
+        </section></>
       )}
     </>
   );

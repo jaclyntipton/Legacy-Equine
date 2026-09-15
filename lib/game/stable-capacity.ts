@@ -1,0 +1,2 @@
+export type CapacityAllocation={source:"base"|"purchased"|"admin"|"promotional"|"event"|"owner_unlimited";quantity:number;unlimited?:boolean;status?:"active"|"reversed"};
+export function stableCapacity(allocations:CapacityAllocation[],occupied:number){const active=allocations.filter(a=>(a.status??"active")==="active"),unlimited=active.some(a=>a.unlimited),total=active.reduce((sum,a)=>sum+a.quantity,0);return{occupied,total,unlimited,available:unlimited?Infinity:Math.max(0,total-occupied),canAcquire:unlimited||occupied<total}}

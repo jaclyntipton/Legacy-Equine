@@ -33,3 +33,10 @@ Player media uses the dedicated public `legacy-equine-media` Supabase Storage bu
 ## Administration
 
 The `stables.is_admin` role is checked inside security-definer RPCs on every privileged operation. Account #1 is the protected owner authority and is the only account allowed to grant or revoke administrators. Admin balance changes update the locked stable balance and write the same signed amount to `currency_ledger`; custom horses are created directly as permanent `Admin Custom` records. The UI merely exposes these RPCs and is not an authorization boundary.
+# Professional Services Architecture
+
+Professional reference data is relational and balanceable without source changes: `professions`, `certification_levels`, `study_modules`, `certification_questions`, and `service_catalog`. Player state lives in `player_professions`, `player_study_progress`, `certification_attempts`, and `player_service_offerings`. Completed work is an immutable `horse_service_records` trail that follows the horse through ownership changes and can later anchor verified-client reviews.
+
+All progression, certification, pricing validation, cooldown enforcement, service completion, and LED movement occurs in security-definer database functions. A service request locks the horse, provider progression, offering, and client balance, writes both ledger sides in the same transaction, records a unique idempotency key, and only then adds qualifying credit. Browser code cannot directly mutate these protected tables.
+
+Service effects are stored as transparent JSON stat deltas with explicit expiry. They remain distinct from inherited base values, permanent development, and tack. The image pipeline similarly persists the authoritative genotype-derived phenotype, prompt, status, asset URL, and generation timestamp; artwork never determines genetics.

@@ -55,3 +55,12 @@ LE Account #1 is the permanent owner administrator. Administrators have a server
 ## Visual direction
 
 Legacy Equine uses a welcoming purple and lilac game-world palette, rounded typography, soft cards, prominent horse artwork, playful currency presentation, and accessible purple focus states. The intended mood is a polished modern continuation of social browser horse games: warm and lightly nostalgic, never corporate, sterile, or preschool-like. Shared CSS tokens control color, radius, and shadow values so future screens stay visually consistent.
+# Professional Services
+
+The player recalls Ludus Equinus may have let accounts develop service professions such as Veterinarian, Farrier, and Trainer. This is classified as **Probable firsthand Ludus recollection**, not confirmed archival fact. Legacy Equine intentionally expands the idea with Farrier, Veterinarian, Trainer, and Equine Massage Therapist; Massage Therapist is an LE addition.
+
+Each profession progresses independently through exactly Basic, Proficient, Advanced, and Professional. Advancement always requires Study, a passing certification test, and the configured qualifying completed-service total (initially 0, 10, 25, and 50). These are explicitly Legacy Equine Game Certifications and are not real-world licenses or qualifications.
+
+Certified players choose prices inside administrator-configured ranges, can offer services to other stables, and can self-service their horses. Paid services transfer LED atomically; self-service never creates LED and initially earns 50% qualifying credit. Horse/service cooldowns prevent farming. Certification, lifetime client and self-service records, availability, and permanent horse service history are retained.
+
+Horse stats are always visible. Effective values must expose layers separately: inherited base, permanent development, tack, farrier, massage/condition, and other temporary effects. Temporary service effects never modify genetic or breeding values.

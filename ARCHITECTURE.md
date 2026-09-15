@@ -49,3 +49,7 @@ Shows use `show_disciplines`, `show_tiers`, `show_placement_rules`, `player_show
 ## Realtime Community
 
 `chat_rooms` is the database-driven room registry. `chat_messages` stores sanitized plain-text messages plus extensible JSON entity references; `chat_mutes` and `community_audit_log` preserve moderation state and history. All writes use security-definer RPCs that recover identity from `auth.uid()`, check persisted `community_role`, enforce room permissions, and rate-limit messages. Clients subscribe to filtered Supabase Realtime events and reload joined public identity fields through the read RPC. History uses indexed timestamp cursor pagination. Community roles (`player`, `moderator`, `admin`, `owner`) are deliberately independent of Treasury authorization.
+
+## Player Bank
+
+`currency_ledger` remains the authoritative append-only player accounting record. `get_bank_activity` projects it into paginated, categorized, player-friendly Bank entries and derives the balance resulting from each transaction without duplicating accounting state. `get_bank_summary` calculates lifetime income and spending. The Bank UI never exposes a withdrawal path; any future LED purchase system is one-way into the closed game economy.

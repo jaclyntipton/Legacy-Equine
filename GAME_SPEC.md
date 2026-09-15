@@ -87,3 +87,7 @@ Performance is deterministic: configured weighted base stats plus tack bonuses p
 Community consists of database-managed rooms with persistent, paginated message history and near-real-time updates. Authenticated stable identity, permanent account number, avatar, and Community role are supplied by the server. Players cannot create rooms or impersonate another identity. Initial rooms are General, Horse Sales & Breeding, Shows, Artwork, Professional Services, and Help.
 
 Community Admins and the Owner can create, rename, reorder, deactivate, archive, lock, and make rooms read-only. Moderators, Admins, and the Owner can hide or restore messages and issue room or global timeouts. Moderation and room administration are audited rather than silently deleted. Community roles never grant Treasury authority. Messages are plain text, limited to 1,000 characters, rate-limited, and protected against duplicate spam.
+
+# Legacy Equine Bank
+
+The player-facing financial area is the **Bank**, permanently available in the main game navigation. It shows Current Balance, lifetime LED Earned and Spent, and paginated transaction history with game-friendly descriptions, categories, dates, direction, related entities, and resulting balances. “Ledger” remains internal accounting terminology only. Treasury and Show Fund retain their institutional names. LED is closed-loop: future USD → LED purchase is permitted, while cash-out, withdrawal, redemption, and LED → USD are permanently prohibited.

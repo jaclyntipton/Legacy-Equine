@@ -6,8 +6,8 @@ export type VisualPhenotype = {
 };
 
 export function sexAnatomyConstraint(sex:string){return sex.toLowerCase()==="mare"
-  ? "Anatomical sex: unmistakably female mare. Render a smooth, natural female equine underline and correct female external anatomy; exclude every male anatomical feature or male-shaped structure."
-  : "Anatomical sex: unmistakably intact male stallion. Render correct, discreet, naturally proportioned male equine external anatomy; nothing exposed, exaggerated, duplicated, or malformed."}
+  ? "Sex: female mare. The horse must visibly and anatomically read as a mare, never a stallion. Do not add any male physical characteristics."
+  : "Sex: intact male stallion. The horse must visibly and anatomically read as a stallion, with natural, discreet, correctly proportioned equine anatomy and nothing exaggerated."}
 
 export function buildHorseImagePrompt(v:VisualPhenotype){return `Use case: photorealistic-natural
 Asset type: persistent Legacy Equine individual horse profile artwork

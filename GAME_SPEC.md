@@ -10,7 +10,7 @@
 
 ## Alpha rules
 
-Configuration lives in `lib/game/config.ts`. New stables receive 3,000 LE Dollars. The introductory store permits three foundation purchases at 1,000 each. Normal foundation stats are 10–15 with a 6% outlier roll spanning 7–18. Every random process accepts a seeded generator.
+Configuration lives in `lib/game/config.ts`. New stables receive 4,000 LE Dollars, and every existing player was raised to a minimum 4,000 LE balance for the Alpha economy. The introductory store permits three foundation purchases at 1,000 each. Normal foundation stats are 10–15 with a 6% outlier roll spanning 7–18. Every random process accepts a seeded generator.
 
 Public LE account numbers are permanent, positive, unique, and assigned atomically in genuine stable-creation order from #1. Twisted Tree Ranch is LE Account #1. Numbers are never edited or recycled. Service-role-marked automated test identities receive no public number and never advance the production sequence.
 
@@ -41,6 +41,8 @@ Stud services between players, tack catalog and equipment UI, direct messaging, 
 Every account may change its stable name and biography while retaining its permanent LE account number. A unique 3–24 character username identifies the player in community conversations. The Training Center exposes the existing 20-hour stat-training loop. Automated shows accept owned horses and calculate discipline-specific entry scores. The shared player marketplace transfers the exact listed horse and LE Dollars transactionally between buyer and seller. Community posts and replies are persistent and attributed to username, stable, and historical account number.
 
 Ranch artwork, player avatars, and horse profile images are three independent media identities. Players may upload JPG, PNG, WebP, or GIF files up to 5 MB. Ranch images appear as stable-home artwork, avatars represent usernames in community spaces, and each horse retains its own image. Changing one never changes either of the others.
+
+LE Account #1 is the permanent owner administrator. Administrators have a server-authorized console for ledgered LE balance adjustments and unrestricted custom horse creation, including owner, species label, breed, age, sex, phenotype, genetics, artwork URL, and every base stat. Only Account #1 may grant or revoke administrator status; Account #1 cannot be demoted. Ordinary clients cannot call these operations successfully without a current database administrator role.
 
 ## Visual direction
 

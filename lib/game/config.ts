@@ -1,6 +1,6 @@
 export const GAME = {
   currencyName: "LE Dollars",
-  startingBalance: 3000,
+  startingBalance: 4000,
   foundationPrice: 1000,
   foundationLimit: 3,
   foundationBreeds: ["Thoroughbred", "Arabian", "Quarter Horse", "Hanoverian", "Appaloosa", "Morgan", "Rocky Mountain Horse", "Tennessee Walking Horse"],

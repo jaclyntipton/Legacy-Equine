@@ -29,7 +29,7 @@ try{
 
   const first=await a.client.rpc("get_store_inventory");assert.ifError(first.error);assert.equal(first.data.length,6);
   const second=await b.client.rpc("get_store_inventory");assert.ifError(second.error);assert.deepEqual(second.data.map(horseIdentity),first.data.map(horseIdentity));
-  assert.ok(new Set(first.data.map(h=>h.breed)).size>1);for(const h of first.data){assert.equal(h.image_url,"/foundation-horse.png");assert.equal(Object.keys(h.stats).length,7);}
+  assert.ok(new Set(first.data.map(h=>h.breed)).size>1);for(const h of first.data){assert.equal(h.name,"Unnamed Foundation Horse");assert.equal(h.image_url,"/foundation-horse.png");assert.equal(Object.keys(h.stats).length,7);}
 
   const target=first.data[0],expected=horseIdentity(target);
   const raced=await Promise.all([a.client.rpc("purchase_store_horse",{target_inventory:target.inventory_id}),b.client.rpc("purchase_store_horse",{target_inventory:target.inventory_id})]);
@@ -43,6 +43,7 @@ try{
   q=await admin.from("currency_ledger").select("amount,horse_id").eq("stable_id",winner.id).lt("amount",0);assert.equal(q.data.length,3);assert.equal(q.data.reduce((sum,x)=>sum+x.amount,0),-3000);assert.ok(q.data.every(x=>bought.some(h=>h.id===x.horse_id)));
 
   const stranger=winner.id===a.id?b:a;const strangerUpdate=await stranger.client.from("horses").update({name:"Stolen"}).eq("id",bought[0].id).select();assert.equal(strangerUpdate.data.length,0);
+  const renamed=await winner.client.rpc("update_horse_profile",{target_horse:bought[0].id,new_name:"Test Legacy",new_biography:"",new_image_url:bought[0].image_url});assert.ifError(renamed.error);assert.equal(renamed.data.name,"Test Legacy");bought[0].name="Test Legacy";
   const horsePath=`${winner.id}/horses/${bought[0].id}-${stamp}.png`;media=await winner.client.storage.from("legacy-equine-media").upload(horsePath,pixel,{contentType:"image/png"});assert.ifError(media.error);mediaPaths.push(horsePath);const horseUrl=winner.client.storage.from("legacy-equine-media").getPublicUrl(horsePath).data.publicUrl;const horseImage=await winner.client.rpc("update_horse_profile",{target_horse:bought[0].id,new_name:bought[0].name,new_biography:"",new_image_url:horseUrl});assert.ifError(horseImage.error);assert.equal(horseImage.data.image_url,horseUrl);assert.notEqual(horseUrl,ranchUrl);assert.notEqual(horseUrl,avatarUrl);
   let trained=await winner.client.rpc("train_horse",{target_horse:bought[0].id,stat_name:"Speed"});assert.ifError(trained.error);trained=await winner.client.rpc("train_horse",{target_horse:bought[0].id,stat_name:"Speed"});assert.ok(trained.error);
   await admin.from("horses").update({sex:"Stallion",stud_fee:0}).eq("id",bought[0].id);await admin.from("horses").update({sex:"Mare"}).eq("id",bought[1].id);

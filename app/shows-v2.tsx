@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { placingLabel } from "@/lib/game/show-engine";
+import { safeShowEntryError } from "@/lib/game/show-entry-errors";
 import { FormField } from "./form-field";
 
 const supabase = createClient();
@@ -33,7 +34,7 @@ export function PlayerShows({ horses, balance, notify, refreshAccount }: { horse
 
   const create=async()=>{if(!valid)return;const{error}=await supabase.rpc("create_player_show",{show_name:name,target_discipline:discipline,target_tier:tier,target_run_date:date,new_entry_fee:fee,new_max_entries:max?Number(max):null,new_description:description});notify(error?.message??"Show created for midnight Eastern Time.");if(!error){setView("upcoming");await load();refreshAccount()}};
   const openEntry=async(show:Show)=>{const{data,error}=await supabase.rpc("get_show_entry_options",{target_show:show.id});if(error){notify(error.message);return}setEntryOptions((data??[])as EntryOption[]);setSelected([]);setEntryShow(show)};
-  const enter=async()=>{if(!entryShow||!selected.length)return;setEntering(true);const{data,error}=await supabase.rpc("enter_player_show_batch",{target_show:entryShow.id,target_horses:selected});notify(error?.message??`${data.entries_created} horse${data.entries_created===1?"":"s"} entered for ${money(data.total_fee)} LED.`);setEntering(false);if(!error){setEntryShow(null);setSelected([]);await load();refreshAccount()}else await openEntry(entryShow)};
+  const enter=async()=>{if(!entryShow||!selected.length)return;setEntering(true);const{data,error}=await supabase.rpc("enter_player_show_batch",{p_show_id:entryShow.id,p_horse_ids:selected});if(error){console.error("Show entry RPC failed",error);notify(safeShowEntryError(error.message))}else notify(`${data.entries_created} horse${data.entries_created===1?"":"s"} entered for ${money(data.total_fee)} LED.`);setEntering(false);if(!error){setEntryShow(null);setSelected([]);await load();refreshAccount()}else await openEntry(entryShow)};
   const openResults=async(showId:string)=>{const{data,error}=await supabase.rpc("get_show_results",{target_show:showId});if(error)notify(error.message);else setResults(data as ResultPage)};
 
   if(results)return <ShowResultsPage page={results} back={()=>setResults(null)}/>;

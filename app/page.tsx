@@ -57,7 +57,9 @@ type Stable = {
   foundation_purchases: number;
   created_at: string;
   is_admin: boolean;
+  account_xp: number;
 };
+type AccountProgression={account_xp:number;level:number;legacy_stable:boolean;next_level_xp:number|null;weekly_allowance:number;shows_hosted_this_week:number;weekly_show_limit:number};
 type StableCapacity = {occupied:number;base_capacity:number;purchased_capacity:number;complimentary_capacity:number;total_capacity:number;unlimited:boolean;available:number|null};
 type SanctuaryHorse = {id:string;name:string;breed:string;sex:"Mare"|"Stallion";color:string;birth_date:string;image_url:string;career_points:number;sanctuary_retired_at:string;former_owner_name:string;former_owner_account:number;former_owner_id:string};
 type AdminStable = {
@@ -177,6 +179,7 @@ async function uploadMedia(
 export default function Home() {
   const [user, setUser] = useState<User | null>(null),
     [stable, setStable] = useState<Stable | null>(null),
+    [progression,setProgression]=useState<AccountProgression|null>(null),
     [capacity, setCapacity] = useState<StableCapacity | null>(null),
     [sanctuary, setSanctuary] = useState<SanctuaryHorse[]>([]),
     [competitionTiers,setCompetitionTiers]=useState<CompetitionTier[]>([]),
@@ -226,11 +229,11 @@ export default function Home() {
       setLoading(false);
       return;
     }
-    const [{ data: s, error: stableError }, { data: h }, { data: c },{data:tierData},{data:horseEditorAccess}] = await Promise.all([
+    const [{ data: s, error: stableError }, { data: h }, { data: c },{data:tierData},{data:horseEditorAccess},{data:progressData}] = await Promise.all([
         supabase
           .from("stables")
           .select(
-            "account_number,name,username,bio,ranch_image_url,avatar_url,balance,foundation_purchases,created_at,is_admin",
+            "account_number,name,username,bio,ranch_image_url,avatar_url,balance,foundation_purchases,created_at,is_admin,account_xp",
           )
           .eq("id", u.id)
           .maybeSingle(),
@@ -242,6 +245,7 @@ export default function Home() {
         supabase.rpc("get_my_stable_capacity"),
         supabase.from("show_tiers").select("id,name,minimum_points,maximum_points,sort_order").eq("active",true).order("sort_order"),
         supabase.rpc("has_horse_editor_permission"),
+        supabase.rpc("get_account_progression"),
       ]);
     if (stableError) setNotice(stableError.message);
     setStable(s);
@@ -249,6 +253,7 @@ export default function Home() {
     setCapacity((c ?? null) as StableCapacity | null);
     setCompetitionTiers((tierData??[])as CompetitionTier[]);
     setCanHorseEdit(Boolean(horseEditorAccess));
+    setProgression((progressData??null) as AccountProgression|null);
     setLoading(false);
   }, []);
   useEffect(() => {
@@ -568,6 +573,7 @@ export default function Home() {
                     {new Date(stable.created_at).getFullYear()}
                   </p>
                   <h1>{stable.name}</h1>
+                  {progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} {progression.level===50?"Lifetime ":""}XP</p>}
                   <p>
                     {stable.bio ||
                       "Your bloodline begins here. Develop promising horses, make thoughtful pairings, and shape a legacy that lasts."}
@@ -683,7 +689,7 @@ export default function Home() {
             />
           )}
           {view === "bank" && (
-            <Bank balance={stable.balance} notify={setNotice} />
+            <Bank balance={stable.balance} notify={setNotice} refreshAccount={()=>void load(user)} />
           )}
           {view === "stalls" && <StallExpansion capacity={capacity} notify={setNotice}/>} 
           {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={horses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}

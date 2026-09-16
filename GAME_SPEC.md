@@ -128,3 +128,14 @@ Horse profiles use independent, URL-addressable views for Overview, Stats, Train
 Stable horse listings use bounded, anatomy-safe image regions and compact browser-simulation cards rather than collectible-card styling. Listings expose identity and restrained Career Points/tier information; detailed stats stay on the horse profile. Cards and dense compact rows share the same component. Stable listings support name search plus breed, sex, age, origin, show-tier, and breeding-eligibility filters, with sorting by identity, age, recency, Career Points, or any stat. Store inventory retains its distinct shopping layout.
 
 All primary full-horse artwork uses one shared containment renderer across Horse Profiles, Store, Stable, Progeny, Sanctuary, Marketplace, uploads, and administration. The complete native image is centered and scaled down within a light-lavender frame with 5% internal breathing room. Cropping, stretching, and aspect-ratio coercion are prohibited for generated, Foundation, and player-provided artwork; letterboxing is intentional.
+# Account Progression — Alpha V1
+
+Horse Career Points and Stable Account XP are separate permanent systems. Horse CP determines competition tier; Account XP determines Levels 1–50 and account capabilities. Level thresholds, weekly allowance values, show-hosting quotas, and unlocks are stored in `account_level_config`. XP continues as Lifetime XP after Level 50.
+
+Account XP is awarded idempotently when show results become permanent: entry +1, first +10, second +6, third +3. Legitimate completed shows award the host +5, plus cumulative unique-stable bonuses of +3 at five, +5 at ten, and +10 at twenty. QA entries never award XP, CP, or LED.
+
+The LE week begins Friday 12:00 AM America/New_York. Weekly show-hosting limits are 5 (Levels 1–14), 10 (15–29), 15 (30–44), 20 (45–49), and 25 (50); Account #1 has an owner override. Bulk show creation unlocks at Level 15, custom Stable layouts at Level 20, and advanced multi-show entry at Level 30. An active subscription may grant immediate use of the two bulk convenience tools but never increases weekly hosting quota. Ordinary multi-horse entry into one show remains available to every account.
+
+Weekly Stable Allowance is claimed in Bank, never auto-deposited. Base values rise from 500 LED at Level 1 to 1,500 LED at Level 50 in configured five-level bands. Active subscribers receive +100 LED and may preserve up to six individual missed entitlements; preserved entitlements remain collectible after expiration. Free missed entitlements expire at the next Friday boundary. Each entitlement snapshots week, level, base, bonus, total, timestamps, protection, and status.
+
+Full player-to-player economy access unlocks at Level 5. The server—not the client—enforces progression gates. One verified phone may be associated with only one Stable; IP data is a risk signal and never a sole uniqueness rule. Account lifecycle periods are configuration-driven.

@@ -14,6 +14,8 @@ import { HorseImageTemplates } from "@/app/horse-image-templates";
 import { BreedGeneticsAdmin } from "@/app/breed-genetics-admin";
 import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
 import { StableInventory } from "@/app/stable-inventory";
+import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
+import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
@@ -658,7 +660,7 @@ export default function Home() {
                 sub="Browse the shared Foundation herd and find the horse that speaks to you"
               />
               <nav className="storedepartments" aria-label="LE Store departments"><button className={storeDepartment==="horses"?"active":""} onClick={()=>setStoreDepartment("horses")}>Foundation Horses</button><button className={storeDepartment==="feed"?"active":""} onClick={()=>setStoreDepartment("feed")}>Feed &amp; Hay</button><button className={storeDepartment==="tack"?"active":""} onClick={()=>setStoreDepartment("tack")}>Tack</button><button className={storeDepartment==="supplies"?"active":""} onClick={()=>setStoreDepartment("supplies")}>Stable Supplies</button></nav>
-              {storeDepartment==="horses"&&<><div className="breedshop"><button className={!storeBreed?"active":""} onClick={()=>setStoreBreed("")}>All Breeds</button>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><button className={storeBreed===b?"active":""} key={b} onClick={()=>setStoreBreed(b)}>{b}<small>{inventory.filter(h=>h.breed===b).length} available</small></button>)}</div><div className="storebar">
+              {storeDepartment==="horses"&&<><div className="storebreedselect"><label>Breed<select aria-label="Foundation horse breed" value={storeBreed} onChange={e=>setStoreBreed(e.target.value)}><option value="">All Breeds</option>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><option value={b} key={b}>{b} · {inventory.filter(h=>h.breed===b).length} available</option>)}</select></label></div><div className="storebar">
                 <span>✦ {inventory.length} Foundation horses available</span>
                 <span>
                   {inventory[0]
@@ -1061,6 +1063,10 @@ function storeAge(h: StoreHorse) {
       365.25,
   );
 }
+function storeAgeLabel(h: StoreHorse) {
+  const months = Math.floor(storeAge(h) * 12), years = Math.floor(months / 12), remainder = months % 12;
+  return `${years} ${years === 1 ? "year" : "years"}${remainder ? `, ${remainder} ${remainder === 1 ? "month" : "months"}` : ""}`;
+}
 function storeOverall(h: StoreHorse) {
   return GAME.stats.reduce((sum, key) => sum + (h.stats[key] ?? 0), 0);
 }
@@ -1085,7 +1091,7 @@ function StoreCard({
         <p className="eyebrow">{h.breed}</p>
         <h3>{h.name}</h3>
         <p>
-          {h.color} · {storeAge(h).toFixed(1)} years ·{" "}
+          {h.color} · {storeAgeLabel(h)} ·{" "}
           {handHeight(h.mature_height_hands)}
         </p>
         <div className="storestats">
@@ -1134,7 +1140,7 @@ function StorePreview({
           <p className="eyebrow">MEET YOUR NEXT LEGACY</p>
           <h1>{h.name}</h1>
           <p className="meta">
-            {h.breed} <b>•</b> {h.sex} <b>•</b> {storeAge(h).toFixed(1)} years{" "}
+            {h.breed} <b>•</b> {h.sex} <b>•</b> {storeAgeLabel(h)}{" "}
             <b>•</b> {handHeight(h.mature_height_hands)} <b>•</b> {h.color}
           </p>
           <div className="previewtotal">
@@ -1703,8 +1709,10 @@ function AdminConsole({
       />
       {message && <div className="notice">✦ {message}</div>}
       <HorseImageTemplates notify={setMessage} changed={changed}/>
+      <VisualAssetImporter notify={setMessage}/>
       <VisualAssetRequirements notify={setMessage}/>
       <BreedGeneticsAdmin notify={setMessage}/>
+      <StoreWellnessAdmin notify={setMessage}/>
       <section className="panel settingsform">
         <p className="eyebrow">LE ECONOMY</p>
         <h2>Adjust a stable balance</h2>

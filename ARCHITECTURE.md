@@ -103,3 +103,8 @@ Show creation quotas and unlocks are checked in security-definer functions. Bulk
 `horse_wellness` stores bounded components and a recovery anchor. Reads materialize timestamp-derived passive Recovery. Activity and professional-service triggers provide auditable wear/restoration without modifying inherited stats. Show entry uses a deterministic configured minimum readiness threshold.
 
 `horse_game_config.real_days_per_horse_year` is the single aging rate. `horse_game_age()` provides precise continuous age from `horses.birth_date`; no aging cron mutates ages. Existing timestamps were migrated while preserving their pre-migration displayed ages.
+## Store rooms and visual ingestion
+
+`store_products` is the data-driven catalog for Feed, Tack, and Stable Supplies. Physical item instances live in `player_store_items`; equipped items are referenced by `horse_equipment`, whose unique horse/slot constraint prevents multiple items in one tack category. Feed consumption is audited in `horse_feed_log` and permanent Development changes occur only inside the server transaction.
+
+`horse_visual_asset_requirements` is the exact-master requirement matrix. `admin_visual_asset_manifest()` supplies both human- and machine-readable exports. `admin_register_visual_asset()` validates master canvas, type, and size again on the server, registers a human upload, and leaves it in Review. Approval and Production remain separate explicit Owner actions.

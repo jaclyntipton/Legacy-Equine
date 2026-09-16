@@ -144,6 +144,12 @@ const age = (h: Horse) =>
       GAME.age.gameDaysPerRealDay) /
       365.25,
   );
+const ageLabel = (h: Horse) => {
+  const months = Math.floor(age(h) * 12);
+  const years = Math.floor(months / 12);
+  const remainder = months % 12;
+  return `${years} ${years === 1 ? "year" : "years"}${remainder ? `, ${remainder} ${remainder === 1 ? "month" : "months"}` : ""}`;
+};
 const canTrain = (h: Horse) =>
   !h.last_trained_at ||
   Date.now() - new Date(h.last_trained_at).getTime() >=
@@ -1037,7 +1043,7 @@ function Card({ h,tiers, open, compact=false }: { h: Horse;tiers:CompetitionTier
       </div>
       <div className="horsecardbody">
         <h3>{h.name}</h3>
-        <p className="horseidentity">{h.breed} · {h.sex} · {age(h).toFixed(1)} years · {h.color} · {handHeight(h.mature_height_hands)}</p>
+        <p className="horseidentity">{h.breed} · {h.sex} · {ageLabel(h)} · {h.color} · {handHeight(h.mature_height_hands)}</p>
         <div className="cardfoot">
           <span><b>{h.career_points??0}</b> Career Points · {competitionTier(h.career_points??0,tiers)?.name??"Unassigned"}</span>
           <em>View horse →</em>
@@ -2020,7 +2026,7 @@ function LegacyHorsePage({
             onChange={(e) => setN(e.target.value)}
           />
           <p className="meta">
-            {h.breed} <b>•</b> {h.sex} <b>•</b> {age(h).toFixed(1)} years{" "}
+            {h.breed} <b>•</b> {h.sex} <b>•</b> {ageLabel(h)}{" "}
             <b>•</b> {h.color}
           </p>
           <p className="ownerline">Owned by your stable</p>

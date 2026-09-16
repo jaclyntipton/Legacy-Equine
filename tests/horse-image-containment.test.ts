@@ -14,7 +14,7 @@ describe("global full-horse artwork containment",()=>{
   expect(css).toContain("object-position:center center!important");
   expect(css).toContain("background:transparent!important");
  });
- it.each(["portrait PNG","square WebP","landscape image","player artwork","Foundation fallback"])("preserves the entire %s through aspect-ratio agnostic CSS",()=>{
+ it.each(["portrait PNG","square WebP","landscape image","player artwork","Visual Pending state"])("preserves the entire %s through aspect-ratio agnostic CSS",()=>{
   expect(css).toContain("width:100%;height:100%;max-width:100%;max-height:100%");
   expect(component).not.toContain("object-fit:cover");
  });

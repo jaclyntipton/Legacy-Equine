@@ -5,5 +5,5 @@ describe("deterministic horse visual architecture",()=>{
  it("supports every approved compositing layer family",()=>{for(const kind of ["body_template","base_coat","modifier","pattern","face_marking","leg_marking","mane_tail"])expect(migration).toContain(kind)});
  it("keeps custom and standard artwork independent with custom priority",()=>{expect(migration).toContain("player_custom_image_url");expect(migration).toContain("le_visual_url");expect(migration).toContain("coalesce(nullif(player_custom_image_url,''),")});
  it("retires production AI work and API spending",()=>{expect(route).toContain("status:410");expect(route).not.toMatch(/generateImage|generateText|imageModel/);expect(page).not.toContain('fetch("/api/store-horse-images/generate"');expect(migration).toContain("Production AI generation permanently disabled")});
- it("uses the correct fallback for incomplete combinations",()=>{expect(migration).toContain("/foundation-horse.png");expect(migration).toContain("foundation_generic_01")});
+ it("keeps deterministic master assignment independent of the retired generic fallback",()=>{expect(migration).toContain("visual_template_id");expect(migration).toContain("visual_fingerprint")});
 });

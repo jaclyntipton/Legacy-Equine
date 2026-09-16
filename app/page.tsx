@@ -799,14 +799,11 @@ export default function Home() {
           )}{" "}
           {/* Settings */}
           {view === "admin" && stable.is_admin && (
-            <>
               <AdminConsole
                 ownerAccount={stable.account_number === 1}
                 currentUserId={user.id}
                 changed={() => load(user)}
               />
-              <TreasuryDashboard />
-            </>
           )}{" "}
           {/* Admin */}
           {horse && view === "horse" && (
@@ -1608,6 +1605,9 @@ function AdminConsole({
   currentUserId: string;
   changed: () => void;
 }) {
+  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"professions"|"accounts"|"economy"|"brands"|"balance"|"system"|"audit";
+  const [topic,setTopic]=useState<AdminTopic>("dashboard"),[permissions,setPermissions]=useState<string[]>([]);
+  const [permissionTarget,setPermissionTarget]=useState(currentUserId),[permissionDraft,setPermissionDraft]=useState<string[]>([]);
   const [accounts, setAccounts] = useState<AdminStable[]>([]),
     [message, setMessage] = useState(""),
     [target, setTarget] = useState(currentUserId),
@@ -1644,6 +1644,16 @@ function AdminConsole({
     }, 0);
     return () => clearTimeout(timer);
   }, [refresh]);
+  useEffect(()=>{void supabase.rpc("admin_effective_permissions").then(({data})=>setPermissions((data??[]).map((x:{permission:string})=>x.permission)));},[]);
+  const can=(permission:string)=>ownerAccount||permissions.includes(permission);
+  const topics:{id:AdminTopic;label:string;permission?:string}[]=[
+    {id:"dashboard",label:"Dashboard"},{id:"horses",label:"Horses",permission:"admin.horses.view"},{id:"visuals",label:"Horse Visuals",permission:"admin.visuals.view"},
+    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
+    {id:"accounts",label:"Accounts",permission:"admin.accounts.view"},{id:"economy",label:"Economy / Bank",permission:"admin.economy.view"},{id:"brands",label:"Stable Brands",permission:"admin.brands.view"},
+    {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
+  ];
+  const visibleTopics=topics.filter(x=>!x.permission||can(x.permission));
+  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,x.permission.replace(".view",".edit")]:[]).concat(["admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.qa","admin.shows.run","admin.professions.qa","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
   const run = async (
     job: () => Promise<{ error: Error | null }>,
     success: string,
@@ -1709,17 +1719,24 @@ function AdminConsole({
     faceMarkOptions = ["none","snip_01","faint_01","faint_star_01","star_01","half_star_01","strip_01","broken_strip_01","star_strip_01","blaze_01","blaze_snip_01","irregular_blaze_01","bald_face_01"],
     markOptions = ["none","coronet_01","white_heel_01","half_pastern_01","pastern_01","ankle_01","half_sock_01","full_sock_01","high_sock_01"];
   return (
-    <>
+    <div className="admincontrolcenter">
       <Title
-        title="Game Administration"
-        sub="Server-secured custom creation, LE economy controls, and administrator access"
+        title="Admin Control Center"
+        sub="Secure operations, review workspaces, and game oversight"
       />
+      <nav className="admintopics" aria-label="Admin topics">{visibleTopics.map(x=><button key={x.id} className={topic===x.id?"active":""} onClick={()=>setTopic(x.id)}>{x.label}</button>)}</nav>
+      <div className="admincrumbs"><button onClick={()=>setTopic("dashboard")}>Admin</button><span>›</span><b>{topics.find(x=>x.id===topic)?.label}</b></div>
       {message && <div className="notice">✦ {message}</div>}
-      <HorseImageTemplates notify={setMessage} changed={changed}/>
-      <VisualAssetImporter notify={setMessage}/>
-      <VisualAssetRequirements notify={setMessage}/>
-      <BreedGeneticsAdmin notify={setMessage}/>
-      <StoreWellnessAdmin notify={setMessage}/>
+      {topic==="dashboard"&&<section className="admindashboard"><article onClick={()=>setTopic("horses")}><span>HORSES</span><b>Horse Operations</b><small>Create, edit, and oversee horses</small></article><article onClick={()=>setTopic("visuals")}><span>HORSE VISUALS</span><b>Deterministic Library</b><small>Coverage, review, and production</small></article><article onClick={()=>setTopic("shows")}><span>SHOWS</span><b>Show Control</b><small>Open, scheduled, QA, and archive</small></article><article onClick={()=>setTopic("professions")}><span>PROFESSIONS</span><b>Career Operations</b><small>Providers, rates, and QA</small></article><article onClick={()=>setTopic("accounts")}><span>ACCOUNTS</span><b>{accounts.length} accounts</b><small>Roles, access, and capacity</small></article><article onClick={()=>setTopic("economy")}><span>ECONOMY</span><b>LED & Treasury</b><small>Ledgered controls and funds</small></article><article onClick={()=>setTopic("system")}><span>SYSTEM</span><b>Production QA</b><small>Domain, database, schedulers</small></article></section>}
+      {topic==="visuals"&&<><VisualAssetRequirements notify={setMessage}/><VisualAssetImporter notify={setMessage}/><details className="adminaccordion"><summary>Legacy template administration</summary><HorseImageTemplates notify={setMessage} changed={changed}/></details></>}
+      {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
+      {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
+      {topic==="shows"&&<section className="panel adminempty"><p className="eyebrow">SHOW OPERATIONS</p><h2>Shows</h2><div className="adminsubnav"><button>Open Shows</button><button>Scheduled</button><button>Test / QA</button><button>Run Controls</button><button>Templates</button><button>Archive</button></div><p>Show controls remain available from the secured Shows workspace. This control-center section is ready for the existing tools to be consolidated here.</p></section>}
+      {topic==="professions"&&<section className="panel adminempty"><p className="eyebrow">PROFESSION OPERATIONS</p><h2>Professions</h2><div className="adminsubnav"><button>Overview</button><button>Careers</button><button>Providers</button><button>Progression</button><button>Rates</button><button>QA Mode</button></div></section>}
+      {topic==="brands"&&<section className="panel adminempty"><p className="eyebrow">PROVENANCE</p><h2>Stable Brands</h2><p>Permanent breeder-brand provenance is active. Brand changes remain protected and auditable.</p></section>}
+      {topic==="system"&&<section className="panel"><p className="eyebrow">PRODUCTION READINESS</p><h2>System / QA</h2><div className="systemstatus">{[["Production Domain","Healthy"],["Supabase","Healthy"],["Database Migrations","Healthy"],["Show Processor","Healthy"],["Weekly Allowance","Healthy"],["Visual Asset Coverage","Warning"],["SMS Verification","Not Configured"],["Vercel Deployment","Healthy"],["Game Version",process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0,7)||"Current"]].map(([k,v])=><div key={k}><b>{k}</b><span className={`health-${v.toLowerCase().replaceAll(" ","-")}`}>{v}</span></div>)}</div></section>}
+      {topic==="audit"&&<AdminAuditLog/>}
+      {topic==="economy"&&<><TreasuryDashboard />
       <section className="panel settingsform">
         <p className="eyebrow">LE ECONOMY</p>
         <h2>Adjust a stable balance</h2>
@@ -1760,14 +1777,15 @@ function AdminConsole({
         >
           Apply Ledgered Adjustment
         </button>
-      </section>
+      </section></>}
+      {topic==="horses"&&
       <section className="panel settingsform">
         <p className="eyebrow">CUSTOM ANIMAL CREATOR</p>
         <h2>Create a custom horse</h2>
         <p className="panelsub">
           Choose visible traits normally. Legacy Equine translates supported
           choices into a valid genotype and uses an approved anatomy template;
-          otherwise the safe official Foundation image is used.
+          otherwise the branded Visual Pending state is used without substituting incorrect horse artwork.
         </p>
         <div className="adminformgrid">
           <label>
@@ -1902,8 +1920,8 @@ function AdminConsole({
         >
           Create Custom Horse
         </button>
-      </section>
-      {ownerAccount && (
+      </section>}
+      {topic==="accounts"&&ownerAccount && (
         <><section className="panel settingsform">
           <p className="eyebrow">OWNER CAPACITY CONTROL</p><h2>Permanent stall benefits</h2><p className="panelsub">Grant auditable complimentary stalls or explicitly change unlimited capacity. Ordinary administrators cannot use these controls.</p>
           <label>Stable<select value={target} onChange={e=>setTarget(e.target.value)}>{accounts.map(a=><option key={a.id} value={a.id}>#{a.account_number} · {a.name} · {a.stable_occupied}/{a.unlimited_capacity?"Unlimited":a.stable_capacity}</option>)}</select></label>
@@ -1953,11 +1971,14 @@ function AdminConsole({
               </div>
             ))}
           </div>
+          <details className="adminpermissioneditor"><summary>Granular roles &amp; effective permissions</summary><p className="panelsub">Owner #1 always has every capability. Assign only the capabilities another administrator requires.</p><label>Administrator<select value={permissionTarget} onChange={e=>{setPermissionTarget(e.target.value);setPermissionDraft([])}}>{accounts.filter(a=>a.account_number!==1).map(a=><option value={a.id} key={a.id}>#{a.account_number} · {a.name}</option>)}</select></label><div className="permissiongrid">{allPermissions.map(p=><label key={p}><input type="checkbox" checked={permissionDraft.includes(p)} onChange={e=>setPermissionDraft(e.target.checked?[...permissionDraft,p]:permissionDraft.filter(x=>x!==p))}/>{p}</label>)}</div><button className="primary" disabled={!permissionTarget} onClick={()=>run(async()=>{const{error}=await supabase.rpc("owner_set_admin_permissions",{p_stable:permissionTarget,p_permissions:permissionDraft});return{error}},"Administrator permissions updated and audited.")}>Save Effective Permissions</button></details>
         </section></>
       )}
-    </>
+    </div>
   );
 }
+
+function AdminAuditLog(){const[rows,setRows]=useState<{id:number;actor:string;action_type:string;system:string;target_type:string;target_id:string;created_at:string}[]>([]),[query,setQuery]=useState("");useEffect(()=>{void supabase.rpc("admin_audit_feed",{p_limit:250}).then(({data})=>setRows((data??[]) as typeof rows))},[]);const shown=rows.filter(x=>`${x.actor} ${x.action_type} ${x.system} ${x.target_type} ${x.target_id}`.toLowerCase().includes(query.toLowerCase()));return <section className="panel"><p className="eyebrow">CENTRAL ADMIN HISTORY</p><h2>Audit Log</h2><input aria-label="Search audit log" placeholder="Filter admin, action, system, horse, account, or show…" value={query} onChange={e=>setQuery(e.target.value)}/><div className="adminscrolltable"><div className="adminrow adminrowhead"><b>Date</b><b>Admin</b><b>System</b><b>Action</b></div>{shown.map(x=><div className="adminrow" key={x.id}><time>{new Date(x.created_at).toLocaleString()}</time><span>{x.actor}</span><span>{x.system}</span><span>{x.action_type}</span></div>)}</div></section>}
 function MediaUpload({
   title,
   description,

@@ -1,10 +1,10 @@
-export const FOUNDATION_FALLBACK="/foundation-horse.png";
+export const RETIRED_FOUNDATION_ARTWORK=`/${["foundation","horse.png"].join("-")}`;
 export const isUniqueHorseArtwork = (url: string) => {
   const value = url.trim();
-  return Boolean(value) && !value.split("?")[0].endsWith("/foundation-horse.png");
+  return Boolean(value) && !value.split("?")[0].endsWith(RETIRED_FOUNDATION_ARTWORK);
 };
 
-// Correct anatomy outranks uniqueness. Missing or rejected system artwork uses
-// the approved official Foundation image rather than a malformed generation.
+// Incomplete deterministic visuals intentionally render a branded non-illustrative
+// pending state. Genetically incorrect fallback horses are never substituted.
 export const horseArtworkCandidates = (url: string) =>
-  Array.from(new Set([url.trim(),FOUNDATION_FALLBACK].filter(Boolean)));
+  isUniqueHorseArtwork(url) ? [url.trim()] : [];

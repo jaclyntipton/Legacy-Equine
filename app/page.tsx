@@ -12,6 +12,7 @@ import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
 import { HorseImageTemplates } from "@/app/horse-image-templates";
 import { BreedGeneticsAdmin } from "@/app/breed-genetics-admin";
+import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
@@ -1673,7 +1674,8 @@ function AdminConsole({
       "Strawberry Roan",
     ],
     patterns = ["Solid", "Tobiano", "Frame Overo", "Sabino", "Splashed White"],
-    markOptions = ["none", "coronet", "pastern", "sock", "stocking"];
+    faceMarkOptions = ["none","snip_01","faint_01","faint_star_01","star_01","half_star_01","strip_01","broken_strip_01","star_strip_01","blaze_01","blaze_snip_01","irregular_blaze_01","bald_face_01"],
+    markOptions = ["none","coronet_01","white_heel_01","half_pastern_01","pastern_01","ankle_01","half_sock_01","full_sock_01","high_sock_01"];
   return (
     <>
       <Title
@@ -1682,6 +1684,7 @@ function AdminConsole({
       />
       {message && <div className="notice">✦ {message}</div>}
       <HorseImageTemplates notify={setMessage} changed={changed}/>
+      <VisualAssetRequirements notify={setMessage}/>
       <BreedGeneticsAdmin notify={setMessage}/>
       <section className="panel settingsform">
         <p className="eyebrow">LE ECONOMY</p>
@@ -1803,7 +1806,7 @@ function AdminConsole({
                 setMarkings({ ...markings, face: e.target.value })
               }
             >
-              {["none", "star", "snip", "stripe", "blaze", "bald face"].map(
+              {faceMarkOptions.map(
                 (x) => (
                   <option key={x}>{x}</option>
                 ),

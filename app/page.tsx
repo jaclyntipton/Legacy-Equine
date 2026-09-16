@@ -174,22 +174,25 @@ const canBreed = (h: Horse) =>
       GAME.mareCooldownDays * 86400000);
 async function uploadMedia(
   file: File,
-  category: "ranches" | "avatars" | "horses",
+  _category: "ranches" | "avatars" | "horses",
 ) {
   if (
-    !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type)
+    !["image/jpeg", "image/png", "image/webp"].includes(file.type)
   )
-    throw new Error("Choose a JPG, PNG, WebP, or GIF image");
+    throw new Error("Choose a JPG, PNG, or WebP image");
   if (file.size > 5 * 1024 * 1024)
     throw new Error("Images must be 5 MB or smaller");
   const { data } = await supabase.auth.getUser();
   if (!data.user) throw new Error("Sign in to upload images");
-  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg",
-    path = `${data.user.id}/${category}/${crypto.randomUUID()}.${ext}`;
+  const bitmap=await createImageBitmap(file),scale=Math.min(1,1200/bitmap.width,1200/bitmap.height),width=Math.round(bitmap.width*scale),height=Math.round(bitmap.height*scale),canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;canvas.getContext("2d")!.drawImage(bitmap,0,0,width,height);bitmap.close();
+  const processed=scale<1?await new Promise<Blob>((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error("Image processing failed")),file.type,.9)):file;
+  const ext=file.type==="image/jpeg"?"jpg":file.type.split("/")[1],{data:reservation,error:reserveError}=await supabase.rpc("reserve_artwork_album_upload",{p_mime:processed.type,p_byte_size:processed.size,p_extension:ext});if(reserveError)throw reserveError;
+  const path=(reservation as {storage_path:string}).storage_path,item=(reservation as {id:string}).id;
   const { error } = await supabase.storage
     .from("legacy-equine-media")
-    .upload(path, file, { cacheControl: "3600" });
-  if (error) throw error;
+    .upload(path, processed, { cacheControl: "3600" });
+  if (error){await supabase.rpc("remove_artwork_album_item",{p_item:item});throw error;}
+  const{error:finalizeError}=await supabase.rpc("finalize_artwork_album_upload",{p_item:item,p_width:width,p_height:height});if(finalizeError){await supabase.storage.from("legacy-equine-media").remove([path]);await supabase.rpc("remove_artwork_album_item",{p_item:item});throw finalizeError;}
   return supabase.storage.from("legacy-equine-media").getPublicUrl(path).data
     .publicUrl;
 }

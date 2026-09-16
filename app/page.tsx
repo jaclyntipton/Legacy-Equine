@@ -20,6 +20,7 @@ import { StableBrandSettings } from "@/app/stable-brand-settings";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { ArtworkStorageAdmin } from "@/app/artwork-storage-admin";
+import { ArtworkAlbum } from "@/app/artwork-album";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -214,6 +215,7 @@ export default function Home() {
     [notice, setNotice] = useState("Welcome to Legacy Equine."),
     [view, setView] = useState<
       | "stable"
+      | "profile"
       | "store"
       | "storehorse"
       | "horse"
@@ -241,6 +243,7 @@ export default function Home() {
     [horseBreeding, setHorseBreeding] = useState("all"),
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards");
+  const [stableTab,setStableTab]=useState<"horses"|"tack"|"feed"|"supplies">("horses"),[profileTab,setProfileTab]=useState<"profile"|"artwork"|"settings">("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
   const [storeDepartment,setStoreDepartment]=useState<"horses"|"feed"|"tack"|"supplies">("horses"),[storeBreed,setStoreBreed]=useState(""),[storeProducts,setStoreProducts]=useState<StoreProduct[]>([]);
   const artworkWorker = useRef<Promise<void> | null>(null);
   const load = useCallback(async (u: User | null) => {
@@ -476,7 +479,7 @@ export default function Home() {
   return (
     <div className="shell">
       <aside className="game-sidebar">
-        <button className="brand" onClick={() => setView("stable")}>
+        <button className="brand" onClick={() => {setStableTab("horses");setView("stable")}}>
           <span className="mark">LE</span>
           <span>
             Legacy Equine™<small>Breed Your Legacy.</small>
@@ -487,7 +490,7 @@ export default function Home() {
             className={view === "stable" ? "active" : ""}
             onClick={() => setView("stable")}
           >
-            <NavIcon name="barn"/>Stable Home
+            <NavIcon name="barn"/>My Stable
           </button>
           <button
             className={
@@ -541,22 +544,21 @@ export default function Home() {
       </aside>
       <div className="game-column">
         <header className="topbar">
-          <button className="account-home" onClick={() => setView("stable")}>
-            <small>LE ACCOUNT #{stable.account_number}</small>
-            <b>{stable.name}</b>
+          <button className="account-home" onClick={() => {setProfileTab("profile");setView("profile")}} aria-label="Open My Profile">
+            {stable.avatar_url?<img src={stable.avatar_url} alt=""/>:<span>LE</span>}<i><small>LE ACCOUNT #{stable.account_number}</small><b>{stable.username?`@${stable.username}`:stable.name}</b></i>
           </button>
           <nav className="account-nav" aria-label="Account links">
             <button
-              className={view === "stable" ? "active" : ""}
-              onClick={() => setView("stable")}
+              className={view === "profile" ? "active" : ""}
+              onClick={() => {setProfileTab("profile");setView("profile")}}
             >
               My Profile
             </button>
             <button
-              className={view === "settings" ? "active" : ""}
-              onClick={() => setView("settings")}
+              className={view === "stable" ? "active" : ""}
+              onClick={() => {setStableTab("horses");setView("stable")}}
             >
-              Settings
+              My Stable
             </button>
             {stable.is_admin && (
               <button
@@ -578,49 +580,18 @@ export default function Home() {
         </header>
         <main>
           <div className="notice">✦ {notice}</div>
+          {purchaseDestination&&<div className="purchasearrival"><span>Purchase complete — find it in your {purchaseDestination.label}.</span><button onClick={()=>{setStableTab(purchaseDestination.tab);setPurchaseDestination(null);setView("stable")}}>Go to {purchaseDestination.label} →</button></div>}
+          {view === "profile" && <>
+            <nav className="sectiontabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>setProfileTab("profile")}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>setProfileTab("artwork")}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>setProfileTab("settings")}>Settings</button></nav>
+            {profileTab==="profile"&&<><section className={`hero playerprofilehero ${stable.ranch_image_url?"has-ranch-image":""}`} style={stable.ranch_image_url?{backgroundImage:`linear-gradient(90deg,#3b2359dd,#6947a899),url(${stable.ranch_image_url})`}:undefined}><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1><p className="profile-stable-name">{stable.name}</p>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself and your stable."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div></section></>}
+            {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
+            {profileTab==="settings"&&<SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/>} 
+          </>}
           {view === "stable" && (
             <>
-              <section
-                className={`hero ${stable.ranch_image_url ? "has-ranch-image" : ""}`}
-                style={
-                  stable.ranch_image_url
-                    ? {
-                        backgroundImage: `linear-gradient(90deg,#3b2359dd,#6947a899),url(${stable.ranch_image_url})`,
-                      }
-                    : undefined
-                }
-              >
-                <div>
-                  <p className="eyebrow">
-                    LE ACCOUNT #{stable.account_number} · ESTABLISHED{" "}
-                    {new Date(stable.created_at).getFullYear()}
-                  </p>
-                  <h1>{stable.name}</h1>
-                  {progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} {progression.level===50?"Lifetime ":""}XP</p>}
-                  <p>
-                    {stable.bio ||
-                      "Your bloodline begins here. Develop promising horses, make thoughtful pairings, and shape a legacy that lasts."}
-                  </p>
-                  <button className="primary" onClick={() => setView("store")}>
-                    Visit the LE Store →
-                  </button>
-                </div>
-                <div className="crest">
-                  {stable.avatar_url ? (
-                    <img
-                      src={stable.avatar_url}
-                      alt={`${stable.username ?? stable.name} avatar`}
-                    />
-                  ) : (
-                    <span>LE</span>
-                  )}
-                  <small>
-                    {stable.username
-                      ? `@${stable.username}`
-                      : `ACCOUNT #${stable.account_number}`}
-                  </small>
-                </div>
-              </section>
+              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><button className="primary" onClick={()=>setView("store")}>Visit LE Store</button></section>
+              <nav className="sectiontabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>setStableTab("horses")}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>setStableTab("tack")}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>setStableTab("feed")}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>setStableTab("supplies")}>Supply Room</button></nav>
+              {stableTab==="horses"&&<>
               <section className="stats">
                 <div>
                   <small>STABLE CAPACITY</small>
@@ -661,6 +632,8 @@ export default function Home() {
               ) : (
                 <Empty go={() => setView("store")} />
               )}
+              </>}
+              {stableTab!=="horses"&&<StableInventory room={stableTab} horses={horses} notify={setNotice} refresh={()=>void load(user)}/>} 
             </>
           )}
           {view === "store" && (
@@ -698,7 +671,7 @@ export default function Home() {
                 ))}
               </div>
               <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>setView("stalls")}>Add Stalls</button> or <button onClick={()=>setView("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
-              {storeDepartment!=="horses"&&<><div className="productgrid">{storeProducts.filter(p=>p.department===(storeDepartment==="supplies"?"stable_supplies":storeDepartment)).map(p=><article className="productcard" key={p.id}><p className="eyebrow">{p.department==="feed"?"OPTIONAL DEVELOPMENT":`${p.quality??"STABLE"} ${p.tack_slot?.replaceAll("_"," ")??"SUPPLY"}`}</p><h3>{p.name}</h3><p>{p.description}</p>{p.department==="feed"&&<small>{Math.round((p.feed_success_probability??0)*100)}% development opportunity · +{p.development_min}–{p.development_max} to a configured eligible stat · one feeding per LE day</small>}{p.department==="tack"&&<div className="productbonus">{Object.entries(p.tack_bonuses).map(([stat,n])=><span key={stat}>{stat} +{n} Effective</span>)}</div>}<footer><b>{money(p.price)} LED</b><button className="primary" disabled={loading||stable.balance<p.price} onClick={()=>action(async()=>{const{error}=await supabase.rpc("purchase_store_product",{p_product:p.id,p_quantity:1});return{error}},`${p.name} added to your Stable inventory.`)}>Purchase</button></footer></article>)}</div><StableInventory horses={horses} notify={setNotice} refresh={()=>void load(user)}/></>}
+              {storeDepartment!=="horses"&&<div className="productgrid">{storeProducts.filter(p=>p.department===(storeDepartment==="supplies"?"stable_supplies":storeDepartment)).map(p=>{const destination=p.department==="feed"?{label:"Feed Room",tab:"feed" as const}:p.department==="tack"?{label:"Tack Room",tab:"tack" as const}:{label:"Supply Room",tab:"supplies" as const};return <article className="productcard" key={p.id}><p className="eyebrow">{p.department==="feed"?"OPTIONAL DEVELOPMENT":`${p.quality??"STABLE"} ${p.tack_slot?.replaceAll("_"," ")??"SUPPLY"}`}</p><h3>{p.name}</h3><p>{p.description}</p>{p.department==="feed"&&<small>{Math.round((p.feed_success_probability??0)*100)}% development opportunity · +{p.development_min}–{p.development_max} to a configured eligible stat · one feeding per LE day</small>}{p.department==="tack"&&<div className="productbonus">{Object.entries(p.tack_bonuses).map(([stat,n])=><span key={stat}>{stat} +{n} Effective</span>)}</div>}<footer><b>{money(p.price)} LED</b><button className="primary" disabled={loading||stable.balance<p.price} onClick={()=>void action(async()=>{const{error}=await supabase.rpc("purchase_store_product",{p_product:p.id,p_quantity:1});if(!error)setPurchaseDestination(destination);return{error}},`${p.name} added to your ${destination.label}.`)}>Purchase</button></footer></article>})}</div>}
             </>
           )}
           {storeHorse && view === "storehorse" && (
@@ -783,24 +756,7 @@ export default function Home() {
             />
           )}{" "}
           {/* Community */}
-          {view === "settings" && (
-            <SettingsView
-              stable={stable}
-              horses={horses}
-              save={(name, username, bio) =>
-                action(async () => {
-                  const { error } = await supabase.rpc(
-                    "update_stable_profile",
-                    { new_name: name, new_username: username, new_bio: bio },
-                  );
-                  return { error };
-                }, "Account profile updated.")
-              }
-              uploadRanch={(file) => uploadStableMedia("ranch", file)}
-              uploadAvatar={(file) => uploadStableMedia("avatar", file)}
-              uploadHorse={uploadHorseMedia}
-            />
-          )}{" "}
+          {view === "settings" && null}{" "}
           {/* Settings */}
           {view === "admin" && stable.is_admin && (
               <AdminConsole
@@ -1472,18 +1428,14 @@ function CommunityView({
 }
 function SettingsView({
   stable,
-  horses,
   save,
   uploadRanch,
   uploadAvatar,
-  uploadHorse,
 }: {
   stable: Stable;
-  horses: Horse[];
   save: (name: string, username: string, bio: string) => void;
   uploadRanch: (f: File) => void;
   uploadAvatar: (f: File) => void;
-  uploadHorse: (h: Horse, f: File) => void;
 }) {
   const [name, setName] = useState(stable.name),
     [username, setUsername] = useState(stable.username ?? ""),
@@ -1562,30 +1514,6 @@ function SettingsView({
         </div>
       </section>
       <StableBrandSettings notify={(message)=>window.alert(message)}/>
-      <section className="panel">
-        <h2>Horse Images</h2>
-        <p className="panelsub">
-          Every horse keeps its own independent profile image.
-        </p>
-        <div className="horseuploads">
-          {horses.map((h) => (
-            <MediaUpload
-              key={h.id}
-              title={h.name}
-              description={`${h.breed} · ${h.sex}`}
-              image={isUniqueHorseArtwork(h.image_url) ? h.image_url : ""}
-              shape="horse"
-              upload={(file) => uploadHorse(h, file)}
-            />
-          ))}
-        </div>
-        {!horses.length && (
-          <p className="featurehint">
-            Your horse image controls will appear here after your first
-            purchase.
-          </p>
-        )}
-      </section>
     </>
   );
 }

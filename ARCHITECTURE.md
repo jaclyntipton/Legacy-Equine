@@ -114,3 +114,11 @@ Show creation quotas and unlocks are checked in security-definer functions. Bulk
 Visual uploads are immutable version rows linked by `supersedes_asset_id`; replacement changes only the requirement's current pointer. `admin_review_visual_asset`, `admin_rollback_visual_asset`, and `admin_promote_visual_asset` are separate Owner-secured transitions. Production changes are written to `horse_visual_production_history`. The client preview compositor never mutates horses or assets.
 
 `stable_brands` reserves the current stable code/mark, while each horse stores assignment-time code, mark URL/version, assigning account, origin, and timestamp. Database triggers brand completed Foundation purchases and new foals; foals resolve the dam's owner at birth. `stable_brand_audit` records registration, assignment, privilege changes, and future corrections without coupling Brand identity to horse names or gameplay stats.
+# Player information architecture
+
+The authenticated shell has two separate bounded contexts:
+
+- `My Profile`: player identity, social information, Artwork Album, stable display settings, avatar, ranch image, biography, and permanent brand settings.
+- `My Stable`: horse roster and owned inventory rooms. `player_store_items` remains the single source of truth; the room UI filters it by the active `store_products.department` rather than copying inventory records.
+
+Store purchase completion returns a destination descriptor (`Feed Room`, `Tack Room`, or `Supply Room`) and a direct navigation action. Horse artwork selection reads the same `artwork_album_items` records governed by Artwork Album entitlements; no secondary upload library is created.

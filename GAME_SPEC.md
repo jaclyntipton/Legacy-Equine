@@ -160,3 +160,10 @@ Horse visual production is human-supplied and review-led. Bulk PNG/WebP imports 
 The QH artist workspace provides separate Mare and Stallion ZIP starter packs using the immutable 1496×1051 masters, exact transparent canvases, manifests, naming/layer guides, and non-production anatomical overlays. Review uses full registered-resolution compositing with zoom/pan/layer toggles, temporary multi-layer previews, actual-asset contact sheets, per-asset Owner notes, explicit Needs Revision/Reject/Approve actions, version history, rollback, coverage counts, and a separate guarded Production promotion.
 
 Stable Brands are non-stat provenance available to active subscribers, Owner #1, and accounts with explicit Brand Privilege. A unique reserved 2–4 character code and optional transparent mark are snapshotted permanently when an eligible stable purchases a Foundation horse or owns the dam when a foal is born. A later sale, transfer, subscription expiration, or Brand Mark update never rewrites a horse's historical Brand. Twisted Fox Ranch #1 permanently reserves `TFR`.
+# Player information architecture
+
+- **My Profile** is the player/account/social identity destination. Its permanent tabs are Profile, Artwork Album, and Settings. The header avatar/account identity always opens My Profile.
+- **My Stable** is the owned-horse and physical-inventory management destination. Its permanent tabs are My Horses, Tack Room, Feed Room, and Supply Room.
+- Feed and hay purchases route to Feed Room; tack routes to Tack Room; stable-supply SKUs route to Supply Room. Store pages never double as owned-inventory rooms.
+- Horse profiles remain separate destinations. An owner may select profile artwork from their Artwork Album, an external permitted URL, or the horse's approved Legacy Equine visual.
+- Public stable presentation is distinct from these authenticated management views.

@@ -94,3 +94,12 @@ The client horse profile is a tab-state view keyed by URL hash, allowing deep li
 Show creation quotas and unlocks are checked in security-definer functions. Bulk creation validates the entire Cartesian selection before inserting, so failures roll back the full set. Advanced bulk entry previews each horse/show pair and executes through the existing locked, transactional show-entry path. XP triggers run only from permanent show results and use unique event keys to prevent retries from duplicating XP.
 
 `stable_layouts` stores versioned safe JSON block data only; arbitrary scripts and HTML are not part of the schema. `phone_e164` has a partial unique index when verified. Lifecycle periods and progression/economy constants are stored in `progression_config` for Alpha tuning.
+# Store and horse-care architecture
+
+`foundation_breeds` owns per-breed inventory size, optional price, and optional refresh interval. `refresh_store_inventory()` locks globally, evaluates each breed independently, expires only that breed's stale stock, and fills it to its configured count. `store_inventory` remains the permanent shared sale/expiration audit trail.
+
+`store_products` is the configuration source for Feed, Tack, and Stable Supplies. Purchases create individually addressable `player_store_items` through a server-priced LED transaction. `horse_feed_log` enforces one daily feeding and records before/after Developed Stats. `horse_equipment` enforces one item per extensible slot and `recalculate_horse_tack()` derives the cached effective-stat bonus map from equipped assets.
+
+`horse_wellness` stores bounded components and a recovery anchor. Reads materialize timestamp-derived passive Recovery. Activity and professional-service triggers provide auditable wear/restoration without modifying inherited stats. Show entry uses a deterministic configured minimum readiness threshold.
+
+`horse_game_config.real_days_per_horse_year` is the single aging rate. `horse_game_age()` provides precise continuous age from `horses.birth_date`; no aging cron mutates ages. Existing timestamps were migrated while preserving their pre-migration displayed ages.

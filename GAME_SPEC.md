@@ -139,3 +139,14 @@ The LE week begins Friday 12:00 AM America/New_York. Weekly show-hosting limits 
 Weekly Stable Allowance is claimed in Bank, never auto-deposited. Base values rise from 500 LED at Level 1 to 1,500 LED at Level 50 in configured five-level bands. Active subscribers receive +100 LED and may preserve up to six individual missed entitlements; preserved entitlements remain collectible after expiration. Free missed entitlements expire at the next Friday boundary. Each entitlement snapshots week, level, base, bonus, total, timestamps, protection, and status.
 
 Full player-to-player economy access unlocks at Level 5. The server—not the client—enforces progression gates. One verified phone may be associated with only one Stable; IP data is a risk signal and never a sole uniqueness rule. Account lifecycle periods are configuration-driven.
+# Store, Development, Equipment, Wellness, and Aging
+
+The LE Store has separate Foundation Horses, Feed & Hay, Tack, and Stable Supplies departments. Foundation horses are shared global inventory organized by breed, with four active horses per enabled breed by default and independent server-authoritative hourly rotation. Every Foundation card exposes all seven stats; checkout transfers the exact horse transactionally and immediately refills only that breed.
+
+Feed is optional permanent Development, limited to one qualifying feeding per horse per America/New_York calendar day. Missing a day has no penalty and does not bank attempts. Products configure server-side price, success probability, award range, and eligible stats. Every result is permanent history. Successful Feed Development contributes to Developed Stats and breeding.
+
+Tack occupies Bridle, Saddle, Saddle Pad, or Leg Protection slots. Equipped bonuses contribute only to Effective Stats and show scoring; they never alter Birth or Developed Stats and are never inherited. Products and bonuses are data-driven and LED-only.
+
+Wellness is independent of the seven stats: Health, Hooves, Recovery, and weighted Competition Readiness on a bounded 0–100 scale. Training wears Recovery; showing wears Recovery and Hooves. Recovery passively improves from elapsed time. Routine Vet care restores Health once per half horse-year; Farrier and Massage restore Hooves and Recovery respectively once per Friday–Thursday LE week. Professional certification controls configured maximum restoration, and service history records before/after Wellness.
+
+Horse age is continuously timestamp-derived at one horse-year per 28 real days. Player display should use years/months, while breeding and care windows use unrounded precision. Breeding remains eligible from exactly age 3 through the instant before age 26.

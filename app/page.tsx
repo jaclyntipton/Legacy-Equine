@@ -13,6 +13,7 @@ import { HorseProfile as HorsePage } from "@/app/horse-profile";
 import { HorseImageTemplates } from "@/app/horse-image-templates";
 import { BreedGeneticsAdmin } from "@/app/breed-genetics-admin";
 import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
+import { StableInventory } from "@/app/stable-inventory";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
@@ -89,6 +90,7 @@ type StoreHorse = {
   generated_at: string;
   rotation_key: string;
 };
+type StoreProduct={id:string;department:"feed"|"tack"|"stable_supplies";name:string;description:string;price:number;feed_success_probability:number|null;development_min:number|null;development_max:number|null;eligible_stats:string[]|null;tack_slot:string|null;quality:string|null;tack_bonuses:Record<string,number>};
 type Show = {
   id: string;
   discipline: string;
@@ -220,6 +222,7 @@ export default function Home() {
     [horseBreeding, setHorseBreeding] = useState("all"),
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards");
+  const [storeDepartment,setStoreDepartment]=useState<"horses"|"feed"|"tack"|"supplies">("horses"),[storeBreed,setStoreBreed]=useState(""),[storeProducts,setStoreProducts]=useState<StoreProduct[]>([]);
   const artworkWorker = useRef<Promise<void> | null>(null);
   const load = useCallback(async (u: User | null) => {
     setUser(u);
@@ -290,9 +293,10 @@ export default function Home() {
     setView("horse");
   };
   const loadStore = useCallback(async () => {
-    const { data, error } = await supabase.rpc("get_store_inventory");
+    const [{data,error},{data:products}]=await Promise.all([supabase.rpc("get_store_inventory"),supabase.from("store_products").select("*").eq("active",true).order("sort_order")]);
     if (error) setNotice(error.message);
     else setInventory((data ?? []) as StoreHorse[]);
+    setStoreProducts((products??[])as StoreProduct[]);
   }, []);
   const generateStoreArtwork = useCallback(async () => {
     // Production per-horse AI generation is retired. Visuals are assigned
@@ -646,7 +650,8 @@ export default function Home() {
                 title="The LE Store"
                 sub="Browse the shared Foundation herd and find the horse that speaks to you"
               />
-              <div className="storebar">
+              <nav className="storedepartments" aria-label="LE Store departments"><button className={storeDepartment==="horses"?"active":""} onClick={()=>setStoreDepartment("horses")}>Foundation Horses</button><button className={storeDepartment==="feed"?"active":""} onClick={()=>setStoreDepartment("feed")}>Feed &amp; Hay</button><button className={storeDepartment==="tack"?"active":""} onClick={()=>setStoreDepartment("tack")}>Tack</button><button className={storeDepartment==="supplies"?"active":""} onClick={()=>setStoreDepartment("supplies")}>Stable Supplies</button></nav>
+              {storeDepartment==="horses"&&<><div className="breedshop"><button className={!storeBreed?"active":""} onClick={()=>setStoreBreed("")}>All Breeds</button>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><button className={storeBreed===b?"active":""} key={b} onClick={()=>setStoreBreed(b)}>{b}<small>{inventory.filter(h=>h.breed===b).length} available</small></button>)}</div><div className="storebar">
                 <span>✦ {inventory.length} Foundation horses available</span>
                 <span>
                   {inventory[0]
@@ -656,7 +661,7 @@ export default function Home() {
                 <button onClick={loadStore}>Refresh store</button>
               </div>
               <div className="inventorygrid">
-                {inventory.map((h) => (
+                {inventory.filter(h=>!storeBreed||h.breed===storeBreed).map((h) => (
                   <StoreCard
                     key={h.inventory_id}
                     h={h}
@@ -673,7 +678,8 @@ export default function Home() {
                   />
                 ))}
               </div>
-              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>setView("stalls")}>Add Stalls</button> or <button onClick={()=>setView("sanctuary")}>Visit Sanctuary</button>.</>}</p>
+              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>setView("stalls")}>Add Stalls</button> or <button onClick={()=>setView("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
+              {storeDepartment!=="horses"&&<><div className="productgrid">{storeProducts.filter(p=>p.department===(storeDepartment==="supplies"?"stable_supplies":storeDepartment)).map(p=><article className="productcard" key={p.id}><p className="eyebrow">{p.department==="feed"?"OPTIONAL DEVELOPMENT":`${p.quality??"STABLE"} ${p.tack_slot?.replaceAll("_"," ")??"SUPPLY"}`}</p><h3>{p.name}</h3><p>{p.description}</p>{p.department==="feed"&&<small>{Math.round((p.feed_success_probability??0)*100)}% development opportunity · +{p.development_min}–{p.development_max} to a configured eligible stat · one feeding per LE day</small>}{p.department==="tack"&&<div className="productbonus">{Object.entries(p.tack_bonuses).map(([stat,n])=><span key={stat}>{stat} +{n} Effective</span>)}</div>}<footer><b>{money(p.price)} LED</b><button className="primary" disabled={loading||stable.balance<p.price} onClick={()=>action(async()=>{const{error}=await supabase.rpc("purchase_store_product",{p_product:p.id,p_quantity:1});return{error}},`${p.name} added to your Stable inventory.`)}>Purchase</button></footer></article>)}</div><StableInventory horses={horses} notify={setNotice} refresh={()=>void load(user)}/></>}
             </>
           )}
           {storeHorse && view === "storehorse" && (
@@ -1076,7 +1082,7 @@ function StoreCard({
           {handHeight(h.mature_height_hands)}
         </p>
         <div className="storestats">
-          {GAME.stats.slice(0, 4).map((s) => (
+          {GAME.stats.map((s) => (
             <span key={s}>
               <small>{s}</small>
               <b>{h.stats[s]}</b>

@@ -19,6 +19,7 @@ import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { StableBrandSettings } from "@/app/stable-brand-settings";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
+import { ArtworkStorageAdmin } from "@/app/artwork-storage-admin";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -1922,7 +1923,7 @@ function AdminConsole({
         </button>
       </section>}
       {topic==="accounts"&&ownerAccount && (
-        <><section className="panel settingsform">
+        <><ArtworkStorageAdmin notify={setMessage}/><section className="panel settingsform">
           <p className="eyebrow">OWNER CAPACITY CONTROL</p><h2>Permanent stall benefits</h2><p className="panelsub">Grant auditable complimentary stalls or explicitly change unlimited capacity. Ordinary administrators cannot use these controls.</p>
           <label>Stable<select value={target} onChange={e=>setTarget(e.target.value)}>{accounts.map(a=><option key={a.id} value={a.id}>#{a.account_number} · {a.name} · {a.stable_occupied}/{a.unlimited_capacity?"Unlimited":a.stable_capacity}</option>)}</select></label>
           <label>Complimentary stalls<input type="number" min={1} value={stallGrant} onChange={e=>setStallGrant(Number(e.target.value))}/></label><label>Reason<input value={stallReason} onChange={e=>setStallReason(e.target.value)}/></label>

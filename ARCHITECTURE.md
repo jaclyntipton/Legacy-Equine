@@ -109,4 +109,6 @@ Show creation quotas and unlocks are checked in security-definer functions. Bulk
 
 `horse_visual_asset_requirements` is the exact-master requirement matrix. `admin_visual_asset_manifest()` supplies both human- and machine-readable exports. `admin_register_visual_asset()` validates master canvas, type, and size again on the server, registers a human upload, and leaves it in Review. Approval and Production remain separate explicit Owner actions.
 
+Visual uploads are immutable version rows linked by `supersedes_asset_id`; replacement changes only the requirement's current pointer. `admin_review_visual_asset`, `admin_rollback_visual_asset`, and `admin_promote_visual_asset` are separate Owner-secured transitions. Production changes are written to `horse_visual_production_history`. The client preview compositor never mutates horses or assets.
+
 `stable_brands` reserves the current stable code/mark, while each horse stores assignment-time code, mark URL/version, assigning account, origin, and timestamp. Database triggers brand completed Foundation purchases and new foals; foals resolve the dam's owner at birth. `stable_brand_audit` records registration, assignment, privilege changes, and future corrections without coupling Brand identity to horse names or gameplay stats.

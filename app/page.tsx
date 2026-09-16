@@ -22,7 +22,7 @@ type Horse = {
   owner_id: string | null;
   name: string;
   breed: string;
-  sex: "Mare" | "Stallion";
+  sex: "Mare" | "Stallion" | "Gelding";
   color: string;
   origin: "Foundation" | "Bred" | "Admin Custom";
   birth_date: string;
@@ -69,6 +69,7 @@ type AdminStable = {
   stable_occupied: number;
   stable_capacity: number;
   unlimited_capacity: boolean;
+  can_edit_horses: boolean;
 };
 type StoreHorse = {
   inventory_id: string;
@@ -178,6 +179,7 @@ export default function Home() {
     [capacity, setCapacity] = useState<StableCapacity | null>(null),
     [sanctuary, setSanctuary] = useState<SanctuaryHorse[]>([]),
     [competitionTiers,setCompetitionTiers]=useState<CompetitionTier[]>([]),
+    [canHorseEdit,setCanHorseEdit]=useState(false),
     [horses, setHorses] = useState<Horse[]>([]),
     [inventory, setInventory] = useState<StoreHorse[]>([]),
     [shows, setShows] = useState<Show[]>([]),
@@ -223,7 +225,7 @@ export default function Home() {
       setLoading(false);
       return;
     }
-    const [{ data: s, error: stableError }, { data: h }, { data: c },{data:tierData}] = await Promise.all([
+    const [{ data: s, error: stableError }, { data: h }, { data: c },{data:tierData},{data:horseEditorAccess}] = await Promise.all([
         supabase
           .from("stables")
           .select(
@@ -238,12 +240,14 @@ export default function Home() {
           .order("created_at"),
         supabase.rpc("get_my_stable_capacity"),
         supabase.from("show_tiers").select("id,name,minimum_points,maximum_points,sort_order").eq("active",true).order("sort_order"),
+        supabase.rpc("has_horse_editor_permission"),
       ]);
     if (stableError) setNotice(stableError.message);
     setStable(s);
     setHorses((h ?? []) as Horse[]);
     setCapacity((c ?? null) as StableCapacity | null);
     setCompetitionTiers((tierData??[])as CompetitionTier[]);
+    setCanHorseEdit(Boolean(horseEditorAccess));
     setLoading(false);
   }, []);
   useEffect(() => {
@@ -446,7 +450,7 @@ export default function Home() {
         <button className="brand" onClick={() => setView("stable")}>
           <span className="mark">LE</span>
           <span>
-            Legacy Equine<small>Breed Your Legacy.</small>
+            Legacy Equine™<small>Breed Your Legacy.</small>
           </span>
         </button>
         <nav className="game-nav" aria-label="Game areas">
@@ -787,6 +791,8 @@ export default function Home() {
                 stableName={`${stable.name} · #${stable.account_number}`}
                 canEdit={horse.owner_id === user.id}
                 isAdmin={stable.is_admin}
+                canHorseEdit={canHorseEdit}
+                onHorseEdited={()=>void load(user)}
                 openHorse={(relative) => {
                   const profileHorse = relative as Horse;
                   setHorses((current) =>
@@ -889,8 +895,8 @@ function Auth() {
   return (
     <div className="auth">
       <div className="authbrand">
-        <span className="mark">LE</span>
-        <h1>Legacy Equine</h1>
+        <img className="officiallogo" src="/legacy-equine-logo.png" alt="Legacy Equine™" />
+        <h1>Legacy Equine™</h1>
         <p>Breed Your Legacy.</p>
       </div>
       <div className="authcard">
@@ -1882,6 +1888,7 @@ function AdminConsole({
                     #{a.account_number} · {a.name}
                   </b>
                   <small>{a.is_admin ? "Administrator" : "Player"}</small>
+                  <small>{a.can_edit_horses ? "Horse Editor permitted" : "No Horse Editor permission"}</small>
                 </span>
                 <button
                   disabled={a.account_number === 1}
@@ -1899,6 +1906,12 @@ function AdminConsole({
                   }
                 >
                   {a.is_admin ? "Remove Admin" : "Make Admin"}
+                </button>
+                <button
+                  disabled={a.account_number === 1}
+                  onClick={() => run(async()=>{const{error}=await supabase.rpc("owner_set_horse_editor_permission",{target_stable:a.id,grant_permission:!a.can_edit_horses});return{error}},`${a.name} ${a.can_edit_horses?"no longer has":"now has"} Horse Editor permission.`)}
+                >
+                  {a.can_edit_horses ? "Remove Horse Editor" : "Grant Horse Editor"}
                 </button>
               </div>
             ))}

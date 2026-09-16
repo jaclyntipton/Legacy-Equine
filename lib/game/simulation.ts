@@ -30,4 +30,4 @@ export const isBreedingAge = (horse: Horse, now = new Date()) => {
   return age >= GAME.age.breedingMinimumYears && age < GAME.age.breedingMaximumYears + 1;
 };
 export const canBreed = (horse: Horse, now = new Date()) => !horse.retired && isBreedingAge(horse, now) && (horse.sex === "Stallion" || !cooldownEnds(horse) || cooldownEnds(horse)!.getTime() <= now.getTime());
-export const canTrain = (horse: Horse, now = new Date()) => !horse.lastTrainedAt || now.getTime() - new Date(horse.lastTrainedAt).getTime() >= GAME.training.cooldownHours * 3600000;
+export const canTrain = (horse: Horse, now = new Date()) => gameAge(horse,now)>=GAME.age.trainingMinimumYears&&(!horse.lastTrainedAt || now.getTime() - new Date(horse.lastTrainedAt).getTime() >= GAME.training.cooldownHours * 3600000);

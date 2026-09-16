@@ -151,9 +151,10 @@ const ageLabel = (h: Horse) => {
   return `${years} ${years === 1 ? "year" : "years"}${remainder ? `, ${remainder} ${remainder === 1 ? "month" : "months"}` : ""}`;
 };
 const canTrain = (h: Horse) =>
-  !h.last_trained_at ||
-  Date.now() - new Date(h.last_trained_at).getTime() >=
-    GAME.training.cooldownHours * 3600000;
+  age(h) >= GAME.age.trainingMinimumYears &&
+  (!h.last_trained_at ||
+    Date.now() - new Date(h.last_trained_at).getTime() >=
+      GAME.training.cooldownHours * 3600000);
 const canBreed = (h: Horse) =>
   !h.retired &&
   age(h) >= GAME.age.breedingMinimumYears &&
@@ -289,7 +290,7 @@ export default function Home() {
     const tierName = (points: number) => competitionTier(points,competitionTiers)?.name??"Unassigned";
     const filtered = horses.filter((h) => {
       const years = age(h);
-      const ageMatch = horseAge === "all" || (horseAge === "young" && years < 3) || (horseAge === "breeding" && years >= 3 && years < 26) || (horseAge === "senior" && years >= 26);
+      const ageMatch = horseAge === "all" || (horseAge === "young" && years < 2) || (horseAge === "breeding" && years >= 2 && years < 26) || (horseAge === "senior" && years >= 26);
       return h.name.toLowerCase().includes(horseQuery.trim().toLowerCase()) && (horseBreed === "all" || h.breed === horseBreed) && (horseSex === "all" || h.sex === horseSex) && (horseOrigin === "all" || h.origin === horseOrigin) && ageMatch && (horseTier === "all" || tierName(h.career_points) === horseTier) && (horseBreeding === "all" || (horseBreeding === "eligible") === canBreed(h));
     });
     return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);

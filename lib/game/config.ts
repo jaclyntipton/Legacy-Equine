@@ -12,6 +12,6 @@ export const GAME = {
   breedingInheritanceVariation: { minimum: -6, maximum: 6 },
   mareCooldownDays: 10,
   training: { gain: 1, cooldownHours: 20 },
-  age: { gameDaysPerRealDay: 365.25 / 28, realDaysPerHorseYear: 28, breedingMinimumYears: 3, breedingMaximumYears: 25, retirementYears: 30 },
+  age: { gameDaysPerRealDay: 365.25 / 28, realDaysPerHorseYear: 28, trainingMinimumYears: 2, breedingMinimumYears: 2, breedingMaximumYears: 25, retirementYears: 30 },
   defaultStudFee: 100,
 } as const;

@@ -16,6 +16,7 @@ import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
 import { StableInventory } from "@/app/stable-inventory";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
+import { StableBrandSettings } from "@/app/stable-brand-settings";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
@@ -48,6 +49,11 @@ type Horse = {
   last_bred_at: string | null;
   last_trained_at: string | null;
   retired: boolean;
+  brand_code_at_assignment?: string | null;
+  brand_mark_at_assignment?: string | null;
+  brand_origin?: string | null;
+  breeder_name_at_birth?: string | null;
+  breeder_account_at_birth?: number | null;
 };
 type Stable = {
   account_number: number;
@@ -1045,7 +1051,7 @@ function Card({ h,tiers, open, compact=false }: { h: Horse;tiers:CompetitionTier
         <span>{h.origin}</span>
       </div>
       <div className="horsecardbody">
-        <h3>{h.name}</h3>
+        <h3>{h.brand_code_at_assignment&&<span className="horsebrand">{h.brand_mark_at_assignment&&<img src={h.brand_mark_at_assignment} alt=""/>}{h.brand_code_at_assignment}</span>}{h.name}</h3>
         <p className="horseidentity">{h.breed} · {h.sex} · {ageLabel(h)} · {h.color} · {handHeight(h.mature_height_hands)}</p>
         <div className="cardfoot">
           <span><b>{h.career_points??0}</b> Career Points · {competitionTier(h.career_points??0,tiers)?.name??"Unassigned"}</span>
@@ -1554,6 +1560,7 @@ function SettingsView({
           />
         </div>
       </section>
+      <StableBrandSettings notify={(message)=>window.alert(message)}/>
       <section className="panel">
         <h2>Horse Images</h2>
         <p className="panelsub">

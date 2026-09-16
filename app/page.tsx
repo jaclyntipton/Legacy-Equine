@@ -134,6 +134,11 @@ type ForumPost = {
   avatar_url: string;
 };
 const supabase = createClient();
+type MainView="stable"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
+type StableTab="horses"|"tack"|"feed"|"supplies";type ProfileTab="profile"|"artwork"|"settings";type StoreDepartment="horses"|"feed"|"tack"|"supplies";
+const routeFor=(view:MainView,state?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string})=>{let path="/stable";if(view==="stable")path=state?.stableTab==="horses"?"/stable/horses":state?.stableTab==="tack"?"/stable/tack-room":state?.stableTab==="feed"?"/stable/feed-room":state?.stableTab==="supplies"?"/stable/supply-room":"/stable";else if(view==="profile")path=state?.profileTab==="artwork"?"/profile/artwork":state?.profileTab==="settings"?"/profile/settings":"/profile";else if(view==="store")path=state?.storeDepartment==="feed"?"/store/feed":state?.storeDepartment==="tack"?"/store/tack":state?.storeDepartment==="supplies"?"/store/supplies":"/store/foundation-horses";else if(view==="storehorse"&&state?.storeSelected)path=`/store/horses/${state.storeSelected}`;else if(view==="horse"&&state?.selected)path=`/horses/${state.selected}`;else path=`/${view==="market"?"marketplace":view}`;const query=view==="store"&&state?.storeBreed?`?breed=${encodeURIComponent(state.storeBreed)}`:"";return path+query};
+const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string}={view:"stable"};if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":key==="marketplace"?"market":(["bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"stable")as MainView}return result};
+function GlobalToast({message,dismiss}:{message:string;dismiss:()=>void}){const persistent=/error|failed|unable|couldn.?t|insufficient|not enough|required|unavailable|invalid|denied|choose|full|warning/i.test(message);useEffect(()=>{if(!message||persistent)return;const timer=setTimeout(dismiss,2800);return()=>clearTimeout(timer)},[message,persistent,dismiss]);if(!message)return null;return <div className={`globaltoast ${persistent?"error":"success"}`} role={persistent?"alert":"status"}><span>{message}</span><button aria-label="Dismiss notification" onClick={dismiss}>×</button></div>}
 const money = (n: number) => new Intl.NumberFormat("en-US").format(n);
 const handHeight = (value: number) => {
   const whole = Math.floor(value),
@@ -212,26 +217,8 @@ export default function Home() {
     [market, setMarket] = useState<MarketHorse[]>([]),
     [posts, setPosts] = useState<ForumPost[]>([]),
     [loading, setLoading] = useState(true),
-    [notice, setNotice] = useState("Welcome to Legacy Equine."),
-    [view, setView] = useState<
-      | "stable"
-      | "profile"
-      | "store"
-      | "storehorse"
-      | "horse"
-      | "pedigree"
-      | "progeny"
-      | "bank"
-      | "training"
-      | "shows"
-      | "market"
-      | "community"
-      | "professions"
-      | "sanctuary"
-      | "stalls"
-      | "settings"
-      | "admin"
-    >("stable"),
+    [notice, setNotice] = useState(""),
+    [view, setView] = useState<MainView>("stable"),
     [selected, setSelected] = useState<string | null>(null),
     [storeSelected, setStoreSelected] = useState<string | null>(null),
     [horseQuery, setHorseQuery] = useState(""),
@@ -243,9 +230,13 @@ export default function Home() {
     [horseBreeding, setHorseBreeding] = useState("all"),
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards");
-  const [stableTab,setStableTab]=useState<"horses"|"tack"|"feed"|"supplies">("horses"),[profileTab,setProfileTab]=useState<"profile"|"artwork"|"settings">("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
-  const [storeDepartment,setStoreDepartment]=useState<"horses"|"feed"|"tack"|"supplies">("horses"),[storeBreed,setStoreBreed]=useState(""),[storeProducts,setStoreProducts]=useState<StoreProduct[]>([]);
+  const [stableTab,setStableTab]=useState<StableTab>("horses"),[profileTab,setProfileTab]=useState<ProfileTab>("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
+  const [storeDepartment,setStoreDepartment]=useState<StoreDepartment>("horses"),[storeBreed,setStoreBreed]=useState(""),[storeProducts,setStoreProducts]=useState<StoreProduct[]>([]);
   const artworkWorker = useRef<Promise<void> | null>(null);
+  const applyLocation=useCallback(()=>{const state=locationState();setView(state.view);if(state.stableTab)setStableTab(state.stableTab);if(state.profileTab)setProfileTab(state.profileTab);if(state.storeDepartment)setStoreDepartment(state.storeDepartment);if(state.selected)setSelected(state.selected);if(state.storeSelected)setStoreSelected(state.storeSelected);if(state.storeBreed!==undefined)setStoreBreed(state.storeBreed)},[]);
+  const navigate=useCallback((next:MainView,overrides?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string})=>{const state={stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed,...overrides};history.pushState({le:true},"",routeFor(next,state));setView(next);if(overrides?.stableTab)setStableTab(overrides.stableTab);if(overrides?.profileTab)setProfileTab(overrides.profileTab);if(overrides?.storeDepartment)setStoreDepartment(overrides.storeDepartment);if(overrides?.selected!==undefined)setSelected(overrides.selected);if(overrides?.storeSelected!==undefined)setStoreSelected(overrides.storeSelected);if(overrides?.storeBreed!==undefined)setStoreBreed(overrides.storeBreed)},[stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed]);
+  const dismissNotice=useCallback(()=>setNotice(""),[]);
+  useEffect(()=>{applyLocation();const back=()=>applyLocation();addEventListener("popstate",back);return()=>removeEventListener("popstate",back)},[applyLocation]);
   const load = useCallback(async (u: User | null) => {
     setUser(u);
     if (!u) {
@@ -312,7 +303,7 @@ export default function Home() {
   }, [horses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
   const open = (h: Horse) => {
     setSelected(h.id);
-    setView("horse");
+    navigate("horse",{selected:h.id});
   };
   const loadStore = useCallback(async () => {
     const [{data,error},{data:products}]=await Promise.all([supabase.rpc("get_store_inventory"),supabase.from("store_products").select("*").eq("active",true).order("sort_order")]);
@@ -325,7 +316,7 @@ export default function Home() {
     // deterministically from approved library assets by the database.
     return artworkWorker.current ?? Promise.resolve();
   }, []);
-  const openStore = () => setView("store");
+  const openStore = () => navigate("store",{storeDepartment:"horses"});
   const loadSanctuary = useCallback(async()=>{const{data,error}=await supabase.rpc("get_sanctuary_horses",{search_text:"",breed_filter:"",sex_filter:"",retired_year:null});if(error)setNotice(error.message);else setSanctuary((data??[])as SanctuaryHorse[])},[]);
   useEffect(() => {
     if (!user) return;
@@ -358,7 +349,7 @@ export default function Home() {
       return { error };
     }, "Wonderful choice! Your new Foundation horse is waiting at your stable.");
     await loadStore();
-    setView("store");
+    navigate("store",{storeDepartment:"horses"});
   };
   const loadShows = useCallback(async () => {
       const { data, error } = await supabase.rpc("get_open_shows");
@@ -479,7 +470,7 @@ export default function Home() {
   return (
     <div className="shell">
       <aside className="game-sidebar">
-        <button className="brand" onClick={() => {setStableTab("horses");setView("stable")}}>
+        <button className="brand" onClick={() => navigate("stable",{stableTab:"horses"})}>
           <span className="mark">LE</span>
           <span>
             Legacy Equine™<small>Breed Your Legacy.</small>
@@ -488,7 +479,7 @@ export default function Home() {
         <nav className="game-nav" aria-label="Game areas">
           <button
             className={view === "stable" ? "active" : ""}
-            onClick={() => setView("stable")}
+            onClick={() => navigate("stable",{stableTab:"horses"})}
           >
             <NavIcon name="barn"/>My Stable
           </button>
@@ -502,41 +493,41 @@ export default function Home() {
           </button>
           <button
             className={view === "training" ? "active" : ""}
-            onClick={() => setView("training")}
+            onClick={() => navigate("training")}
           >
             <NavIcon name="round-pen"/>Training
           </button>
           <button
             className={view === "shows" ? "active" : ""}
-            onClick={() => setView("shows")}
+            onClick={() => navigate("shows")}
           >
             <NavIcon name="trophy"/>Shows
           </button>
           <button
             className={view === "market" ? "active" : ""}
-            onClick={() => setView("market")}
+            onClick={() => navigate("market")}
           >
             <NavIcon name="sale-tag"/>Marketplace
           </button>
           <button
             className={view === "professions" ? "active" : ""}
-            onClick={() => setView("professions")}
+            onClick={() => navigate("professions")}
           >
             <NavIcon name="toolbox"/>Professions
           </button>
           <button
             className={view === "community" ? "active" : ""}
-            onClick={() => setView("community")}
+            onClick={() => navigate("community")}
           >
             <NavIcon name="bulletin"/>Community
           </button>
           <button
             className={view === "bank" ? "active" : ""}
-            onClick={() => setView("bank")}
+            onClick={() => navigate("bank")}
           >
             <NavIcon name="coin"/>Bank
           </button>
-          <button className={view === "sanctuary" ? "active" : ""} onClick={() => setView("sanctuary")}>
+          <button className={view === "sanctuary" ? "active" : ""} onClick={() => navigate("sanctuary")}>
             <NavIcon name="heart"/>Sanctuary
           </button>
         </nav>
@@ -544,26 +535,26 @@ export default function Home() {
       </aside>
       <div className="game-column">
         <header className="topbar">
-          <button className="account-home" onClick={() => {setProfileTab("profile");setView("profile")}} aria-label="Open My Profile">
+          <button className="account-home" onClick={() => navigate("profile",{profileTab:"profile"})} aria-label="Open My Profile">
             {stable.avatar_url?<img src={stable.avatar_url} alt=""/>:<span>LE</span>}<i><small>LE ACCOUNT #{stable.account_number}</small><b>{stable.username?`@${stable.username}`:stable.name}</b></i>
           </button>
           <nav className="account-nav" aria-label="Account links">
             <button
               className={view === "profile" ? "active" : ""}
-              onClick={() => {setProfileTab("profile");setView("profile")}}
+              onClick={() => navigate("profile",{profileTab:"profile"})}
             >
               My Profile
             </button>
             <button
               className={view === "stable" ? "active" : ""}
-              onClick={() => {setStableTab("horses");setView("stable")}}
+              onClick={() => navigate("stable",{stableTab:"horses"})}
             >
               My Stable
             </button>
             {stable.is_admin && (
               <button
                 className={view === "admin" ? "active" : ""}
-                onClick={() => setView("admin")}
+                onClick={() => navigate("admin")}
               >
                 Admin
               </button>
@@ -579,24 +570,24 @@ export default function Home() {
           </button>
         </header>
         <main>
-          <div className="notice">✦ {notice}</div>
-          {purchaseDestination&&<div className="purchasearrival"><span>Purchase complete — find it in your {purchaseDestination.label}.</span><button onClick={()=>{setStableTab(purchaseDestination.tab);setPurchaseDestination(null);setView("stable")}}>Go to {purchaseDestination.label} →</button></div>}
+          <GlobalToast message={notice} dismiss={dismissNotice}/>
+          {purchaseDestination&&<div className="purchasearrival"><span>Purchase complete — find it in your {purchaseDestination.label}.</span><button onClick={()=>{navigate("stable",{stableTab:purchaseDestination.tab});setPurchaseDestination(null)}}>Go to {purchaseDestination.label} →</button></div>}
           {view === "profile" && <>
-            <nav className="sectiontabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>setProfileTab("profile")}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>setProfileTab("artwork")}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>setProfileTab("settings")}>Settings</button></nav>
+            <nav className="sectiontabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>navigate("profile",{profileTab:"profile"})}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>navigate("profile",{profileTab:"artwork"})}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>navigate("profile",{profileTab:"settings"})}>Settings</button></nav>
             {profileTab==="profile"&&<><section className={`hero playerprofilehero ${stable.ranch_image_url?"has-ranch-image":""}`} style={stable.ranch_image_url?{backgroundImage:`linear-gradient(90deg,#3b2359dd,#6947a899),url(${stable.ranch_image_url})`}:undefined}><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1><p className="profile-stable-name">{stable.name}</p>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself and your stable."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div></section></>}
             {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
             {profileTab==="settings"&&<SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/>} 
           </>}
           {view === "stable" && (
             <>
-              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><button className="primary" onClick={()=>setView("store")}>Visit LE Store</button></section>
-              <nav className="sectiontabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>setStableTab("horses")}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>setStableTab("tack")}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>setStableTab("feed")}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>setStableTab("supplies")}>Supply Room</button></nav>
+              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><button className="primary" onClick={()=>navigate("store",{storeDepartment:"horses"})}>Visit LE Store</button></section>
+              <nav className="sectiontabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>navigate("stable",{stableTab:"horses"})}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>navigate("stable",{stableTab:"tack"})}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>navigate("stable",{stableTab:"feed"})}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>navigate("stable",{stableTab:"supplies"})}>Supply Room</button></nav>
               {stableTab==="horses"&&<>
               <section className="stats">
                 <div>
                   <small>STABLE CAPACITY</small>
                   <b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b>
-                  <button className="textbutton" onClick={()=>setView("stalls")}>+ Add Stalls</button>
+                  <button className="textbutton" onClick={()=>navigate("stalls")}>+ Add Stalls</button>
                 </div>
                 <div>
                   <small>AVERAGE POINTS</small>
@@ -630,7 +621,7 @@ export default function Home() {
                   {!visibleHorses.length&&<p className="panel featurehint">No horses match these filters.</p>}
                 </>
               ) : (
-                <Empty go={() => setView("store")} />
+                <Empty go={() => navigate("store",{storeDepartment:"horses"})} />
               )}
               </>}
               {stableTab!=="horses"&&<StableInventory room={stableTab} horses={horses} notify={setNotice} refresh={()=>void load(user)}/>} 
@@ -642,8 +633,8 @@ export default function Home() {
                 title="The LE Store"
                 sub="Browse the shared Foundation herd and find the horse that speaks to you"
               />
-              <nav className="storedepartments" aria-label="LE Store departments"><button className={storeDepartment==="horses"?"active":""} onClick={()=>setStoreDepartment("horses")}>Foundation Horses</button><button className={storeDepartment==="feed"?"active":""} onClick={()=>setStoreDepartment("feed")}>Feed &amp; Hay</button><button className={storeDepartment==="tack"?"active":""} onClick={()=>setStoreDepartment("tack")}>Tack</button><button className={storeDepartment==="supplies"?"active":""} onClick={()=>setStoreDepartment("supplies")}>Stable Supplies</button></nav>
-              {storeDepartment==="horses"&&<><div className="storebreedselect"><label>Breed<select aria-label="Foundation horse breed" value={storeBreed} onChange={e=>setStoreBreed(e.target.value)}><option value="">All Breeds</option>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><option value={b} key={b}>{b} · {inventory.filter(h=>h.breed===b).length} available</option>)}</select></label></div><div className="storebar">
+              <nav className="storedepartments" aria-label="LE Store departments"><button className={storeDepartment==="horses"?"active":""} onClick={()=>navigate("store",{storeDepartment:"horses"})}>Foundation Horses</button><button className={storeDepartment==="feed"?"active":""} onClick={()=>navigate("store",{storeDepartment:"feed"})}>Feed &amp; Hay</button><button className={storeDepartment==="tack"?"active":""} onClick={()=>navigate("store",{storeDepartment:"tack"})}>Tack</button><button className={storeDepartment==="supplies"?"active":""} onClick={()=>navigate("store",{storeDepartment:"supplies"})}>Stable Supplies</button></nav>
+              {storeDepartment==="horses"&&<><div className="storebreedselect"><label>Breed<select aria-label="Foundation horse breed" value={storeBreed} onChange={e=>navigate("store",{storeDepartment:"horses",storeBreed:e.target.value})}><option value="">All Breeds</option>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><option value={b} key={b}>{b} · {inventory.filter(h=>h.breed===b).length} available</option>)}</select></label></div><div className="storebar">
                 <span>✦ {inventory.length} Foundation horses available</span>
                 <span>
                   {inventory[0]
@@ -658,8 +649,7 @@ export default function Home() {
                     key={h.inventory_id}
                     h={h}
                     view={() => {
-                      setStoreSelected(h.inventory_id);
-                      setView("storehorse");
+                      navigate("storehorse",{storeSelected:h.inventory_id});
                     }}
                     purchase={() => purchase(h.inventory_id)}
                     disabled={
@@ -670,14 +660,14 @@ export default function Home() {
                   />
                 ))}
               </div>
-              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>setView("stalls")}>Add Stalls</button> or <button onClick={()=>setView("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
+              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>navigate("stalls")}>Add Stalls</button> or <button onClick={()=>navigate("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
               {storeDepartment!=="horses"&&<div className="productgrid">{storeProducts.filter(p=>p.department===(storeDepartment==="supplies"?"stable_supplies":storeDepartment)).map(p=>{const destination=p.department==="feed"?{label:"Feed Room",tab:"feed" as const}:p.department==="tack"?{label:"Tack Room",tab:"tack" as const}:{label:"Supply Room",tab:"supplies" as const};return <article className="productcard" key={p.id}><p className="eyebrow">{p.department==="feed"?"OPTIONAL DEVELOPMENT":`${p.quality??"STABLE"} ${p.tack_slot?.replaceAll("_"," ")??"SUPPLY"}`}</p><h3>{p.name}</h3><p>{p.description}</p>{p.department==="feed"&&<small>{Math.round((p.feed_success_probability??0)*100)}% development opportunity · +{p.development_min}–{p.development_max} to a configured eligible stat · one feeding per LE day</small>}{p.department==="tack"&&<div className="productbonus">{Object.entries(p.tack_bonuses).map(([stat,n])=><span key={stat}>{stat} +{n} Effective</span>)}</div>}<footer><b>{money(p.price)} LED</b><button className="primary" disabled={loading||stable.balance<p.price} onClick={()=>void action(async()=>{const{error}=await supabase.rpc("purchase_store_product",{p_product:p.id,p_quantity:1});if(!error)setPurchaseDestination(destination);return{error}},`${p.name} added to your ${destination.label}.`)}>Purchase</button></footer></article>})}</div>}
             </>
           )}
           {storeHorse && view === "storehorse" && (
             <StorePreview
               h={storeHorse}
-              back={() => setView("store")}
+              back={() => history.back()}
               purchase={() => purchase(storeHorse.inventory_id)}
               disabled={
                 loading ||
@@ -787,7 +777,7 @@ export default function Home() {
                   );
                   open(profileHorse);
                 }}
-                openProfessions={() => setView("professions")}
+                openProfessions={() => navigate("professions")}
                 reportImageFailure={(failedUrl) => {
                   void supabase.rpc("report_missing_horse_image", {
                     target_horse: horse.id,
@@ -1538,7 +1528,8 @@ function AdminConsole({
   changed: () => void;
 }) {
   type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"professions"|"accounts"|"economy"|"brands"|"balance"|"system"|"audit";
-  const [topic,setTopic]=useState<AdminTopic>("dashboard"),[permissions,setPermissions]=useState<string[]>([]);
+  const initialAdminTopic=(typeof location!=="undefined"?location.pathname.split("/")[2]:"")as AdminTopic;
+  const [topic,setTopic]=useState<AdminTopic>(initialAdminTopic||"dashboard"),[permissions,setPermissions]=useState<string[]>([]);
   const [permissionTarget,setPermissionTarget]=useState(currentUserId),[permissionDraft,setPermissionDraft]=useState<string[]>([]);
   const [accounts, setAccounts] = useState<AdminStable[]>([]),
     [message, setMessage] = useState(""),
@@ -1577,6 +1568,8 @@ function AdminConsole({
     return () => clearTimeout(timer);
   }, [refresh]);
   useEffect(()=>{void supabase.rpc("admin_effective_permissions").then(({data})=>setPermissions((data??[]).map((x:{permission:string})=>x.permission)));},[]);
+  useEffect(()=>{const restore=()=>setTopic((location.pathname.split("/")[2]as AdminTopic)||"dashboard");addEventListener("popstate",restore);return()=>removeEventListener("popstate",restore)},[]);
+  const openTopic=(next:AdminTopic)=>{history.pushState({leAdmin:true},"",next==="dashboard"?"/admin":`/admin/${next}`);setTopic(next)};
   const can=(permission:string)=>ownerAccount||permissions.includes(permission);
   const topics:{id:AdminTopic;label:string;permission?:string}[]=[
     {id:"dashboard",label:"Dashboard"},{id:"horses",label:"Horses",permission:"admin.horses.view"},{id:"visuals",label:"Horse Visuals",permission:"admin.visuals.view"},
@@ -1656,10 +1649,10 @@ function AdminConsole({
         title="Admin Control Center"
         sub="Secure operations, review workspaces, and game oversight"
       />
-      <nav className="admintopics" aria-label="Admin topics">{visibleTopics.map(x=><button key={x.id} className={topic===x.id?"active":""} onClick={()=>setTopic(x.id)}>{x.label}</button>)}</nav>
-      <div className="admincrumbs"><button onClick={()=>setTopic("dashboard")}>Admin</button><span>›</span><b>{topics.find(x=>x.id===topic)?.label}</b></div>
+      <nav className="admintopics" aria-label="Admin topics">{visibleTopics.map(x=><button key={x.id} className={topic===x.id?"active":""} onClick={()=>openTopic(x.id)}>{x.label}</button>)}</nav>
+      <div className="admincrumbs"><button onClick={()=>openTopic("dashboard")}>Admin</button><span>›</span><b>{topics.find(x=>x.id===topic)?.label}</b></div>
       {message && <div className="notice">✦ {message}</div>}
-      {topic==="dashboard"&&<section className="admindashboard"><article onClick={()=>setTopic("horses")}><span>HORSES</span><b>Horse Operations</b><small>Create, edit, and oversee horses</small></article><article onClick={()=>setTopic("visuals")}><span>HORSE VISUALS</span><b>Deterministic Library</b><small>Coverage, review, and production</small></article><article onClick={()=>setTopic("shows")}><span>SHOWS</span><b>Show Control</b><small>Open, scheduled, QA, and archive</small></article><article onClick={()=>setTopic("professions")}><span>PROFESSIONS</span><b>Career Operations</b><small>Providers, rates, and QA</small></article><article onClick={()=>setTopic("accounts")}><span>ACCOUNTS</span><b>{accounts.length} accounts</b><small>Roles, access, and capacity</small></article><article onClick={()=>setTopic("economy")}><span>ECONOMY</span><b>LED & Treasury</b><small>Ledgered controls and funds</small></article><article onClick={()=>setTopic("system")}><span>SYSTEM</span><b>Production QA</b><small>Domain, database, schedulers</small></article></section>}
+      {topic==="dashboard"&&<section className="admindashboard"><article onClick={()=>openTopic("horses")}><span>HORSES</span><b>Horse Operations</b><small>Create, edit, and oversee horses</small></article><article onClick={()=>openTopic("visuals")}><span>HORSE VISUALS</span><b>Deterministic Library</b><small>Coverage, review, and production</small></article><article onClick={()=>openTopic("shows")}><span>SHOWS</span><b>Show Control</b><small>Open, scheduled, QA, and archive</small></article><article onClick={()=>openTopic("professions")}><span>PROFESSIONS</span><b>Career Operations</b><small>Providers, rates, and QA</small></article><article onClick={()=>openTopic("accounts")}><span>ACCOUNTS</span><b>{accounts.length} accounts</b><small>Roles, access, and capacity</small></article><article onClick={()=>openTopic("economy")}><span>ECONOMY</span><b>LED & Treasury</b><small>Ledgered controls and funds</small></article><article onClick={()=>openTopic("system")}><span>SYSTEM</span><b>Production QA</b><small>Domain, database, schedulers</small></article></section>}
       {topic==="visuals"&&<><VisualAssetRequirements notify={setMessage}/><VisualAssetImporter notify={setMessage}/><details className="adminaccordion"><summary>Legacy template administration</summary><HorseImageTemplates notify={setMessage} changed={changed}/></details></>}
       {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 

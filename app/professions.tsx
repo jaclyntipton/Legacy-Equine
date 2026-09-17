@@ -116,6 +116,10 @@ export function ProfessionalCenter({
     [sort, setSort] = useState("certification"),
     [questions, setQuestions] = useState<Question[]>([]),
     [testing, setTesting] = useState<Profession | null>(null),
+    [testResult, setTestResult] = useState<{
+      passed: boolean;
+      score: number;
+    } | null>(null),
     [answers, setAnswers] = useState<Record<string, number>>({}),
     [career, setCareer] = useState<{ id: string; qa: boolean } | null>(null),
     [careerTab, setCareerTab] = useState("overview"),
@@ -195,6 +199,49 @@ export function ProfessionalCenter({
     const timer = setTimeout(() => void load(), 0);
     return () => clearTimeout(timer);
   }, [load]);
+  const professionRouteIds = useMemo(
+    () => professions.map((profession) => profession.id).join("|"),
+    [professions],
+  );
+  useEffect(() => {
+    const syncCareerRoute = () => {
+      const match = location.pathname.match(/^\/professions\/([^/]+)$/);
+      if (!match) {
+        setCareer(null);
+        return;
+      }
+      const profession = professions.find((item) => item.id === match[1]);
+      if (!profession) return;
+      const requestedQa = new URLSearchParams(location.search).get("qa") === "1";
+      setCareer({ id: profession.id, qa: requestedQa && ownerQa });
+      setCareerTab("overview");
+      setCareerNotice("");
+      setTesting(null);
+      setTestResult(null);
+    };
+    syncCareerRoute();
+    addEventListener("popstate", syncCareerRoute);
+    return () => removeEventListener("popstate", syncCareerRoute);
+  }, [ownerQa, professionRouteIds]);
+  const openCareerRoute = (professionId: string, qa: boolean) => {
+    history.pushState(
+      { leProfessionCareer: true },
+      "",
+      `/professions/${professionId}${qa ? "?qa=1" : ""}`,
+    );
+    setCareer({ id: professionId, qa });
+    setCareerTab("overview");
+    setCareerNotice("");
+    setTesting(null);
+    setTestResult(null);
+  };
+  const backToProfessions = () => {
+    history.pushState({ leProfessionCareer: true }, "", "/professions");
+    setCareer(null);
+    setCareerNotice("");
+    setTesting(null);
+    setTestResult(null);
+  };
   const run = async (
     job: () => Promise<{ error: Error | null }>,
     ok: string,
@@ -213,7 +260,7 @@ export function ProfessionalCenter({
     if (error) return notify(error.message);
     await load();
     refresh();
-    setCareer({ id: p.id, qa: false });
+    openCareerRoute(p.id, false);
     setCareerTab("study");
     setCareerNotice("");
   };
@@ -224,6 +271,7 @@ export function ProfessionalCenter({
       setCareerNotice(
         `Study Complete ✓ You’re ready for your ${["Basic", "Proficient", "Advanced", "Professional"][qaLevel - 1]} ${p.name} Certification Test.`,
       );
+      await openTest(p, qaLevel);
       return;
     }
     const { error } = await supabase.rpc("complete_profession_study", {
@@ -237,6 +285,7 @@ export function ProfessionalCenter({
     setCareerNotice(
       `Study Complete ✓ You’re ready for your ${["Basic", "Proficient", "Advanced", "Professional"][(p.next_level ?? 1) - 1]} ${p.name} Certification Test.`,
     );
+    await openTest(p, p.next_level);
   };
   const openQaCareer = async (professionId: string, level: number) => {
     const { error } = await supabase.rpc("open_profession_qa_career", {
@@ -244,7 +293,7 @@ export function ProfessionalCenter({
       target_level: level,
     });
     if (error) return notify(error.message);
-    setCareer({ id: professionId, qa: true });
+    openCareerRoute(professionId, true);
     setQaLevel(level);
     setQaStage("study");
     setCareerTab("study");
@@ -260,6 +309,7 @@ export function ProfessionalCenter({
     setTesting({ ...p, next_level: level });
     setQuestions((data ?? []) as Question[]);
     setAnswers({});
+    setTestResult(null);
   };
   const submit = async () => {
     if (!testing?.next_level) return;
@@ -274,25 +324,20 @@ export function ProfessionalCenter({
       },
     );
     if (error) return notify(error.message);
-    setTesting(null);
+    setTestResult({ passed: Boolean(data.passed), score: Number(data.score) });
     if (data.passed) {
       if (qa) {
         setQaStage(testedLevel === 4 ? "certified" : "services");
-        setCareerTab(testedLevel === 4 ? "progression" : "services");
       } else {
         await load();
         refresh();
-        setCareerTab(testedLevel === 4 ? "progression" : "services");
       }
       setCareerNotice(
         testedLevel === 4
           ? "Certification Test Passed ✓ Career Completed"
           : "Certification Test Passed ✓ Continue to your service requirement.",
       );
-    } else
-      notify(
-        `Score: ${data.score}%. Study again and retry after the cooldown.`,
-      );
+    }
   };
   const advanceCareer = async (p: Profession) => {
     if (career?.qa && !runNormal) {
@@ -470,11 +515,7 @@ export function ProfessionalCenter({
                     </div>
                     <button
                       className={!ownerQa ? "primary" : ""}
-                      onClick={() => {
-                        setCareer({ id: p.id, qa: false });
-                        setCareerTab("overview");
-                        setCareerNotice("");
-                      }}
+                      onClick={() => openCareerRoute(p.id, false)}
                     >
                       CONTINUE CAREER
                     </button>
@@ -688,7 +729,7 @@ export function ProfessionalCenter({
             (tab === "progression" &&
               ["advancement", "certified"].includes(stage));
           return (
-            <main
+            <div
               className="careerpage"
               aria-label={
                 career.qa ? "Profession QA career" : "Career workspace"
@@ -697,12 +738,9 @@ export function ProfessionalCenter({
               <section className="panel careerworkspace">
                 <button
                   className="careerexit"
-                  onClick={() => {
-                    setCareer(null);
-                    setCareerNotice("");
-                  }}
+                  onClick={backToProfessions}
                 >
-                  ← Exit Career
+                  ← Back to Professions
                 </button>
                 <p className="eyebrow">
                   {career.qa ? "PROFESSION QA ACCESS" : "ACTIVE CAREER"}
@@ -765,6 +803,8 @@ export function ProfessionalCenter({
                             onChange={(event) => {
                               const value = event.target.value;
                               setQaStage(value);
+                              setTesting(null);
+                              setTestResult(null);
                               setCareerTab(
                                 value === "study"
                                   ? "study"
@@ -864,16 +904,91 @@ export function ProfessionalCenter({
                     <>
                       <h2>{levelName} Certification Test</h2>
                       <p>Study Complete ✓</p>
-                      <p>
-                        Pass the existing certification test to unlock the next
-                        required stage.
-                      </p>
-                      <button
-                        className="primary"
-                        onClick={() => void openTest(p, level)}
-                      >
-                        OPEN CERTIFICATION TEST
-                      </button>
+                      {!testing && (
+                        <>
+                          <p>
+                            Pass the existing certification test to unlock the
+                            next required stage.
+                          </p>
+                          <button
+                            className="primary"
+                            onClick={() => void openTest(p, level)}
+                          >
+                            OPEN CERTIFICATION TEST
+                          </button>
+                        </>
+                      )}
+                      {testing && !testResult && (
+                        <div className="inlineexam">
+                          {questions.map((q, index) => (
+                            <fieldset key={q.id}>
+                              <legend>
+                                {index + 1}. {q.prompt}
+                              </legend>
+                              {q.choices.map((choice, choiceIndex) => (
+                                <label key={choice}>
+                                  <input
+                                    type="radio"
+                                    name={q.id}
+                                    checked={answers[q.id] === choiceIndex}
+                                    onChange={() =>
+                                      setAnswers({
+                                        ...answers,
+                                        [q.id]: choiceIndex,
+                                      })
+                                    }
+                                  />
+                                  {choice}
+                                </label>
+                              ))}
+                            </fieldset>
+                          ))}
+                          <button
+                            className="primary"
+                            disabled={
+                              Object.keys(answers).length < questions.length
+                            }
+                            onClick={() => void submit()}
+                          >
+                            SUBMIT TEST
+                          </button>
+                        </div>
+                      )}
+                      {testResult && (
+                        <div className="testresult" role="status">
+                          <h3>
+                            {testResult.passed
+                              ? "Test Passed ✓"
+                              : "Test Not Passed"}
+                          </h3>
+                          <p>Score: {testResult.score}%</p>
+                          {testResult.passed ? (
+                            <button
+                              className="primary"
+                              onClick={() => {
+                                setTesting(null);
+                                setTestResult(null);
+                                setCareerTab(
+                                  level === 4 ? "progression" : "services",
+                                );
+                              }}
+                            >
+                              {level === 4
+                                ? "VIEW CAREER COMPLETION"
+                                : "CONTINUE TO SERVICES"}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setTesting(null);
+                                setTestResult(null);
+                              }}
+                            >
+                              RETRY TEST
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </>
                   )}
                   {careerTab === "services" && (
@@ -910,7 +1025,7 @@ export function ProfessionalCenter({
                       )}
                       <button
                         onClick={() => {
-                          setCareer(null);
+                          backToProfessions();
                           setFilter(p.id);
                         }}
                       >
@@ -947,7 +1062,7 @@ export function ProfessionalCenter({
                   )}
                 </div>
               </section>
-            </main>
+            </div>
           );
         })()}
       {request && selectedProvider && (
@@ -1172,42 +1287,6 @@ export function ProfessionalCenter({
                 </div>
               </>
             )}
-          </section>
-        </div>
-      )}
-      {testing && (
-        <div className="examoverlay" role="dialog" aria-modal="true">
-          <section className="panel exam">
-            <button className="examclose" onClick={() => setTesting(null)}>
-              ×
-            </button>
-            <p className="eyebrow">{testing.name.toUpperCase()}</p>
-            <h2>Certification Test</h2>
-            {questions.map((q, index) => (
-              <fieldset key={q.id}>
-                <legend>
-                  {index + 1}. {q.prompt}
-                </legend>
-                {q.choices.map((choice, i) => (
-                  <label key={choice}>
-                    <input
-                      type="radio"
-                      name={q.id}
-                      checked={answers[q.id] === i}
-                      onChange={() => setAnswers({ ...answers, [q.id]: i })}
-                    />
-                    {choice}
-                  </label>
-                ))}
-              </fieldset>
-            ))}
-            <button
-              className="primary"
-              disabled={Object.keys(answers).length < questions.length}
-              onClick={submit}
-            >
-              Submit Test
-            </button>
           </section>
         </div>
       )}

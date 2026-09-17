@@ -22,6 +22,7 @@ import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { ArtworkStorageAdmin } from "@/app/artwork-storage-admin";
 import { ArtworkAlbum } from "@/app/artwork-album";
+import { AdminShows } from "@/app/admin-shows";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -1626,7 +1627,7 @@ function AdminConsole({
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
   const visibleTopics=topics.filter(x=>!x.permission||can(x.permission));
-  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,x.permission.replace(".view",".edit")]:[]).concat(["admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.qa","admin.shows.run","admin.professions.qa","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
+  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,x.permission.replace(".view",".edit")]:[]).concat(["admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.bulk_enter_all","admin.shows.bulk_create","admin.shows.lock","admin.shows.run","admin.shows.cancel","admin.shows.preview","admin.shows.duplicate","admin.shows.qa","admin.shows.private","admin.shows.processing","admin.shows.audit","admin.professions.qa","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
   const run = async (
     job: () => Promise<{ error: Error | null }>,
     success: string,
@@ -1704,7 +1705,7 @@ function AdminConsole({
       {topic==="visuals"&&<><VisualAssetRequirements notify={setMessage}/><VisualAssetImporter notify={setMessage}/><details className="adminaccordion"><summary>Legacy template administration</summary><HorseImageTemplates notify={setMessage} changed={changed}/></details></>}
       {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
-      {topic==="shows"&&<section className="panel adminempty"><p className="eyebrow">SHOW OPERATIONS</p><h2>Shows</h2><div className="adminsubnav"><button>Open Shows</button><button>Scheduled</button><button>Test / QA</button><button>Run Controls</button><button>Templates</button><button>Archive</button></div><p>Show controls remain available from the secured Shows workspace. This control-center section is ready for the existing tools to be consolidated here.</p></section>}
+      {topic==="shows"&&<AdminShows notify={setMessage}/>} 
       {topic==="professions"&&<section className="panel adminempty"><p className="eyebrow">PROFESSION OPERATIONS</p><h2>Professions</h2><div className="adminsubnav"><button>Overview</button><button>Careers</button><button>Providers</button><button>Progression</button><button>Rates</button><button>QA Mode</button></div></section>}
       {topic==="brands"&&<section className="panel adminempty"><p className="eyebrow">PROVENANCE</p><h2>Stable Brands</h2><p>Permanent breeder-brand provenance is active. Brand changes remain protected and auditable.</p></section>}
       {topic==="system"&&<section className="panel"><p className="eyebrow">PRODUCTION READINESS</p><h2>System / QA</h2><div className="systemstatus">{[["Production Domain","Healthy"],["Supabase","Healthy"],["Database Migrations","Healthy"],["Show Processor","Healthy"],["Weekly Allowance","Healthy"],["Visual Asset Coverage","Warning"],["SMS Verification","Not Configured"],["Vercel Deployment","Healthy"],["Game Version",process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0,7)||"Current"]].map(([k,v])=><div key={k}><b>{k}</b><span className={`health-${v.toLowerCase().replaceAll(" ","-")}`}>{v}</span></div>)}</div></section>}

@@ -132,6 +132,14 @@ Stable horse listings use bounded, anatomy-safe image regions and compact browse
 All primary full-horse artwork uses one shared containment renderer across Horse Profiles, Store, Stable, Progeny, Sanctuary, Marketplace, uploads, and administration. The complete native image is centered and scaled down within a light-lavender frame with 5% internal breathing room. Cropping, stretching, and aspect-ratio coercion are prohibited for generated, Foundation, and player-provided artwork; letterboxing is intentional.
 # Account Progression — Alpha V1
 
+# Unified Show Creation, Entry, and Show Fund
+
+Players use one Create Show workflow. Single creation is the default; eligible accounts may increase Number of Shows and choose the same run date or consecutive LE days. A batch validates capability, weekly quota, configuration, dates, and total LED before atomically creating independent Shows. Each Show has its own ID and creation-fee ledger row, while a shared batch ID supports auditing.
+
+Players use one Enter Shows workflow: select open Shows, select owned horses, review authoritative Horse × Show eligibility, explicitly choose individual pairings or Enter All Eligible Pairs, then confirm. Ordinary accounts may enter any number of eligible owned horses into one Show; the existing bulk-entry capability controls selection of multiple Shows. Previewing never charges or mutates. Confirmation locks and revalidates Shows, horses, capacity, duplicates, tier, retirement state, and balance, and is idempotent against retries.
+
+Every Show creation fee credits the Show/Payout Fund. Every entry fee is recorded as Show Fund inflow and an equal allocation to that Show's purse, so it increases lifetime contributions and the purse without increasing uncommitted available funds. Historical reconciliation is Owner-only, evidence-linked to immutable player currency rows, and idempotent. Creation fees restore available Show Fund balance; entry fees create paired contribution/allocation history because that LED was already committed to a purse. Profession allocations preserve the existing 50/50 Show Fund/Treasury rule and are never duplicated by Show reconciliation.
+
 Horse Career Points and Stable Account XP are separate permanent systems. Horse CP determines competition tier; Account XP determines Levels 1–50 and account capabilities. Level thresholds, weekly allowance values, show-hosting quotas, and unlocks are stored in `account_level_config`. XP continues as Lifetime XP after Level 50.
 
 Account XP is awarded idempotently when show results become permanent: entry +1, first +10, second +6, third +3. Legitimate completed shows award the host +5, plus cumulative unique-stable bonuses of +3 at five, +5 at ten, and +10 at twenty. QA entries never award XP, CP, or LED.

@@ -27,6 +27,8 @@ type Profession = {
   next_level: number | null;
   next_level_advanced: boolean;
   career_completed: boolean;
+  rates_configured: boolean;
+  career_state: string;
   certified_levels: number[];
 };
 type Directory = {
@@ -131,6 +133,8 @@ export function ProfessionalCenter({
     [qaStage, setQaStage] = useState("study"),
     [qaControlsOpen, setQaControlsOpen] = useState(false),
     [runNormal, setRunNormal] = useState(false),
+    [qaRateServices, setQaRateServices] = useState<Record<string, boolean>>({}),
+    [qaServiceCredit, setQaServiceCredit] = useState(0),
     [request, setRequest] = useState<{
       providerId: string;
       serviceId: string;
@@ -318,6 +322,8 @@ export function ProfessionalCenter({
     setQaStage("study");
     setCareerTab("study");
     setRunNormal(false);
+    setQaRateServices({});
+    setQaServiceCredit(0);
   };
   const openTest = async (p: Profession, level = p.next_level) => {
     const qa = career?.qa && !runNormal;
@@ -348,6 +354,8 @@ export function ProfessionalCenter({
     if (data.passed) {
       if (qa) {
         setQaStage("services");
+        setQaRateServices({});
+        setQaServiceCredit(0);
       } else {
         await load();
         refresh();
@@ -720,18 +728,19 @@ export function ProfessionalCenter({
           const level = career.qa ? qaLevel : (p.next_level ?? 4);
           const qa = career.qa && !runNormal;
           const normalStage =
-            p.career_completed
-              ? "certified"
-              : !p.next_level_advanced
-                ? p.qualifying_credit >= p.required_services
-                  ? "advancement"
-                  : "services"
-                : p.study_completed
-                  ? "test"
-                  : "study";
+            {
+              STUDY_REQUIRED: "study",
+              TEST_AVAILABLE: "test",
+              CERTIFIED: "rates",
+              RATES_REQUIRED: "rates",
+              SERVICE_EXPERIENCE_REQUIRED: "services",
+              ADVANCEMENT_AVAILABLE: "advancement",
+              NEXT_LEVEL_STUDY: "study",
+              PROFESSIONAL_CERTIFIED: "certified",
+            }[p.career_state] ?? "study";
           const stage = qa ? qaStage : normalStage;
           const displayLevel =
-            !career.qa && ["services", "advancement"].includes(stage)
+            !career.qa && ["rates", "services", "advancement"].includes(stage)
               ? Math.max(1, p.level)
               : level;
           const levelName = names[displayLevel - 1];
@@ -746,7 +755,7 @@ export function ProfessionalCenter({
               ? 1
               : stage === "test"
                 ? 2
-                : stage === "services"
+                : ["rates", "services"].includes(stage)
                   ? 3
                   : 4;
           const studyContent = modules.find(
@@ -758,15 +767,22 @@ export function ProfessionalCenter({
               service.profession_id === p.id &&
               service.minimum_level <= rateLevel,
           );
-          const hasConfiguredRates = rateServices.some(
-            (service) => offered[service.id],
-          );
+          const allRequiredRatesConfigured = qa
+            ? rateServices.length > 0 &&
+              rateServices.every((service) => qaRateServices[service.id])
+            : p.rates_configured;
+          const serviceCredit = qa
+            ? qaStage === "advancement"
+              ? requiredServices
+              : qaServiceCredit
+            : p.qualifying_credit;
           const allowed = (tab: string) =>
             tab === "overview" ||
             (tab === "rates" && (career.qa || p.level > 0)) ||
             (tab === "study" && ["study", "test"].includes(stage)) ||
             (tab === "test" && stage === "test") ||
             (tab === "services" &&
+              allRequiredRatesConfigured &&
               ["services", "advancement"].includes(stage)) ||
             (tab === "progression" &&
               ["advancement", "certified"].includes(stage));
@@ -852,11 +868,27 @@ export function ProfessionalCenter({
                                   ? "study"
                                   : value === "test"
                                     ? "test"
-                                    : value === "services"
+                                  : value === "services"
                                       ? "services"
                                       : "progression",
                               );
                               setCareerNotice("");
+                              setQaServiceCredit(
+                                value === "advancement" ? requiredServices : 0,
+                              );
+                              if (
+                                ["services", "advancement", "certified"].includes(
+                                  value,
+                                )
+                              )
+                                setQaRateServices(
+                                  Object.fromEntries(
+                                    rateServices.map((service) => [
+                                      service.id,
+                                      true,
+                                    ]),
+                                  ),
+                                );
                             }}
                           >
                             <option value="study">Study</option>
@@ -1048,12 +1080,12 @@ export function ProfessionalCenter({
                         <b>
                           Required Services:{" "}
                           {qa
-                            ? `${qaStage === "services" ? 0 : requiredServices} / ${requiredServices}`
-                            : `${p.qualifying_credit} / ${requiredServices}`}
+                            ? `${serviceCredit} / ${requiredServices}`
+                            : `${serviceCredit} / ${requiredServices}`}
                         </b>
                         <span
                           style={{
-                            width: `${qa && qaStage !== "services" ? 100 : Math.min(100, requiredServices ? (p.qualifying_credit / requiredServices) * 100 : 100)}%`,
+                            width: `${Math.min(100, requiredServices ? (serviceCredit / requiredServices) * 100 : 100)}%`,
                           }}
                         />
                       </div>
@@ -1061,19 +1093,25 @@ export function ProfessionalCenter({
                         Only legitimate completed services count toward normal
                         advancement.
                       </p>
-                      {qa && (
+                      {qa && serviceCredit < requiredServices && (
                         <button
                           className="primary"
                           onClick={() => {
+                            setQaServiceCredit(requiredServices);
                             setQaStage("advancement");
-                            setCareerTab("progression");
-                            setCareerNotice("Ready to Advance ✓");
+                            setCareerNotice("Service Requirement Complete ✓");
                           }}
                         >
-                          CONTINUE TO ADVANCEMENT
+                          SIMULATE {requiredServices}/{requiredServices}
                         </button>
                       )}
-                      {!qa && stage === "advancement" && (
+                      {serviceCredit < requiredServices && (
+                        <p>
+                          🔒 Advancement · Complete {requiredServices - serviceCredit}{" "}
+                          additional {levelName} {p.name} client services to unlock {advanceName} certification training.
+                        </p>
+                      )}
+                      {stage === "advancement" && serviceCredit >= requiredServices && (
                         <button
                           className="primary"
                           onClick={() => setCareerTab("progression")}
@@ -1138,11 +1176,31 @@ export function ProfessionalCenter({
                                     return notify(
                                       `Price must be between ${service.min_price} and ${service.max_price} LED.`,
                                     );
-                                  return notify(
+                                  const nextQaRates = {
+                                    ...qaRateServices,
+                                    [service.id]: true,
+                                  };
+                                  setQaRateServices(nextQaRates);
+                                  notify(
                                     `QA rate validated at ${price} LED per horse · live market data unchanged.`,
                                   );
+                                  if (
+                                    rateServices.every(
+                                      (item) => nextQaRates[item.id],
+                                    )
+                                  ) {
+                                    setQaStage(
+                                      atProfessional ? "certified" : "services",
+                                    );
+                                    setCareerTab(
+                                      atProfessional
+                                        ? "progression"
+                                        : "services",
+                                    );
+                                  }
+                                  return;
                                 }
-                                void run(async () => {
+                                void (async () => {
                                   const { error } = await supabase.rpc(
                                     "set_service_offering",
                                     {
@@ -1151,13 +1209,33 @@ export function ProfessionalCenter({
                                       is_enabled: true,
                                     },
                                   );
-                                  return { error };
-                                }, `${service.name} saved at ${price} LED per horse.`);
+                                  if (error) return notify(error.message);
+                                  const nextOffered = {
+                                    ...offered,
+                                    [service.id]: true,
+                                  };
+                                  setOffered(nextOffered);
+                                  notify(
+                                    `${service.name} saved at ${price} LED per horse.`,
+                                  );
+                                  await load();
+                                  refresh();
+                                  if (
+                                    rateServices.every(
+                                      (item) => nextOffered[item.id],
+                                    )
+                                  )
+                                    setCareerTab(
+                                      atProfessional
+                                        ? "progression"
+                                        : "services",
+                                    );
+                                })();
                               }}
                             >
                               {career.qa && !runNormal
                                 ? "VALIDATE QA RATE"
-                                : "SAVE RATE"}
+                                : "SAVE & START ACCEPTING CLIENTS"}
                             </button>
                           </article>
                         ))}
@@ -1168,12 +1246,17 @@ export function ProfessionalCenter({
                           </p>
                         )}
                       </div>
-                      {(qa || hasConfiguredRates) && (
+                      {allRequiredRatesConfigured && (
                         <button
                           className="primary"
                           onClick={() => {
-                            if (qa) setQaStage("services");
-                            setCareerTab("services");
+                            if (qa)
+                              setQaStage(
+                                atProfessional ? "certified" : "services",
+                              );
+                            setCareerTab(
+                              atProfessional ? "progression" : "services",
+                            );
                           }}
                         >
                           CONTINUE TO SERVICES

@@ -5,6 +5,10 @@ const progression = fs.readFileSync(
   "supabase/migrations/202609170023_complete_profession_level_progression.sql",
   "utf8",
 );
+const exactStateMachine = fs.readFileSync(
+  "supabase/migrations/202609170024_exact_profession_state_machine.sql",
+  "utf8",
+);
 const curriculum = fs.readFileSync(
   "supabase/migrations/202609150030_professional_services.sql",
   "utf8",
@@ -30,6 +34,12 @@ describe("all profession progression paths", () => {
         expect(progression).toContain(
           "profession_id=target_profession and level=pp.certification_level",
         );
+        expect(exactStateMachine).toContain(
+          "provider_level=target_level and status='completed'",
+        );
+        expect(exactStateMachine).toContain(
+          "profession_id=target_profession and level=pp.certification_level",
+        );
         if (level < 4)
           expect(progression).toContain("target:=pp.certification_level+1");
         else
@@ -49,6 +59,41 @@ describe("all profession progression paths", () => {
     expect(progression).toContain("'certificate_granted',passed");
     expect(progression).toContain("not self_service and price>0");
     expect(progression).toContain("Current level certificate is required");
+  });
+
+  it("hard-locks advancement behind rates and paid level-specific client services", () => {
+    expect(exactStateMachine).toContain(
+      "Set every authorized service rate before advancing",
+    );
+    expect(exactStateMachine).toContain(
+      "Complete % legitimate paid client services before advancing",
+    );
+    expect(exactStateMachine).toContain(
+      "legitimate_profession_service_count(auth.uid(),target_profession,pp.certification_level)",
+    );
+    expect(ui).toContain("serviceCredit < requiredServices");
+    expect(ui).toContain("🔒 Advancement");
+  });
+
+  it("persists mandatory rate setup in the existing offering architecture", () => {
+    expect(exactStateMachine).toContain("profession_rate_setups");
+    expect(exactStateMachine).toContain("player_service_offerings");
+    expect(exactStateMachine).toContain("required.minimum_level<=lvl");
+    expect(ui).toContain("SAVE & START ACCEPTING CLIENTS");
+    expect(ui).toContain("p.rates_configured");
+  });
+
+  it("exposes the exact shared server state machine", () => {
+    for (const state of [
+      "STUDY_REQUIRED",
+      "TEST_AVAILABLE",
+      "RATES_REQUIRED",
+      "SERVICE_EXPERIENCE_REQUIRED",
+      "ADVANCEMENT_AVAILABLE",
+      "NEXT_LEVEL_STUDY",
+      "PROFESSIONAL_CERTIFIED",
+    ])
+      expect(exactStateMachine).toContain(state);
   });
 
   it("guides certificate recipients through rates and services", () => {

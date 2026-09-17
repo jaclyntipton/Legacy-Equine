@@ -34,7 +34,7 @@ describe("career rate editor", () => {
   it("gates normal services by certification and uses the existing offering RPC", () => {
     expect(ui).toContain("service.minimum_level <= rateLevel");
     expect(ui).toContain('"set_service_offering"');
-    expect(ui).toContain("SAVE RATE");
+    expect(ui).toContain("SAVE & START ACCEPTING CLIENTS");
   });
 
   it("keeps QA-only validation out of persisted market offerings", () => {

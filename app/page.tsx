@@ -18,6 +18,7 @@ import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { PublicAuth } from "@/app/public-auth";
 import { StableBrandSettings } from "@/app/stable-brand-settings";
+import { StableBrandsAdmin } from "@/app/stable-brands-admin";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { ArtworkStorageAdmin } from "@/app/artwork-storage-admin";
@@ -124,6 +125,9 @@ type MarketHorse = {
   seller_name: string;
   seller_username: string | null;
   created_at: string;
+  brand_code_at_assignment: string | null;
+  brand_mark_at_assignment: string | null;
+  brand_origin: string | null;
 };
 type ForumPost = {
   id: string;
@@ -1348,7 +1352,7 @@ function MarketplaceView({
             </div>
             <div className="storecardbody">
               <p className="eyebrow">{h.breed}</p>
-              <h3>{h.name}</h3>
+              <h3>{h.brand_code_at_assignment&&<span className="horsebrand">{h.brand_mark_at_assignment&&<img src={h.brand_mark_at_assignment} alt=""/>}{h.brand_code_at_assignment}</span>}{h.name}</h3>
               <p>
                 {h.color} · sold by{" "}
                 {h.seller_username ? `@${h.seller_username}` : h.seller_name}
@@ -1595,6 +1599,7 @@ function AdminConsole({
     [color, setColor] = useState("Bay"),
     [pattern, setPattern] = useState("Solid"),
     [image, setImage] = useState(""),
+    [originBrand,setOriginBrand]=useState(true),
     [genes, setGenes] = useState("{}"),
     [markings, setMarkings] = useState<Record<string, string>>({
       face: "none",
@@ -1649,8 +1654,9 @@ function AdminConsole({
       setMessage("Advanced genetics must be valid JSON.");
       return;
     }
+    let createdHorse:{id:string}|null=null;
     const created = await run(async () => {
-      const { error } = await supabase.rpc("admin_create_visual_horse", {
+      const { data,error } = await supabase.rpc("admin_create_visual_horse", {
         target_owner: target,
         horse_name: name,
         horse_species: species,
@@ -1664,11 +1670,14 @@ function AdminConsole({
         advanced_genetics: genetics,
         horse_image_url: image,
       });
+      createdHorse=data as {id:string}|null;
+      if(!error&&!originBrand&&target===accounts.find((a)=>a.account_number===1)?.id&&createdHorse?.id){const correction=await supabase.rpc("owner_correct_horse_brand",{p_horse:createdHorse.id,p_stable:null,p_reason:"Owner-created test/import horse without Origin Brand"});if(correction.error)return{error:correction.error}}
       return { error };
     }, `${name} was created with its permanent Legacy Equine visual identity.`);
     if (created && !image) {
       changed();
     }
+    if(created)setOriginBrand(true);
   };
   const colors = [
       "Chestnut",
@@ -1708,7 +1717,7 @@ function AdminConsole({
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 
       {topic==="professions"&&<section className="panel adminempty"><p className="eyebrow">PROFESSION OPERATIONS</p><h2>Professions</h2><div className="adminsubnav"><button>Overview</button><button>Careers</button><button>Providers</button><button>Progression</button><button>Rates</button><button>QA Mode</button></div></section>}
-      {topic==="brands"&&<section className="panel adminempty"><p className="eyebrow">PROVENANCE</p><h2>Stable Brands</h2><p>Permanent breeder-brand provenance is active. Brand changes remain protected and auditable.</p></section>}
+      {topic==="brands"&&<StableBrandsAdmin notify={setMessage}/>}
       {topic==="system"&&<section className="panel"><p className="eyebrow">PRODUCTION READINESS</p><h2>System / QA</h2><div className="systemstatus">{[["Production Domain","Healthy"],["Supabase","Healthy"],["Database Migrations","Healthy"],["Show Processor","Healthy"],["Weekly Allowance","Healthy"],["Visual Asset Coverage","Warning"],["SMS Verification","Not Configured"],["Vercel Deployment","Healthy"],["Game Version",process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0,7)||"Current"]].map(([k,v])=><div key={k}><b>{k}</b><span className={`health-${v.toLowerCase().replaceAll(" ","-")}`}>{v}</span></div>)}</div></section>}
       {topic==="audit"&&<AdminAuditLog/>}
       {topic==="economy"&&<><TreasuryDashboard />
@@ -1862,6 +1871,19 @@ function AdminConsole({
             <small>Optional; leave blank for approved-template artwork or the safe fallback.</small>
             <input value={image} onChange={(e) => setImage(e.target.value)} />
           </label>
+          {ownerAccount && target === accounts.find((a) => a.account_number === 1)?.id && (
+            <label className="checklabel">
+              <input
+                type="checkbox"
+                checked={originBrand}
+                onChange={(e) => setOriginBrand(e.target.checked)}
+              />
+              Origin Brand: TFR
+              <small>
+                Enabled by default for normal Owner-origin horses. Turn this off only for an intentional test or imported horse.
+              </small>
+            </label>
+          )}
         </div>
         <h3>Base stats</h3>
         <div className="adminstatgrid">

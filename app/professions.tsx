@@ -725,8 +725,15 @@ export function ProfessionalCenter({
           const studyContent = modules.find(
             (item) => item.profession_id === p.id && item.level === level,
           );
+          const rateLevel = career.qa ? qaLevel : p.level;
+          const rateServices = catalog.filter(
+            (service) =>
+              service.profession_id === p.id &&
+              service.minimum_level <= rateLevel,
+          );
           const allowed = (tab: string) =>
             tab === "overview" ||
+            (tab === "rates" && (career.qa || p.level > 0)) ||
             (tab === "study" && ["study", "test"].includes(stage)) ||
             (tab === "test" && stage === "test") ||
             (tab === "services" &&
@@ -853,8 +860,14 @@ export function ProfessionalCenter({
                   </div>
                 )}
                 <nav className="careertabs" aria-label="Career stages">
-                  {["overview", "study", "test", "services", "progression"].map(
-                    (tab) => (
+                  {[
+                    "overview",
+                    "study",
+                    "test",
+                    "services",
+                    "rates",
+                    "progression",
+                  ].map((tab) => (
                       <button
                         disabled={!allowed(tab)}
                         className={careerTab === tab ? "active" : ""}
@@ -864,8 +877,7 @@ export function ProfessionalCenter({
                         {tab[0].toUpperCase() + tab.slice(1)}
                         {!allowed(tab) && tab !== "overview" ? " 🔒" : ""}
                       </button>
-                    ),
-                  )}
+                  ))}
                 </nav>
                 <div className="careercontent">
                   {careerTab === "overview" && (
@@ -1042,6 +1054,84 @@ export function ProfessionalCenter({
                       >
                         Open Professional Market
                       </button>
+                    </>
+                  )}
+                  {careerTab === "rates" && (
+                    <>
+                      <h2>Set Your Rates</h2>
+                      <p>
+                        Rates are charged per horse. Enabled saved rates appear
+                        in Find a Professional.
+                      </p>
+                      <div className="careerrates">
+                        {rateServices.map((service) => (
+                          <article key={service.id}>
+                            <span>
+                              <b>{service.name}</b>
+                              <small>
+                                {service.min_price}–{service.max_price} LED per
+                                horse
+                              </small>
+                            </span>
+                            <label>
+                              Price per horse
+                              <input
+                                aria-label={`${service.name} price per horse`}
+                                type="number"
+                                min={service.min_price}
+                                max={service.max_price}
+                                value={rates[service.id] ?? service.min_price}
+                                onChange={(event) =>
+                                  setRates({
+                                    ...rates,
+                                    [service.id]: Number(event.target.value),
+                                  })
+                                }
+                              />
+                            </label>
+                            <button
+                              className="primary"
+                              onClick={() => {
+                                const price =
+                                  rates[service.id] ?? service.min_price;
+                                if (career.qa && !runNormal) {
+                                  if (
+                                    price < service.min_price ||
+                                    price > service.max_price
+                                  )
+                                    return notify(
+                                      `Price must be between ${service.min_price} and ${service.max_price} LED.`,
+                                    );
+                                  return notify(
+                                    `QA rate validated at ${price} LED per horse · live market data unchanged.`,
+                                  );
+                                }
+                                void run(async () => {
+                                  const { error } = await supabase.rpc(
+                                    "set_service_offering",
+                                    {
+                                      target_service: service.id,
+                                      new_price: price,
+                                      is_enabled: true,
+                                    },
+                                  );
+                                  return { error };
+                                }, `${service.name} saved at ${price} LED per horse.`);
+                              }}
+                            >
+                              {career.qa && !runNormal
+                                ? "VALIDATE QA RATE"
+                                : "SAVE RATE"}
+                            </button>
+                          </article>
+                        ))}
+                        {!rateServices.length && (
+                          <p className="featurehint">
+                            Certification is required before setting service
+                            rates.
+                          </p>
+                        )}
+                      </div>
                     </>
                   )}
                   {careerTab === "progression" && (

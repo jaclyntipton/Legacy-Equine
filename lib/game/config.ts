@@ -1,6 +1,6 @@
 export const GAME = {
   currencyName: "LE Dollars",
-  startingBalance: 4000,
+  startingBalance: 3000,
   foundationPrice: 1000,
   baseStableCapacity: 5,
   stallPackage: { quantity: 5, priceUsdCents: 499 },

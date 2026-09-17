@@ -11,7 +11,7 @@
 
 ## Alpha rules
 
-Configuration lives in `lib/game/config.ts`. New stables receive 4,000 LE Dollars, and every existing player was raised to a minimum 4,000 LE balance for the Alpha economy. Foundation Store purchases have no lifetime count limit: sufficient LED and an available stable stall are the only account constraints. Normal foundation stats are 10–15 with a 6% outlier roll spanning 7–18. Every random process accepts a seeded generator.
+Configuration lives in `lib/game/config.ts`. New public player accounts receive 3,000 LE Dollars, Level 1 with 0 Account XP, and the configured starter Stable capacity. Foundation Store purchases have no lifetime count limit: sufficient LED and an available stable stall are the only account constraints. Normal foundation stats are 10–15 with a 6% outlier roll spanning 7–18. Every random process accepts a seeded generator.
 
 Every normal account begins with five active-horse stalls. Capacity is derived from auditable base, verified USD purchase, Owner-granted, promotional, and event allocations rather than a mutable total. The provisional repeatable package adds five permanent account-bound stalls for $4.99 USD as a one-time purchase. Account #1 has an explicit unlimited-capacity entitlement. Store, marketplace, transfer, gift, auction, and foal acquisition paths must enforce capacity transactionally before money or ownership changes.
 

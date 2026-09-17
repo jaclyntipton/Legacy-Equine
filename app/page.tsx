@@ -16,6 +16,7 @@ import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
 import { StableInventory } from "@/app/stable-inventory";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
+import { PublicAuth } from "@/app/public-auth";
 import { StableBrandSettings } from "@/app/stable-brand-settings";
 import { NavIcon } from "@/app/nav-icons";
 import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
@@ -451,7 +452,7 @@ export default function Home() {
     void generateStoreArtwork();
   };
   if (loading && !user) return <div className="loading">LEGACY EQUINE</div>;
-  if (!user) return <Auth />;
+  if (!user||location.pathname==="/reset-password"||location.pathname==="/auth/confirm") return <PublicAuth />;
   if (!stable)
     return (
       <CreateStable

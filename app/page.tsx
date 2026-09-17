@@ -141,6 +141,12 @@ const routeFor=(view:MainView,state?:{stableTab?:StableTab;profileTab?:ProfileTa
 const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string}={view:"stable"};if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":key==="marketplace"?"market":(["bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"stable")as MainView}return result};
 function GlobalToast({message,dismiss}:{message:string;dismiss:()=>void}){const persistent=/error|failed|unable|couldn.?t|insufficient|not enough|required|unavailable|invalid|denied|choose|full|warning/i.test(message);useEffect(()=>{if(!message||persistent)return;const timer=setTimeout(dismiss,2800);return()=>clearTimeout(timer)},[message,persistent,dismiss]);if(!message)return null;return <div className={`globaltoast ${persistent?"error":"success"}`} role={persistent?"alert":"status"}><span>{message}</span><button aria-label="Dismiss notification" onClick={dismiss}>×</button></div>}
 const money = (n: number) => new Intl.NumberFormat("en-US").format(n);
+const compactNumber = (n: number) =>
+  new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    compactDisplay: "short",
+    maximumFractionDigits: 2,
+  }).format(n);
 const handHeight = (value: number) => {
   const whole = Math.floor(value),
     inches = Math.round((value - whole) * 10),
@@ -230,12 +236,15 @@ export default function Home() {
     [horseTier, setHorseTier] = useState("all"),
     [horseBreeding, setHorseBreeding] = useState("all"),
     [horseSort, setHorseSort] = useState("name"),
-    [horseView, setHorseView] = useState<"cards" | "compact">("cards");
+    [horseView, setHorseView] = useState<"cards" | "compact">("cards"),
+    [mobileMenuOpen,setMobileMenuOpen]=useState(false),
+    [showExactBalance,setShowExactBalance]=useState(false);
   const [stableTab,setStableTab]=useState<StableTab>("horses"),[profileTab,setProfileTab]=useState<ProfileTab>("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
   const [storeDepartment,setStoreDepartment]=useState<StoreDepartment>("horses"),[storeBreed,setStoreBreed]=useState(""),[storeProducts,setStoreProducts]=useState<StoreProduct[]>([]);
   const artworkWorker = useRef<Promise<void> | null>(null);
   const applyLocation=useCallback(()=>{const state=locationState();setView(state.view);if(state.stableTab)setStableTab(state.stableTab);if(state.profileTab)setProfileTab(state.profileTab);if(state.storeDepartment)setStoreDepartment(state.storeDepartment);if(state.selected)setSelected(state.selected);if(state.storeSelected)setStoreSelected(state.storeSelected);if(state.storeBreed!==undefined)setStoreBreed(state.storeBreed)},[]);
   const navigate=useCallback((next:MainView,overrides?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string})=>{const state={stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed,...overrides};history.pushState({le:true},"",routeFor(next,state));setView(next);if(overrides?.stableTab)setStableTab(overrides.stableTab);if(overrides?.profileTab)setProfileTab(overrides.profileTab);if(overrides?.storeDepartment)setStoreDepartment(overrides.storeDepartment);if(overrides?.selected!==undefined)setSelected(overrides.selected);if(overrides?.storeSelected!==undefined)setStoreSelected(overrides.storeSelected);if(overrides?.storeBreed!==undefined)setStoreBreed(overrides.storeBreed)},[stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed]);
+  const mobileNavigate=useCallback((next:MainView,overrides?:Parameters<typeof navigate>[1])=>{setMobileMenuOpen(false);navigate(next,overrides)},[navigate]);
   const dismissNotice=useCallback(()=>setNotice(""),[]);
   useEffect(()=>{applyLocation();const back=()=>applyLocation();addEventListener("popstate",back);return()=>removeEventListener("popstate",back)},[applyLocation]);
   const load = useCallback(async (u: User | null) => {
@@ -470,6 +479,25 @@ export default function Home() {
     );
   return (
     <div className="shell">
+      <header className="mobile-header">
+        <button className="mobile-brand" onClick={()=>mobileNavigate("stable",{stableTab:"horses"})}><span>LE</span><b>Legacy Equine™</b></button>
+        <button className="mobile-balance" aria-expanded={showExactBalance} onClick={()=>setShowExactBalance(value=>!value)}><span>LE</span><b>{compactNumber(stable.balance)} LED</b></button>
+        <button className="menu-toggle" aria-label="Open navigation menu" aria-expanded={mobileMenuOpen} onClick={()=>setMobileMenuOpen(true)}>☰</button>
+        {showExactBalance&&<div className="exact-balance" role="status">{money(stable.balance)} LED</div>}
+      </header>
+      {mobileMenuOpen&&<div className="mobile-menu-backdrop" onClick={()=>setMobileMenuOpen(false)}>
+        <aside className="mobile-menu" role="dialog" aria-modal="true" aria-label="Legacy Equine navigation" onClick={event=>event.stopPropagation()}>
+          <div className="mobile-menu-title"><span>LE</span><b>Legacy Equine™</b><button aria-label="Close navigation menu" onClick={()=>setMobileMenuOpen(false)}>×</button></div>
+          <p>GAME</p>
+          <nav>{[
+            ["stable","barn","My Stable"],["store","store","LE Store"],["training","round-pen","Training"],["shows","trophy","Shows"],["market","sale-tag","Marketplace"],["professions","toolbox","Professions"],["community","bulletin","Community"],["bank","coin","Bank"],["sanctuary","heart","Sanctuary"],
+          ].map(([destination,icon,label])=><button key={destination} className={view===destination?"active":""} onClick={()=>mobileNavigate(destination as MainView,destination==="stable"?{stableTab:"horses"}:destination==="store"?{storeDepartment:"horses"}:undefined)}><NavIcon name={icon as Parameters<typeof NavIcon>[0]["name"]}/>{label}</button>)}</nav>
+          <p>ACCOUNT</p>
+          <nav><button className={view==="profile"?"active":""} onClick={()=>mobileNavigate("profile",{profileTab:"profile"})}>My Profile</button><button onClick={()=>mobileNavigate("profile",{profileTab:"settings"})}>Settings</button></nav>
+          {stable.is_admin&&<><p>OWNER</p><nav><button className={view==="admin"?"active":""} onClick={()=>mobileNavigate("admin")}>Admin Control Center</button></nav></>}
+          <button className="mobile-signout" onClick={async()=>{await supabase.auth.signOut();window.location.assign("/")}}>Sign Out</button>
+        </aside>
+      </div>}
       <aside className="game-sidebar">
         <button className="brand" onClick={() => navigate("stable",{stableTab:"horses"})}>
           <span className="mark">LE</span>
@@ -588,9 +616,10 @@ export default function Home() {
           {view === "stable" && (
             <>
               <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><button className="primary" onClick={()=>navigate("store",{storeDepartment:"horses"})}>Visit LE Store</button></section>
-              <nav className="sectiontabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>navigate("stable",{stableTab:"horses"})}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>navigate("stable",{stableTab:"tack"})}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>navigate("stable",{stableTab:"feed"})}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>navigate("stable",{stableTab:"supplies"})}>Supply Room</button></nav>
+              <nav className="sectiontabs stable-desktop-tabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>navigate("stable",{stableTab:"horses"})}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>navigate("stable",{stableTab:"tack"})}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>navigate("stable",{stableTab:"feed"})}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>navigate("stable",{stableTab:"supplies"})}>Supply Room</button></nav>
+              <label className="stable-mobile-select">Stable Area:<select value={stableTab} onChange={event=>navigate("stable",{stableTab:event.target.value as StableTab})}><option value="horses">My Horses</option><option value="tack">Tack Room</option><option value="feed">Feed Room</option><option value="supplies">Supply Room</option></select></label>
               {stableTab==="horses"&&<>
-              <section className="stats">
+              <section className="stats stable-overview desktop-stable-overview">
                 <div>
                   <small>STABLE CAPACITY</small>
                   <b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b>
@@ -630,6 +659,11 @@ export default function Home() {
               ) : (
                 <Empty go={() => navigate("store",{storeDepartment:"horses"})} />
               )}
+              <section className="stats stable-overview mobile-stable-overview">
+                <div><small>STABLE CAPACITY</small><b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b><button className="textbutton" onClick={()=>navigate("stalls")}>+ Add Stalls</button></div>
+                <div><small>AVERAGE POINTS</small><b>{horses.length?Math.round(horses.reduce((n,h)=>n+overall(h),0)/horses.length):0}</b></div>
+                <div><small>GENERATIONS BRED</small><b>{Math.max(0,...horses.map(h=>h.generation))}</b></div>
+              </section>
               </>}
               {stableTab!=="horses"&&<StableInventory room={stableTab} horses={horses} notify={setNotice} refresh={()=>void load(user)}/>} 
             </>

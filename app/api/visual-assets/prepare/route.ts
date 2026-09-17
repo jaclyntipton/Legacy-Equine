@@ -34,7 +34,7 @@ export async function POST(request:Request){
   const sourceBox=await alphaBox(source);if(!sourceBox)return Response.json({error:"Candidate contains no visible artwork."},{status:400});
   let prepared:Buffer;
   if(meta.width===req.canvas_width&&meta.height===req.canvas_height)prepared=await sharp(source).ensureAlpha().png().toBuffer();
-  else prepared=await sharp(source).resize(req.canvas_width,req.canvas_height,{fit:"contain",position:"centre",background:{r:0,g:0,b:0,alpha:0},withoutEnlargement:false}).ensureAlpha().png().toBuffer();
+  else{const safeWidth=req.canvas_width-12,safeHeight=req.canvas_height-12,contained=await sharp(source).resize(safeWidth,safeHeight,{fit:"contain",position:"centre",background:{r:0,g:0,b:0,alpha:0},withoutEnlargement:false}).ensureAlpha().png().toBuffer();prepared=await sharp({create:{width:req.canvas_width,height:req.canvas_height,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite([{input:contained,left:6,top:6}]).png().toBuffer()}
   const preparedBox=(await alphaBox(prepared))!;
   const masterResponse=await fetch(master.image_url);if(!masterResponse.ok)return Response.json({error:"The immutable master could not be loaded for comparison."},{status:502});
   const masterBuffer=Buffer.from(await masterResponse.arrayBuffer()),masterRegistered=await sharp(masterBuffer).resize(req.canvas_width,req.canvas_height,{fit:"contain",background:{r:0,g:0,b:0,alpha:0}}).png().toBuffer(),masterBox=await alphaBox(masterRegistered);
@@ -55,5 +55,5 @@ export async function POST(request:Request){
   const{data:assetId,error}=await auth.rpc("owner_register_prepared_visual_asset",{p_requirement:req.id,p_asset_key:base,p_image_url:preparedUrl,p_width:req.canvas_width,p_height:req.canvas_height,p_file_size:prepared.length,p_validation:validation});
   if(error)throw error;
   return Response.json({asset_id:assetId,filename:`${base}.png`,image_url:preparedUrl,master_url:master.image_url,warnings,diagnostics:validation});
- }catch(error){console.error("visual asset preparation failed",error);return Response.json({error:"We couldn't prepare this artwork for review. Please try again."},{status:500})}
+ }catch(error){const requestId=crypto.randomUUID();console.error("visual asset preparation failed",{requestId,error});return Response.json({error:"We couldn't prepare this artwork for review. Please try again.",details:error instanceof Error?error.message:String(error),request_id:requestId},{status:500})}
 }

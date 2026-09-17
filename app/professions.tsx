@@ -213,7 +213,12 @@ export function ProfessionalCenter({
       const profession = professions.find((item) => item.id === match[1]);
       if (!profession) return;
       const requestedQa = new URLSearchParams(location.search).get("qa") === "1";
-      setCareer({ id: profession.id, qa: requestedQa && ownerQa });
+      if ((requestedQa && !ownerQa) || (!requestedQa && profession.level === 0)) {
+        history.replaceState({ leProfessionCareer: true }, "", "/professions");
+        setCareer(null);
+        return;
+      }
+      setCareer({ id: profession.id, qa: requestedQa });
       setCareerTab("overview");
       setCareerNotice("");
       setTesting(null);

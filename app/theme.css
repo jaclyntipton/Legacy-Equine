@@ -89,7 +89,7 @@ footer{background:#42296b;color:#d8cbea;border-top:5px solid #a783d7}.profiletab
 
 /* Mobile player navigation is intentionally separate from the desktop sidebar. */
 .mobile-header,.mobile-menu-backdrop,.stable-mobile-select,.mobile-stable-overview{display:none}
-@media(max-width:767px){
+@media(max-width:900px){
  html,body{max-width:100%;overflow-x:hidden}
  body{padding-bottom:env(safe-area-inset-bottom)}
  .shell{display:block;min-width:0}
@@ -111,7 +111,7 @@ footer{background:#42296b;color:#d8cbea;border-top:5px solid #a783d7}.profiletab
  .adminshell,.admindashboard,.adminformgrid,.adminstatgrid{min-width:0;max-width:100%}.admintopics{max-width:100%;overflow-x:auto}.panel{min-width:0;padding:18px 15px}.geneticstable,.admintable,.adminledger{max-width:100%;overflow-x:auto}
  img,video,canvas,svg{max-width:100%}.buttonrow,.storedepartments,.adminsubnav{max-width:100%;overflow-x:auto}.nameedit,input,textarea,select{max-width:100%}
 }
-@media(min-width:768px) and (max-width:1024px){
+@media(min-width:901px) and (max-width:1024px){
  .shell{grid-template-columns:176px minmax(0,1fr)}.game-sidebar{padding-inline:10px}.game-sidebar .brand>span:last-child{font-size:14px}.game-nav button{padding-inline:9px}.topbar{gap:8px}.account-home{min-width:150px}.account-nav button{padding-inline:9px}.topbar .balance{min-width:108px}.topbar .signout{padding-inline:8px}
 }
 .account-home{display:grid;grid-template-columns:38px 1fr;align-items:center;gap:10px}.account-home>img,.account-home>span{grid-row:1;width:38px;height:38px;border-radius:50%;object-fit:cover;background:#7450a7;color:#fff;display:grid;place-items:center;font-size:9px;font-weight:900}.account-home>i{grid-column:2;grid-row:1;font-style:normal}

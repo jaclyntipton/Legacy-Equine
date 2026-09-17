@@ -1091,24 +1091,14 @@ function StoreCard({
   return (
     <article className="storecard">
       <button className="storeimage" onClick={view}>
-        <HorseArtworkImage url={h.image_url} alt={h.name}/>
-        <span>{h.sex}</span>
+        <HorseArtworkImage url="" alt={h.name}/>
       </button>
       <div className="storecardbody">
-        <p className="eyebrow">{h.breed}</p>
         <h3>{h.name}</h3>
-        <p>
-          {h.color} · {storeAgeLabel(h)} ·{" "}
+        <p className="storeidentity">
+          {h.breed} · {h.sex} · {storeAgeLabel(h)} · {h.color} ·{" "}
           {handHeight(h.mature_height_hands)}
         </p>
-        <div className="storestats">
-          {GAME.stats.map((s) => (
-            <span key={s}>
-              <small>{s}</small>
-              <b>{h.stats[s]}</b>
-            </span>
-          ))}
-        </div>
         <div className="storeactions">
           <strong>
             {money(h.price)} <small>LE Dollars</small>

@@ -931,16 +931,22 @@ export function ProfessionalCenter({
                                 {index + 1}. {q.prompt}
                               </legend>
                               {q.choices.map((choice, choiceIndex) => (
-                                <label key={choice}>
+                                <label
+                                  className="examanswer"
+                                  htmlFor={`profession-answer-${q.id}-${choiceIndex}`}
+                                  key={choice}
+                                >
                                   <input
+                                    id={`profession-answer-${q.id}-${choiceIndex}`}
                                     type="radio"
                                     name={q.id}
+                                    value={choiceIndex}
                                     checked={answers[q.id] === choiceIndex}
                                     onChange={() =>
-                                      setAnswers({
-                                        ...answers,
+                                      setAnswers((current) => ({
+                                        ...current,
                                         [q.id]: choiceIndex,
-                                      })
+                                      }))
                                     }
                                   />
                                   {choice}

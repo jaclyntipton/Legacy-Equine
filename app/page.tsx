@@ -141,12 +141,19 @@ const routeFor=(view:MainView,state?:{stableTab?:StableTab;profileTab?:ProfileTa
 const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string}={view:"stable"};if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":key==="marketplace"?"market":(["bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"stable")as MainView}return result};
 function GlobalToast({message,dismiss}:{message:string;dismiss:()=>void}){const persistent=/error|failed|unable|couldn.?t|insufficient|not enough|required|unavailable|invalid|denied|choose|full|warning/i.test(message);useEffect(()=>{if(!message||persistent)return;const timer=setTimeout(dismiss,2800);return()=>clearTimeout(timer)},[message,persistent,dismiss]);if(!message)return null;return <div className={`globaltoast ${persistent?"error":"success"}`} role={persistent?"alert":"status"}><span>{message}</span><button aria-label="Dismiss notification" onClick={dismiss}>×</button></div>}
 const money = (n: number) => new Intl.NumberFormat("en-US").format(n);
-const compactNumber = (n: number) =>
-  new Intl.NumberFormat("en-US", {
-    notation: "compact",
-    compactDisplay: "short",
-    maximumFractionDigits: 2,
-  }).format(n);
+const compactNumber = (n: number) => {
+  const units = [
+    [1e18, "Qi"],
+    [1e15, "Qa"],
+    [1e12, "T"],
+    [1e9, "B"],
+    [1e6, "M"],
+    [1e3, "K"],
+  ] as const;
+  const unit = units.find(([threshold]) => Math.abs(n) >= threshold);
+  if (!unit) return money(n);
+  return `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(n / unit[0])}${unit[1]}`;
+};
 const handHeight = (value: number) => {
   const whole = Math.floor(value),
     inches = Math.round((value - whole) * 10),

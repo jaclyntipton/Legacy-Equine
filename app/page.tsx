@@ -566,7 +566,13 @@ export default function Home() {
             <b>{money(stable.balance)}</b>
             <span>LE Dollars</span>
           </div>
-          <button className="signout" onClick={() => supabase.auth.signOut()}>
+          <button
+            className="signout"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              window.location.assign("/");
+            }}
+          >
             Sign out
           </button>
         </header>

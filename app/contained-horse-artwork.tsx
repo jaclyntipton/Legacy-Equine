@@ -3,7 +3,7 @@
 import {useMemo,useState} from "react";
 import {horseArtworkCandidates} from "@/lib/game/horse-artwork";
 
-type Props={url?:string|null;alt:string;className?:string;onPrimaryFailure?:(url:string)=>void};
+type Props={url?:string|null;alt:string;className?:string;onPrimaryFailure?:(url:string)=>void;showFallbackLabel?:boolean};
 
 /** Shared full-body renderer. Mismatched aspect ratios are letterboxed, never cropped. */
 export function ContainedHorseArtwork({url,alt,className="",onPrimaryFailure}:Props){

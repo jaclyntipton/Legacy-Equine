@@ -733,6 +733,7 @@ export default function Home() {
           {view === "professions" && (
             <ProfessionalCenter
               horses={horses}
+              balance={stable.balance}
               notify={setNotice}
               refresh={() => void load(user)}
             />

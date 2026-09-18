@@ -1651,7 +1651,7 @@ function AdminConsole({
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
   const visibleTopics=topics.filter(x=>!x.permission||can(x.permission));
-  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,x.permission.replace(".view",".edit")]:[]).concat(["admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.bulk_enter_all","admin.shows.bulk_create","admin.shows.bulk_run","admin.shows.lock","admin.shows.run","admin.shows.cancel","admin.shows.preview","admin.shows.duplicate","admin.shows.qa","admin.shows.private","admin.shows.processing","admin.shows.audit","admin.professions.qa","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
+  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,x.permission.replace(".view",".edit")]:[]).concat(["admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.bulk_enter_all","admin.shows.bulk_create","admin.shows.bulk_run","admin.shows.lock","admin.shows.run","admin.shows.cancel","admin.shows.preview","admin.shows.duplicate","admin.shows.qa","admin.shows.private","admin.shows.processing","admin.shows.audit","admin.professions.qa","professions.qa_progression_override","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
   const run = async (
     job: () => Promise<{ error: Error | null }>,
     success: string,

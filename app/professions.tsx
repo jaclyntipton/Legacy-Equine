@@ -33,6 +33,7 @@ type Profession = {
   rates_configured: boolean;
   career_state: string;
   certified_levels: number[];
+  requirement_overridden: boolean;
 };
 type Directory = {
   provider_id: string;
@@ -142,6 +143,10 @@ export function ProfessionalCenter({
     [qaStage, setQaStage] = useState("study"),
     [qaControlsOpen, setQaControlsOpen] = useState(false),
     [runNormal, setRunNormal] = useState(false),
+    [pendingLiveEnrollment, setPendingLiveEnrollment] = useState(false),
+    [enrollingLive, setEnrollingLive] = useState(false),
+    [overrideConfirming, setOverrideConfirming] = useState(false),
+    [overrideBusy, setOverrideBusy] = useState(false),
     [qaRateServices, setQaRateServices] = useState<Record<string, boolean>>({}),
     [qaServiceCredit, setQaServiceCredit] = useState(0),
     [request, setRequest] = useState<{
@@ -275,11 +280,15 @@ export function ProfessionalCenter({
     setCareerNotice("");
     setTesting(null);
     setTestResult(null);
+    setPendingLiveEnrollment(false);
+    setOverrideConfirming(false);
   };
   const backToProfessions = () => {
     history.pushState({ leProfessionCareer: true }, "", "/professions");
     setCareer(null);
     setRunNormal(false);
+    setPendingLiveEnrollment(false);
+    setOverrideConfirming(false);
     setCareerNotice("");
     setTesting(null);
     setTestResult(null);
@@ -305,6 +314,64 @@ export function ProfessionalCenter({
     openCareerRoute(p.id, false);
     setCareerTab("study");
     setCareerNotice("");
+  };
+  const requestLiveMode = (p: Profession, enabled: boolean) => {
+    if (!enabled) {
+      setRunNormal(false);
+      setPendingLiveEnrollment(false);
+      setOverrideConfirming(false);
+      setCareerTab("overview");
+      setCareerNotice("");
+      setTesting(null);
+      setTestResult(null);
+      return;
+    }
+    if (!p.enrolled) {
+      setPendingLiveEnrollment(true);
+      setRunNormal(false);
+      return;
+    }
+    setPendingLiveEnrollment(false);
+    setRunNormal(true);
+    setCareerTab("overview");
+    setCareerNotice("");
+    setTesting(null);
+    setTestResult(null);
+  };
+  const enrollFromQa = async (p: Profession) => {
+    if (enrollingLive) return;
+    setEnrollingLive(true);
+    const { error } = await supabase.rpc("enroll_profession", {
+      target_profession: p.id,
+    });
+    setEnrollingLive(false);
+    if (error) return notify(error.message);
+    await load();
+    refresh();
+    setPendingLiveEnrollment(false);
+    setRunNormal(true);
+    setCareerTab("study");
+    setCareerNotice("Enrollment persisted ✓ Basic Study is ready.");
+  };
+  const markRequirementComplete = async (p: Profession) => {
+    if (overrideBusy || p.level < 1) return;
+    setOverrideBusy(true);
+    const { error } = await supabase.rpc(
+      "admin_mark_profession_requirement_complete",
+      {
+        target_profession: p.id,
+        target_level: p.level,
+        p_reason: "QA/testing",
+      },
+    );
+    setOverrideBusy(false);
+    if (error) return notify(error.message);
+    await load();
+    setOverrideConfirming(false);
+    setCareerTab("progression");
+    setCareerNotice(
+      `Owner QA Progression Override ✓ Actual Services remain ${p.qualifying_credit}.`,
+    );
   };
   const study = async (p: Profession) => {
     if (career?.qa && !runNormal) {
@@ -828,6 +895,8 @@ export function ProfessionalCenter({
               ? requiredServices
               : qaServiceCredit
             : p.qualifying_credit;
+          const requirementMet =
+            serviceCredit >= requiredServices || (!qa && p.requirement_overridden);
           const allowed = (tab: string) =>
             tab === "overview" ||
             (tab === "rates" && (qa || p.level > 0)) ||
@@ -958,17 +1027,93 @@ export function ProfessionalCenter({
                           <input
                             type="checkbox"
                             checked={runNormal}
-                            onChange={(event) => {
-                              const enabled = event.target.checked;
-                              setRunNormal(enabled);
-                              setCareerTab("overview");
-                              setCareerNotice("");
-                              setTesting(null);
-                              setTestResult(null);
-                            }}
+                            onChange={(event) =>
+                              requestLiveMode(p, event.target.checked)
+                            }
                           />{" "}
                           Run as Normal Gameplay
                         </label>
+                        {!runNormal && ["services", "advancement"].includes(qaStage) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setQaServiceCredit(requiredServices);
+                              setQaStage("advancement");
+                              setCareerNotice(
+                                `${requiredServices} / ${requiredServices} — Simulated for QA ✓`,
+                              );
+                            }}
+                          >
+                            SIMULATE SERVICE REQUIREMENT COMPLETE
+                          </button>
+                        )}
+                        {runNormal && p.enrolled && p.level > 0 && !p.requirement_overridden && (
+                          <button
+                            type="button"
+                            onClick={() => setOverrideConfirming(true)}
+                          >
+                            ADMIN MARK REQUIREMENT COMPLETE
+                          </button>
+                        )}
+                        {runNormal && p.requirement_overridden && (
+                          <p>
+                            Actual Services: {p.qualifying_credit} · Advancement
+                            Requirement: Owner QA Override ✓
+                          </p>
+                        )}
+                        {pendingLiveEnrollment && (
+                          <div className="liveenrollmentprompt" role="alert">
+                            <b>This career is not enrolled.</b>
+                            <p>
+                              Enroll for {p.enrollment_fee.toLocaleString()} LED to
+                              continue in Live Gameplay.
+                            </p>
+                            <div>
+                              <button
+                                type="button"
+                                onClick={() => setPendingLiveEnrollment(false)}
+                              >
+                                CANCEL
+                              </button>
+                              <button
+                                type="button"
+                                className="primary"
+                                disabled={enrollingLive}
+                                onClick={() => void enrollFromQa(p)}
+                              >
+                                {enrollingLive
+                                  ? "ENROLLING…"
+                                  : `ENROLL & CONTINUE — ${p.enrollment_fee.toLocaleString()} LED`}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        {overrideConfirming && (
+                          <div className="liveenrollmentprompt" role="alertdialog">
+                            <b>Confirm Owner QA progression override</b>
+                            <p>
+                              This will administratively satisfy the current
+                              advancement requirement without creating fake service
+                              records. Continue?
+                            </p>
+                            <div>
+                              <button
+                                type="button"
+                                onClick={() => setOverrideConfirming(false)}
+                              >
+                                CANCEL
+                              </button>
+                              <button
+                                type="button"
+                                className="primary"
+                                disabled={overrideBusy}
+                                onClick={() => void markRequirementComplete(p)}
+                              >
+                                {overrideBusy ? "SAVING…" : "CONFIRM OWNER OVERRIDE"}
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -1162,25 +1307,19 @@ export function ProfessionalCenter({
                         Only legitimate completed services count toward normal
                         advancement.
                       </p>
-                      {qa && serviceCredit < requiredServices && (
-                        <button
-                          className="primary"
-                          onClick={() => {
-                            setQaServiceCredit(requiredServices);
-                            setQaStage("advancement");
-                            setCareerNotice("Service Requirement Complete ✓");
-                          }}
-                        >
-                          SIMULATE {requiredServices}/{requiredServices}
-                        </button>
+                      {!qa && p.requirement_overridden && (
+                        <p>
+                          Actual Services: {serviceCredit} · Advancement Requirement:
+                          Owner QA Override ✓
+                        </p>
                       )}
-                      {serviceCredit < requiredServices && (
+                      {!requirementMet && (
                         <p>
                           🔒 Advancement · Complete {requiredServices - serviceCredit}{" "}
                           additional {levelName} {p.name} client services to unlock {advanceName} certification training.
                         </p>
                       )}
-                      {stage === "advancement" && serviceCredit >= requiredServices && (
+                      {stage === "advancement" && requirementMet && (
                         <button
                           className="primary"
                           onClick={() => setCareerTab("progression")}

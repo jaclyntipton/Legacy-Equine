@@ -75,7 +75,7 @@ describe("all profession progression paths", () => {
     expect(exactStateMachine).toContain(
       "legitimate_profession_service_count(auth.uid(),target_profession,pp.certification_level)",
     );
-    expect(ui).toContain("serviceCredit < requiredServices");
+    expect(ui).toContain("!requirementMet");
     expect(ui).toContain("🔒 Advancement");
   });
 

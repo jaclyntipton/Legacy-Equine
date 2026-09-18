@@ -1426,7 +1426,7 @@ export function ProfessionalCenter({
             </p>
             {requestStep === "service" && (
               <>
-                <label>
+                {!isLeatherwork&&<label>
                   Service
                   <select
                     value={request.serviceId}
@@ -1444,7 +1444,12 @@ export function ProfessionalCenter({
                       </option>
                     ))}
                   </select>
-                </label>
+                </label>}
+                {isLeatherwork&&<div className="productfilters">
+                  <label>Tack Type<select value={selectedCatalog?.tack_slot??""} onChange={event=>{const service=selectedProvider.services.find(row=>{const configured=catalog.find(item=>item.id===row.service_id);return configured?.tack_slot===event.target.value&&configured?.tack_tier===selectedCatalog?.tack_tier});if(service)setRequest({...request,serviceId:service.service_id})}}>{[...new Set(selectedProvider.services.map(row=>catalog.find(item=>item.id===row.service_id)?.tack_slot).filter(Boolean))].map(slot=><option key={slot} value={slot!}>{slot==="saddle_pad"?"Saddle Pads":slot==="leg_protection"?"Leg Protection":`${slot![0].toUpperCase()}${slot!.slice(1)}s`}</option>)}</select></label>
+                  <label>Tier<select value={selectedCatalog?.tack_tier??""} onChange={event=>{const service=selectedProvider.services.find(row=>{const configured=catalog.find(item=>item.id===row.service_id);return configured?.tack_tier===event.target.value&&configured?.tack_slot===selectedCatalog?.tack_slot});if(service)setRequest({...request,serviceId:service.service_id})}}>{["Entry","Quality","Elite","Legendary"].filter(tier=>selectedProvider.services.some(row=>catalog.find(item=>item.id===row.service_id)?.tack_tier===tier)).map(tier=><option key={tier}>{tier}</option>)}</select></label>
+                  <p><b>{selectedService?.service_name}</b> · {selectedService?.price.toLocaleString()} LED / item</p>
+                </div>}
                 {isLeatherwork&&<>
                   <label>Optional custom item name<input maxLength={80} value={craftName} placeholder={`Custom ${selectedCatalog?.tack_tier??""} ${selectedService?.service_name?.replace(`${selectedCatalog?.tack_tier} `,"")??"Tack"}`} onChange={event=>setCraftName(event.target.value)}/></label>
                   <p><b>Allocate Effective Stats</b> · {Object.values(craftBonuses).reduce((sum,value)=>sum+value,0)} / {selectedCatalog?.stat_budget??0}</p>

@@ -75,7 +75,7 @@ type Stable = {
   is_admin: boolean;
   account_xp: number;
 };
-type AccountProgression={account_xp:number;level:number;legacy_stable:boolean;next_level_xp:number|null;weekly_allowance:number;shows_hosted_this_week:number;weekly_show_limit:number};
+type AccountProgression={account_xp:number;level:number;legacy_stable:boolean;next_level_xp:number|null;weekly_allowance:number;shows_hosted_this_week:number;weekly_show_limit:number;custom_stable_layout:boolean};
 type StableCapacity = {occupied:number;base_capacity:number;purchased_capacity:number;complimentary_capacity:number;total_capacity:number;unlimited:boolean;available:number|null};
 type SanctuaryHorse = {id:string;name:string;breed:string;sex:"Mare"|"Stallion";color:string;birth_date:string;image_url:string;career_points:number;sanctuary_retired_at:string;former_owner_name:string;former_owner_account:number;former_owner_id:string};
 type AdminStable = {
@@ -637,7 +637,7 @@ export default function Home() {
           </>}
           {view === "stable" && (
             <>
-              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><div className="stableprofileactions"><button onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Stable Profile</button>{stable.account_number===1&&<button onClick={()=>{navigate("publicstable",{publicStableId:stable.id});history.replaceState({le:true},"",`/stables/${stable.id}?customize=1`)}}>Customize Stable</button>}<button className="primary" onClick={()=>navigate("store",{storeDepartment:"horses"})}>Visit LE Store</button></div></section>
+              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><div className="stableprofileactions"><button onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Stable Profile</button>{(stable.account_number===1||progression?.custom_stable_layout)&&<button onClick={()=>window.location.assign(`/stables/${stable.id}/customize`)}>Customize Stable</button>}<button className="primary" onClick={()=>navigate("store",{storeDepartment:"horses"})}>Visit LE Store</button></div></section>
               <nav className="sectiontabs stable-desktop-tabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>navigate("stable",{stableTab:"horses"})}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>navigate("stable",{stableTab:"tack"})}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>navigate("stable",{stableTab:"feed"})}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>navigate("stable",{stableTab:"supplies"})}>Supply Room</button></nav>
               <label className="stable-mobile-select">Stable Area:<select value={stableTab} onChange={event=>navigate("stable",{stableTab:event.target.value as StableTab})}><option value="horses">My Horses</option><option value="tack">Tack Room</option><option value="feed">Feed Room</option><option value="supplies">Supply Room</option></select></label>
               {stableTab==="horses"&&<>

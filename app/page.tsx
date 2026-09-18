@@ -856,6 +856,7 @@ export default function Home() {
                   open(profileHorse);
                 }}
                 openProfessions={() => navigate("professions")}
+                openTackRoom={() => navigate("stable",{stableTab:"tack"})}
                 reportImageFailure={(failedUrl) => {
                   void supabase.rpc("report_missing_horse_image", {
                     target_horse: horse.id,

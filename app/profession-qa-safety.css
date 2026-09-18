@@ -1,0 +1,4 @@
+.qamodebanner{position:sticky;top:8px;z-index:12;box-shadow:0 8px 24px #2b163329}
+.qamodebanner.live{border-color:#c9684b;background:#fff0e8;color:#7b2c19}
+.qamodebanner.preview{border-color:#9b83c6;background:#f4effc;color:#51327c}
+@media(max-width:480px){.qamodebanner{top:4px;font-size:11px;line-height:1.45}}

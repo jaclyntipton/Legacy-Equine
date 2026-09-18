@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import "./profession-qa-safety.css";
 
 type Horse = {
   id: string;
@@ -233,6 +234,7 @@ export function ProfessionalCenter({
       const match = location.pathname.match(/^\/professions\/([^/]+)$/);
       if (!match) {
         setCareer(null);
+        setRunNormal(false);
         return;
       }
       const profession = professions.find((item) => item.id === match[1]);
@@ -268,6 +270,7 @@ export function ProfessionalCenter({
   const backToProfessions = () => {
     history.pushState({ leProfessionCareer: true }, "", "/professions");
     setCareer(null);
+    setRunNormal(false);
     setCareerNotice("");
     setTesting(null);
     setTestResult(null);
@@ -327,7 +330,6 @@ export function ProfessionalCenter({
     setQaLevel(level);
     setQaStage("study");
     setCareerTab("study");
-    setRunNormal(false);
     setQaRateServices({});
     setQaServiceCredit(0);
   };
@@ -365,15 +367,6 @@ export function ProfessionalCenter({
       } else {
         await load();
         refresh();
-        if (career?.qa) {
-          history.replaceState(
-            { leProfessionCareer: true },
-            "",
-            `/professions/${testing.id}`,
-          );
-          setCareer({ id: testing.id, qa: false });
-          setRunNormal(false);
-        }
       }
       setCareerNotice(
         `Certification Test Passed ✓ Certificate Granted ✓ ${["Basic", "Proficient", "Advanced", "Professional"][testedLevel - 1]} ${testing.name} Certified`,
@@ -944,26 +937,26 @@ export function ProfessionalCenter({
                             onChange={(event) => {
                               const enabled = event.target.checked;
                               setRunNormal(enabled);
-                              if (enabled) {
-                                history.replaceState(
-                                  { leProfessionCareer: true },
-                                  "",
-                                  `/professions/${career.id}`,
-                                );
-                                setCareer({ id: career.id, qa: false });
-                                setCareerTab("overview");
-                                setCareerNotice(
-                                  "Normal Gameplay active — every milestone now uses your authoritative saved career.",
-                                );
-                                setTesting(null);
-                                setTestResult(null);
-                              }
+                              setCareerTab("overview");
+                              setCareerNotice("");
+                              setTesting(null);
+                              setTestResult(null);
                             }}
                           />{" "}
                           Run as Normal Gameplay
                         </label>
                       </div>
                     )}
+                  </div>
+                )}
+                {career.qa && (
+                  <div
+                    className={`careernotice qamodebanner ${runNormal ? "live" : "preview"}`}
+                    role="status"
+                  >
+                    <b>{runNormal ? "LIVE GAMEPLAY" : "QA PREVIEW"}</b> — {runNormal
+                      ? "progress, certifications, rates and services will be permanently saved."
+                      : "changes will not affect permanent progression or market data."}
                   </div>
                 )}
                 {careerNotice && (
@@ -1085,7 +1078,9 @@ export function ProfessionalCenter({
                             }
                             onClick={() => void submit()}
                           >
-                            SUBMIT TEST
+                            {career.qa && !runNormal
+                              ? "Submit QA Test — Not Saved"
+                              : "Submit Certification Test"}
                           </button>
                         </div>
                       )}
@@ -1284,8 +1279,10 @@ export function ProfessionalCenter({
                               }}
                             >
                               {career.qa && !runNormal
-                                ? "VALIDATE QA RATE"
-                                : "SAVE & START ACCEPTING CLIENTS"}
+                                ? "Save QA Rate — Not Saved"
+                                : career.qa
+                                  ? "Save Rate — Permanently Saved"
+                                  : "SAVE & START ACCEPTING CLIENTS"}
                             </button>
                           </article>
                         ))}
@@ -1338,9 +1335,17 @@ export function ProfessionalCenter({
                             className="primary"
                             onClick={() => void advanceCareer(p)}
                           >
-                            {atProfessional
-                              ? "COMPLETE CAREER"
-                              : `ADVANCE TO ${advanceName}`}
+                            {career.qa && !runNormal
+                              ? atProfessional
+                                ? "Complete QA Career — Not Saved"
+                                : `Advance to ${advanceName} — Not Saved`
+                              : career.qa
+                                ? atProfessional
+                                  ? "Complete Career — Permanently Saved"
+                                  : `Advance to ${advanceName} — Permanently Saved`
+                                : atProfessional
+                                  ? "COMPLETE CAREER"
+                                  : `ADVANCE TO ${advanceName}`}
                           </button>
                         </>
                       )}

@@ -941,9 +941,24 @@ export function ProfessionalCenter({
                           <input
                             type="checkbox"
                             checked={runNormal}
-                            onChange={(event) =>
-                              setRunNormal(event.target.checked)
-                            }
+                            onChange={(event) => {
+                              const enabled = event.target.checked;
+                              setRunNormal(enabled);
+                              if (enabled) {
+                                history.replaceState(
+                                  { leProfessionCareer: true },
+                                  "",
+                                  `/professions/${career.id}`,
+                                );
+                                setCareer({ id: career.id, qa: false });
+                                setCareerTab("overview");
+                                setCareerNotice(
+                                  "Normal Gameplay active — every milestone now uses your authoritative saved career.",
+                                );
+                                setTesting(null);
+                                setTestResult(null);
+                              }
+                            }}
                           />{" "}
                           Run as Normal Gameplay
                         </label>

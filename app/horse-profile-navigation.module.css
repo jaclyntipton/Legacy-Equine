@@ -1,12 +1,18 @@
+.backrow {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0 0 .8rem;
+}
+
 .back {
-  align-self: flex-start;
   min-height: 40px;
-  margin: 0 0 .65rem;
-  padding: .48rem .72rem;
-  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
-  border-radius: .45rem;
-  background: color-mix(in srgb, var(--plum) 72%, transparent);
-  color: var(--cream);
+  margin: 0;
+  padding: .5rem .8rem;
+  border: 1px solid #694095;
+  border-radius: .65rem;
+  background: #5a347f;
+  color: #fff;
   font-size: .72rem;
   font-weight: 800;
   letter-spacing: .055em;
@@ -16,8 +22,10 @@
 
 .back:hover,
 .back:focus-visible {
-  border-color: var(--gold);
-  background: color-mix(in srgb, var(--plum) 88%, transparent);
+  border-color: #d7ad43;
+  background: #43245f;
+  outline: 2px solid #d7ad43;
+  outline-offset: 2px;
 }
 
 @media (max-width: 520px) {
@@ -25,5 +33,9 @@
     min-height: 44px;
     max-width: 100%;
     white-space: normal;
+  }
+
+  .backrow {
+    margin-bottom: .65rem;
   }
 }

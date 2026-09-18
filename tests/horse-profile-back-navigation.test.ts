@@ -25,4 +25,10 @@ describe("Horse Profile stable navigation",()=>{
   expect(styles).toContain("min-height: 44px");
   expect(styles).toContain("max-width: 100%");
  });
+
+ it("renders the return control before the Horse Profile artwork with strong contrast",()=>{
+  expect(profile.indexOf("styles.backrow")).toBeLessThan(profile.indexOf('className="horseprofilehero"'));
+  expect(styles).toContain("background: #5a347f");
+  expect(styles).toContain("color: #fff");
+ });
 });

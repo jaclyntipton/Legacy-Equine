@@ -365,6 +365,15 @@ export function ProfessionalCenter({
       } else {
         await load();
         refresh();
+        if (career?.qa) {
+          history.replaceState(
+            { leProfessionCareer: true },
+            "",
+            `/professions/${testing.id}`,
+          );
+          setCareer({ id: testing.id, qa: false });
+          setRunNormal(false);
+        }
       }
       setCareerNotice(
         `Certification Test Passed ✓ Certificate Granted ✓ ${["Basic", "Proficient", "Advanced", "Professional"][testedLevel - 1]} ${testing.name} Certified`,
@@ -751,8 +760,8 @@ export function ProfessionalCenter({
           const p = professions.find((item) => item.id === career.id);
           if (!p) return null;
           const names = ["Basic", "Proficient", "Advanced", "Professional"];
-          const level = career.qa ? qaLevel : (p.next_level ?? 4);
           const qa = career.qa && !runNormal;
+          const level = qa ? qaLevel : (p.next_level ?? 4);
           const normalStage =
             {
               STUDY_REQUIRED: "study",
@@ -766,16 +775,16 @@ export function ProfessionalCenter({
             }[p.career_state] ?? "study";
           const stage = qa ? qaStage : normalStage;
           const displayLevel =
-            !career.qa && ["rates", "services", "advancement"].includes(stage)
+            !qa && ["rates", "services", "advancement"].includes(stage)
               ? Math.max(1, p.level)
               : level;
           const levelName = names[displayLevel - 1];
           const requiredServices =
             requirements[`${p.id}:${displayLevel}`] ?? p.required_services;
-          const advanceName = career.qa
+          const advanceName = qa
             ? names[Math.min(3, qaLevel)]
             : names[level - 1];
-          const atProfessional = career.qa ? qaLevel >= 4 : p.level >= 4;
+          const atProfessional = qa ? qaLevel >= 4 : p.level >= 4;
           const step =
             stage === "study"
               ? 1
@@ -787,7 +796,7 @@ export function ProfessionalCenter({
           const studyContent = modules.find(
             (item) => item.profession_id === p.id && item.level === level,
           );
-          const rateLevel = career.qa ? qaLevel : p.level;
+          const rateLevel = qa ? qaLevel : p.level;
           const rateServices = catalog.filter(
             (service) =>
               service.profession_id === p.id &&
@@ -804,7 +813,7 @@ export function ProfessionalCenter({
             : p.qualifying_credit;
           const allowed = (tab: string) =>
             tab === "overview" ||
-            (tab === "rates" && (career.qa || p.level > 0)) ||
+            (tab === "rates" && (qa || p.level > 0)) ||
             (tab === "study" && ["study", "test"].includes(stage)) ||
             (tab === "test" && stage === "test") ||
             (tab === "services" &&

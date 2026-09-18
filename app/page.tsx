@@ -25,6 +25,7 @@ import { ContainedHorseArtwork } from "@/app/contained-horse-artwork";
 import { ArtworkStorageAdmin } from "@/app/artwork-storage-admin";
 import { ArtworkAlbum } from "@/app/artwork-album";
 import { AdminShows } from "@/app/admin-shows";
+import { AdminProfessions } from "@/app/admin-professions";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -105,7 +106,7 @@ type StoreHorse = {
   generated_at: string;
   rotation_key: string;
 };
-type StoreProduct={id:string;department:"feed"|"tack"|"stable_supplies";name:string;description:string;price:number;feed_success_probability:number|null;development_min:number|null;development_max:number|null;eligible_stats:string[]|null;tack_slot:string|null;quality:string|null;tack_bonuses:Record<string,number>};
+type StoreProduct={id:string;department:"feed"|"tack"|"stable_supplies";name:string;description:string;price:number;feed_success_probability:number|null;development_min:number|null;development_max:number|null;eligible_stats:string[]|null;tack_slot:string|null;quality:string|null;tack_bonuses:Record<string,number>;icon_url:string|null;sort_order:number};
 type Show = {
   id: string;
   discipline: string;
@@ -115,6 +116,7 @@ type Show = {
 };
 type MarketHorse = {
   listing_id: string;
+  seller_id: string;
   horse_id: string;
   name: string;
   breed: string;
@@ -149,6 +151,8 @@ const locationState=()=>{const path=location.pathname,query=new URLSearchParams(
 function GlobalToast({message,dismiss}:{message:string;dismiss:()=>void}){const persistent=/error|failed|unable|couldn.?t|insufficient|not enough|required|unavailable|invalid|denied|choose|full|warning/i.test(message);useEffect(()=>{if(!message||persistent)return;const timer=setTimeout(dismiss,2800);return()=>clearTimeout(timer)},[message,persistent,dismiss]);if(!message)return null;return <div className={`globaltoast ${persistent?"error":"success"}`} role={persistent?"alert":"status"}><span>{message}</span><button aria-label="Dismiss notification" onClick={dismiss}>×</button></div>}
 const money = (n: number) => new Intl.NumberFormat("en-US").format(n);
 const STORE_TIERS=["Entry","Quality","Elite","Legendary"] as const;
+const tackCategoryLabel=(slot:string|null)=>slot==="bridle"?"Bridles":slot==="saddle"?"Saddles":slot==="saddle_pad"?"Saddle Pads":slot==="leg_protection"?"Leg Protection":"Tack";
+const productPlaceholder=(product:StoreProduct)=>product.department==="feed"?"FH":product.tack_slot==="bridle"?"BR":product.tack_slot==="saddle"?"SA":product.tack_slot==="saddle_pad"?"SP":"LP";
 const compactNumber = (n: number) => {
   const units = [
     [1e18, "Qi"],
@@ -262,6 +266,7 @@ export default function Home() {
   const artworkWorker = useRef<Promise<void> | null>(null);
   const applyLocation=useCallback(()=>{const state=locationState();setView(state.view);if(state.stableTab)setStableTab(state.stableTab);if(state.profileTab)setProfileTab(state.profileTab);if(state.publicStableId)setPublicStableId(state.publicStableId);if(state.publicPlayerId)setPublicPlayerId(state.publicPlayerId);if(state.storeDepartment)setStoreDepartment(state.storeDepartment);if(state.selected)setSelected(state.selected);if(state.storeSelected)setStoreSelected(state.storeSelected);if(state.storeBreed!==undefined)setStoreBreed(state.storeBreed)},[]);
   const navigate=useCallback((next:MainView,overrides?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string;publicStableId?:string;publicPlayerId?:string})=>{const state={stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed,publicStableId,publicPlayerId,...overrides};history.pushState({le:true},"",routeFor(next,state));setView(next);if(overrides?.stableTab)setStableTab(overrides.stableTab);if(overrides?.profileTab)setProfileTab(overrides.profileTab);if(overrides?.publicStableId)setPublicStableId(overrides.publicStableId);if(overrides?.publicPlayerId)setPublicPlayerId(overrides.publicPlayerId);if(overrides?.storeDepartment)setStoreDepartment(overrides.storeDepartment);if(overrides?.selected!==undefined)setSelected(overrides.selected);if(overrides?.storeSelected!==undefined)setStoreSelected(overrides.storeSelected);if(overrides?.storeBreed!==undefined)setStoreBreed(overrides.storeBreed)},[stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed,publicStableId,publicPlayerId]);
+  const openStoreDepartment=(department:StoreDepartment)=>{setProductType("all");setProductTier("all");setProductSort("tier-asc");setProductQuery("");navigate("store",{storeDepartment:department})};
   const mobileNavigate=useCallback((next:MainView,overrides?:Parameters<typeof navigate>[1])=>{setMobileMenuOpen(false);navigate(next,overrides)},[navigate]);
   const dismissNotice=useCallback(()=>setNotice(""),[]);
   useEffect(()=>{applyLocation();const back=()=>applyLocation();addEventListener("popstate",back);return()=>removeEventListener("popstate",back)},[applyLocation]);
@@ -329,8 +334,9 @@ export default function Home() {
     });
     return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);
   }, [horses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
+  const feedQualityOrder=useMemo(()=>[...new Set(storeProducts.filter(product=>product.department==="feed"&&product.quality).sort((a,b)=>a.sort_order-b.sort_order).map(product=>product.quality!))],[storeProducts]);
   const visibleStoreHorses=useMemo(()=>{const query=storeHorseQuery.trim().toLowerCase();return inventory.filter(h=>(!storeBreed||h.breed===storeBreed)&&(!query||`${h.name} ${h.breed} ${h.sex} ${h.color}`.toLowerCase().includes(query)))},[inventory,storeBreed,storeHorseQuery]);
-  const visibleStoreProducts=useMemo(()=>storeProducts.filter(product=>product.department===storeDepartment&&(productType==="all"||(storeDepartment==="tack"?product.tack_slot===productType:product.name.toLowerCase().includes(productType)))&&(productTier==="all"||product.quality===productTier)&&`${product.name} ${product.description}`.toLowerCase().includes(productQuery.trim().toLowerCase())).sort((a,b)=>productSort==="price-asc"?a.price-b.price:productSort==="price-desc"?b.price-a.price:(STORE_TIERS.indexOf((a.quality??"Entry") as typeof STORE_TIERS[number])-STORE_TIERS.indexOf((b.quality??"Entry") as typeof STORE_TIERS[number]))*(productSort==="tier-desc"?-1:1)||a.name.localeCompare(b.name)),[storeProducts,storeDepartment,productType,productTier,productSort,productQuery]);
+  const visibleStoreProducts=useMemo(()=>{const tierOrder=storeDepartment==="tack"?[...STORE_TIERS]:feedQualityOrder;return storeProducts.filter(product=>product.department===storeDepartment&&(productType==="all"||(storeDepartment==="tack"?product.tack_slot===productType:product.name.toLowerCase().includes(productType)))&&(productTier==="all"||product.quality===productTier)&&`${product.name} ${product.description}`.toLowerCase().includes(productQuery.trim().toLowerCase())).sort((a,b)=>productSort==="price-asc"?a.price-b.price:productSort==="price-desc"?b.price-a.price:(tierOrder.indexOf(a.quality??"")-tierOrder.indexOf(b.quality??""))*(productSort==="tier-desc"?-1:1)||a.sort_order-b.sort_order)},[storeProducts,storeDepartment,productType,productTier,productSort,productQuery,feedQualityOrder]);
   const open = (h: Horse) => {
     setSelected(h.id);
     navigate("horse",{selected:h.id});
@@ -631,7 +637,7 @@ export default function Home() {
           {view === "publicplayer" && publicPlayerId && <PublicPlayerProfile stableId={publicPlayerId} notify={setNotice}/>}
           {view === "profile" && <>
             <nav className="sectiontabs profile-tabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>navigate("profile",{profileTab:"profile"})}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>navigate("profile",{profileTab:"artwork"})}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>navigate("profile",{profileTab:"settings"})}>Settings</button></nav>
-            {profileTab==="profile"&&<><section className={`hero playerprofilehero ${stable.ranch_image_url?"has-ranch-image":""}`} style={stable.ranch_image_url?{backgroundImage:`linear-gradient(90deg,#3b2359dd,#6947a899),url(${stable.ranch_image_url})`}:undefined}><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1><p className="profile-stable-name">{stable.name}</p>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself and your stable."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div></section></>}
+            {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div></section></>}
             {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
             {profileTab==="settings"&&<SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/>} 
           </>}
@@ -696,8 +702,8 @@ export default function Home() {
                 title="The LE Store"
                 sub="Browse the shared Foundation herd and find the horse that speaks to you"
               />
-              <nav className="storedepartments" aria-label="LE Store departments"><button className={storeDepartment==="horses"?"active":""} onClick={()=>navigate("store",{storeDepartment:"horses"})}>Foundation Horses</button><button className={storeDepartment==="feed"?"active":""} onClick={()=>navigate("store",{storeDepartment:"feed"})}>Feed &amp; Hay</button><button className={storeDepartment==="tack"?"active":""} onClick={()=>navigate("store",{storeDepartment:"tack"})}>Tack</button></nav>
-              {storeDepartment==="horses"&&<><div className="productfilters"><label className="productsearch">Search Horses<input type="search" aria-label="Search Horses" placeholder="Search Horses" value={storeHorseQuery} onChange={e=>setStoreHorseQuery(e.target.value)}/></label><label>Breed<select aria-label="Foundation horse breed" value={storeBreed} onChange={e=>navigate("store",{storeDepartment:"horses",storeBreed:e.target.value})}><option value="">All Breeds</option>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><option value={b} key={b}>{b} · {inventory.filter(h=>h.breed===b).length} available</option>)}</select></label></div><div className="storebar">
+              <nav className="storedepartments" aria-label="LE Store departments"><button className={storeDepartment==="horses"?"active":""} onClick={()=>openStoreDepartment("horses")}>Foundation Horses</button><button className={storeDepartment==="feed"?"active":""} onClick={()=>openStoreDepartment("feed")}>Feed &amp; Hay</button><button className={storeDepartment==="tack"?"active":""} onClick={()=>openStoreDepartment("tack")}>Tack</button></nav>
+              {storeDepartment==="horses"&&<><div className="productfilters horse-store-filters"><label className="productsearch">Search Horses<input type="search" aria-label="Search Horses" placeholder="Search Horses" value={storeHorseQuery} onChange={e=>setStoreHorseQuery(e.target.value)}/></label><label>Breed<select aria-label="Foundation horse breed" value={storeBreed} onChange={e=>navigate("store",{storeDepartment:"horses",storeBreed:e.target.value})}><option value="">All Breeds</option>{[...new Set(inventory.map(h=>h.breed))].sort().map(b=><option value={b} key={b}>{b} · {inventory.filter(h=>h.breed===b).length} available</option>)}</select></label></div><div className="storebar">
                 <span>✦ {inventory.length} Foundation horses available</span>
                 <span>
                   {inventory[0]
@@ -706,7 +712,7 @@ export default function Home() {
                 </span>
                 <button onClick={loadStore}>Refresh store</button>
               </div>
-              <div className="inventorygrid">
+              <div className="inventorygrid storegrid">
                 {visibleStoreHorses.map((h) => (
                   <StoreCard
                     key={h.inventory_id}
@@ -721,10 +727,15 @@ export default function Home() {
                       stable.balance < h.price
                     }
                   />
-                ))}
+                ))}{!visibleStoreHorses.length&&<p className="featurehint">No Foundation horses match these filters.</p>}
               </div>
               <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>navigate("stalls")}>Add Stalls</button> or <button onClick={()=>navigate("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
-              {storeDepartment!=="horses"&&<><div className="productfilters"><label className="productsearch">Search<input type="search" aria-label={`Search ${storeDepartment==="tack"?"Tack":"Feed & Hay"}`} placeholder={`Search ${storeDepartment==="tack"?"Tack":"Feed & Hay"}`} value={productQuery} onChange={e=>setProductQuery(e.target.value)}/></label><label>{storeDepartment==="tack"?"Category":"Type"}<select aria-label={storeDepartment==="tack"?"Tack category":"Feed and hay type"} value={productType} onChange={e=>setProductType(e.target.value)}><option value="all">{storeDepartment==="tack"?"All Tack":"All"}</option>{storeDepartment==="tack"?<><option value="bridle">Bridles</option><option value="saddle">Saddles</option><option value="saddle_pad">Saddle Pads</option><option value="leg_protection">Leg Protection</option></>:<><option value="hay">Hay</option><option value="feed">Feed</option></>}</select></label><label>{storeDepartment==="tack"?"Tier":"Tier / Quality"}<select value={productTier} onChange={e=>setProductTier(e.target.value)}><option value="all">{storeDepartment==="tack"?"All Tiers":"All"}</option>{STORE_TIERS.map(tier=><option value={tier} key={tier}>{tier}</option>)}</select></label><label>Sort<select value={productSort} onChange={e=>setProductSort(e.target.value)}><option value="tier-asc">{storeDepartment==="tack"?"Tier Low → High":"Tier/Quality Low → High"}</option><option value="tier-desc">{storeDepartment==="tack"?"Tier High → Low":"Tier/Quality High → Low"}</option><option value="price-asc">Price Low → High</option><option value="price-desc">Price High → Low</option></select></label></div><div className="productgrid">{visibleStoreProducts.map(p=>{const destination=p.department==="feed"?{label:"Feed Room",tab:"feed" as const}:{label:"Tack Room",tab:"tack" as const};return <article className="productcard" key={p.id}><p className="eyebrow">{p.department==="feed"?"OPTIONAL DEVELOPMENT":`${p.quality??"STABLE"} ${p.tack_slot?.replaceAll("_"," ")??"SUPPLY"}`}</p><h3>{p.name}</h3><p>{p.description}</p>{p.department==="feed"&&<small>{Math.round((p.feed_success_probability??0)*100)}% development opportunity · +{p.development_min}–{p.development_max} to a configured eligible stat · one feeding per LE day</small>}{p.department==="tack"&&<div className="productbonus">{Object.entries(p.tack_bonuses).map(([stat,n])=><span key={stat}>{stat} +{n} Effective</span>)}</div>}<footer><b>{money(p.price)} LED</b><button className="primary" disabled={loading||stable.balance<p.price} onClick={()=>void action(async()=>{const{error}=await supabase.rpc("purchase_store_product",{p_product:p.id,p_quantity:1});if(!error)setPurchaseDestination(destination);return{error}},`${p.name} added to your ${destination.label}.`)}>Purchase</button></footer></article>})}</div></>}
+              {storeDepartment!=="horses"&&<><div className="productfilters">
+                <label>{storeDepartment==="tack"?"Category":"Type"}<select aria-label={storeDepartment==="tack"?"Tack category":"Feed and hay type"} value={productType} onChange={e=>setProductType(e.target.value)}><option value="all">{storeDepartment==="tack"?"All Tack":"All Feed & Hay"}</option>{storeDepartment==="tack"?<><option value="bridle">Bridles</option><option value="saddle">Saddles</option><option value="saddle_pad">Saddle Pads</option><option value="leg_protection">Leg Protection</option></>:<><option value="hay">Hay</option><option value="feed">Feed</option></>}</select></label>
+                <label>{storeDepartment==="tack"?"Tier":"Tier / Quality"}<select aria-label={storeDepartment==="tack"?"Tack tier":"Feed tier or quality"} value={productTier} onChange={e=>setProductTier(e.target.value)}><option value="all">{storeDepartment==="tack"?"All Tiers":"All"}</option>{(storeDepartment==="tack"?STORE_TIERS:feedQualityOrder).map(tier=><option value={tier} key={tier}>{tier}</option>)}</select></label>
+                <label>Sort<select aria-label={storeDepartment==="tack"?"Sort Tack":"Sort Feed and Hay"} value={productSort} onChange={e=>setProductSort(e.target.value)}><option value="tier-asc">{storeDepartment==="tack"?"Tier: Low → High":"Tier/Quality: Low → High"}</option><option value="tier-desc">{storeDepartment==="tack"?"Tier: High → Low":"Tier/Quality: High → Low"}</option><option value="price-asc">Price: Low → High</option><option value="price-desc">Price: High → Low</option></select></label>
+                <label className="productsearch">Search<input type="search" aria-label={`Search ${storeDepartment==="tack"?"Tack":"Feed & Hay"}`} placeholder={`Search ${storeDepartment==="tack"?"Tack":"Feed & Hay"}`} value={productQuery} onChange={e=>setProductQuery(e.target.value)}/></label>
+              </div><p className="productcount">{visibleStoreProducts.length} product{visibleStoreProducts.length===1?"":"s"}</p><div className="productresults"><div className="productgrid">{visibleStoreProducts.map(p=>{const destination=p.department==="feed"?{label:"Feed Room",tab:"feed" as const}:{label:"Tack Room",tab:"tack" as const};return <article className="productcard" key={p.id}><div className="producticon" aria-hidden="true">{p.icon_url?<img src={p.icon_url} alt=""/>:<span>{productPlaceholder(p)}</span>}</div><div className="productdetails"><p className="eyebrow">{p.department==="feed"?(p.quality??"FEED & HAY"):`${p.quality} · ${tackCategoryLabel(p.tack_slot)}`}</p><h3>{p.name}</h3>{p.department==="feed"&&<small>{Math.round((p.feed_success_probability??0)*100)}% development chance · +{p.development_min}–{p.development_max} potential · one per horse per LE day</small>}{p.department==="tack"&&<div className="productbonus">{Object.entries(p.tack_bonuses).filter(([,n])=>n!==0).map(([stat,n])=><span key={stat}>+{n} {stat.slice(0,3).toUpperCase()}</span>)}</div>}</div><footer><b>{money(p.price)} LED</b><button className="primary" disabled={loading||stable.balance<p.price} onClick={()=>void action(async()=>{const{error}=await supabase.rpc("purchase_store_product",{p_product:p.id,p_quantity:1});if(!error)setPurchaseDestination(destination);return{error}},`${p.name} added to your ${destination.label}.`)}>Buy</button></footer></article>})}</div>{!visibleStoreProducts.length&&<p className="featurehint">No products match these filters.</p>}</div></>}
             </>
           )}
           {storeHorse && view === "storehorse" && (
@@ -1355,7 +1366,7 @@ function MarketplaceView({
               <h3>{h.brand_code_at_assignment&&<span className="horsebrand">{h.brand_mark_at_assignment&&<img src={h.brand_mark_at_assignment} alt=""/>}{h.brand_code_at_assignment}</span>}{h.name}</h3>
               <p>
                 {h.color} · sold by{" "}
-                {h.seller_username ? `@${h.seller_username}` : h.seller_name}
+                <a href={`/stables/${h.seller_id}`}>{h.seller_username ? `@${h.seller_username}` : h.seller_name}</a>
               </p>
               <div className="storestats">
                 {GAME.stats.slice(0, 4).map((s) => (
@@ -1515,11 +1526,11 @@ function SettingsView({
           />
         </label>
         <label>
-          Stable biography
+          Player bio
           <textarea
             value={bio}
             maxLength={500}
-            placeholder="Tell the community about your stable…"
+            placeholder="Tell the community about yourself…"
             onChange={(e) => setBio(e.target.value)}
           />
         </label>
@@ -1543,7 +1554,7 @@ function SettingsView({
         <div className="mediaidentitygrid">
           <MediaUpload
             title="Ranch image"
-            description="The wide image displayed on your stable home page."
+            description="The wide image displayed only on your Public Stable Profile."
             image={stable.ranch_image_url}
             shape="wide"
             upload={uploadRanch}
@@ -1716,7 +1727,7 @@ function AdminConsole({
       {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 
-      {topic==="professions"&&<section className="panel adminempty"><p className="eyebrow">PROFESSION OPERATIONS</p><h2>Professions</h2><div className="adminsubnav"><button>Overview</button><button>Careers</button><button>Providers</button><button>Progression</button><button>Rates</button><button>QA Mode</button></div></section>}
+      {topic==="professions"&&<AdminProfessions notify={setMessage}/>} 
       {topic==="brands"&&<StableBrandsAdmin notify={setMessage}/>}
       {topic==="system"&&<section className="panel"><p className="eyebrow">PRODUCTION READINESS</p><h2>System / QA</h2><div className="systemstatus">{[["Production Domain","Healthy"],["Supabase","Healthy"],["Database Migrations","Healthy"],["Show Processor","Healthy"],["Weekly Allowance","Healthy"],["Visual Asset Coverage","Warning"],["SMS Verification","Not Configured"],["Vercel Deployment","Healthy"],["Game Version",process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0,7)||"Current"]].map(([k,v])=><div key={k}><b>{k}</b><span className={`health-${v.toLowerCase().replaceAll(" ","-")}`}>{v}</span></div>)}</div></section>}
       {topic==="audit"&&<AdminAuditLog/>}

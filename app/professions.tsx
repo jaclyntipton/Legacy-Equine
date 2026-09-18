@@ -16,6 +16,8 @@ type Profession = {
   description: string;
   enrollment_fee: number;
   exam_fee: number;
+  enrolled: boolean;
+  status_label: string;
   level: number;
   level_name: string;
   available: boolean;
@@ -232,7 +234,7 @@ export function ProfessionalCenter({
       const profession = professions.find((item) => item.id === match[1]);
       if (!profession) return;
       const requestedQa = new URLSearchParams(location.search).get("qa") === "1";
-      if ((requestedQa && !ownerQa) || (!requestedQa && profession.level === 0)) {
+      if ((requestedQa && !ownerQa) || (!requestedQa && !profession.enrolled)) {
         history.replaceState({ leProfessionCareer: true }, "", "/professions");
         setCareer(null);
         return;
@@ -518,7 +520,7 @@ export function ProfessionalCenter({
           <div className="professiongrid">
             {professions.map((p) => (
               <article className="panel professioncard" key={p.id}>
-                <p className="eyebrow">{p.level_name}</p>
+                <p className="eyebrow">{p.status_label}</p>
                 <h2>{p.name}</h2>
                 <p>{p.description}</p>
                 {ownerQa && (
@@ -531,7 +533,7 @@ export function ProfessionalCenter({
                     OPEN QA CAREER
                   </button>
                 )}
-                {p.level === 0 ? (
+                {!p.enrolled ? (
                   <button
                     disabled={!canEnroll}
                     title={
@@ -554,7 +556,7 @@ export function ProfessionalCenter({
                       className={!ownerQa ? "primary" : ""}
                       onClick={() => openCareerRoute(p.id, false)}
                     >
-                      CONTINUE CAREER
+                      {p.career_completed ? "VIEW CAREER" : "CONTINUE CAREER"}
                     </button>
                   </>
                 )}

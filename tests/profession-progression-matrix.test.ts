@@ -9,6 +9,10 @@ const exactStateMachine = fs.readFileSync(
   "supabase/migrations/202609170024_exact_profession_state_machine.sql",
   "utf8",
 );
+const enrollmentStatus = fs.readFileSync(
+  "supabase/migrations/202609170025_authoritative_profession_enrollment_status.sql",
+  "utf8",
+);
 const curriculum = fs.readFileSync(
   "supabase/migrations/202609150030_professional_services.sql",
   "utf8",
@@ -94,6 +98,28 @@ describe("all profession progression paths", () => {
       "PROFESSIONAL_CERTIFIED",
     ])
       expect(exactStateMachine).toContain(state);
+  });
+
+  it("resolves enrollment independently from certification level", () => {
+    expect(enrollmentStatus).toContain(
+      "'enrolled',pp.stable_id is not null",
+    );
+    expect(enrollmentStatus).toContain(
+      "when pp.certification_level=0 and sp.completed_at is null then'Enrolled · Basic Study'",
+    );
+    expect(enrollmentStatus).toContain("'status_label',case");
+    expect(ui).toContain("{p.status_label}");
+    expect(ui).toContain("{!p.enrolled ? (");
+    expect(ui).toContain("!profession.enrolled");
+    expect(ui).not.toContain("{p.level === 0 ? (");
+  });
+
+  it("keeps card actions aligned with authoritative career state", () => {
+    expect(ui).toContain('p.career_completed ? "VIEW CAREER" : "CONTINUE CAREER"');
+    expect(ui).toContain("ENROLL AS NORMAL PLAYER");
+    expect(enrollmentStatus).toContain("when pp.stable_id is null then'Not Enrolled'");
+    expect(enrollmentStatus).toContain("then'Ready to Advance'");
+    expect(enrollmentStatus).toContain("then nextcl.name||' Study'");
   });
 
   it("guides certificate recipients through rates and services", () => {

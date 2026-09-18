@@ -220,6 +220,10 @@ export function ProfessionalCenter({
     const timer = setTimeout(() => void load(), 0);
     return () => clearTimeout(timer);
   }, [load]);
+  useEffect(() => {
+    const profession = new URLSearchParams(location.search).get("profession");
+    if (profession) setFilter(profession);
+  }, []);
   const professionRouteIds = useMemo(
     () => professions.map((profession) => profession.id).join("|"),
     [professions],
@@ -448,6 +452,26 @@ export function ProfessionalCenter({
     setBatchPreview(null);
     setRequestStep("service");
   };
+  useEffect(() => {
+    if (request || !providers.length) return;
+    const params = new URLSearchParams(location.search);
+    const providerId = params.get("provider");
+    const serviceId = params.get("service");
+    if (!providerId) return;
+    const provider = providers.find(
+      (item) => item.provider.provider_id === providerId,
+    );
+    if (!provider) return;
+    const selected = provider.services.some(
+      (service) => service.service_id === serviceId,
+    )
+      ? serviceId!
+      : provider.services[0]?.service_id ?? "";
+    setRequest({ providerId, serviceId: selected });
+    setSelectedHorses([]);
+    setBatchPreview(null);
+    setRequestStep("service");
+  }, [providers, request]);
   const loadEligibility = async () => {
     if (!request) return;
     const { data, error } = await supabase.rpc(

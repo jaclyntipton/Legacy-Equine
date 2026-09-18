@@ -28,6 +28,7 @@ import { ArtworkStorageAdmin } from "@/app/artwork-storage-admin";
 import { ArtworkAlbum } from "@/app/artwork-album";
 import { AdminShows } from "@/app/admin-shows";
 import { AdminProfessions } from "@/app/admin-professions";
+import { AdminCommerce } from "@/app/admin-commerce";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -1581,11 +1582,8 @@ function SettingsView({
     </>
   );
 }
-function StallExpansion({capacity,notify}:{capacity:StableCapacity|null;notify:(value:string)=>void}){
- const [busy,setBusy]=useState(false),[pkg,setPkg]=useState<{stall_quantity:number;price_usd_cents:number}|null>(null);
- useEffect(()=>{void supabase.from("stall_packages").select("stall_quantity,price_usd_cents").eq("id","permanent_5").maybeSingle().then(({data})=>setPkg(data))},[]);
- const checkout=async()=>{setBusy(true);try{const{data}=await supabase.auth.getSession();const response=await fetch("/api/stalls/checkout",{method:"POST",headers:{Authorization:`Bearer ${data.session?.access_token??""}`}});const result=await response.json();if(!response.ok)throw new Error(result.error??"Secure checkout is unavailable");window.location.assign(result.url)}catch(error){notify(error instanceof Error?error.message:"Secure checkout is unavailable")}finally{setBusy(false)}};
- return <><Title title="Expand Your Stable" sub="Permanent room for the horses in your Legacy Equine story"/><section className="panel settingsform"><p className="eyebrow">STABLE CAPACITY</p><h2>{capacity?.unlimited?"Unlimited":`${capacity?.occupied??0} / ${capacity?.total_capacity??GAME.baseStableCapacity} stalls occupied`}</h2>{!capacity?.unlimited&&<div className="adminformgrid"><div><small>Base Capacity</small><h3>{capacity?.base_capacity??5}</h3></div><div><small>Purchased Capacity</small><h3>+{capacity?.purchased_capacity??0}</h3></div><div><small>Admin / Promotional</small><h3>+{capacity?.complimentary_capacity??0}</h3></div></div>}</section>{!capacity?.unlimited&&pkg&&<section className="panel settingsform"><p className="eyebrow">ONE-TIME PURCHASE</p><h2>+{pkg.stall_quantity} Permanent Stalls</h2><h3>${(pkg.price_usd_cents/100).toFixed(2)} USD</h3><p className="panelsub">Permanent, account-bound stable capacity. This is not a subscription and cannot be converted into LED or cash.</p><button className="primary" disabled={busy} onClick={checkout}>{busy?"Opening secure checkout…":`Add ${pkg.stall_quantity} Stalls`}</button></section>}</>;
+function StallExpansion({capacity,notify:_notify}:{capacity:StableCapacity|null;notify:(value:string)=>void}){
+ return <><Title title="Expand Your Stable" sub="Permanent room for the horses in your Legacy Equine story"/><section className="panel settingsform"><p className="eyebrow">STABLE CAPACITY</p><h2>{capacity?.unlimited?"Unlimited":`${capacity?.occupied??0} / ${capacity?.total_capacity??GAME.baseStableCapacity} stalls occupied`}</h2>{!capacity?.unlimited&&<div className="adminformgrid"><div><small>Base Capacity</small><h3>{capacity?.base_capacity??5}</h3></div><div><small>Purchased Capacity</small><h3>+{capacity?.purchased_capacity??0}</h3></div><div><small>Admin / Promotional</small><h3>+{capacity?.complimentary_capacity??0}</h3></div></div>}</section>{!capacity?.unlimited&&<section className="panel settingsform"><p className="eyebrow">COMMERCE READINESS</p><h2>Permanent Stall Expansions</h2><p className="panelsub">Purchases are not available yet. Existing permanent stall entitlements remain active; future checkout will use the server-authoritative Commerce catalog.</p><button className="primary" disabled>COMING SOON — NO PAYMENT COLLECTION</button></section>}</>;
 }
 function SanctuaryView({horses,owned,retire}:{horses:SanctuaryHorse[];owned:Horse[];retire:(horse:Horse,name:string)=>Promise<void>}){
  const [query,setQuery]=useState(""),[chosen,setChosen]=useState<Horse|null>(null),[archive,setArchive]=useState<SanctuaryHorse|null>(null),[confirmation,setConfirmation]=useState("");
@@ -1601,7 +1599,7 @@ function AdminConsole({
   currentUserId: string;
   changed: () => void;
 }) {
-  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"professions"|"accounts"|"economy"|"brands"|"balance"|"system"|"audit";
+  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
   const initialAdminTopic=(typeof location!=="undefined"?location.pathname.split("/")[2]:"")as AdminTopic;
   const [topic,setTopic]=useState<AdminTopic>(initialAdminTopic||"dashboard"),[permissions,setPermissions]=useState<string[]>([]);
   const [permissionTarget,setPermissionTarget]=useState(currentUserId),[permissionDraft,setPermissionDraft]=useState<string[]>([]);
@@ -1649,7 +1647,7 @@ function AdminConsole({
   const topics:{id:AdminTopic;label:string;permission?:string}[]=[
     {id:"dashboard",label:"Dashboard"},{id:"horses",label:"Horses",permission:"admin.horses.view"},{id:"visuals",label:"Horse Visuals",permission:"admin.visuals.view"},
     {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
-    {id:"accounts",label:"Accounts",permission:"admin.accounts.view"},{id:"economy",label:"Economy / Bank",permission:"admin.economy.view"},{id:"brands",label:"Stable Brands",permission:"admin.brands.view"},
+    {id:"accounts",label:"Accounts",permission:"admin.accounts.view"},{id:"economy",label:"Economy / Bank",permission:"admin.economy.view"},{id:"commerce",label:"Commerce",permission:"admin.commerce.view"},{id:"brands",label:"Stable Brands",permission:"admin.brands.view"},
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
   const visibleTopics=topics.filter(x=>!x.permission||can(x.permission));
@@ -1731,12 +1729,13 @@ function AdminConsole({
       <nav className="admintopics" aria-label="Admin topics">{visibleTopics.map(x=><button key={x.id} className={topic===x.id?"active":""} onClick={()=>openTopic(x.id)}>{x.label}</button>)}</nav>
       <div className="admincrumbs"><button onClick={()=>openTopic("dashboard")}>Admin</button><span>›</span><b>{topics.find(x=>x.id===topic)?.label}</b></div>
       {message && <div className="notice">✦ {message}</div>}
-      {topic==="dashboard"&&<section className="admindashboard"><article onClick={()=>openTopic("horses")}><span>HORSES</span><b>Horse Operations</b><small>Create, edit, and oversee horses</small></article><article onClick={()=>openTopic("visuals")}><span>HORSE VISUALS</span><b>Deterministic Library</b><small>Coverage, review, and production</small></article><article onClick={()=>openTopic("shows")}><span>SHOWS</span><b>Show Control</b><small>Open, scheduled, QA, and archive</small></article><article onClick={()=>openTopic("professions")}><span>PROFESSIONS</span><b>Career Operations</b><small>Providers, rates, and QA</small></article><article onClick={()=>openTopic("accounts")}><span>ACCOUNTS</span><b>{accounts.length} accounts</b><small>Roles, access, and capacity</small></article><article onClick={()=>openTopic("economy")}><span>ECONOMY</span><b>LED & Treasury</b><small>Ledgered controls and funds</small></article><article onClick={()=>openTopic("system")}><span>SYSTEM</span><b>Production QA</b><small>Domain, database, schedulers</small></article></section>}
+      {topic==="dashboard"&&<section className="admindashboard"><article onClick={()=>openTopic("horses")}><span>HORSES</span><b>Horse Operations</b><small>Create, edit, and oversee horses</small></article><article onClick={()=>openTopic("visuals")}><span>HORSE VISUALS</span><b>Deterministic Library</b><small>Coverage, review, and production</small></article><article onClick={()=>openTopic("shows")}><span>SHOWS</span><b>Show Control</b><small>Open, scheduled, QA, and archive</small></article><article onClick={()=>openTopic("professions")}><span>PROFESSIONS</span><b>Career Operations</b><small>Providers, rates, and QA</small></article><article onClick={()=>openTopic("accounts")}><span>ACCOUNTS</span><b>{accounts.length} accounts</b><small>Roles, access, and capacity</small></article><article onClick={()=>openTopic("economy")}><span>ECONOMY</span><b>LED & Treasury</b><small>Ledgered controls and funds</small></article><article onClick={()=>openTopic("commerce")}><span>COMMERCE</span><b>Payment Readiness</b><small>Catalog, entitlements, subscriptions, audit</small></article><article onClick={()=>openTopic("system")}><span>SYSTEM</span><b>Production QA</b><small>Domain, database, schedulers</small></article></section>}
       {topic==="visuals"&&<><VisualAssetRequirements notify={setMessage}/><VisualAssetImporter notify={setMessage}/><details className="adminaccordion"><summary>Legacy template administration</summary><HorseImageTemplates notify={setMessage} changed={changed}/></details></>}
       {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 
       {topic==="professions"&&<AdminProfessions notify={setMessage}/>} 
+      {topic==="commerce"&&ownerAccount&&<AdminCommerce notify={setMessage}/>}
       {topic==="brands"&&<StableBrandsAdmin notify={setMessage}/>}
       {topic==="system"&&<section className="panel"><p className="eyebrow">PRODUCTION READINESS</p><h2>System / QA</h2><div className="systemstatus">{[["Production Domain","Healthy"],["Supabase","Healthy"],["Database Migrations","Healthy"],["Show Processor","Healthy"],["Weekly Allowance","Healthy"],["Visual Asset Coverage","Warning"],["SMS Verification","Not Configured"],["Vercel Deployment","Healthy"],["Game Version",process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0,7)||"Current"]].map(([k,v])=><div key={k}><b>{k}</b><span className={`health-${v.toLowerCase().replaceAll(" ","-")}`}>{v}</span></div>)}</div></section>}
       {topic==="audit"&&<AdminAuditLog/>}

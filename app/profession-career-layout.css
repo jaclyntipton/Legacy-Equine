@@ -1,0 +1,7 @@
+/* Routed careers are pages, not viewport-capped modal workspaces. */
+@media (max-width: 760px) {
+  .careerworkspace {
+    max-height: none;
+    overflow: visible;
+  }
+}

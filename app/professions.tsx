@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { ManageBusiness, MyBusinesses, ProfessionNav, PublicBusiness } from "@/app/profession-businesses";
 import "./profession-qa-safety.css";
 
 type Horse = {
@@ -662,10 +663,16 @@ export function ProfessionalCenter({
     await load();
     refresh();
   };
+  const businessManage = typeof location!=="undefined"?location.pathname.match(/^\/professions\/businesses\/([^/]+)$/):null;
+  const publicStorefront = typeof location!=="undefined"?location.pathname.match(/^\/professions\/storefront\/([^/]+)\/([^/]+)$/):null;
+  if(typeof location!=="undefined"&&location.pathname==="/professions/businesses")return <MyBusinesses notify={notify}/>;
+  if(businessManage)return <ManageBusiness professionId={businessManage[1]} notify={notify}/>;
+  if(publicStorefront)return <PublicBusiness stableId={publicStorefront[1]} professionId={publicStorefront[2]} notify={notify}/>;
   return (
     <>
       {!career && (
         <>
+          <ProfessionNav active={new URLSearchParams(location.search).get("section")==="market"?"market":"careers"}/>
           <header className="title">
             <div>
               <p className="eyebrow">LEGACY EQUINE GAME CERTIFICATIONS</p>
@@ -677,7 +684,7 @@ export function ProfessionalCenter({
               </p>
             </div>
           </header>
-          <div className="professiongrid">
+          <div className="professiongrid" id="profession-careers">
             {professions.map((p) => (
               <article className="panel professioncard" key={p.id}>
                 <p className="eyebrow">{p.status_label}</p>
@@ -782,7 +789,7 @@ export function ProfessionalCenter({
                 ))}
             </div>
           </section>
-          <section className="panel professionalmarket">
+          <section className="panel professionalmarket" id="professional-market">
             <p className="eyebrow">PLAYER MARKET</p>
             <h2>Find a Professional</h2>
             <div className="professioncategories">
@@ -839,7 +846,7 @@ export function ProfessionalCenter({
                     {providers.map(({ provider, services }) => (
                       <article key={provider.provider_id}>
                         <span>
-                          <a href={`/stables/${provider.provider_id}`}>
+                          <a href={`/professions/storefront/${provider.provider_id}/${provider.profession_id}`}>
                             <b>
                               {provider.stable_name} #{provider.account_number}
                             </b>

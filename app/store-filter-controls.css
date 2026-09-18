@@ -1,0 +1,7 @@
+.productfilters{display:grid;grid-template-columns:minmax(135px,1fr) minmax(135px,1fr) minmax(170px,1fr) minmax(190px,1.3fr);align-items:end;gap:10px;margin:14px 0 5px}
+.productfilters label{display:grid;min-width:0;gap:5px;color:#5a4078;font-size:10px;font-weight:900}
+.productfilters select,.productfilters input{width:100%;min-width:0;min-height:42px;padding:10px 12px;border:1px solid #d9c8ed;border-radius:12px;background:#fff}
+.productfilters select{max-height:240px}
+.horse-store-filters{grid-template-columns:minmax(220px,1fr) minmax(180px,260px)}
+@media(max-width:800px){.productfilters{grid-template-columns:1fr 1fr}.horse-store-filters{grid-template-columns:1fr 1fr}.productsearch{grid-column:1/-1}}
+@media(max-width:480px){.productfilters,.horse-store-filters{grid-template-columns:1fr}.productsearch{grid-column:auto}}

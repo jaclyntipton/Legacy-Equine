@@ -3,6 +3,7 @@ import path from "node:path";
 import {describe,expect,it} from "vitest";
 
 const page=fs.readFileSync(path.resolve(__dirname,"../app/page.tsx"),"utf8");
+const css=fs.readFileSync(path.resolve(__dirname,"../app/store-filter-controls.css"),"utf8");
 
 describe("LE Store search and filter controls",()=>{
   it("restores Foundation horse search and breed filtering",()=>{
@@ -20,5 +21,12 @@ describe("LE Store search and filter controls",()=>{
   it("keeps Tack tier ordering authoritative",()=>{
     expect(page).toContain('const STORE_TIERS=["Entry","Quality","Elite","Legendary"]');
     expect(page).toContain('storeDepartment==="tack"?"All Tiers":"All"');
+  });
+
+  it("keeps filter labels and controls contained on desktop and mobile",()=>{
+    expect(page).toContain('import "@/app/store-filter-controls.css"');
+    expect(css).toContain(".productfilters{display:grid");
+    expect(css).toContain(".productfilters label{display:grid");
+    expect(css).toContain("@media(max-width:480px)");
   });
 });

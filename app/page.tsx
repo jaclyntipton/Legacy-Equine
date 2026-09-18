@@ -16,6 +16,7 @@ import { BreedGeneticsAdmin } from "@/app/breed-genetics-admin";
 import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
 import { StableInventory } from "@/app/stable-inventory";
 import { StoreBulkPurchase } from "@/app/store-bulk-purchase";
+import "@/app/store-filter-controls.css";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { PublicAuth } from "@/app/public-auth";

@@ -327,6 +327,7 @@ export default function Home() {
     setLoading(false);
   };
   const horse = horses.find((h) => h.id === selected) || null;
+  useEffect(()=>{if(view!=="horse"||!selected||horse)return;let active=true;void supabase.from("horses").select("*").eq("id",selected).maybeSingle().then(({data,error})=>{if(!active)return;if(error)setNotice(error.message);else if(data)setHorses(current=>current.some(candidate=>candidate.id===data.id)?current:[...current,data as Horse])});return()=>{active=false}},[view,selected,horse]);
   const visibleHorses = useMemo(() => {
     const tierName = (points: number) => competitionTier(points,competitionTiers)?.name??"Unassigned";
     const filtered = horses.filter((h) => {
@@ -844,6 +845,7 @@ export default function Home() {
                 tiers={competitionTiers}
                 stableName={`${stable.name} · #${stable.account_number}`}
                 canEdit={horse.owner_id === user.id}
+                isOwned={horse.owner_id === user.id}
                 isAdmin={stable.is_admin}
                 canHorseEdit={canHorseEdit}
                 onHorseEdited={()=>void load(user)}
@@ -858,6 +860,8 @@ export default function Home() {
                 }}
                 openProfessions={() => navigate("professions")}
                 openTackRoom={() => navigate("stable",{stableTab:"tack"})}
+                backToMyStable={() => navigate("stable",{stableTab:"horses"})}
+                visitOwnerStable={(ownerId) => navigate("publicstable",{publicStableId:ownerId})}
                 reportImageFailure={(failedUrl) => {
                   void supabase.rpc("report_missing_horse_image", {
                     target_horse: horse.id,

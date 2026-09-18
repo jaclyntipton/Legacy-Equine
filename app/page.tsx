@@ -761,6 +761,7 @@ export default function Home() {
               balance={stable.balance}
               notify={setNotice}
               refresh={() => void load(user)}
+              onTackDelivered={() => navigate("stable",{stableTab:"tack"})}
             />
           )}
           {view === "training" && (

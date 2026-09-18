@@ -58,7 +58,11 @@ type Catalog = {
   wellness_component: "health" | "hooves" | "recovery" | null;
   restoration_by_level: Record<string, number>;
   effect: Record<string, number>;
+  tack_slot: string | null;
+  tack_tier: string | null;
+  stat_budget: number | null;
 };
+type CraftPreview = { provider_id:string;provider_name:string;service_id:string;service_name:string;slot:string;tier:string;budget:number;allocated:number;bonuses:Record<string,number>;custom_name:string|null;price:number;changed?:boolean };
 type Wellness = {
   health: number;
   hooves: number;
@@ -103,11 +107,13 @@ export function ProfessionalCenter({
   balance,
   notify,
   refresh,
+  onTackDelivered,
 }: {
   horses: Horse[];
   balance: number;
   notify: (message: string) => void;
   refresh: () => void;
+  onTackDelivered?: () => void;
 }) {
   const [professions, setProfessions] = useState<Profession[]>([]),
     [ownerQa, setOwnerQa] = useState(false),
@@ -147,6 +153,9 @@ export function ProfessionalCenter({
     ),
     [selectedHorses, setSelectedHorses] = useState<string[]>([]),
     [batchPreview, setBatchPreview] = useState<BatchPreview | null>(null),
+    [craftBonuses,setCraftBonuses]=useState<Record<string,number>>({}),
+    [craftName,setCraftName]=useState(""),
+    [craftPreview,setCraftPreview]=useState<CraftPreview|null>(null),
     [submitting, setSubmitting] = useState(false);
   const load = useCallback(async () => {
     const {
@@ -174,7 +183,7 @@ export function ProfessionalCenter({
       supabase
         .from("service_catalog")
         .select(
-          "id,profession_id,name,minimum_level,min_price,max_price,wellness_component,restoration_by_level,effect",
+          "id,profession_id,name,minimum_level,min_price,max_price,wellness_component,restoration_by_level,effect,tack_slot,tack_tier,stat_budget",
         )
         .eq("active", true),
       supabase
@@ -442,6 +451,8 @@ export function ProfessionalCenter({
     selectedProvider?.services.find(
       (service) => service.service_id === request?.serviceId,
     ) ?? null;
+  const selectedCatalog=selectedService?catalog.find(item=>item.id===selectedService.service_id)??null:null;
+  const isLeatherwork=selectedProvider?.provider.profession_id==="leatherworker";
   const startRequest = (providerId: string) => {
     const provider = providers.find(
       (item) => item.provider.provider_id === providerId,
@@ -452,6 +463,7 @@ export function ProfessionalCenter({
     });
     setSelectedHorses([]);
     setBatchPreview(null);
+    setCraftPreview(null);setCraftBonuses({});setCraftName("");
     setRequestStep("service");
   };
   useEffect(() => {
@@ -476,6 +488,10 @@ export function ProfessionalCenter({
   }, [providers, request]);
   const loadEligibility = async () => {
     if (!request) return;
+    if(isLeatherwork){
+      const{data,error}=await supabase.rpc("preview_leatherwork_commission",{target_provider:request.providerId,target_service:request.serviceId,p_bonuses:craftBonuses,p_custom_name:craftName});
+      if(error)return notify(error.message);setCraftPreview(data as CraftPreview);setRequestStep("review");return;
+    }
     const { data, error } = await supabase.rpc(
       "preview_professional_services",
       {
@@ -494,7 +510,14 @@ export function ProfessionalCenter({
     if (selectedHorses.length) setRequestStep("review");
   };
   const confirmRequest = async () => {
-    if (!request || !batchPreview || !selectedHorses.length) return;
+    if(!request)return;
+    if(isLeatherwork){
+      if(!craftPreview)return;setSubmitting(true);
+      const{data,error}=await supabase.rpc("purchase_leatherwork_commission",{target_provider:request.providerId,target_service:request.serviceId,p_bonuses:craftBonuses,p_custom_name:craftName,p_request_key:crypto.randomUUID(),expected_rate:craftPreview.price});
+      setSubmitting(false);if(error)return notify(error.message);if(data?.changed){setCraftPreview(data as CraftPreview);return notify("The commission changed. Review the updated price before paying.");}
+      notify(`${data.name} crafted and delivered to My Stable → Tack Room.`);setRequest(null);setCraftPreview(null);await load();refresh();onTackDelivered?.();return;
+    }
+    if (!batchPreview || !selectedHorses.length) return;
     setSubmitting(true);
     const { data, error } = await supabase.rpc(
       "purchase_professional_services",
@@ -658,6 +681,7 @@ export function ProfessionalCenter({
                   ["veterinarian", "Veterinarians"],
                   ["trainer", "Trainers"],
                   ["massage", "Massage Therapists"],
+                  ["leatherworker", "Leatherworkers"],
                 ] as const
               ).map(([id, label]) => (
                 <button
@@ -1179,7 +1203,7 @@ export function ProfessionalCenter({
                       <h2>Set Your Rates</h2>
                       <p>✓ {levelName} {p.name} Certified</p>
                       <p>
-                        Rates are charged per horse. Enabled saved rates appear
+                        Rates are charged per {p.id==="leatherworker"?"crafted item":"horse"}. Enabled saved rates appear
                         in Find a Professional.
                       </p>
                       <div className="careerrates">
@@ -1188,12 +1212,11 @@ export function ProfessionalCenter({
                             <span>
                               <b>{service.name}</b>
                               <small>
-                                {service.min_price}–{service.max_price} LED per
-                                horse
+                                {service.min_price}–{service.max_price} LED per {p.id==="leatherworker"?"item":"horse"}
                               </small>
                             </span>
                             <label>
-                              Price per horse
+                              Price per {p.id==="leatherworker"?"item":"horse"}
                               <input
                                 aria-label={`${service.name} price per horse`}
                                 type="number"
@@ -1380,7 +1403,7 @@ export function ProfessionalCenter({
               <b className={requestStep !== "service" ? "active" : ""}>
                 Service
               </b>
-              <b
+              {!isLeatherwork&&<b
                 className={
                   requestStep === "horses" || requestStep === "review"
                     ? "active"
@@ -1388,7 +1411,7 @@ export function ProfessionalCenter({
                 }
               >
                 Horses
-              </b>
+              </b>}
               <b className={requestStep === "review" ? "active" : ""}>
                 Review / Pay
               </b>
@@ -1417,19 +1440,27 @@ export function ProfessionalCenter({
                         key={service.service_id}
                       >
                         {service.service_name} ·{" "}
-                        {service.price.toLocaleString()} LED / horse
+                        {service.price.toLocaleString()} LED / {isLeatherwork?"item":"horse"}
                       </option>
                     ))}
                   </select>
                 </label>
+                {isLeatherwork&&<>
+                  <label>Optional custom item name<input maxLength={80} value={craftName} placeholder={`Custom ${selectedCatalog?.tack_tier??""} ${selectedService?.service_name?.replace(`${selectedCatalog?.tack_tier} `,"")??"Tack"}`} onChange={event=>setCraftName(event.target.value)}/></label>
+                  <p><b>Allocate Effective Stats</b> · {Object.values(craftBonuses).reduce((sum,value)=>sum+value,0)} / {selectedCatalog?.stat_budget??0}</p>
+                  <div className="statgrid">
+                    {["Agility","Speed","Endurance","Temperament","Strength","Intelligence","Conformation"].map(stat=><label key={stat}>{stat}<input type="number" min={0} max={selectedCatalog?.stat_budget??0} value={craftBonuses[stat]??0} onChange={event=>setCraftBonuses({...craftBonuses,[stat]:Math.max(0,Number(event.target.value))})}/></label>)}
+                  </div>
+                  <small>Crafted tack changes Effective Stats only. It never changes permanent or breeding stats.</small>
+                </>}
                 <div className="wizardactions">
                   <button onClick={() => setRequest(null)}>Cancel</button>
                   <button
                     className="primary"
-                    disabled={!request.serviceId || !horses.length}
+                    disabled={!request.serviceId || (isLeatherwork?Object.values(craftBonuses).reduce((sum,value)=>sum+value,0)<1||Object.values(craftBonuses).reduce((sum,value)=>sum+value,0)>(selectedCatalog?.stat_budget??0):!horses.length)}
                     onClick={() => void loadEligibility()}
                   >
-                    Select Horses
+                    {isLeatherwork?"Review Commission":"Select Horses"}
                   </button>
                 </div>
               </>
@@ -1578,6 +1609,18 @@ export function ProfessionalCenter({
                 </div>
               </>
             )}
+            {requestStep==="review"&&isLeatherwork&&craftPreview&&<>
+              <div className="servicereview">
+                <p><span>Leatherworker</span><b>{selectedProvider.provider.stable_name} #{selectedProvider.provider.account_number}</b></p>
+                <p><span>Item</span><b>{craftPreview.custom_name??`Custom ${craftPreview.service_name}`}</b></p>
+                <p><span>Tier / slot</span><b>{craftPreview.tier} · {craftPreview.slot.replaceAll("_"," ")}</b></p>
+                <p><span>Effective Stats</span><b>{Object.entries(craftPreview.bonuses).filter(([,value])=>value>0).map(([stat,value])=>`+${value} ${stat}`).join(" · ")}</b></p>
+                <p><span>Price</span><b>{craftPreview.price.toLocaleString()} LED / item</b></p>
+                <p><span>Current balance</span><b>{balance.toLocaleString()} LED</b></p>
+                <p><span>Balance after</span><b>{(balance-craftPreview.price).toLocaleString()} LED</b></p>
+              </div>
+              <div className="wizardactions"><button onClick={()=>setRequestStep("service")}>Back</button><button className="primary" disabled={submitting||balance<craftPreview.price} onClick={()=>void confirmRequest()}>{submitting?"Processing…":`PAY ${craftPreview.price.toLocaleString()} LED`}</button></div>
+            </>}
           </section>
         </div>
       )}

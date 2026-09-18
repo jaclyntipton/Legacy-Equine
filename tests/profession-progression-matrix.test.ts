@@ -16,13 +16,13 @@ const enrollmentStatus = fs.readFileSync(
 const curriculum = fs.readFileSync(
   "supabase/migrations/202609150030_professional_services.sql",
   "utf8",
-);
+)+fs.readFileSync("supabase/migrations/202609180002_leatherworker_custom_tack.sql","utf8");
 const questions = fs.readFileSync(
   "supabase/migrations/202609170022_level_specific_profession_tests.sql",
   "utf8",
-);
+)+fs.readFileSync("supabase/migrations/202609180002_leatherworker_custom_tack.sql","utf8");
 const ui = fs.readFileSync("app/professions.tsx", "utf8");
-const professions = ["farrier", "veterinarian", "trainer", "massage"];
+const professions = ["farrier", "veterinarian", "trainer", "massage", "leatherworker"];
 const levels = [1, 2, 3, 4];
 
 describe("all profession progression paths", () => {
@@ -31,7 +31,7 @@ describe("all profession progression paths", () => {
       it(`${profession} level ${level} resolves curriculum, test, requirement, and advancement`, () => {
         expect(curriculum).toContain(`('${profession}',${level},`);
         expect(questions.match(new RegExp(`\\('${profession}',${level},`, "g")))
-          .toHaveLength(3);
+          .toHaveLength(profession === "leatherworker" ? 4 : 3);
         expect(progression).toContain(
           "from public.professions p cross join public.certification_levels l",
         );

@@ -93,6 +93,13 @@ type BatchPreview = {
   total: number;
 };
 type Question = { id: string; prompt: string; choices: string[] };
+type CertificationCooldown = {
+  active: boolean;
+  available_at: string | null;
+  retry_cooldown_minutes: number;
+  failed_attempt_id: string | null;
+  can_bypass: boolean;
+};
 type StudyModule = {
   id: string;
   profession_id: string;
@@ -147,6 +154,9 @@ export function ProfessionalCenter({
     [enrollingLive, setEnrollingLive] = useState(false),
     [overrideConfirming, setOverrideConfirming] = useState(false),
     [overrideBusy, setOverrideBusy] = useState(false),
+    [certificationCooldown, setCertificationCooldown] =
+      useState<CertificationCooldown | null>(null),
+    [bypassingCooldown, setBypassingCooldown] = useState(false),
     [qaRateServices, setQaRateServices] = useState<Record<string, boolean>>({}),
     [qaServiceCredit, setQaServiceCredit] = useState(0),
     [request, setRequest] = useState<{
@@ -282,6 +292,7 @@ export function ProfessionalCenter({
     setTestResult(null);
     setPendingLiveEnrollment(false);
     setOverrideConfirming(false);
+    setCertificationCooldown(null);
   };
   const backToProfessions = () => {
     history.pushState({ leProfessionCareer: true }, "", "/professions");
@@ -289,6 +300,7 @@ export function ProfessionalCenter({
     setRunNormal(false);
     setPendingLiveEnrollment(false);
     setOverrideConfirming(false);
+    setCertificationCooldown(null);
     setCareerNotice("");
     setTesting(null);
     setTestResult(null);
@@ -337,6 +349,36 @@ export function ProfessionalCenter({
     setCareerNotice("");
     setTesting(null);
     setTestResult(null);
+    void loadCertificationCooldown(p.id, p.next_level ?? 4);
+  };
+  const loadCertificationCooldown = async (
+    professionId: string,
+    level: number,
+  ) => {
+    const { data, error } = await supabase.rpc(
+      "get_profession_certification_cooldown",
+      { target_profession: professionId, target_level: level },
+    );
+    if (error) return notify(error.message);
+    setCertificationCooldown(data as CertificationCooldown);
+  };
+  const bypassCertificationCooldown = async (
+    professionId: string,
+    level: number,
+  ) => {
+    if (bypassingCooldown) return;
+    setBypassingCooldown(true);
+    const { error } = await supabase.rpc(
+      "admin_bypass_profession_certification_cooldown",
+      { target_profession: professionId, target_level: level },
+    );
+    setBypassingCooldown(false);
+    if (error) return notify(error.message);
+    await loadCertificationCooldown(professionId, level);
+    setTesting(null);
+    setTestResult(null);
+    setCareerTab("test");
+    setCareerNotice("Certification cooldown bypassed for QA. The failed attempt remains in history.");
   };
   const enrollFromQa = async (p: Profession) => {
     if (enrollingLive) return;
@@ -447,6 +489,8 @@ export function ProfessionalCenter({
       setCareerNotice(
         `Certification Test Passed ✓ Certificate Granted ✓ ${["Basic", "Proficient", "Advanced", "Professional"][testedLevel - 1]} ${testing.name} Certified`,
       );
+    } else if (!qa) {
+      await loadCertificationCooldown(testing.id, testedLevel);
     }
   };
   const advanceCareer = async (p: Profession) => {
@@ -1060,6 +1104,32 @@ export function ProfessionalCenter({
                             Actual Services: {p.qualifying_credit} · Advancement
                             Requirement: Owner QA Override ✓
                           </p>
+                        )}
+                        {runNormal && certificationCooldown?.active && (
+                          <div className="liveenrollmentprompt" role="status">
+                            <b>Certification Cooldown Active</b>
+                            <p>
+                              Available again:{" "}
+                              {certificationCooldown.available_at
+                                ? new Date(
+                                    certificationCooldown.available_at,
+                                  ).toLocaleString()
+                                : "after the configured retry period"}
+                            </p>
+                            {certificationCooldown.can_bypass && (
+                              <button
+                                type="button"
+                                disabled={bypassingCooldown}
+                                onClick={() =>
+                                  void bypassCertificationCooldown(p.id, level)
+                                }
+                              >
+                                {bypassingCooldown
+                                  ? "BYPASSING…"
+                                  : "BYPASS COOLDOWN FOR QA"}
+                              </button>
+                            )}
+                          </div>
                         )}
                         {pendingLiveEnrollment && (
                           <div className="liveenrollmentprompt" role="alert">

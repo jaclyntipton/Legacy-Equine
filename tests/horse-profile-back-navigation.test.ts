@@ -17,7 +17,7 @@ describe("Horse Profile stable navigation",()=>{
   expect(profile).toContain("visitOwnerStable(h.owner_id!)");
   expect(page).toContain('visitOwnerStable={(ownerId) => navigate("publicstable",{publicStableId:ownerId})}');
   expect(page).toContain('path=`/stables/${state.publicStableId}`');
-  expect(profile).toContain('.from("stables").select("name")');
+  expect(profile).toContain('rpc("get_public_stable_profile"');
  });
 
  it("supports direct public horse routes and mobile touch sizing",()=>{

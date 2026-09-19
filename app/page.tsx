@@ -31,6 +31,7 @@ import { AdminProfessions } from "@/app/admin-professions";
 import { AdminCommerce } from "@/app/admin-commerce";
 import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
+import {DesktopGameNavigation,MobileGameNavigation} from "@/app/universal-game-navigation";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -262,6 +263,7 @@ export default function Home() {
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards"),
     [mobileMenuOpen,setMobileMenuOpen]=useState(false),
+    [currentPath,setCurrentPath]=useState("/home"),
     [showExactBalance,setShowExactBalance]=useState(false),
     [newsNew,setNewsNew]=useState(0);
   const [stableTab,setStableTab]=useState<StableTab>("horses"),[profileTab,setProfileTab]=useState<ProfileTab>("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
@@ -270,10 +272,11 @@ export default function Home() {
   const [storeDepartment,setStoreDepartment]=useState<StoreDepartment>("horses"),[storeBreed,setStoreBreed]=useState(""),[storeHorseQuery,setStoreHorseQuery]=useState(""),[storeProducts,setStoreProducts]=useState<StoreProduct[]>([]);
   const [productType,setProductType]=useState("all"),[productTier,setProductTier]=useState("all"),[productSort,setProductSort]=useState("tier-asc"),[productQuery,setProductQuery]=useState("");
   const artworkWorker = useRef<Promise<void> | null>(null);
-  const applyLocation=useCallback(()=>{const state=locationState();setView(state.view);if(state.stableTab)setStableTab(state.stableTab);if(state.profileTab)setProfileTab(state.profileTab);if(state.publicStableId)setPublicStableId(state.publicStableId);if(state.publicPlayerId)setPublicPlayerId(state.publicPlayerId);if(state.storeDepartment)setStoreDepartment(state.storeDepartment);if(state.selected)setSelected(state.selected);if(state.storeSelected)setStoreSelected(state.storeSelected);if(state.storeBreed!==undefined)setStoreBreed(state.storeBreed)},[]);
+  const applyLocation=useCallback(()=>{const state=locationState();setCurrentPath(`${location.pathname}${location.search}${location.hash}`);setView(state.view);if(state.stableTab)setStableTab(state.stableTab);if(state.profileTab)setProfileTab(state.profileTab);if(state.publicStableId)setPublicStableId(state.publicStableId);if(state.publicPlayerId)setPublicPlayerId(state.publicPlayerId);if(state.storeDepartment)setStoreDepartment(state.storeDepartment);if(state.selected)setSelected(state.selected);if(state.storeSelected)setStoreSelected(state.storeSelected);if(state.storeBreed!==undefined)setStoreBreed(state.storeBreed)},[]);
   const navigate=useCallback((next:MainView,overrides?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string;publicStableId?:string;publicPlayerId?:string})=>{const state={stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed,publicStableId,publicPlayerId,...overrides};history.pushState({le:true},"",routeFor(next,state));setView(next);if(overrides?.stableTab)setStableTab(overrides.stableTab);if(overrides?.profileTab)setProfileTab(overrides.profileTab);if(overrides?.publicStableId)setPublicStableId(overrides.publicStableId);if(overrides?.publicPlayerId)setPublicPlayerId(overrides.publicPlayerId);if(overrides?.storeDepartment)setStoreDepartment(overrides.storeDepartment);if(overrides?.selected!==undefined)setSelected(overrides.selected);if(overrides?.storeSelected!==undefined)setStoreSelected(overrides.storeSelected);if(overrides?.storeBreed!==undefined)setStoreBreed(overrides.storeBreed)},[stableTab,profileTab,storeDepartment,selected,storeSelected,storeBreed,publicStableId,publicPlayerId]);
   const openStoreDepartment=(department:StoreDepartment)=>{setProductType("all");setProductTier("all");setProductSort("tier-asc");setProductQuery("");navigate("store",{storeDepartment:department})};
   const mobileNavigate=useCallback((next:MainView,overrides?:Parameters<typeof navigate>[1])=>{setMobileMenuOpen(false);navigate(next,overrides)},[navigate]);
+  const navigateHref=useCallback((href:string)=>{history.pushState({le:true},"",href);setMobileMenuOpen(false);applyLocation()},[applyLocation]);
   const dismissNotice=useCallback(()=>setNotice(""),[]);
   useEffect(()=>{applyLocation();const back=()=>applyLocation();addEventListener("popstate",back);return()=>removeEventListener("popstate",back)},[applyLocation]);
   const load = useCallback(async (u: User | null) => {
@@ -521,15 +524,7 @@ export default function Home() {
       </header>
       {mobileMenuOpen&&<div className="mobile-menu-backdrop" onClick={()=>setMobileMenuOpen(false)}>
         <aside className="mobile-menu" role="dialog" aria-modal="true" aria-label="Legacy Equine navigation" onClick={event=>event.stopPropagation()}>
-          <div className="mobile-menu-title"><span>LE</span><b>Legacy Equine™</b><button aria-label="Close navigation menu" onClick={()=>setMobileMenuOpen(false)}>×</button></div>
-          <p>GAME</p>
-          <nav>{[
-            ["home","news",newsNew?`News · ${newsNew} New`:"News"],["stable","barn","My Stable"],["store","store","LE Store"],["training","round-pen","Training"],["shows","trophy","Shows"],["market","sale-tag","Marketplace"],["professions","toolbox","Professions"],["community","bulletin","Community"],["bank","coin","Bank"],["sanctuary","heart","Sanctuary"],
-          ].map(([destination,icon,label])=><button key={destination} className={view===destination?"active":""} onClick={()=>mobileNavigate(destination as MainView,destination==="stable"?{stableTab:"horses"}:destination==="store"?{storeDepartment:"horses"}:undefined)}><NavIcon name={icon as Parameters<typeof NavIcon>[0]["name"]}/>{label}</button>)}</nav>
-          <p>ACCOUNT</p>
-          <nav><button className={view==="profile"?"active":""} onClick={()=>mobileNavigate("profile",{profileTab:"profile"})}>My Profile</button><button onClick={()=>mobileNavigate("profile",{profileTab:"settings"})}>Settings</button></nav>
-          {stable.is_admin&&<><p>OWNER</p><nav><button className={view==="admin"?"active":""} onClick={()=>mobileNavigate("admin")}>Admin Control Center</button></nav></>}
-          <button className="mobile-signout" onClick={async()=>{await supabase.auth.signOut();window.location.assign("/")}}>Sign Out</button>
+          <MobileGameNavigation path={currentPath} newsNew={newsNew} isAdmin={stable.is_admin} onNavigate={navigateHref} onClose={()=>setMobileMenuOpen(false)} onSignOut={()=>void supabase.auth.signOut().then(()=>window.location.assign("/"))}/>
         </aside>
       </div>}
       <aside className="game-sidebar">
@@ -539,62 +534,7 @@ export default function Home() {
             Legacy Equine™<small>Breed Your Legacy.</small>
           </span>
         </button>
-        <nav className="game-nav" aria-label="Game areas">
-          <button className={view === "home" ? "active" : ""} onClick={() => navigate("home")}><NavIcon name="news"/>News{newsNew>0?` · ${newsNew} New`:""}</button>
-          <button
-            className={view === "stable" ? "active" : ""}
-            onClick={() => navigate("stable",{stableTab:"horses"})}
-          >
-            <NavIcon name="barn"/>My Stable
-          </button>
-          <button
-            className={
-              view === "store" || view === "storehorse" ? "active" : ""
-            }
-            onClick={openStore}
-          >
-            <NavIcon name="store"/>LE Store
-          </button>
-          <button
-            className={view === "training" ? "active" : ""}
-            onClick={() => navigate("training")}
-          >
-            <NavIcon name="round-pen"/>Training
-          </button>
-          <button
-            className={view === "shows" ? "active" : ""}
-            onClick={() => navigate("shows")}
-          >
-            <NavIcon name="trophy"/>Shows
-          </button>
-          <button
-            className={view === "market" ? "active" : ""}
-            onClick={() => navigate("market")}
-          >
-            <NavIcon name="sale-tag"/>Marketplace
-          </button>
-          <button
-            className={view === "professions" ? "active" : ""}
-            onClick={() => navigate("professions")}
-          >
-            <NavIcon name="toolbox"/>Professions
-          </button>
-          <button
-            className={view === "community" ? "active" : ""}
-            onClick={() => navigate("community")}
-          >
-            <NavIcon name="bulletin"/>Community
-          </button>
-          <button
-            className={view === "bank" ? "active" : ""}
-            onClick={() => navigate("bank")}
-          >
-            <NavIcon name="coin"/>Bank
-          </button>
-          <button className={view === "sanctuary" ? "active" : ""} onClick={() => navigate("sanctuary")}>
-            <NavIcon name="heart"/>Sanctuary
-          </button>
-        </nav>
+        <DesktopGameNavigation path={currentPath} newsNew={newsNew} onNavigate={navigateHref}/>
         <div className="sidebar-note">ALPHA 0.1</div>
       </aside>
       <div className="game-column">

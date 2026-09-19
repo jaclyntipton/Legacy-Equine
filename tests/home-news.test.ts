@@ -25,6 +25,9 @@ describe("authenticated Home News", () => {
     expect(styles).toContain("overflow-x:auto");
     expect(styles).toContain("scrollbar-width:none");
     expect(home).toContain("filtersRef.current?.scrollTo({left:0})");
+    expect(home).toContain('className="newsfilterviewport"');
+    expect(styles).toContain(".newsfilterviewport{width:100%;max-width:100%;min-width:0;overflow-x:auto");
+    expect(styles).toContain(".newsfilters{display:flex;flex-wrap:nowrap;justify-content:flex-start;width:max-content");
     expect(styles).toContain(".homeheadline h1{margin:.15rem 0;color:#3f286a");
   });
   it("labels News consistently in desktop and mobile game navigation", () => {

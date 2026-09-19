@@ -1,6 +1,7 @@
 import type {ReactNode,SVGProps} from "react";
-type IconName="barn"|"store"|"round-pen"|"trophy"|"sale-tag"|"toolbox"|"bulletin"|"coin"|"heart";
+type IconName="news"|"barn"|"store"|"round-pen"|"trophy"|"sale-tag"|"toolbox"|"bulletin"|"coin"|"heart";
 const paths:Record<IconName,ReactNode>={
+ news:<><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h5v4H7zM15 8h2m-2 4h2M7 16h10"/></>,
  barn:<><path d="M3 10 12 3l9 7v11H3Z"/><path d="M7 21v-9h10v9M7 12l5 4 5-4M12 16v5"/></>,
  store:<><path d="M4 10v10h16V10M3 9l2-5h14l2 5"/><path d="M3 9c0 2 3 2 3 0 0 2 3 2 3 0 0 2 3 2 3 0 0 2 3 2 3 0 0 2 3 2 3 0M8 20v-6h8v6"/></>,
  "round-pen":<><circle cx="12" cy="12" r="9"/><path d="M5 16c4 2 10 2 14 0M6 18v-4m4 6v-3m4 3v-3m4 1v-4"/><path d="M8.5 12.5c1-3 2.5-4.5 5-4l2-2 .5 3 2 1-2 1.5-1 3h-2l-1-2-2 1Z"/></>,

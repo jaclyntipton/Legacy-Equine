@@ -524,7 +524,7 @@ export default function Home() {
           <div className="mobile-menu-title"><span>LE</span><b>Legacy Equine™</b><button aria-label="Close navigation menu" onClick={()=>setMobileMenuOpen(false)}>×</button></div>
           <p>GAME</p>
           <nav>{[
-            ["home","bulletin",newsNew?`Home · ${newsNew} New`:"Home"],["stable","barn","My Stable"],["store","store","LE Store"],["training","round-pen","Training"],["shows","trophy","Shows"],["market","sale-tag","Marketplace"],["professions","toolbox","Professions"],["community","bulletin","Community"],["bank","coin","Bank"],["sanctuary","heart","Sanctuary"],
+            ["home","news",newsNew?`News · ${newsNew} New`:"News"],["stable","barn","My Stable"],["store","store","LE Store"],["training","round-pen","Training"],["shows","trophy","Shows"],["market","sale-tag","Marketplace"],["professions","toolbox","Professions"],["community","bulletin","Community"],["bank","coin","Bank"],["sanctuary","heart","Sanctuary"],
           ].map(([destination,icon,label])=><button key={destination} className={view===destination?"active":""} onClick={()=>mobileNavigate(destination as MainView,destination==="stable"?{stableTab:"horses"}:destination==="store"?{storeDepartment:"horses"}:undefined)}><NavIcon name={icon as Parameters<typeof NavIcon>[0]["name"]}/>{label}</button>)}</nav>
           <p>ACCOUNT</p>
           <nav><button className={view==="profile"?"active":""} onClick={()=>mobileNavigate("profile",{profileTab:"profile"})}>My Profile</button><button onClick={()=>mobileNavigate("profile",{profileTab:"settings"})}>Settings</button></nav>
@@ -540,7 +540,7 @@ export default function Home() {
           </span>
         </button>
         <nav className="game-nav" aria-label="Game areas">
-          <button className={view === "home" ? "active" : ""} onClick={() => navigate("home")}><NavIcon name="bulletin"/>Home{newsNew>0?` · ${newsNew} New`:""}</button>
+          <button className={view === "home" ? "active" : ""} onClick={() => navigate("home")}><NavIcon name="news"/>News{newsNew>0?` · ${newsNew} New`:""}</button>
           <button
             className={view === "stable" ? "active" : ""}
             onClick={() => navigate("stable",{stableTab:"horses"})}

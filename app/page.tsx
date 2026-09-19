@@ -29,6 +29,8 @@ import { ArtworkAlbum } from "@/app/artwork-album";
 import { AdminShows } from "@/app/admin-shows";
 import { AdminProfessions } from "@/app/admin-professions";
 import { AdminCommerce } from "@/app/admin-commerce";
+import { HomeNews } from "@/app/home-news";
+import { AdminNews } from "@/app/admin-news";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
 
@@ -147,10 +149,10 @@ type ForumPost = {
   avatar_url: string;
 };
 const supabase = createClient();
-type MainView="stable"|"publicstable"|"publicplayer"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
+type MainView="home"|"stable"|"publicstable"|"publicplayer"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
 type StableTab="horses"|"tack"|"feed"|"supplies";type ProfileTab="profile"|"artwork"|"settings";type StoreDepartment="horses"|"feed"|"tack"|"supplies";
 const routeFor=(view:MainView,state?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string;publicStableId?:string;publicPlayerId?:string})=>{let path="/stable";if(view==="stable")path=state?.stableTab==="horses"?"/stable/horses":state?.stableTab==="tack"?"/stable/tack-room":state?.stableTab==="feed"?"/stable/feed-room":state?.stableTab==="supplies"?"/stable/supply-room":"/stable";else if(view==="publicstable"&&state?.publicStableId)path=`/stables/${state.publicStableId}`;else if(view==="publicplayer"&&state?.publicPlayerId)path=`/players/${state.publicPlayerId}`;else if(view==="profile")path=state?.profileTab==="artwork"?"/profile/artwork":state?.profileTab==="settings"?"/profile/settings":"/profile";else if(view==="store")path=state?.storeDepartment==="feed"?"/store/feed":state?.storeDepartment==="tack"?"/store/tack":state?.storeDepartment==="supplies"?"/store/supplies":"/store/foundation-horses";else if(view==="storehorse"&&state?.storeSelected)path=`/store/horses/${state.storeSelected}`;else if(view==="horse"&&state?.selected)path=`/horses/${state.selected}`;else path=`/${view==="market"?"marketplace":view}`;const query=view==="store"&&state?.storeBreed?`?breed=${encodeURIComponent(state.storeBreed)}`:"";return path+query};
-const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string;publicStableId?:string;publicPlayerId?:string}={view:"stable"};if(/^\/players\/[^/]+/.test(path)){result.view="publicplayer";result.publicPlayerId=path.split("/")[2]}else if(/^\/stables\/[^/]+/.test(path)){result.view="publicstable";result.publicStableId=path.split("/")[2]}else if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":path.startsWith("/community")?"community":path.startsWith("/professions")?"professions":key==="marketplace"?"market":(["bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"stable")as MainView}return result};
+const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string;publicStableId?:string;publicPlayerId?:string}={view:"home"};if(/^\/players\/[^/]+/.test(path)){result.view="publicplayer";result.publicPlayerId=path.split("/")[2]}else if(/^\/stables\/[^/]+/.test(path)){result.view="publicstable";result.publicStableId=path.split("/")[2]}else if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":path.startsWith("/community")?"community":path.startsWith("/professions")?"professions":key==="marketplace"?"market":(["home","bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"home")as MainView}return result};
 function GlobalToast({message,dismiss}:{message:string;dismiss:()=>void}){const persistent=/error|failed|unable|couldn.?t|insufficient|not enough|required|unavailable|invalid|denied|choose|full|warning/i.test(message);useEffect(()=>{if(!message||persistent)return;const timer=setTimeout(dismiss,2800);return()=>clearTimeout(timer)},[message,persistent,dismiss]);if(!message)return null;return <div className={`globaltoast ${persistent?"error":"success"}`} role={persistent?"alert":"status"}><span>{message}</span><button aria-label="Dismiss notification" onClick={dismiss}>×</button></div>}
 const money = (n: number) => new Intl.NumberFormat("en-US").format(n);
 const STORE_TIERS=["Entry","Quality","Elite","Legendary"] as const;
@@ -247,7 +249,7 @@ export default function Home() {
     [posts, setPosts] = useState<ForumPost[]>([]),
     [loading, setLoading] = useState(true),
     [notice, setNotice] = useState(""),
-    [view, setView] = useState<MainView>("stable"),
+    [view, setView] = useState<MainView>("home"),
     [selected, setSelected] = useState<string | null>(null),
     [storeSelected, setStoreSelected] = useState<string | null>(null),
     [horseQuery, setHorseQuery] = useState(""),
@@ -260,7 +262,8 @@ export default function Home() {
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards"),
     [mobileMenuOpen,setMobileMenuOpen]=useState(false),
-    [showExactBalance,setShowExactBalance]=useState(false);
+    [showExactBalance,setShowExactBalance]=useState(false),
+    [newsNew,setNewsNew]=useState(0);
   const [stableTab,setStableTab]=useState<StableTab>("horses"),[profileTab,setProfileTab]=useState<ProfileTab>("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
   const [publicStableId,setPublicStableId]=useState("");
   const [publicPlayerId,setPublicPlayerId]=useState("");
@@ -511,7 +514,7 @@ export default function Home() {
   return (
     <div className="shell">
       <header className="mobile-header">
-        <button className="mobile-brand" onClick={()=>mobileNavigate("stable",{stableTab:"horses"})}><span>LE</span><b>Legacy Equine™</b></button>
+        <button className="mobile-brand" onClick={()=>mobileNavigate("home")}><span>LE</span><b>Legacy Equine™</b></button>
         <button className="mobile-balance" aria-expanded={showExactBalance} onClick={()=>setShowExactBalance(value=>!value)}><span>LE</span><b>{compactNumber(stable.balance)} LED</b></button>
         <button className="menu-toggle" aria-label="Open navigation menu" aria-expanded={mobileMenuOpen} onClick={()=>setMobileMenuOpen(true)}>☰</button>
         {showExactBalance&&<div className="exact-balance" role="status">{money(stable.balance)} LED</div>}
@@ -521,7 +524,7 @@ export default function Home() {
           <div className="mobile-menu-title"><span>LE</span><b>Legacy Equine™</b><button aria-label="Close navigation menu" onClick={()=>setMobileMenuOpen(false)}>×</button></div>
           <p>GAME</p>
           <nav>{[
-            ["stable","barn","My Stable"],["store","store","LE Store"],["training","round-pen","Training"],["shows","trophy","Shows"],["market","sale-tag","Marketplace"],["professions","toolbox","Professions"],["community","bulletin","Community"],["bank","coin","Bank"],["sanctuary","heart","Sanctuary"],
+            ["home","bulletin",newsNew?`Home · ${newsNew} New`:"Home"],["stable","barn","My Stable"],["store","store","LE Store"],["training","round-pen","Training"],["shows","trophy","Shows"],["market","sale-tag","Marketplace"],["professions","toolbox","Professions"],["community","bulletin","Community"],["bank","coin","Bank"],["sanctuary","heart","Sanctuary"],
           ].map(([destination,icon,label])=><button key={destination} className={view===destination?"active":""} onClick={()=>mobileNavigate(destination as MainView,destination==="stable"?{stableTab:"horses"}:destination==="store"?{storeDepartment:"horses"}:undefined)}><NavIcon name={icon as Parameters<typeof NavIcon>[0]["name"]}/>{label}</button>)}</nav>
           <p>ACCOUNT</p>
           <nav><button className={view==="profile"?"active":""} onClick={()=>mobileNavigate("profile",{profileTab:"profile"})}>My Profile</button><button onClick={()=>mobileNavigate("profile",{profileTab:"settings"})}>Settings</button></nav>
@@ -530,13 +533,14 @@ export default function Home() {
         </aside>
       </div>}
       <aside className="game-sidebar">
-        <button className="brand" onClick={() => navigate("stable",{stableTab:"horses"})}>
+        <button className="brand" onClick={() => navigate("home")}>
           <span className="mark">LE</span>
           <span>
             Legacy Equine™<small>Breed Your Legacy.</small>
           </span>
         </button>
         <nav className="game-nav" aria-label="Game areas">
+          <button className={view === "home" ? "active" : ""} onClick={() => navigate("home")}><NavIcon name="bulletin"/>Home{newsNew>0?` · ${newsNew} New`:""}</button>
           <button
             className={view === "stable" ? "active" : ""}
             onClick={() => navigate("stable",{stableTab:"horses"})}
@@ -755,6 +759,7 @@ export default function Home() {
               }
             />
           )}
+          {view === "home" && <HomeNews notify={setNotice} onNewCount={setNewsNew}/>}
           {view === "bank" && (
             <Bank balance={stable.balance} notify={setNotice} refreshAccount={()=>void load(user)} />
           )}
@@ -1599,7 +1604,7 @@ function AdminConsole({
   currentUserId: string;
   changed: () => void;
 }) {
-  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
+  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"news"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
   const initialAdminTopic=(typeof location!=="undefined"?location.pathname.split("/")[2]:"")as AdminTopic;
   const [topic,setTopic]=useState<AdminTopic>(initialAdminTopic||"dashboard"),[permissions,setPermissions]=useState<string[]>([]);
   const [permissionTarget,setPermissionTarget]=useState(currentUserId),[permissionDraft,setPermissionDraft]=useState<string[]>([]);
@@ -1646,7 +1651,7 @@ function AdminConsole({
   const can=(permission:string)=>ownerAccount||permissions.includes(permission);
   const topics:{id:AdminTopic;label:string;permission?:string}[]=[
     {id:"dashboard",label:"Dashboard"},{id:"horses",label:"Horses",permission:"admin.horses.view"},{id:"visuals",label:"Horse Visuals",permission:"admin.visuals.view"},
-    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
+    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"news",label:"News",permission:"admin.news.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
     {id:"accounts",label:"Accounts",permission:"admin.accounts.view"},{id:"economy",label:"Economy / Bank",permission:"admin.economy.view"},{id:"commerce",label:"Commerce",permission:"admin.commerce.view"},{id:"brands",label:"Stable Brands",permission:"admin.brands.view"},
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
@@ -1734,6 +1739,7 @@ function AdminConsole({
       {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 
+      {topic==="news"&&<AdminNews notify={setMessage}/>}
       {topic==="professions"&&<AdminProfessions notify={setMessage}/>} 
       {topic==="commerce"&&ownerAccount&&<AdminCommerce notify={setMessage}/>}
       {topic==="brands"&&<StableBrandsAdmin notify={setMessage}/>}

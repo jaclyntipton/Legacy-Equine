@@ -23,6 +23,9 @@ describe("authenticated Home News", () => {
     for (const value of ["My Stable", "Enter Shows", "LE Store", "Marketplace", "Professions", "Community"]) expect(home).toContain(value);
     expect(styles).toContain("grid-template-columns:repeat(2,minmax(0,1fr))");
     expect(styles).toContain("overflow-x:auto");
+    expect(styles).toContain("scrollbar-width:none");
+    expect(home).toContain("filtersRef.current?.scrollTo({left:0})");
+    expect(styles).toContain(".homeheadline h1{margin:.15rem 0;color:#3f286a");
   });
   it("labels News consistently in desktop and mobile game navigation", () => {
     expect(page.match(/`News · \$\{newsNew\} New`:\"News\"/)).toBeTruthy();

@@ -9,9 +9,10 @@ type FormFieldProps = {
 };
 
 export function FormField({ id, label, children, helper, className = "" }: FormFieldProps) {
+  const visibleLabel = id === "show-tier" && label === "Career Point Tier" ? "Show Level" : label;
   return (
     <div className={`form-field ${className}`.trim()}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{visibleLabel}</label>
       {children}
       {helper ? <small className="form-helper">{helper}</small> : null}
     </div>

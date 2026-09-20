@@ -31,6 +31,8 @@ import { AdminProfessions } from "@/app/admin-professions";
 import { AdminCommerce } from "@/app/admin-commerce";
 import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
+import { Handbook, HandbookHelpLink } from "@/app/handbook";
+import { AdminHandbook } from "@/app/admin-handbook";
 import {DesktopGameNavigation,MobileGameNavigation} from "@/app/universal-game-navigation";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
@@ -150,7 +152,7 @@ type ForumPost = {
   avatar_url: string;
 };
 const supabase = createClient();
-type MainView="home"|"stable"|"publicstable"|"publicplayer"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
+type MainView="home"|"handbook"|"stable"|"publicstable"|"publicplayer"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
 type StableTab="horses"|"tack"|"feed"|"supplies";type ProfileTab="profile"|"artwork"|"settings";type StoreDepartment="horses"|"feed"|"tack"|"supplies";
 const routeFor=(view:MainView,state?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string;publicStableId?:string;publicPlayerId?:string})=>{let path="/stable";if(view==="stable")path=state?.stableTab==="horses"?"/stable/horses":state?.stableTab==="tack"?"/stable/tack-room":state?.stableTab==="feed"?"/stable/feed-room":state?.stableTab==="supplies"?"/stable/supply-room":"/stable";else if(view==="publicstable"&&state?.publicStableId)path=`/stables/${state.publicStableId}`;else if(view==="publicplayer"&&state?.publicPlayerId)path=`/players/${state.publicPlayerId}`;else if(view==="profile")path=state?.profileTab==="artwork"?"/profile/artwork":state?.profileTab==="settings"?"/profile/settings":"/profile";else if(view==="store")path=state?.storeDepartment==="feed"?"/store/feed":state?.storeDepartment==="tack"?"/store/tack":state?.storeDepartment==="supplies"?"/store/supplies":"/store/foundation-horses";else if(view==="storehorse"&&state?.storeSelected)path=`/store/horses/${state.storeSelected}`;else if(view==="horse"&&state?.selected)path=`/horses/${state.selected}`;else path=`/${view==="market"?"marketplace":view}`;const query=view==="store"&&state?.storeBreed?`?breed=${encodeURIComponent(state.storeBreed)}`:"";return path+query};
 const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string;publicStableId?:string;publicPlayerId?:string}={view:"home"};if(/^\/players\/[^/]+/.test(path)){result.view="publicplayer";result.publicPlayerId=path.split("/")[2]}else if(/^\/stables\/[^/]+/.test(path)){result.view="publicstable";result.publicStableId=path.split("/")[2]}else if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":path.startsWith("/community")?"community":path.startsWith("/professions")?"professions":key==="marketplace"?"market":(["home","bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"home")as MainView}return result};
@@ -499,6 +501,7 @@ export default function Home() {
   };
   if (loading && !user) return <div className="loading">LEGACY EQUINE</div>;
   if (!user||location.pathname==="/reset-password"||location.pathname==="/auth/confirm") return <PublicAuth />;
+  if (!stable&&location.pathname.startsWith("/how-to-play"))return <Handbook slug={location.pathname.split("/")[2]??""}/>;
   if (!stable)
     return (
       <CreateStable
@@ -543,6 +546,7 @@ export default function Home() {
             {stable.avatar_url?<img src={stable.avatar_url} alt=""/>:<span>LE</span>}<i><small>LE ACCOUNT #{stable.account_number}</small><b>{stable.username?`@${stable.username}`:stable.name}</b></i>
           </button>
           <nav className="account-nav" aria-label="Account links">
+            <button className={currentPath.startsWith("/how-to-play") ? "active" : ""} onClick={() => navigateHref("/how-to-play")}>How to Play</button>
             <button
               className={view === "profile" ? "active" : ""}
               onClick={() => navigate("profile",{profileTab:"profile"})}
@@ -642,7 +646,7 @@ export default function Home() {
                 <div><small>GENERATIONS BRED</small><b>{Math.max(0,...horses.map(h=>h.generation))}</b></div>
               </section>
               </>}
-              {stableTab!=="horses"&&<StableInventory room={stableTab} horses={horses} notify={setNotice} refresh={()=>void load(user)}/>} 
+              {stableTab!=="horses"&&<>{stableTab==="feed"&&<HandbookHelpLink slug="feeding"/>}<StableInventory room={stableTab} horses={horses} notify={setNotice} refresh={()=>void load(user)}/></>}
             </>
           )}
           {view === "store" && (
@@ -699,20 +703,21 @@ export default function Home() {
               }
             />
           )}
-          {view === "home" && <HomeNews notify={setNotice} onNewCount={setNewsNew}/>}
+          {view === "home" && !currentPath.startsWith("/how-to-play") && <HomeNews notify={setNotice} onNewCount={setNewsNew}/>}
+          {currentPath.startsWith("/how-to-play") && <Handbook slug={location.pathname.split("/")[2]??""}/>}
           {view === "bank" && (
             <Bank balance={stable.balance} notify={setNotice} refreshAccount={()=>void load(user)} />
           )}
           {view === "stalls" && <StallExpansion capacity={capacity} notify={setNotice}/>} 
           {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={horses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}
           {view === "professions" && (
-            <ProfessionalCenter
+            <><HandbookHelpLink slug="professions"/><ProfessionalCenter
               horses={horses}
               balance={stable.balance}
               notify={setNotice}
               refresh={() => void load(user)}
               onTackDelivered={() => navigate("stable",{stableTab:"tack"})}
-            />
+            /></>
           )}
           {view === "training" && (
             <TrainingCenter
@@ -983,6 +988,7 @@ function CreateStable({
         >
           {loading ? "Opening your stable…" : "Create Stable"}
         </button>
+        <a className="textbutton" href="/how-to-play/getting-started">How to Play before you begin →</a>
         {message !== "Welcome to Legacy Equine." && (
           <p className="formmessage" role="alert">
             {message}
@@ -1544,7 +1550,7 @@ function AdminConsole({
   currentUserId: string;
   changed: () => void;
 }) {
-  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"news"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
+  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"news"|"handbook"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
   const initialAdminTopic=(typeof location!=="undefined"?location.pathname.split("/")[2]:"")as AdminTopic;
   const [topic,setTopic]=useState<AdminTopic>(initialAdminTopic||"dashboard"),[permissions,setPermissions]=useState<string[]>([]);
   const [permissionTarget,setPermissionTarget]=useState(currentUserId),[permissionDraft,setPermissionDraft]=useState<string[]>([]);
@@ -1591,7 +1597,7 @@ function AdminConsole({
   const can=(permission:string)=>ownerAccount||permissions.includes(permission);
   const topics:{id:AdminTopic;label:string;permission?:string}[]=[
     {id:"dashboard",label:"Dashboard"},{id:"horses",label:"Horses",permission:"admin.horses.view"},{id:"visuals",label:"Horse Visuals",permission:"admin.visuals.view"},
-    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"news",label:"News",permission:"admin.news.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
+    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"news",label:"News",permission:"admin.news.view"},{id:"handbook",label:"How to Play",permission:"admin.handbook.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
     {id:"accounts",label:"Accounts",permission:"admin.accounts.view"},{id:"economy",label:"Economy / Bank",permission:"admin.economy.view"},{id:"commerce",label:"Commerce",permission:"admin.commerce.view"},{id:"brands",label:"Stable Brands",permission:"admin.brands.view"},
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
@@ -1680,6 +1686,7 @@ function AdminConsole({
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 
       {topic==="news"&&<AdminNews notify={setMessage}/>}
+      {topic==="handbook"&&<AdminHandbook/>}
       {topic==="professions"&&<AdminProfessions notify={setMessage}/>} 
       {topic==="commerce"&&ownerAccount&&<AdminCommerce notify={setMessage}/>}
       {topic==="brands"&&<StableBrandsAdmin notify={setMessage}/>}

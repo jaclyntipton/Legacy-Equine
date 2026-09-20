@@ -4,9 +4,9 @@ import {competitionScore,competitionTier,placingLabel,PROVISIONAL_DISCIPLINE_STA
 const effective=(values:Record<string,number>,tack:Record<string,number>={}):EffectiveBreakdown=>Object.fromEntries(Object.entries(values).map(([stat,developed])=>[stat,{birth:developed,development:0,developed,tack:tack[stat]??0,service:0,effective:developed+(tack[stat]??0)}]));
 
 describe("Legacy Equine show engine",()=>{
-  const tiers:CompetitionTier[]=[{id:"novice",name:"Novice",minimum_points:0,maximum_points:99,sort_order:1},{id:"intermediate",name:"Intermediate",minimum_points:100,maximum_points:249,sort_order:2},{id:"advanced",name:"Advanced",minimum_points:250,maximum_points:499,sort_order:3},{id:"elite",name:"Elite",minimum_points:500,maximum_points:null,sort_order:4}];
-  it.each([[0,"novice"],[99,"novice"],[100,"intermediate"],[249,"intermediate"],[250,"advanced"],[499,"advanced"],[500,"elite"],[5000,"elite"]])("maps %i Career Points to %s from database-shaped tiers",(points,id)=>expect(competitionTier(points,tiers)?.id).toBe(id));
-  it("moves a horse into its new tier immediately after a level-up",()=>{expect(competitionTier(92,tiers)?.id).toBe("novice");expect(competitionTier(117,tiers)?.id).toBe("intermediate")});
+  const tiers:CompetitionTier[]=[{id:"novice",name:"Novice",minimum_average:0,maximum_average:29.99,sort_order:1},{id:"intermediate",name:"Intermediate",minimum_average:30,maximum_average:54.99,sort_order:2},{id:"advanced",name:"Advanced",minimum_average:55,maximum_average:79.99,sort_order:3},{id:"elite",name:"Elite",minimum_average:80,maximum_average:null,sort_order:4}];
+  it.each([[29.99,"novice"],[30,"intermediate"],[54.99,"intermediate"],[55,"advanced"],[79.99,"advanced"],[80,"elite"],[250,"elite"]])("maps average %s to %s from database-shaped tiers",(average,id)=>expect(competitionTier(Number(average),tiers)?.id).toBe(id));
+  it("moves a horse into its new Show Level immediately after permanent development",()=>{expect(competitionTier(29.7,tiers)?.id).toBe("novice");expect(competitionTier(30.3,tiers)?.id).toBe("intermediate")});
   it("defines every provisional discipline mapping",()=>expect(Object.keys(PROVISIONAL_DISCIPLINE_STATS)).toEqual(["hunters","jumpers","dressage","halter","reining","western_pleasure","trail","driving","steeplechase","fox_hunting","racing","cross_country"]));
   it.each([
     ["hunters",["Agility","Temperament","Conformation","Intelligence"]],

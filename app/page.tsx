@@ -17,6 +17,7 @@ import { VisualAssetRequirements } from "@/app/visual-asset-requirements";
 import { StableInventory } from "@/app/stable-inventory";
 import { StoreBulkPurchase } from "@/app/store-bulk-purchase";
 import "@/app/store-filter-controls.css";
+import "@/app/show-tier-v2.css";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { PublicAuth } from "@/app/public-auth";
@@ -35,7 +36,7 @@ import { Handbook, HandbookHelpLink } from "@/app/handbook";
 import { AdminHandbook } from "@/app/admin-handbook";
 import {DesktopGameNavigation,MobileGameNavigation} from "@/app/universal-game-navigation";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
-import {competitionTier,type CompetitionTier} from "@/lib/game/show-engine";
+import {competitionTier,permanentStatAverage,type CompetitionTier} from "@/lib/game/show-engine";
 
 type Horse = {
   id: string;
@@ -303,7 +304,7 @@ export default function Home() {
           .eq("owner_id", u.id)
           .order("created_at"),
         supabase.rpc("get_my_stable_capacity"),
-        supabase.from("show_tiers").select("id,name,minimum_points,maximum_points,sort_order").eq("active",true).order("sort_order"),
+        supabase.rpc("get_show_level_config"),
         supabase.rpc("has_horse_editor_permission"),
         supabase.rpc("get_account_progression"),
       ]);
@@ -338,11 +339,11 @@ export default function Home() {
   const horse = horses.find((h) => h.id === selected) || null;
   useEffect(()=>{if(view!=="horse"||!selected||horse)return;let active=true;void supabase.from("horses").select("*").eq("id",selected).maybeSingle().then(({data,error})=>{if(!active)return;if(error)setNotice(error.message);else if(data)setHorses(current=>current.some(candidate=>candidate.id===data.id)?current:[...current,data as Horse])});return()=>{active=false}},[view,selected,horse]);
   const visibleHorses = useMemo(() => {
-    const tierName = (points: number) => competitionTier(points,competitionTiers)?.name??"Unassigned";
+    const tierName = (h:Horse) => competitionTier(permanentStatAverage(h.stats),competitionTiers)?.name??"Unassigned";
     const filtered = horses.filter((h) => {
       const years = age(h);
       const ageMatch = horseAge === "all" || (horseAge === "young" && years < 2) || (horseAge === "breeding" && years >= 2 && years < 26) || (horseAge === "senior" && years >= 26);
-      return h.name.toLowerCase().includes(horseQuery.trim().toLowerCase()) && (horseBreed === "all" || h.breed === horseBreed) && (horseSex === "all" || h.sex === horseSex) && (horseOrigin === "all" || h.origin === horseOrigin) && ageMatch && (horseTier === "all" || tierName(h.career_points) === horseTier) && (horseBreeding === "all" || (horseBreeding === "eligible") === canBreed(h));
+      return h.name.toLowerCase().includes(horseQuery.trim().toLowerCase()) && (horseBreed === "all" || h.breed === horseBreed) && (horseSex === "all" || h.sex === horseSex) && (horseOrigin === "all" || h.origin === horseOrigin) && ageMatch && (horseTier === "all" || tierName(h) === horseTier) && (horseBreeding === "all" || (horseBreeding === "eligible") === canBreed(h));
     });
     return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);
   }, [horses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
@@ -1037,7 +1038,7 @@ function Card({ h,tiers, open, compact=false }: { h: Horse;tiers:CompetitionTier
         <h3>{h.brand_code_at_assignment&&<span className="horsebrand">{h.brand_mark_at_assignment&&<img src={h.brand_mark_at_assignment} alt=""/>}{h.brand_code_at_assignment}</span>}{h.name}</h3>
         <p className="horseidentity">{h.breed} · {h.sex} · {ageLabel(h)} · {h.color} · {handHeight(h.mature_height_hands)}</p>
         <div className="cardfoot">
-          <span><b>{h.career_points??0}</b> Career Points · {competitionTier(h.career_points??0,tiers)?.name??"Unassigned"}</span>
+          <span><b>{permanentStatAverage(h.stats).toFixed(1)}</b> Avg · {competitionTier(permanentStatAverage(h.stats),tiers)?.name??"Unassigned"} Show Level · {h.career_points??0} CP</span>
           <em>View horse →</em>
         </div>
       </div>

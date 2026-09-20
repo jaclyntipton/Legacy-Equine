@@ -21,8 +21,8 @@ describe("unified Show workflows",()=>{
   expect(sql).toContain("show_action_requests");
   expect(sql).toContain("for update");
   expect(sql).toContain("exception when unique_violation");
-  expect(ui).toContain("Select the exact eligible entries");
-  expect(ui).toContain("Select All Eligible Entries");
+  expect(ui).toContain("Only authoritative eligible horse and Show pairs are selected");
+  expect(ui).toContain("SELECT ALL ELIGIBLE");
  });
  it("allows many horses in one Show without requiring multi-Show capability",()=>{
   expect(sql).toContain("count(distinct x->>'show_id')");

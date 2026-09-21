@@ -720,13 +720,13 @@ export default function Home() {
           {view === "stalls" && <StallExpansion capacity={capacity} notify={setNotice}/>} 
           {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={horses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}
           {view === "professions" && (
-            <><HandbookHelpLink slug="professions"/><ProfessionalCenter
+            <ProfessionalCenter
               horses={horses}
               balance={stable.balance}
               notify={setNotice}
               refresh={() => void load(user)}
               onTackDelivered={() => navigate("stable",{stableTab:"tack"})}
-            /></>
+            />
           )}
           {view === "training" && (
             <TrainingCenter

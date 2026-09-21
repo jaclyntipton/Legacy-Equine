@@ -1,7 +1,8 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { ManageBusiness, MyBusinesses, ProfessionNav, PublicBusiness } from "@/app/profession-businesses";
+import { ManageBusiness, MyBusinesses, PublicBusiness } from "@/app/profession-businesses";
+import { HandbookHelpLink } from "@/app/handbook";
 import "./profession-qa-safety.css";
 
 type Horse = {
@@ -665,6 +666,7 @@ export function ProfessionalCenter({
   };
   const businessManage = typeof location!=="undefined"?location.pathname.match(/^\/professions\/businesses\/([^/]+)$/):null;
   const publicStorefront = typeof location!=="undefined"?location.pathname.match(/^\/professions\/storefront\/([^/]+)\/([^/]+)$/):null;
+  const homeSection = typeof location!=="undefined"&&new URLSearchParams(location.search).get("section")==="market"?"market":"careers";
   if(typeof location!=="undefined"&&location.pathname==="/professions/businesses")return <MyBusinesses notify={notify}/>;
   if(businessManage)return <ManageBusiness professionId={businessManage[1]} notify={notify}/>;
   if(publicStorefront)return <PublicBusiness stableId={publicStorefront[1]} professionId={publicStorefront[2]} notify={notify}/>;
@@ -672,18 +674,15 @@ export function ProfessionalCenter({
     <>
       {!career && (
         <>
-          <ProfessionNav active={new URLSearchParams(location.search).get("section")==="market"?"market":"careers"}/>
           <header className="title">
             <div>
-              <p className="eyebrow">LEGACY EQUINE GAME CERTIFICATIONS</p>
-              <h1>Professional Services</h1>
-              <p>
-                Study, certify, build a lifetime record, and serve the horse
-                community. These are in-game credentials—not real-world
-                professional qualifications.
-              </p>
+              <p className="eyebrow">{homeSection==="market"?"PLAYER PROFESSIONAL MARKET":"LEGACY EQUINE GAME CERTIFICATIONS"}</p>
+              <h1>{homeSection==="market"?"Find a Professional":"Careers"}</h1>
+              <p>{homeSection==="market"?"Find certified Legacy Equine service providers and businesses.":"Study, certify, and advance your Legacy Equine professions. These are in-game credentials—not real-world professional qualifications."}</p>
             </div>
+            <HandbookHelpLink slug="professions"/>
           </header>
+          {homeSection==="careers"&&<>
           <div className="professiongrid" id="profession-careers">
             {professions.map((p) => (
               <article className="panel professioncard" key={p.id}>
@@ -789,7 +788,8 @@ export function ProfessionalCenter({
                 ))}
             </div>
           </section>
-          <section className="panel professionalmarket" id="professional-market">
+          </>}
+          {homeSection==="market"&&<section className="panel professionalmarket" id="professional-market">
             <p className="eyebrow">PLAYER MARKET</p>
             <h2>Find a Professional</h2>
             <div className="professioncategories">
@@ -887,7 +887,7 @@ export function ProfessionalCenter({
                 )}
               </>
             )}
-          </section>
+          </section>}
         </>
       )}
       {career &&

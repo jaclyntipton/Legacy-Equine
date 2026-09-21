@@ -711,7 +711,7 @@ export default function Home() {
               }
             />
           )}
-          {view === "home" && !currentPath.startsWith("/how-to-play") && <HomeNews notify={setNotice} onNewCount={setNewsNew}/>}
+          {view === "home" && !currentPath.startsWith("/how-to-play") && <HomeNews notify={setNotice} onNewCount={setNewsNew} path={currentPath} navigate={navigateHref}/>}
           {currentPath.startsWith("/how-to-play") && <Handbook slug={location.pathname.split("/")[2]??""}/>}
           {view === "support" && <SupportCenter notify={setNotice} onUpdateCount={setSupportUpdates}/>}
           {view === "bank" && (

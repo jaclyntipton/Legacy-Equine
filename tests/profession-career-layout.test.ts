@@ -10,4 +10,11 @@ describe("routed profession career layout", () => {
     expect(careerLayout).toMatch(/\.careerworkspace\s*\{[^}]*max-height:\s*none/);
     expect(careerLayout).toMatch(/\.careerworkspace\s*\{[^}]*overflow:\s*visible/);
   });
+
+  it("keeps every Profession destination and the footer in normal document flow", () => {
+    const page = readFileSync("app/page.tsx", "utf8");
+    expect(page).toContain('view === "professions" ? "profession-main"');
+    expect(careerLayout).toMatch(/main\.profession-main\s*\{[^}]*flex:\s*1 0 auto/);
+    expect(careerLayout).toMatch(/\.profession-main \+ footer\s*\{[^}]*position:\s*static/);
+  });
 });

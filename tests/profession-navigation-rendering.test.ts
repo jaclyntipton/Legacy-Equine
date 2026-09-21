@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 const businesses = readFileSync("app/profession-businesses.tsx", "utf8");
 const professions = readFileSync("app/professions.tsx", "utf8");
 const page = readFileSync("app/page.tsx", "utf8");
+const navigation = readFileSync("app/universal-game-navigation.tsx", "utf8");
 
 describe("Profession destination rendering", () => {
   it("uses the universal navigation as the only top-level Profession selector", () => {
@@ -28,5 +29,11 @@ describe("Profession destination rendering", () => {
     expect(businesses).toContain("Businesses unavailable");
     expect(businesses).toContain("TRY AGAIN");
     expect(businesses).toContain("No professional businesses unlocked yet.");
+  });
+
+  it("matches the market child only when the market section is in the URL", () => {
+    expect(navigation).toContain('const current=new URL(path,"https://legacyequines.com")');
+    expect(navigation).toContain('current.searchParams.get("section")===targetSection');
+    expect(navigation).not.toContain('path.startsWith(`${itemPath}/`)');
   });
 });

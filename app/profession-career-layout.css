@@ -1,5 +1,20 @@
 /* Routed careers are pages, not viewport-capped modal workspaces. */
+.game-column main.profession-main {
+  flex: 1 0 auto;
+  min-height: calc(100vh - 143px);
+  overflow: visible;
+}
+
+.profession-main + footer {
+  position: static;
+  margin-top: 0;
+}
+
 @media (max-width: 760px) {
+  .game-column main.profession-main {
+    min-height: calc(100dvh - 58px);
+  }
+
   .careerworkspace {
     max-height: none;
     overflow: visible;

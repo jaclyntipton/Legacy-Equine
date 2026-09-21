@@ -590,7 +590,7 @@ export default function Home() {
             Sign out
           </button>
         </header>
-        <main>
+        <main className={view === "professions" ? "profession-main" : undefined}>
           <GlobalToast message={notice} dismiss={dismissNotice}/>
           {["horse","shows","professions","market"].includes(view)&&<button className="reportproblem" onClick={()=>navigateHref(`/support?from=${encodeURIComponent(currentPath)}`)}>Report a Problem</button>}
           {purchaseDestination&&<div className="purchasearrival"><span>Purchase complete — find it in your {purchaseDestination.label}.</span><button onClick={()=>{navigate("stable",{stableTab:purchaseDestination.tab});setPurchaseDestination(null)}}>Go to {purchaseDestination.label} →</button></div>}

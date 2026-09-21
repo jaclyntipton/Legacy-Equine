@@ -8,7 +8,7 @@ const branches:Record<Branch,{label:string;icon:Parameters<typeof NavIcon>[0]["n
  world:{label:"World",icon:"store",items:[{label:"LE Store",href:"/store/foundation-horses",icon:"store"},{label:"Marketplace",href:"/marketplace",icon:"sale-tag"},{label:"Bank",href:"/bank",icon:"coin"},{label:"Sanctuary",href:"/sanctuary",icon:"heart"}]},
  compete:{label:"Compete",icon:"trophy",items:[{label:"Shows",href:"/shows",icon:"trophy"},{label:"Training",href:"/training",icon:"round-pen"}]},
  professions:{label:"Professions",icon:"toolbox",items:[{label:"Careers",href:"/professions",icon:"toolbox"},{label:"My Businesses",href:"/professions/businesses",icon:"store"},{label:"Find a Professional",href:"/professions?section=market#professional-market",icon:"sale-tag"}]},
- community:{label:"Community",icon:"bulletin",items:[{label:"Players & Stables",href:"/community",icon:"barn"},{label:"Chat Rooms",href:"/community/chat",icon:"bulletin"}]},
+ community:{label:"Community",icon:"bulletin",items:[{label:"Players & Stables",href:"/community",icon:"barn"},{label:"Chat Rooms",href:"/community/chat",icon:"bulletin"},{label:"Community Standards",href:"/community-standards",icon:"news"}]},
 };
 function activeBranch(path:string):Branch|null{if(/^\/(store|marketplace|bank|sanctuary)/.test(path))return"world";if(/^\/(shows|training)/.test(path))return"compete";if(path.startsWith("/professions"))return"professions";if(path.startsWith("/community"))return"community";return null}
 function itemActive(item:Item,path:string){

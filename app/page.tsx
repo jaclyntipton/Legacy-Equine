@@ -39,6 +39,8 @@ import { Handbook, HandbookHelpLink } from "@/app/handbook";
 import { AdminHandbook } from "@/app/admin-handbook";
 import { AccountInformationPanel } from "@/app/account-safety";
 import { AdminPrivateIdentity } from "@/app/admin-private-identity";
+import { SafetyPages } from "@/app/safety-pages";
+import { AdminSafety } from "@/app/admin-safety";
 import {DesktopGameNavigation,MobileGameNavigation} from "@/app/universal-game-navigation";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,permanentStatAverage,type CompetitionTier} from "@/lib/game/show-engine";
@@ -158,10 +160,10 @@ type ForumPost = {
   avatar_url: string;
 };
 const supabase = createClient();
-type MainView="home"|"handbook"|"support"|"stable"|"publicstable"|"publicplayer"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
+type MainView="home"|"handbook"|"support"|"privacy"|"standards"|"stable"|"publicstable"|"publicplayer"|"profile"|"store"|"storehorse"|"horse"|"pedigree"|"progeny"|"bank"|"training"|"shows"|"market"|"community"|"professions"|"sanctuary"|"stalls"|"settings"|"admin";
 type StableTab="horses"|"tack"|"feed"|"supplies";type ProfileTab="profile"|"artwork"|"settings";type StoreDepartment="horses"|"feed"|"tack"|"supplies";
 const routeFor=(view:MainView,state?:{stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string|null;storeSelected?:string|null;storeBreed?:string;publicStableId?:string;publicPlayerId?:string})=>{let path="/stable";if(view==="stable")path=state?.stableTab==="horses"?"/stable/horses":state?.stableTab==="tack"?"/stable/tack-room":state?.stableTab==="feed"?"/stable/feed-room":state?.stableTab==="supplies"?"/stable/supply-room":"/stable";else if(view==="publicstable"&&state?.publicStableId)path=`/stables/${state.publicStableId}`;else if(view==="publicplayer"&&state?.publicPlayerId)path=`/players/${state.publicPlayerId}`;else if(view==="profile")path=state?.profileTab==="artwork"?"/profile/artwork":state?.profileTab==="settings"?"/profile/settings":"/profile";else if(view==="store")path=state?.storeDepartment==="feed"?"/store/feed":state?.storeDepartment==="tack"?"/store/tack":state?.storeDepartment==="supplies"?"/store/supplies":"/store/foundation-horses";else if(view==="storehorse"&&state?.storeSelected)path=`/store/horses/${state.storeSelected}`;else if(view==="horse"&&state?.selected)path=`/horses/${state.selected}`;else path=`/${view==="market"?"marketplace":view}`;const query=view==="store"&&state?.storeBreed?`?breed=${encodeURIComponent(state.storeBreed)}`:"";return path+query};
-const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string;publicStableId?:string;publicPlayerId?:string}={view:"home"};if(/^\/players\/[^/]+/.test(path)){result.view="publicplayer";result.publicPlayerId=path.split("/")[2]}else if(/^\/stables\/[^/]+/.test(path)){result.view="publicstable";result.publicStableId=path.split("/")[2]}else if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":path.startsWith("/community")?"community":path.startsWith("/professions")?"professions":key==="marketplace"?"market":(["home","support","bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"home")as MainView}return result};
+const locationState=()=>{const path=location.pathname,query=new URLSearchParams(location.search),result:{view:MainView;stableTab?:StableTab;profileTab?:ProfileTab;storeDepartment?:StoreDepartment;selected?:string;storeSelected?:string;storeBreed?:string;publicStableId?:string;publicPlayerId?:string}={view:"home"};if(path==="/privacy-safety")result.view="privacy";else if(path==="/community-standards")result.view="standards";else if(/^\/players\/[^/]+/.test(path)){result.view="publicplayer";result.publicPlayerId=path.split("/")[2]}else if(/^\/stables\/[^/]+/.test(path)){result.view="publicstable";result.publicStableId=path.split("/")[2]}else if(path.startsWith("/profile")){result.view="profile";result.profileTab=path.endsWith("/artwork")?"artwork":path.endsWith("/settings")?"settings":"profile"}else if(path.startsWith("/stable")){result.view="stable";result.stableTab=path.endsWith("/tack-room")?"tack":path.endsWith("/feed-room")?"feed":path.endsWith("/supply-room")?"supplies":"horses"}else if(/^\/horses\/[^/]+/.test(path)){result.view="horse";result.selected=path.split("/")[2]}else if(/^\/store\/horses\/[^/]+/.test(path)){result.view="storehorse";result.storeSelected=path.split("/")[3]}else if(path.startsWith("/store")){result.view="store";result.storeDepartment=path.endsWith("/feed")?"feed":path.endsWith("/tack")?"tack":path.endsWith("/supplies")?"supplies":"horses";result.storeBreed=query.get("breed")??""}else{const key=path.slice(1);result.view=path.startsWith("/admin")?"admin":path.startsWith("/community")?"community":path.startsWith("/professions")?"professions":key==="marketplace"?"market":(["home","support","bank","training","shows","community","professions","sanctuary","stalls"].includes(key)?key:"home")as MainView}return result};
 function GlobalToast({message,dismiss}:{message:string;dismiss:()=>void}){const persistent=/error|failed|unable|couldn.?t|insufficient|not enough|required|unavailable|invalid|denied|choose|full|warning/i.test(message);useEffect(()=>{if(!message||persistent)return;const timer=setTimeout(dismiss,2800);return()=>clearTimeout(timer)},[message,persistent,dismiss]);if(!message)return null;return <div className={`globaltoast ${persistent?"error":"success"}`} role={persistent?"alert":"status"}><span>{message}</span><button aria-label="Dismiss notification" onClick={dismiss}>×</button></div>}
 const money = (n: number) => new Intl.NumberFormat("en-US").format(n);
 const STORE_TIERS=["Entry","Quality","Elite","Legendary"] as const;
@@ -715,7 +717,9 @@ export default function Home() {
           )}
           {view === "home" && !currentPath.startsWith("/how-to-play") && <HomeNews notify={setNotice} onNewCount={setNewsNew} path={currentPath} navigate={navigateHref}/>}
           {currentPath.startsWith("/how-to-play") && <Handbook slug={location.pathname.split("/")[2]??""}/>}
-          {view === "support" && <SupportCenter notify={setNotice} onUpdateCount={setSupportUpdates}/>}
+          {view === "support" && <><SupportCenter notify={setNotice} onUpdateCount={setSupportUpdates}/><nav className="accountpolicylinks" aria-label="Safety policies"><a href="/privacy-safety">Privacy &amp; Safety</a><a href="/community-standards">Community Standards</a></nav></>}
+          {view === "privacy" && <SafetyPages page="privacy"/>}
+          {view === "standards" && <SafetyPages page="standards"/>}
           {view === "bank" && (
             <Bank balance={stable.balance} notify={setNotice} refreshAccount={()=>void load(user)} />
           )}
@@ -889,7 +893,7 @@ export default function Home() {
         </main>
         <footer>
           LEGACY EQUINE · ALPHA 0.1{" "}
-          <span>Original browser horse simulation</span>
+          <span>Original browser horse simulation · <a href="/privacy-safety">Privacy &amp; Safety</a> · <a href="/community-standards">Community Standards</a></span>
         </footer>
       </div>
     </div>
@@ -1561,7 +1565,7 @@ function AdminConsole({
   currentUserId: string;
   changed: () => void;
 }) {
-  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"news"|"support"|"handbook"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
+  type AdminTopic="dashboard"|"horses"|"visuals"|"store"|"shows"|"news"|"support"|"safety"|"handbook"|"professions"|"accounts"|"economy"|"commerce"|"brands"|"balance"|"system"|"audit";
   const initialAdminTopic=(typeof location!=="undefined"?location.pathname.split("/")[2]:"")as AdminTopic;
   const [topic,setTopic]=useState<AdminTopic>(initialAdminTopic||"dashboard"),[permissions,setPermissions]=useState<string[]>([]);
   const [permissionTarget,setPermissionTarget]=useState(currentUserId),[permissionDraft,setPermissionDraft]=useState<string[]>([]);
@@ -1608,7 +1612,7 @@ function AdminConsole({
   const can=(permission:string)=>ownerAccount||permissions.includes(permission);
   const topics:{id:AdminTopic;label:string;permission?:string}[]=[
     {id:"dashboard",label:"Dashboard"},{id:"horses",label:"Horses",permission:"admin.horses.view"},{id:"visuals",label:"Horse Visuals",permission:"admin.visuals.view"},
-    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"news",label:"News",permission:"admin.news.view"},{id:"support",label:"Support",permission:"support.manage"},{id:"handbook",label:"How to Play",permission:"admin.handbook.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
+    {id:"store",label:"Store & Inventory",permission:"admin.store.view"},{id:"shows",label:"Shows",permission:"admin.shows.view"},{id:"news",label:"News",permission:"admin.news.view"},{id:"support",label:"Support",permission:"support.manage"},{id:"safety",label:"Safety & Moderation",permission:"safety.moderation.manage"},{id:"handbook",label:"How to Play",permission:"admin.handbook.view"},{id:"professions",label:"Professions",permission:"admin.professions.view"},
     {id:"accounts",label:"Accounts",permission:"admin.accounts.view"},{id:"economy",label:"Economy / Bank",permission:"admin.economy.view"},{id:"commerce",label:"Commerce",permission:"admin.commerce.view"},{id:"brands",label:"Stable Brands",permission:"admin.brands.view"},
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
@@ -1698,6 +1702,7 @@ function AdminConsole({
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 
       {topic==="news"&&<AdminNews notify={setMessage}/>}
       {topic==="support"&&<AdminSupport notify={setMessage}/>}
+      {topic==="safety"&&<AdminSafety notify={setMessage}/>}
       {topic==="handbook"&&<AdminHandbook/>}
       {topic==="professions"&&<AdminProfessions notify={setMessage}/>} 
       {topic==="commerce"&&ownerAccount&&<AdminCommerce notify={setMessage}/>}

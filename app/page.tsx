@@ -32,6 +32,7 @@ import { AdminProfessions } from "@/app/admin-professions";
 import { AdminCommerce } from "@/app/admin-commerce";
 import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
+import "@/app/admin-news.css";
 import { Handbook, HandbookHelpLink } from "@/app/handbook";
 import { AdminHandbook } from "@/app/admin-handbook";
 import {DesktopGameNavigation,MobileGameNavigation} from "@/app/universal-game-navigation";

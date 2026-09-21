@@ -37,6 +37,8 @@ import {SupportCenter} from "@/app/support-center";
 import {AdminSupport} from "@/app/admin-support";
 import { Handbook, HandbookHelpLink } from "@/app/handbook";
 import { AdminHandbook } from "@/app/admin-handbook";
+import { AccountInformationPanel } from "@/app/account-safety";
+import { AdminPrivateIdentity } from "@/app/admin-private-identity";
 import {DesktopGameNavigation,MobileGameNavigation} from "@/app/universal-game-navigation";
 import { isUniqueHorseArtwork } from "@/lib/game/horse-artwork";
 import {competitionTier,permanentStatAverage,type CompetitionTier} from "@/lib/game/show-engine";
@@ -600,7 +602,7 @@ export default function Home() {
             <nav className="sectiontabs profile-tabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>navigate("profile",{profileTab:"profile"})}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>navigate("profile",{profileTab:"artwork"})}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>navigate("profile",{profileTab:"settings"})}>Settings</button></nav>
             {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div></section></>}
             {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
-            {profileTab==="settings"&&<SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/>} 
+            {profileTab==="settings"&&<><AccountInformationPanel/><SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/></>}
           </>}
           {view === "stable" && (
             <>
@@ -1611,7 +1613,7 @@ function AdminConsole({
     {id:"balance",label:"Game Balance",permission:"admin.balance.view"},{id:"system",label:"System / QA",permission:"admin.system.view"},{id:"audit",label:"Audit Log",permission:"admin.audit.view"}
   ];
   const visibleTopics=topics.filter(x=>!x.permission||can(x.permission));
-  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,...(x.permission.endsWith(".view")?[x.permission.replace(".view",".edit")]:[])]:[]).concat(["admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.bulk_enter_all","admin.shows.bulk_create","admin.shows.bulk_run","admin.shows.lock","admin.shows.run","admin.shows.cancel","admin.shows.preview","admin.shows.duplicate","admin.shows.qa","admin.shows.private","admin.shows.processing","admin.shows.audit","admin.professions.qa","professions.qa_progression_override","professions.qa_bypass_certification_cooldown","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
+  const allPermissions=topics.flatMap(x=>x.permission?[x.permission,...(x.permission.endsWith(".view")?[x.permission.replace(".view",".edit")]:[])]:[]).concat(["accounts.private_identity.view","admin.visuals.upload","admin.visuals.review","admin.visuals.approve","admin.visuals.production","admin.shows.bulk_enter_all","admin.shows.bulk_create","admin.shows.bulk_run","admin.shows.lock","admin.shows.run","admin.shows.cancel","admin.shows.preview","admin.shows.duplicate","admin.shows.qa","admin.shows.private","admin.shows.processing","admin.shows.audit","admin.professions.qa","professions.qa_progression_override","professions.qa_bypass_certification_cooldown","admin.audit.view"]).filter((x,i,a)=>a.indexOf(x)===i&&!x.endsWith("dashboard.edit"));
   const run = async (
     job: () => Promise<{ error: Error | null }>,
     success: string,
@@ -1900,6 +1902,7 @@ function AdminConsole({
           Create Custom Horse
         </button>
       </section>}
+      {topic==="accounts"&&(ownerAccount||can("accounts.private_identity.view"))&&<AdminPrivateIdentity accounts={accounts} notify={setMessage}/>}
       {topic==="accounts"&&ownerAccount && (
         <><ArtworkStorageAdmin notify={setMessage}/><section className="panel settingsform">
           <p className="eyebrow">OWNER CAPACITY CONTROL</p><h2>Permanent stall benefits</h2><p className="panelsub">Grant auditable complimentary stalls or explicitly change unlimited capacity. Ordinary administrators cannot use these controls.</p>

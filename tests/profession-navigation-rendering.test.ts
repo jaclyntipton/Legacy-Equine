@@ -14,10 +14,22 @@ describe("Profession destination rendering", () => {
 
   it("renders direct Careers, Businesses, and Market destinations", () => {
     expect(professions).toContain('homeSection==="market"?"Find a Professional":"Careers"');
+    expect(professions).toContain('new URL(path, "https://legacyequines.com")');
+    expect(professions).toContain('professionUrl.searchParams.get("section")==="market"');
     expect(page).toContain('path={currentPath}');
     expect(professions).toContain('normalizedProfessionPath==="/professions/businesses"');
     expect(professions).not.toContain('location.pathname.match(/^\\/professions\\/businesses');
     expect(professions).toContain('<MyBusinesses notify={notify}/>');
+  });
+
+  it("keeps business pricing out of the Careers landing page", () => {
+    const careersStart = professions.indexOf('{homeSection==="careers"&&<>');
+    const marketStart = professions.indexOf('{homeSection==="market"&&');
+    const careersLanding = professions.slice(careersStart, marketStart);
+    expect(careersLanding).not.toContain("Set Your Rates");
+    expect(businesses).toContain("Services & Pricing");
+    expect(businesses).toContain("p_profession:professionId");
+    expect(businesses).toContain('rpc("set_service_offering"');
   });
 
   it("routes every supported management workspace through the shared resolver", () => {

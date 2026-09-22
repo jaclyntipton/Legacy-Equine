@@ -666,11 +666,11 @@ export function ProfessionalCenter({
     await load();
     refresh();
   };
-  const [professionPath, professionQuery = ""] = path.split("?");
-  const normalizedProfessionPath = professionPath.replace(/\/$/, "");
+  const professionUrl = new URL(path, "https://legacyequines.com");
+  const normalizedProfessionPath = professionUrl.pathname.replace(/\/$/, "");
   const businessManage = normalizedProfessionPath.match(/^\/professions\/businesses\/([^/]+)$/);
   const publicStorefront = normalizedProfessionPath.match(/^\/professions\/storefront\/([^/]+)\/([^/]+)$/);
-  const homeSection = new URLSearchParams(professionQuery).get("section")==="market"?"market":"careers";
+  const homeSection = professionUrl.searchParams.get("section")==="market"?"market":"careers";
   if(normalizedProfessionPath==="/professions/businesses")return <MyBusinesses notify={notify}/>;
   if(businessManage)return <ManageBusiness professionId={businessManage[1]} notify={notify}/>;
   if(publicStorefront)return <PublicBusiness stableId={publicStorefront[1]} professionId={publicStorefront[2]} notify={notify}/>;
@@ -733,65 +733,6 @@ export function ProfessionalCenter({
               </article>
             ))}
           </div>
-          <section className="panel">
-            <p className="eyebrow">YOUR SERVICES</p>
-            <h2>Set Your Rates</h2>
-            <p className="panelsub">
-              Certification unlocks services and their permitted market range.
-              Saved, enabled rates appear in the Professional Market.
-            </p>
-            <div className="servicelist">
-              {catalog
-                .filter(
-                  (s) =>
-                    (professions.find((p) => p.id === s.profession_id)?.level ??
-                      0) >= s.minimum_level,
-                )
-                .map((s) => (
-                  <article key={s.id}>
-                    <span>
-                      <b>{s.name}</b>
-                      <small>
-                        {s.min_price}–{s.max_price} LED
-                      </small>
-                    </span>
-                    <input
-                      aria-label={`${s.name} price`}
-                      type="number"
-                      min={s.min_price}
-                      max={s.max_price}
-                      value={rates[s.id] ?? s.min_price}
-                      onChange={(e) =>
-                        setRates({ ...rates, [s.id]: Number(e.target.value) })
-                      }
-                    />
-                    <button
-                      onClick={() =>
-                        run(
-                          async () => {
-                            const next = !offered[s.id];
-                            const { error } = await supabase.rpc(
-                              "set_service_offering",
-                              {
-                                target_service: s.id,
-                                new_price: rates[s.id] ?? s.min_price,
-                                is_enabled: next,
-                              },
-                            );
-                            return { error };
-                          },
-                          offered[s.id]
-                            ? `${s.name} removed from the market.`
-                            : `${s.name} is listed at ${rates[s.id] ?? s.min_price} LED.`,
-                        )
-                      }
-                    >
-                      {offered[s.id] ? "Disable" : "Offer Service"}
-                    </button>
-                  </article>
-                ))}
-            </div>
-          </section>
           </>}
           {homeSection==="market"&&<section className="panel professionalmarket" id="professional-market">
             <p className="eyebrow">PLAYER MARKET</p>

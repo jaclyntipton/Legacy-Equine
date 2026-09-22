@@ -36,7 +36,7 @@ type NewsForm = {
   expires_at: string;
 };
 
-type LibraryFilter = "all" | "draft" | "published" | "scheduled";
+type LibraryFilter = "all" | "draft" | "published" | "scheduled" | "archived";
 
 const blank: NewsForm = {
   id: null,
@@ -68,7 +68,7 @@ const dateInput = (value: string | null | undefined) => {
 };
 const displayDate = (value: string | null | undefined) => value ? new Date(value).toLocaleDateString() : "";
 const isScheduled = (post: Pick<Post, "status" | "publish_at">, now: number) => post.status === "scheduled" && Boolean(post.publish_at) && new Date(post.publish_at!).getTime() > now;
-const statusLabel = (post: Pick<Post, "status" | "publish_at">, now: number) => post.status === "scheduled" ? (post.publish_at && new Date(post.publish_at).getTime() <= now ? "Publication overdue" : "Scheduled") : post.status === "published" ? "Published" : post.status === "unpublished" ? "Unpublished" : "Draft";
+const statusLabel = (post: Pick<Post, "status" | "publish_at">, now: number) => post.status === "scheduled" ? (post.publish_at && new Date(post.publish_at).getTime() <= now ? "Publication overdue" : "Scheduled") : post.status === "published" ? "Published" : post.status === "unpublished" ? "Unpublished" : post.status === "archived" ? "Archived" : "Draft";
 const displayDateTime = (value: string | null | undefined) => value ? new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short", timeZoneName: "short" }).format(new Date(value)) : "";
 
 function toForm(post: Post): NewsForm {
@@ -124,6 +124,21 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
 
   const update = <K extends keyof NewsForm>(key: K, value: NewsForm[K]) => setForm(current => ({ ...current, [key]: value }));
 
+  const quickAction = async (post: Post, action: "pin" | "unpin" | "publish" | "unpublish" | "archive") => {
+    if (action === "archive" && !window.confirm(`Archive “${post.title}”? It will leave public News but remain in Admin history.`)) return;
+    setBusy(true);
+    const { error } = await supabase.rpc("admin_news_quick_action", { p_id: post.id, p_action: action });
+    setBusy(false);
+    if (error) return notify(error.message);
+    const messages = { pin: "Primary pinned story updated.", unpin: "Article unpinned and still published.", publish: "Article published.", unpublish: "Article unpublished.", archive: "Article archived." };
+    notify(messages[action]);
+    if (form.id === post.id) {
+      const next = { ...form, pinned: action === "pin" ? true : action === "unpin" || action === "archive" ? false : form.pinned, status: action === "publish" ? "published" : action === "unpublish" ? "unpublished" : action === "archive" ? "archived" : form.status };
+      setForm(next); setSavedSnapshot(snapshot(next));
+    }
+    await load();
+  };
+
   const save = async (status: "draft" | "scheduled" | "published" | "unpublished") => {
     if (!form.title.trim()) return notify("Add a title before saving.");
     setBusy(true);
@@ -177,15 +192,24 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
           <label className="sr-only" htmlFor="news-search">Search articles</label>
           <input id="news-search" type="search" placeholder="Search articles..." value={search} onChange={event => setSearch(event.target.value)} />
           <div className="news-library-filters" aria-label="Filter news articles">
-            {(["all", "draft", "published", "scheduled"] as LibraryFilter[]).map(value => <button key={value} className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{value[0].toUpperCase() + value.slice(1)}</button>)}
+            {(["all", "draft", "published", "scheduled", "archived"] as LibraryFilter[]).map(value => <button key={value} className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{value[0].toUpperCase() + value.slice(1)}</button>)}
           </div>
           <div className="news-library-list">
-            {filtered.map(post => <button key={post.id} className={form.id === post.id ? "active" : ""} onClick={() => choose(toForm(post))}>
-              <b>{post.title || "Untitled article"}</b>
-              <span>{categories[post.category] ?? post.category}</span>
-              <small>{statusLabel(post, renderNow)}{post.pinned ? " • Pinned" : ""}</small>
-              {(post.publish_at || post.published_at || post.created_at) && <time>{displayDate(post.publish_at || post.published_at || post.created_at)}</time>}
-            </button>)}
+            {filtered.map(post => <article key={post.id} className={form.id === post.id ? "active" : ""}>
+              <button className="news-library-select" onClick={() => choose(toForm(post))}>
+                <b>{post.title || "Untitled article"}</b>
+                <span>{categories[post.category] ?? post.category}</span>
+                <small>{statusLabel(post, renderNow)}{post.pinned ? " • Primary Pinned" : ""}</small>
+                {(post.publish_at || post.published_at || post.created_at) && <time>{displayDate(post.publish_at || post.published_at || post.created_at)}</time>}
+              </button>
+              <details className="news-library-actions"><summary aria-label={`Actions for ${post.title}`}>•••</summary><div>
+                <button onClick={() => choose(toForm(post))}>Edit</button>
+                <button onClick={() => { choose(toForm(post)); requestAnimationFrame(() => document.querySelector(".news-public-preview")?.scrollIntoView({ behavior: "smooth", block: "center" })); }}>Preview</button>
+                {post.status === "published" && <button onClick={() => void quickAction(post, post.pinned ? "unpin" : "pin")}>{post.pinned ? "Unpin" : "Pin as Primary"}</button>}
+                {post.status === "published" ? <button onClick={() => void quickAction(post, "unpublish")}>Unpublish</button> : post.status !== "archived" && <button onClick={() => void quickAction(post, "publish")}>Publish</button>}
+                {post.status !== "archived" && <button className="danger" onClick={() => void quickAction(post, "archive")}>Archive</button>}
+              </div></details>
+            </article>)}
             {!filtered.length && <p className="news-library-empty">No articles match this view.</p>}
           </div>
         </aside>

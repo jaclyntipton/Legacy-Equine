@@ -10,7 +10,7 @@ describe("Admin News publisher UX", () => {
   });
   it("supports article search and human-friendly filters", () => {
     expect(component).toContain('placeholder="Search articles..."');
-    expect(component).toContain('["all", "draft", "published", "scheduled"]');
+    expect(component).toContain('["all", "draft", "published", "scheduled", "archived"]');
     expect(component).toContain("categories[post.category]");
   });
   it("tracks dirty state and protects article switching", () => {
@@ -23,6 +23,9 @@ describe("Admin News publisher UX", () => {
     expect(component).toContain("Update Published Article");
     expect(component).toContain("Unpublish this article?");
     expect(component).toContain('role="alertdialog"');
+  });
+  it("offers quick management actions without deleting retained articles", () => {
+    for (const text of ["Pin as Primary", "Unpublish", "Archive", "admin_news_quick_action", "Primary Pinned"]) expect(component).toContain(text);
   });
   it("stacks the workspace without overflow on mobile", () => {
     expect(styles).toContain("grid-template-columns:minmax(230px,25%) minmax(420px,50%) minmax(230px,25%)");

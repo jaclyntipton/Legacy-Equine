@@ -34,7 +34,7 @@ import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
 import "@/app/admin-news.css";
 import "@/app/admin-section-header.css";
-import { PageSectionHeader } from "@/app/page-section-header";
+import { PageSectionHeader, SectionHeading } from "@/app/page-section-header";
 import {SupportCenter} from "@/app/support-center";
 import {AdminSupport} from "@/app/admin-support";
 import { Handbook, HandbookHelpLink } from "@/app/handbook";
@@ -636,10 +636,7 @@ export default function Home() {
                   <b>{Math.max(0, ...horses.map((h) => h.generation))}</b>
                 </div>
               </section>
-              <Title
-                title="Your Horses"
-                sub="Your persistent Legacy Equine bloodline"
-              />
+              <SectionHeading title="Your Horses" subtitle="Your persistent Legacy Equine bloodline"/>
               {horses.length ? (
                 <>
                   <HorseListTools horses={horses} tiers={competitionTiers} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
@@ -1015,8 +1012,8 @@ function CreateStable({
     </div>
   );
 }
-function Title({ title, sub, eyebrow="LEGACY EQUINE" }: { title: string; sub: string; eyebrow?:string }) {
-  return <PageSectionHeader eyebrow={eyebrow} title={title} subtitle={sub} level={2} detail={title.includes(" · ")}/>;
+function Title({ title, sub, eyebrow="LEGACY EQUINE", variant }: { title: string; sub: string; eyebrow?:string; variant?:"page"|"admin"|"detail" }) {
+  return <PageSectionHeader eyebrow={eyebrow} title={title} subtitle={sub} level={2} variant={variant??(title.includes(" · ")?"detail":"page")}/>;
 }
 function Empty({ go }: { go: () => void }) {
   return (
@@ -1684,10 +1681,7 @@ function AdminConsole({
     markOptions = ["none","coronet_01","white_heel_01","half_pastern_01","pastern_01","ankle_01","half_sock_01","full_sock_01","high_sock_01"];
   return (
     <div className="admincontrolcenter">
-      <Title
-        title="Admin Control Center"
-        sub="Secure operations, review workspaces, and game oversight"
-      />
+      {topic==="dashboard"?<Title title="Admin Control Center" sub="Secure operations, review workspaces, and game oversight" variant="admin"/>:<SectionHeading title="Admin Control Center" subtitle="Secure operations, review workspaces, and game oversight"/>}
       <nav className="admintopics" aria-label="Admin topics">{visibleTopics.map(x=><button key={x.id} className={topic===x.id?"active":""} onClick={()=>openTopic(x.id)}>{x.label}</button>)}</nav>
       <div className="admincrumbs"><button onClick={()=>openTopic("dashboard")}>Admin</button><span>›</span><b>{topics.find(x=>x.id===topic)?.label}</b></div>
       {message && <div className="notice">✦ {message}</div>}

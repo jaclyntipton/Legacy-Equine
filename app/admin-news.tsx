@@ -61,10 +61,15 @@ const categories: Record<string, string> = {
 };
 
 const snapshot = (value: NewsForm) => JSON.stringify(value);
-const dateInput = (value: string | null | undefined) => value?.slice(0, 16) ?? "";
+const dateInput = (value: string | null | undefined) => {
+  if (!value) return "";
+  const date = new Date(value), pad = (part: number) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
 const displayDate = (value: string | null | undefined) => value ? new Date(value).toLocaleDateString() : "";
-const isScheduled = (post: Pick<Post, "status" | "publish_at">, now: number) => post.status === "published" && Boolean(post.publish_at) && new Date(post.publish_at!).getTime() > now;
-const statusLabel = (post: Pick<Post, "status" | "publish_at">, now: number) => isScheduled(post, now) ? "Scheduled" : post.status === "published" ? "Published" : post.status === "unpublished" ? "Unpublished" : "Draft";
+const isScheduled = (post: Pick<Post, "status" | "publish_at">, now: number) => post.status === "scheduled" && Boolean(post.publish_at) && new Date(post.publish_at!).getTime() > now;
+const statusLabel = (post: Pick<Post, "status" | "publish_at">, now: number) => post.status === "scheduled" ? (post.publish_at && new Date(post.publish_at).getTime() <= now ? "Publication overdue" : "Scheduled") : post.status === "published" ? "Published" : post.status === "unpublished" ? "Unpublished" : "Draft";
+const displayDateTime = (value: string | null | undefined) => value ? new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short", timeZoneName: "short" }).format(new Date(value)) : "";
 
 function toForm(post: Post): NewsForm {
   return {
@@ -119,7 +124,7 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
 
   const update = <K extends keyof NewsForm>(key: K, value: NewsForm[K]) => setForm(current => ({ ...current, [key]: value }));
 
-  const save = async (status: "draft" | "published" | "unpublished") => {
+  const save = async (status: "draft" | "scheduled" | "published" | "unpublished") => {
     if (!form.title.trim()) return notify("Add a title before saving.");
     setBusy(true);
     const { data, error } = await supabase.rpc("admin_save_news", {
@@ -141,7 +146,7 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
     setForm(saved);
     setSavedSnapshot(snapshot(saved));
     setConfirmUnpublish(false);
-    notify(status === "published" ? (isScheduled(saved, Date.now()) ? "News scheduled." : "News published.") : status === "unpublished" ? "News unpublished." : "Draft saved.");
+    notify(status === "scheduled" ? "News scheduled." : status === "published" ? "News published." : status === "unpublished" ? "News unpublished." : "Draft saved.");
     await load();
   };
 
@@ -212,12 +217,12 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
         <aside className="news-publish-settings">
           <div className="newsroom-panel-title"><div><p className="eyebrow">PUBLICATION</p><h3>Publish</h3></div></div>
           <div className="publish-status"><span>Status</span><b data-status={statusLabel(form, renderNow).toLowerCase()}>{statusLabel(form, renderNow)}</b></div>
-          <dl><div><dt>Category</dt><dd>{categories[form.category]}</dd></div></dl>
+          <dl><div><dt>Category</dt><dd>{categories[form.category]}</dd></div>{form.publish_at&&<div><dt>{form.status==="published"?"Published":"Publishes"}</dt><dd>{displayDateTime(form.status==="published"?(posts.find(post=>post.id===form.id)?.published_at??form.publish_at):form.publish_at)}</dd></div>}</dl>
           <label>Publish Date &amp; Time<input type="datetime-local" value={form.publish_at} onChange={event => update("publish_at", event.target.value)} /><small>Leave blank to publish immediately.</small></label>
           <label>Expiration<input type="datetime-local" value={form.expires_at} onChange={event => update("expires_at", event.target.value)} /><small>Optional — automatically removes the article from the public feed.</small></label>
           <label className="news-feature-toggle"><input type="checkbox" checked={form.pinned} onChange={event => update("pinned", event.target.checked)} /><span><b>Featured / Important</b><small>Pin this article above the Latest News feed.</small></span></label>
           <div className="news-publish-actions">
-            <button className="primary" disabled={busy || !form.title.trim()} onClick={() => void save("published")}>{busy ? "Saving..." : selectedWasPublished ? "Update Published Article" : form.publish_at && new Date(form.publish_at).getTime() > renderNow ? "Schedule Article" : "Publish"}</button>
+            <button className="primary" disabled={busy || !form.title.trim()} onClick={() => void save(form.publish_at && new Date(form.publish_at).getTime() > Date.now() ? "scheduled" : "published")}>{busy ? "Saving..." : selectedWasPublished ? "Update Published Article" : form.publish_at && new Date(form.publish_at).getTime() > renderNow ? "Schedule Article" : "Publish"}</button>
             <button disabled={busy || !dirty} onClick={() => void save("draft")}>Save Draft</button>
             <button onClick={() => document.querySelector(".news-public-preview")?.scrollIntoView({ behavior: "smooth", block: "center" })}>Preview</button>
           </div>

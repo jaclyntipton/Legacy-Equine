@@ -34,6 +34,7 @@ import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
 import "@/app/admin-news.css";
 import "@/app/admin-section-header.css";
+import { PageSectionHeader } from "@/app/page-section-header";
 import {SupportCenter} from "@/app/support-center";
 import {AdminSupport} from "@/app/admin-support";
 import { Handbook, HandbookHelpLink } from "@/app/handbook";
@@ -1014,14 +1015,8 @@ function CreateStable({
     </div>
   );
 }
-function Title({ title, sub }: { title: string; sub: string }) {
-  return (
-    <div className="title">
-      <p className="eyebrow">LEGACY EQUINE</p>
-      <h2>{title}</h2>
-      <p>{sub}</p>
-    </div>
-  );
+function Title({ title, sub, eyebrow="LEGACY EQUINE" }: { title: string; sub: string; eyebrow?:string }) {
+  return <PageSectionHeader eyebrow={eyebrow} title={title} subtitle={sub} level={2} detail={title.includes(" · ")}/>;
 }
 function Empty({ go }: { go: () => void }) {
   return (

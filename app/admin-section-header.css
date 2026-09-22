@@ -1,4 +1,4 @@
-.admin-section-header {
+.admin-section-header:not(.page-section-header) {
   position: relative;
   isolation: isolate;
   min-width: 0;
@@ -15,7 +15,7 @@
   box-shadow: 0 8px 24px rgba(74, 46, 120, .18);
 }
 
-.admin-section-header > div {
+.admin-section-header:not(.page-section-header) > div {
   min-width: 0;
 }
 

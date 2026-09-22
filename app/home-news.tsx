@@ -3,6 +3,7 @@
 import Link from"next/link";
 import{useCallback,useEffect,useRef,useState}from"react";
 import{createClient}from"@/lib/supabase/client";
+import{PageSectionHeader}from"@/app/page-section-header";
 import"./home-news.css";
 
 const supabase=createClient();
@@ -22,7 +23,7 @@ export function HomeNews({notify,onNewCount,path="/home",navigate}:{notify:(m:st
  const go=(href:string)=>navigate?navigate(href):window.location.assign(href),isNew=(post:Post)=>Boolean(lastViewed&&new Date(post.published_at)>new Date(lastViewed)),around=category?[]:posts.filter(post=>post.source_type!=="editorial"&&post.source_type!=="system").slice(0,4);
  if(articleId)return <NewsArticle post={article} loading={articleLoading} back={()=>go("/home")}/>;
  return <div className="homenews">
-  <header className="homeheadline"><p className="eyebrow">LEGACY EQUINE</p><h1>News &amp; Updates</h1><p>What&apos;s happening around Legacy Equine</p></header>
+  <PageSectionHeader className="homeheadline" eyebrow="LEGACY EQUINE" title="News & Updates" subtitle="What's happening around Legacy Equine"/>
   {primaryPinned&&<section className="featurednews" aria-labelledby="featured-news-title"><div className="sectionheading"><p className="eyebrow">FEATURED STORY</p><h2 id="featured-news-title">Featured / Important</h2></div><div className="featuredlist"><NewsCard post={primaryPinned} featured isNew={isNew(primaryPinned)} open={()=>go(`/news/${primaryPinned.id}`)}/></div></section>}
   <div className="homecontentgrid">
    <section className="latestnews" aria-labelledby="latest-news-title"><div className="sectionheading"><p className="eyebrow">THE LATEST</p><h2 id="latest-news-title">Latest News</h2></div><div ref={filtersRef} className="newsfilterviewport" aria-label="News categories"><div className="newsfilters">{filters.map(([id,label])=><button className={category===id?"active":""} onClick={()=>setCategory(id)} key={id}>{label}</button>)}</div></div><div ref={feedRef} className="newsfeed">{posts.map(post=><NewsCard key={post.id} post={post} isNew={isNew(post)} open={()=>go(`/news/${post.id}`)}/>)}{!posts.length&&<p className="newsempty">No news in this category yet.</p>}{more&&<button className="loadnews" onClick={()=>void load(false)}>LOAD MORE</button>}</div></section>

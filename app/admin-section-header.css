@@ -1,0 +1,70 @@
+.admin-section-header {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 24px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #4a2e78, #7048a9);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(74, 46, 120, .18);
+}
+
+.admin-section-header > div {
+  min-width: 0;
+}
+
+.admin-section-header .eyebrow {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, .82) !important;
+}
+
+.admin-section-header h1,
+.admin-section-header h2 {
+  margin: 0;
+  color: #fff !important;
+}
+
+.admin-section-header > div > p:last-child {
+  max-width: 70ch;
+  margin: 5px 0 0;
+  color: rgba(255, 255, 255, .9) !important;
+  line-height: 1.45;
+}
+
+.admin-section-header .admin-section-action,
+.admin-section-header .admin-section-action:hover:not(:disabled) {
+  flex: 0 0 auto;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, .82);
+  background: #fff;
+  color: #5a3788;
+  box-shadow: 0 6px 18px rgba(34, 18, 56, .22);
+}
+
+.admin-section-header .admin-section-action:hover:not(:disabled) {
+  background: #f3ecfb;
+}
+
+.admin-section-header .admin-section-action:focus-visible {
+  outline: 3px solid #ffd99f;
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .admin-section-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+    padding: 17px 16px;
+  }
+
+  .admin-section-header .admin-section-action {
+    width: 100%;
+  }
+}

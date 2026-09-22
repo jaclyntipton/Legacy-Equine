@@ -33,6 +33,7 @@ import { AdminCommerce } from "@/app/admin-commerce";
 import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
 import "@/app/admin-news.css";
+import "@/app/admin-section-header.css";
 import {SupportCenter} from "@/app/support-center";
 import {AdminSupport} from "@/app/admin-support";
 import { Handbook, HandbookHelpLink } from "@/app/handbook";

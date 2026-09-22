@@ -162,13 +162,13 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
 
   return (
     <section className="adminnews newsroom">
-      <header className="newsroom-header">
+      <header className="newsroom-header admin-section-header">
         <div>
           <p className="eyebrow">NEWS PUBLISHER</p>
           <h2>News Publisher</h2>
           <p>Create and manage Legacy Equine announcements, updates, events and community news.</p>
         </div>
-        <button className="primary" onClick={() => choose(blank)}>+ New Article</button>
+        <button className="primary admin-section-action" onClick={() => choose(blank)}>+ New Article</button>
       </header>
 
       <div className="newsroom-workspace">

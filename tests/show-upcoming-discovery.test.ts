@@ -14,8 +14,9 @@ describe("Upcoming Show discovery", () => {
       shows.indexOf('view==="upcoming"'),
       shows.indexOf('view==="create"'),
     );
-    expect(upcoming).toContain('shows.filter(s=>s.status==="open")');
+    expect(upcoming).toContain("openShows.map");
     expect(upcoming).not.toContain("levelOf(");
     expect(upcoming).not.toContain("filteredShows");
+    expect(shows).toContain('orderDiscoverableShows(shows.filter(s=>s.status==="open"))');
   });
 });

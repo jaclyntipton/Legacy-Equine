@@ -726,6 +726,7 @@ export default function Home() {
           {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={horses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}
           {view === "professions" && (
             <ProfessionalCenter
+              path={currentPath}
               horses={horses}
               balance={stable.balance}
               notify={setNotice}

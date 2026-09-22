@@ -14,8 +14,17 @@ describe("Profession destination rendering", () => {
 
   it("renders direct Careers, Businesses, and Market destinations", () => {
     expect(professions).toContain('homeSection==="market"?"Find a Professional":"Careers"');
-    expect(professions).toContain('location.pathname==="/professions/businesses"');
+    expect(page).toContain('path={currentPath}');
+    expect(professions).toContain('normalizedProfessionPath==="/professions/businesses"');
+    expect(professions).not.toContain('location.pathname.match(/^\\/professions\\/businesses');
     expect(professions).toContain('<MyBusinesses notify={notify}/>');
+  });
+
+  it("routes every supported management workspace through the shared resolver", () => {
+    expect(professions).toContain('normalizedProfessionPath.match(/^\\/professions\\/businesses\\/([^/]+)$/)');
+    for (const profession of ["farrier", "veterinarian", "trainer", "massage", "leatherworker"]) {
+      expect(`/professions/businesses/${profession}`).toMatch(/^\/professions\/businesses\/([^/]+)$/);
+    }
   });
 
   it("keeps contextual help in the selected Profession page header", () => {

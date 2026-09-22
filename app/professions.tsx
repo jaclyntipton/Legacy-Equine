@@ -113,12 +113,14 @@ type StudyModule = {
 const supabase = createClient();
 
 export function ProfessionalCenter({
+  path,
   horses,
   balance,
   notify,
   refresh,
   onTackDelivered,
 }: {
+  path: string;
   horses: Horse[];
   balance: number;
   notify: (message: string) => void;
@@ -664,10 +666,12 @@ export function ProfessionalCenter({
     await load();
     refresh();
   };
-  const businessManage = typeof location!=="undefined"?location.pathname.match(/^\/professions\/businesses\/([^/]+)$/):null;
-  const publicStorefront = typeof location!=="undefined"?location.pathname.match(/^\/professions\/storefront\/([^/]+)\/([^/]+)$/):null;
-  const homeSection = typeof location!=="undefined"&&new URLSearchParams(location.search).get("section")==="market"?"market":"careers";
-  if(typeof location!=="undefined"&&location.pathname==="/professions/businesses")return <MyBusinesses notify={notify}/>;
+  const [professionPath, professionQuery = ""] = path.split("?");
+  const normalizedProfessionPath = professionPath.replace(/\/$/, "");
+  const businessManage = normalizedProfessionPath.match(/^\/professions\/businesses\/([^/]+)$/);
+  const publicStorefront = normalizedProfessionPath.match(/^\/professions\/storefront\/([^/]+)\/([^/]+)$/);
+  const homeSection = new URLSearchParams(professionQuery).get("section")==="market"?"market":"careers";
+  if(normalizedProfessionPath==="/professions/businesses")return <MyBusinesses notify={notify}/>;
   if(businessManage)return <ManageBusiness professionId={businessManage[1]} notify={notify}/>;
   if(publicStorefront)return <PublicBusiness stableId={publicStorefront[1]} professionId={publicStorefront[2]} notify={notify}/>;
   return (

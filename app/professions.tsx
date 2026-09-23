@@ -744,6 +744,7 @@ export function ProfessionalCenter({
                   ["veterinarian", "Veterinarians"],
                   ["trainer", "Trainers"],
                   ["massage", "Massage Therapists"],
+                  ["leatherworker", "Leatherworkers"],
                 ] as const
               ).map(([id, label]) => (
                 <button
@@ -815,11 +816,7 @@ export function ProfessionalCenter({
                               .join(" · ")}
                           </small>
                         </span>
-                        <button
-                          onClick={() => startRequest(provider.provider_id)}
-                        >
-                          Select Professional
-                        </button>
+                        {provider.profession_id==="leatherworker"?<a className="button" href={`/professions/storefront/${provider.provider_id}/leatherworker`}>VISIT TACK SHOP</a>:<button onClick={() => startRequest(provider.provider_id)}>Select Professional</button>}
                       </article>
                     ))}
                     {!providers.length && (

@@ -744,7 +744,6 @@ export function ProfessionalCenter({
                   ["veterinarian", "Veterinarians"],
                   ["trainer", "Trainers"],
                   ["massage", "Massage Therapists"],
-                  ["leatherworker", "Leatherworkers"],
                 ] as const
               ).map(([id, label]) => (
                 <button

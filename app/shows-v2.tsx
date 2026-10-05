@@ -6,6 +6,7 @@ import {placingLabel,tierRangeLabel,type CompetitionTier} from "@/lib/game/show-
 import {orderDiscoverableShows} from "@/lib/game/show-order";
 import {FormField} from "./form-field";
 import {HandbookHelpLink} from"@/app/handbook";
+import {PageSectionHeader} from "@/app/page-section-header";
 
 const supabase=createClient(),money=(n:number)=>new Intl.NumberFormat("en-US").format(n);
 type Horse={id:string;name:string;breed:string;sex?:string;birth_date?:string;career_points:number};
@@ -42,7 +43,7 @@ export function PlayerShows({horses,balance,notify,refreshAccount}:{horses:Horse
  const totalCreate=hostingFee*count,quotaRemaining=progress?.owner?null:Math.max(0,(progress?.weekly_show_limit??0)-(progress?.shows_hosted_this_week??0));
  if(results)return <ShowResults page={results} back={()=>setResults(null)}/>;
  return <>
-  <header className="title"><p className="eyebrow">LEGACY EQUINE COMPETITION</p><h2>Shows</h2><p>Create competitions, enter eligible horses, and follow permanent results.</p><HandbookHelpLink slug="showing"/></header>
+  <PageSectionHeader eyebrow="LEGACY EQUINE COMPETITION" title="Shows" subtitle="Create competitions, enter eligible horses, and follow permanent results." secondaryAction={<HandbookHelpLink slug="showing"/>}/>
   {progress&&<section className="showprogress"><b>Account Level {progress.level}</b><span>{progress.shows_hosted_this_week} hosted this LE week · {progress.owner?"Unlimited — Owner":`${quotaRemaining} remaining`}</span></section>}
 
   <nav className="showsnav" aria-label="Show sections">{([['upcoming','Upcoming Shows'],['create','Create Show'],['enter','Enter Shows'],['entries','My Entries'],['archive','Results / Archive']]as[View,string][]).map(([id,label])=><button key={id} className={view===id?"active":""} onClick={()=>{setView(id);if(id==="enter")resetEntry()}}>{label}</button>)}</nav>

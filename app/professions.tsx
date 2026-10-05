@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ManageBusiness, MyBusinesses, PublicBusiness } from "@/app/profession-businesses";
-import { HandbookHelpLink } from "@/app/handbook";
+import { PageSectionHeader } from "@/app/page-section-header";
 import "./profession-qa-safety.css";
 
 type Horse = {
@@ -678,14 +678,11 @@ export function ProfessionalCenter({
     <>
       {!career && (
         <>
-          <header className="title">
-            <div>
-              <p className="eyebrow">{homeSection==="market"?"PLAYER PROFESSIONAL MARKET":"LEGACY EQUINE GAME CERTIFICATIONS"}</p>
-              <h1>{homeSection==="market"?"Find a Professional":"Careers"}</h1>
-              <p>{homeSection==="market"?"Find certified Legacy Equine service providers and businesses.":"Study, certify, and advance your Legacy Equine professions. These are in-game credentials—not real-world professional qualifications."}</p>
-            </div>
-            <HandbookHelpLink slug="professions"/>
-          </header>
+          <PageSectionHeader
+            eyebrow={homeSection==="market"?"PLAYER PROFESSIONAL MARKET":"LEGACY EQUINE GAME CERTIFICATIONS"}
+            title={homeSection==="market"?"Find a Professional":"Careers"}
+            subtitle={homeSection==="market"?"Find certified Legacy Equine service providers and businesses.":"Study, certify, and advance your Legacy Equine professions. These are in-game credentials—not real-world professional qualifications."}
+          />
           {homeSection==="careers"&&<>
           <div className="professiongrid" id="profession-careers">
             {professions.map((p) => (

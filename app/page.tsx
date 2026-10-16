@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { GAME } from "@/lib/game/config";
+import { HORSE_AGE_REFRESH_MS, horseAgeLongLabel, horseAgeYears } from "@/lib/game/horse-age";
 import { ProfessionalCenter } from "@/app/professions";
 import { PublicStableProfile } from "@/app/public-stable-profile";
 import { PlayerShows } from "@/app/shows-v2";
@@ -198,18 +199,8 @@ const overall = (h: Horse) =>
     0,
   );
 const age = (h: Horse) =>
-  Math.max(
-    0,
-    (((Date.now() - new Date(h.birth_date).getTime()) / 86400000) *
-      GAME.age.gameDaysPerRealDay) /
-      365.25,
-  );
-const ageLabel = (h: Horse) => {
-  const months = Math.floor(age(h) * 12);
-  const years = Math.floor(months / 12);
-  const remainder = months % 12;
-  return `${years} ${years === 1 ? "year" : "years"}${remainder ? `, ${remainder} ${remainder === 1 ? "month" : "months"}` : ""}`;
-};
+  horseAgeYears(h.birth_date);
+const ageLabel = (h: Horse) => horseAgeLongLabel(h.birth_date);
 const canTrain = (h: Horse) =>
   age(h) >= GAME.age.trainingMinimumYears &&
   (!h.last_trained_at ||
@@ -249,6 +240,7 @@ async function uploadMedia(
 }
 
 export default function Home() {
+  const [, setAgeClock] = useState(() => Date.now());
   const [user, setUser] = useState<User | null>(null),
     [stable, setStable] = useState<Stable | null>(null),
     [progression,setProgression]=useState<AccountProgression|null>(null),
@@ -281,6 +273,13 @@ export default function Home() {
     [newsNew,setNewsNew]=useState(0),
     [mailUnread,setMailUnread]=useState(0),
     [supportUpdates,setSupportUpdates]=useState(0);
+  useEffect(() => {
+    const refreshAge = () => setAgeClock(Date.now());
+    const timer = window.setInterval(refreshAge, HORSE_AGE_REFRESH_MS);
+    const resume = () => { if (!document.hidden) refreshAge(); };
+    document.addEventListener("visibilitychange", resume);
+    return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", resume); };
+  }, []);
   const [stableTab,setStableTab]=useState<StableTab>("horses"),[profileTab,setProfileTab]=useState<ProfileTab>("profile"),[purchaseDestination,setPurchaseDestination]=useState<{label:string;tab:"tack"|"feed"|"supplies"}|null>(null);
   const [publicStableId,setPublicStableId]=useState("");
   const [publicPlayerId,setPublicPlayerId]=useState("");
@@ -1059,16 +1058,10 @@ function Card({ h,tiers, open, compact=false }: { h: Horse;tiers:CompetitionTier
   );
 }
 function storeAge(h: StoreHorse) {
-  return Math.max(
-    0,
-    (((Date.now() - new Date(h.birth_date).getTime()) / 86400000) *
-      GAME.age.gameDaysPerRealDay) /
-      365.25,
-  );
+  return horseAgeYears(h.birth_date);
 }
 function storeAgeLabel(h: StoreHorse) {
-  const months = Math.floor(storeAge(h) * 12), years = Math.floor(months / 12), remainder = months % 12;
-  return `${years} ${years === 1 ? "year" : "years"}${remainder ? `, ${remainder} ${remainder === 1 ? "month" : "months"}` : ""}`;
+  return horseAgeLongLabel(h.birth_date);
 }
 function storeOverall(h: StoreHorse) {
   return GAME.stats.reduce((sum, key) => sum + (h.stats[key] ?? 0), 0);

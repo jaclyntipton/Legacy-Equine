@@ -2,6 +2,7 @@ import{readFileSync}from"node:fs";
 import{describe,expect,it}from"vitest";
 
 const migration=readFileSync("supabase/migrations/202610050002_owner_show_fund_contribution.sql","utf8");
+const unlimited=readFileSync("supabase/migrations/202611020002_unlimited_owner_show_fund_transfer.sql","utf8");
 const ui=readFileSync("app/treasury.tsx","utf8");
 
 describe("Owner Show Fund contribution",()=>{
@@ -31,9 +32,18 @@ describe("Owner Show Fund contribution",()=>{
     expect(ui).toContain("Current Show Fund Balance");
     expect(ui).toContain("Current Owner Account Balance");
     expect(ui).toContain("Auto Host Funding Requirement");
-    expect(ui).toContain("Transfer ${fundAmount.toLocaleString()} LED");
+    expect(ui).toContain("Transfer ${transfer.toLocaleString()} LED");
     expect(ui).toContain("Owner Balance Before:");
     expect(ui).toContain("Show Fund After:");
     expect(ui).toContain('supabase.rpc("owner_contribute_to_show_fund"');
+  });
+
+  it("supports exact bigint transfers up to the authoritative Owner balance",()=>{
+    expect(unlimited).toContain("alter column amount type bigint");
+    expect(unlimited).toContain("'balance_exact',v_owner.balance::text");
+    expect(unlimited).toContain("'show_fund_balance_exact',v_fund.balance::text");
+    expect(ui).toContain('const wholeLed=(value:string)');
+    expect(ui).toContain("p_amount:transfer.toString()");
+    expect(ui).not.toContain('type="number" min={1} step={1} value={fundAmount}');
   });
 });

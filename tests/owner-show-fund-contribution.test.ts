@@ -44,6 +44,8 @@ describe("Owner Show Fund contribution",()=>{
     expect(unlimited).toContain("'show_fund_balance_exact',v_fund.balance::text");
     expect(ui).toContain('const wholeLed=(value:string)');
     expect(ui).toContain("p_amount:transfer.toString()");
+    expect(ui).toContain("Use Full Owner Balance");
+    expect(ui).toContain("Transfer Treasury LED to Show Fund");
     expect(ui).not.toContain('type="number" min={1} step={1} value={fundAmount}');
   });
 });

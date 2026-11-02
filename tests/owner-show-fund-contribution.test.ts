@@ -32,9 +32,9 @@ describe("Owner Show Fund contribution",()=>{
     expect(ui).toContain("Current Show Fund Balance");
     expect(ui).toContain("Current Owner Account Balance");
     expect(ui).toContain("Auto Host Funding Requirement");
-    expect(ui).toContain("Transfer ${transfer.toLocaleString()} LED");
-    expect(ui).toContain("Owner Balance Before:");
-    expect(ui).toContain("Show Fund After:");
+    expect(ui).toContain("Confirm Transfer ${pendingFund.amount.toLocaleString()} LED");
+    expect(ui).toContain("Owner after:");
+    expect(ui).toContain("Show Fund after:");
     expect(ui).toContain('supabase.rpc("owner_contribute_to_show_fund"');
   });
 
@@ -46,6 +46,9 @@ describe("Owner Show Fund contribution",()=>{
     expect(ui).toContain("p_amount:transfer.toString()");
     expect(ui).toContain("Use Full Owner Balance");
     expect(ui).toContain("Transfer Treasury LED to Show Fund");
+    expect(ui).toContain("Confirm Owner transfer");
+    expect(ui).toContain("Transfer failed: ${error.message}");
+    expect(ui).not.toContain("if(!confirm(");
     expect(ui).not.toContain('type="number" min={1} step={1} value={fundAmount}');
   });
 });

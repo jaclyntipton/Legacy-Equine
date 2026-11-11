@@ -35,7 +35,7 @@ const friendly = (message: string) => {
   if (m.includes("network") || m.includes("fetch"))
     return "We couldn't reach Legacy Equine. Check your connection and try again.";
   if (m.includes("database error"))
-    return "We couldn't finish creating your account. Your username may already be unavailable; please try another.";
+    return "We couldn't create this account. If you may already have a Legacy Equine account, log in, reset your password, or contact Help & Support.";
   return message || "We couldn't complete that request. Please try again.";
 };
 export function PublicAuth() {

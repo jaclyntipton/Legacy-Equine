@@ -1,7 +1,7 @@
 import {describe,expect,it} from "vitest";
 import fs from "node:fs";
 
-const ui=fs.readFileSync("app/treasury.tsx","utf8");
+const ui=fs.readFileSync("app/admin-led-gift.tsx","utf8");
 const sql=fs.readFileSync("supabase/migrations/202611110004_admin_personal_led_gifts.sql","utf8");
 
 describe("Admin personal LED gifts",()=>{

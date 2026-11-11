@@ -1,0 +1,20 @@
+"use client";
+import{useCallback,useEffect,useState,type ReactNode}from"react";
+import{createClient}from"@/lib/supabase/client";
+import{normalizeUsPhone}from"@/lib/phone";
+import"./account-safety.css";
+const supabase=createClient();
+
+function PhoneVerification({required=false,onVerified}:{required?:boolean;onVerified?:()=>void}){
+ const[phone,setPhone]=useState(""),[sentPhone,setSentPhone]=useState(""),[code,setCode]=useState(""),[verified,setVerified]=useState(false),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[message,setMessage]=useState("");
+ const load=useCallback(async()=>{const{data:{user}}=await supabase.auth.getUser();if(!user){setLoading(false);return}const confirmed=Boolean(user.phone&&user.phone_confirmed_at);setVerified(confirmed);setPhone(String(user.user_metadata?.pending_phone??user.phone??""));if(confirmed)await supabase.rpc("sync_my_verified_phone");setLoading(false)},[]);
+ useEffect(()=>{void load()},[load]);
+ const send=async()=>{const normalized=normalizeUsPhone(phone);if(!normalized){setMessage("Enter a valid 10-digit United States phone number.");return}setBusy(true);setMessage("");const{error}=await supabase.auth.updateUser({phone:normalized,data:{pending_phone:normalized}});setBusy(false);if(error){setMessage(error.message);return}setSentPhone(normalized);setMessage("Verification code sent. Enter the six-digit code below.")};
+ const verify=async()=>{if(!sentPhone||!/^[0-9]{6}$/.test(code)){setMessage("Enter the six-digit verification code.");return}setBusy(true);setMessage("");const{error}=await supabase.auth.verifyOtp({phone:sentPhone,token:code,type:"phone_change"});if(error){setBusy(false);setMessage(error.message);return}const sync=await supabase.rpc("sync_my_verified_phone");setBusy(false);if(sync.error){setMessage(sync.error.message);return}setVerified(true);setMessage("Phone number verified.");onVerified?.()};
+ if(loading)return <section className="accountinfo panel">Checking phone verification…</section>;
+ if(verified)return <section className="accountinfo panel"><p className="eyebrow">PHONE SECURITY</p><h2>Phone Number Verified</h2><p>Your verified phone number is private and helps prevent duplicate player accounts.</p></section>;
+ return <section className={`accountinfo phoneverify panel ${required?"gate":""}`}><p className="eyebrow">{required?"ACCOUNT VERIFICATION REQUIRED":"PHONE SECURITY"}</p><h2>Verify Your Phone Number</h2><p>Legacy Equine uses one verified phone number per player. Your number remains private.</p><label>United States phone number<input type="tel" autoComplete="tel" inputMode="tel" placeholder="(555) 555-0123" value={phone} onChange={event=>setPhone(event.target.value)}/></label>{!sentPhone?<button className="primary" disabled={busy||!phone.trim()} onClick={()=>void send()}>{busy?"Sending…":"Send Verification Code"}</button>:<><label>Six-digit verification code<input inputMode="numeric" autoComplete="one-time-code" maxLength={6} placeholder="123456" value={code} onChange={event=>setCode(event.target.value.replace(/\D/g,"").slice(0,6))}/></label><div className="phoneactions"><button className="primary" disabled={busy||code.length!==6} onClick={()=>void verify()}>{busy?"Verifying…":"Verify Phone"}</button><button disabled={busy} onClick={()=>void send()}>Resend Code</button></div></>}{message&&<p role="status" className="authmessage">{message}</p>}</section>;
+}
+
+export function PhoneVerificationPanel(){return <PhoneVerification/>}
+export function PhoneVerificationGate({children}:{children:ReactNode}){const[required,setRequired]=useState<boolean|null>(null),[done,setDone]=useState(false);useEffect(()=>{void supabase.auth.getUser().then(({data})=>setRequired(Boolean(data.user?.user_metadata?.pending_phone&&!data.user.phone_confirmed_at)))},[]);if(required===null)return <div className="loading">LEGACY EQUINE</div>;if(required&&!done)return <main className="verificationpage"><PhoneVerification required onVerified={()=>setDone(true)}/></main>;return <>{children}</>}

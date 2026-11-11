@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isAtLeast18, parseCalendarDate } from "@/lib/account-safety";
+import { normalizeUsPhone } from "@/lib/phone";
 import { SafetyPages } from "@/app/safety-pages";
 const supabase = createClient(),
   PUBLIC_ORIGIN = "https://legacyequines.com";
@@ -47,6 +48,7 @@ export function PublicAuth() {
     [firstName, setFirstName] = useState(""),
     [lastName, setLastName] = useState(""),
     [dateOfBirth, setDateOfBirth] = useState(""),
+    [phone, setPhone] = useState(""),
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false),
     [technical, setTechnical] = useState("");
@@ -109,6 +111,9 @@ export function PublicAuth() {
         );
       if (password.length < 8)
         throw new Error("Password must be at least 8 characters.");
+      const normalizedPhone=normalizeUsPhone(phone);
+      if(!normalizedPhone)
+        throw new Error("Enter a valid 10-digit United States phone number.");
       const availability = await supabase.rpc("public_signup_availability", {
         p_username: username,
         p_stable_name: stableName,
@@ -130,6 +135,7 @@ export function PublicAuth() {
             private_first_name: firstName.trim(),
             private_last_name: lastName.trim(),
             date_of_birth: dateOfBirth,
+            pending_phone: normalizedPhone,
           },
         },
       });
@@ -370,6 +376,18 @@ export function PublicAuth() {
                         autoComplete="bday"
                         value={dateOfBirth}
                         onChange={(e) => setDateOfBirth(e.target.value)}
+                        required
+                      />
+                    </label>
+                    <label>
+                      Phone Number
+                      <input
+                        type="tel"
+                        autoComplete="tel"
+                        inputMode="tel"
+                        placeholder="(555) 555-0123"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         required
                       />
                     </label>

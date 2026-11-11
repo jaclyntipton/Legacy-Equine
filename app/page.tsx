@@ -94,6 +94,7 @@ type Stable = {
   foundation_purchases: number;
   created_at: string;
   is_admin: boolean;
+  community_role: "player" | "moderator" | "admin" | "owner";
   account_xp: number;
 };
 type AccountProgression={account_xp:number;level:number;legacy_stable:boolean;next_level_xp:number|null;weekly_allowance:number;shows_hosted_this_week:number;weekly_show_limit:number;custom_stable_layout:boolean};
@@ -305,7 +306,7 @@ export default function Home() {
         supabase
           .from("stables")
           .select(
-            "id,account_number,name,username,bio,ranch_image_url,avatar_url,balance,foundation_purchases,created_at,is_admin,account_xp",
+            "id,account_number,name,username,bio,ranch_image_url,avatar_url,balance,foundation_purchases,created_at,is_admin,community_role,account_xp",
           )
           .eq("id", u.id)
           .maybeSingle(),
@@ -792,6 +793,7 @@ export default function Home() {
             <CommunityHub
               username={stable.username}
               isAdmin={stable.is_admin}
+              communityRole={stable.community_role}
               notify={setNotice}
             />
           )}{" "}

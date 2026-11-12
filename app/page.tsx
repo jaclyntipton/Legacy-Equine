@@ -816,6 +816,7 @@ export default function Home() {
           )}
           {view === "community" && (
             <CommunityHub
+              key={currentPath}
               username={stable.username}
               isAdmin={stable.is_admin}
               communityRole={stable.community_role}

@@ -5,15 +5,15 @@ import { horseAgeCompactLabel, horseAgeLongLabel, horseAgeYears } from "../lib/g
 describe("authoritative continuous horse aging", () => {
   const birth = "2026-01-01T00:00:00.000Z";
 
-  it("advances one horse-year every 28 real days without materialization", () => {
-    expect(horseAgeYears(birth, "2026-01-29T00:00:00.000Z")).toBe(1);
-    expect(horseAgeYears(birth, "2026-02-26T00:00:00.000Z")).toBe(2);
-    expect(horseAgeYears(birth, "2026-01-08T00:00:00.000Z")).toBe(.25);
+  it("advances one horse-year every 14 real days without materialization", () => {
+    expect(horseAgeYears(birth, "2026-01-15T00:00:00.000Z")).toBe(1);
+    expect(horseAgeYears(birth, "2026-01-29T00:00:00.000Z")).toBe(2);
+    expect(horseAgeYears(birth, "2026-01-04T12:00:00.000Z")).toBe(.25);
   });
 
   it("uses the same timestamp calculation for detailed and compact displays", () => {
-    expect(horseAgeLongLabel(birth, "2026-02-19T00:00:00.000Z")).toBe("1 year, 9 months");
-    expect(horseAgeCompactLabel(birth, "2026-02-19T00:00:00.000Z")).toBe("1y 9m");
+    expect(horseAgeLongLabel(birth, "2026-01-25T12:00:00.000Z")).toBe("1 year, 9 months");
+    expect(horseAgeCompactLabel(birth, "2026-01-25T12:00:00.000Z")).toBe("1y 9m");
   });
 
   it("is naturally idempotent because age is derived instead of incremented", () => {

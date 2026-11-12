@@ -43,9 +43,9 @@ Named cross outcomes carry their recognition basis and source. “Formal registr
 
 Training raises one Developed Stat by one, once per 20 real hours per horse, and never changes its Birth Stat. No care meters exist. Foals arrive immediately. Each foal Birth Stat is the rounded average of the sire's and dam's Developed values plus an independently configured inheritance roll, currently −6 to +6, floored at one. Tack, Farrier, massage/condition, and all other temporary modifiers are excluded from inheritance. There is no regression toward Foundation values: intentional line improvement across developed generations is core gameplay. The mare receives a ten-real-day cooldown. No arbitrary 100-point stat cap exists.
 
-Training and breeding age are derived exclusively from each horse's authoritative `birth_date` at one horse-year per 28 real days. Training is eligible from exact age 2 with no upper limit. Mares and stallions are breeding-eligible from exact age 2 through the instant before age 26 (`2 <= age < 26`). The server independently enforces every boundary using unrounded age.
+Training and breeding age are derived exclusively from each horse's authoritative `birth_date` at one horse-year per 14 real days. Training is eligible from exact age 2 with no upper limit. Mares and stallions are breeding-eligible from exact age 2 through the instant before age 26 (`2 <= age < 26`). The server independently enforces every boundary using unrounded age.
 
-One horse-year advances every 28 real days. Training and breeding start at exact age two; breeding retirement begins at exact age 26. Horses and pedigree records are never deleted due to age.
+One horse-year advances every 14 real days. Training and breeding start at exact age two; breeding retirement begins at exact age 26. Horses and pedigree records are never deleted due to age. The November 2026 rate change preserved every existing horse's precise age at activation, then applied the faster rate prospectively.
 
 ## Alpha 0.2 candidates
 
@@ -159,7 +159,7 @@ Tack occupies Bridle, Saddle, Saddle Pad, or Leg Protection slots. Equipped bonu
 
 Wellness is independent of the seven stats: Health, Hooves, Recovery, and weighted Competition Readiness on a bounded 0–100 scale. Training wears Recovery; showing wears Recovery and Hooves. Recovery passively improves from elapsed time. Routine Vet care restores Health once per half horse-year; Farrier and Massage restore Hooves and Recovery respectively once per Friday–Thursday LE week. Professional certification controls configured maximum restoration, and service history records before/after Wellness.
 
-Horse age is continuously timestamp-derived at one horse-year per 28 real days. Player display uses years/months, while training, breeding, and care windows use unrounded precision. Training and breeding begin at exactly age 2; breeding ends at exact age 26 while training continues.
+Horse age is continuously timestamp-derived at one horse-year per 14 real days. Player display uses years/months, while training, breeding, and care windows use unrounded precision. Training and breeding begin at exactly age 2; breeding ends at exact age 26 while training continues.
 
 The LE Store uses department-specific browsing. Foundation Horses use a compact, data-driven breed selector and a bounded scrolling result area; each card exposes all seven stats and exact persistent identity. Purchased Feed & Hay appears in the player's Feed Room and owned equipment appears in the Tack Room. Tack occupies one of four exclusive slots (bridle, saddle, saddle pad, leg protection), modifies Effective Stats only, remains owned while equipped, and is never inherited.
 

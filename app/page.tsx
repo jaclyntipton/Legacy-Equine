@@ -98,6 +98,7 @@ type Stable = {
   is_admin: boolean;
   community_role: "player" | "moderator" | "admin" | "owner";
   account_xp: number;
+  last_active_at: string;
 };
 type AccountProgression={account_xp:number;level:number;legacy_stable:boolean;next_level_xp:number|null;weekly_allowance:number;shows_hosted_this_week:number;weekly_show_limit:number;custom_stable_layout:boolean};
 type StableCapacity = {occupied:number;base_capacity:number;purchased_capacity:number;complimentary_capacity:number;total_capacity:number;unlimited:boolean;available:number|null};
@@ -113,6 +114,7 @@ type AdminStable = {
   stable_capacity: number;
   unlimited_capacity: boolean;
   can_edit_horses: boolean;
+  last_active_at: string;
 };
 type StoreHorse = {
   inventory_id: string;
@@ -308,7 +310,7 @@ export default function Home() {
         supabase
           .from("stables")
           .select(
-            "id,account_number,name,username,bio,ranch_image_url,avatar_url,balance,foundation_purchases,created_at,is_admin,community_role,account_xp",
+            "id,account_number,name,username,bio,ranch_image_url,avatar_url,balance,foundation_purchases,created_at,is_admin,community_role,account_xp,last_active_at",
           )
           .eq("id", u.id)
           .maybeSingle(),
@@ -340,6 +342,28 @@ export default function Home() {
     });
     return () => data.subscription.unsubscribe();
   }, [load]);
+  useEffect(() => {
+    if (!user?.id) return;
+    const touch = async () => {
+      if (document.hidden) return;
+      const { data } = await supabase.rpc("touch_my_last_active");
+      if (data) {
+        setStable((current) =>
+          current ? { ...current, last_active_at: String(data) } : current,
+        );
+      }
+    };
+    void touch();
+    const timer = window.setInterval(() => void touch(), 5 * 60 * 1000);
+    const resume = () => void touch();
+    window.addEventListener("focus", resume);
+    document.addEventListener("visibilitychange", resume);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", resume);
+      document.removeEventListener("visibilitychange", resume);
+    };
+  }, [user?.id]);
   useEffect(()=>{if(!stable)return;const timer=setTimeout(()=>void supabase.rpc("get_my_support_update_count").then(({data})=>setSupportUpdates(Number(data??0))),0);return()=>clearTimeout(timer)},[stable,currentPath]);
   useEffect(()=>{if(!stable)return;const timer=setTimeout(()=>void supabase.rpc("get_mailbox_unread_count").then(({data,error})=>{if(!error)setMailUnread(Number(data??0))}),0);return()=>clearTimeout(timer)},[stable,currentPath]);
   const action = async (
@@ -609,7 +633,7 @@ export default function Home() {
           {view === "publicplayer" && publicPlayerId && <PublicPlayerProfile stableId={publicPlayerId} notify={setNotice}/>}
           {view === "profile" && <>
             <nav className="sectiontabs profile-tabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>navigate("profile",{profileTab:"profile"})}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>navigate("profile",{profileTab:"artwork"})}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>navigate("profile",{profileTab:"settings"})}>Settings</button></nav>
-            {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div></section></>}
+            {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div><div><small>LAST ACTIVE</small><b>{new Date(stable.last_active_at||stable.created_at).toLocaleDateString()}</b></div></section></>}
             {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
             {profileTab==="settings"&&<><SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/><AccountInformationPanel/><PhoneVerificationPanel/></>}
           </>}
@@ -1925,6 +1949,7 @@ function AdminConsole({
                   </b>
                   <small>{a.is_admin ? "Administrator" : "Player"}</small>
                   <small>{a.can_edit_horses ? "Horse Editor permitted" : "No Horse Editor permission"}</small>
+                  <small>Last active {new Date(a.last_active_at).toLocaleString()}</small>
                 </span>
                 <button
                   disabled={a.account_number === 1}

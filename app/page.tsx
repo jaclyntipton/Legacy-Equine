@@ -587,7 +587,6 @@ export default function Home() {
             {stable.avatar_url?<img src={stable.avatar_url} alt=""/>:<span>LE</span>}<i><small>LE ACCOUNT #{stable.account_number}</small><b>{stable.username?`@${stable.username}`:stable.name}</b></i>
           </button>
           <nav className="account-nav" aria-label="Account links">
-            <button className={currentPath.startsWith("/how-to-play") ? "active" : ""} onClick={() => navigateHref("/how-to-play")}>How to Play</button>
             <button className={currentPath.startsWith("/support") ? "active" : ""} onClick={() => navigateHref("/support")}>{supportUpdates?`Help & Support · ${supportUpdates} Update${supportUpdates===1?"":"s"}`:"Help & Support"}</button>
             <button
               className={view === "profile" ? "active" : ""}

@@ -10,6 +10,7 @@ import { PublicStableProfile } from "@/app/public-stable-profile";
 import { PlayerShows } from "@/app/shows-v2";
 import { TreasuryDashboard } from "@/app/treasury";
 import { AdminLedGift } from "@/app/admin-led-gift";
+import { AccountEntitlementsAdmin } from "@/app/account-entitlements-admin";
 import { CommunityHub,PublicPlayerProfile } from "@/app/community-directory";
 import { Bank } from "@/app/bank";
 import { HorseProfile as HorsePage } from "@/app/horse-profile";
@@ -1926,6 +1927,7 @@ function AdminConsole({
       </section>}
       {topic==="accounts"&&(ownerAccount||can("accounts.private_identity.view"))&&<AdminPrivateIdentity accounts={accounts} notify={setMessage}/>}
       {topic==="accounts"&&(ownerAccount||can("accounts.private_identity.view"))&&<AdminLedGift notify={setMessage}/>}
+      {topic==="accounts"&&ownerAccount&&<AccountEntitlementsAdmin notify={setMessage}/>} 
       {topic==="accounts"&&ownerAccount && (
         <><ArtworkStorageAdmin notify={setMessage}/><section className="panel settingsform">
           <p className="eyebrow">OWNER CAPACITY CONTROL</p><h2>Permanent stall benefits</h2><p className="panelsub">Grant auditable complimentary stalls or explicitly change unlimited capacity. Ordinary administrators cannot use these controls.</p>

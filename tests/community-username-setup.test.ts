@@ -35,4 +35,10 @@ describe("Community username setup",()=>{
   expect(chatMessageCss).toContain("background: transparent");
   expect(chatMessageCss).toContain("color: #432d5f");
  });
+ it("presents moderation controls as a cohesive responsive dialog",()=>{
+  expect(chat).toContain('className="panel exam chatmoderation"');
+  expect(chatMessageCss).toContain(".chatmoderation");
+  expect(chatMessageCss).toContain("grid-template-columns: repeat(2, minmax(0, 1fr))");
+  expect(chatMessageCss).toContain("max-height: min(760px, calc(100dvh - 28px))");
+ });
 });

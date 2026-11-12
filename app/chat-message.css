@@ -44,3 +44,126 @@
   white-space: nowrap;
 }
 
+.chatmoderation {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 16px;
+  width: min(620px, calc(100vw - 28px));
+  max-height: min(760px, calc(100dvh - 28px));
+  margin: 0;
+  padding: 26px;
+  overflow-y: auto;
+  border-radius: 20px;
+}
+
+.chatmoderation > .eyebrow,
+.chatmoderation > h2,
+.chatmoderation > p,
+.chatmoderation > label:first-of-type {
+  grid-column: 1 / -1;
+}
+
+.chatmoderation > .eyebrow,
+.chatmoderation > h2 {
+  margin: 0;
+}
+
+.chatmoderation > p:not(.eyebrow) {
+  margin: 0;
+  padding: 13px 15px;
+  border: 1px solid #e2d7ef;
+  border-radius: 13px;
+  background: #f7f3fb;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.chatmoderation > label {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #4f3a66;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.chatmoderation textarea,
+.chatmoderation input[type="number"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d8c9e8;
+  border-radius: 11px;
+  background: #fff;
+  color: #30243e;
+}
+
+.chatmoderation textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+.chatmoderation > label:has(input[type="checkbox"]) {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid #e2d7ef;
+  border-radius: 11px;
+  background: #faf8fd;
+}
+
+.chatmoderation input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.chatmoderation > button:not(.examclose) {
+  min-height: 44px;
+  border: 1px solid #d4c3e6;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: #f1eafa;
+  color: #5d3b85;
+  font-weight: 850;
+}
+
+.chatmoderation > button:nth-of-type(2) {
+  grid-column: 1 / -1;
+  justify-self: start;
+  border-color: #e4c5cc;
+  background: #fff3f5;
+  color: #913d50;
+}
+
+.chatmoderation > button:nth-of-type(3) {
+  border-color: transparent;
+  background: #7046ae;
+  color: #fff;
+}
+
+.chatmoderation > .examclose {
+  top: 16px;
+  right: 16px;
+}
+
+@media (max-width: 560px) {
+  .chatmoderation {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 22px 18px;
+  }
+
+  .chatmoderation > * {
+    grid-column: 1 !important;
+  }
+
+  .chatmoderation > button:not(.examclose) {
+    width: 100%;
+  }
+}
+

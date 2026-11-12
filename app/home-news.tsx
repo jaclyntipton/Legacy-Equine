@@ -11,7 +11,6 @@ type Post={id:string;title:string;summary:string;body:string;category:string;aut
 type FeedResponse={posts:Post[];primary_pinned:Post|null;new_count:number;last_viewed_at:string|null;published_count:number;eligible_count:number};
 const labels:Record<string,string>={official:"Official News",updates:"Game Updates",shows:"Shows & Events",contests:"Contests",community:"Community"};
 const filters=[["","All"],["official","Official"],["updates","Updates"],["shows","Shows & Events"],["contests","Contests"],["community","Community"]];
-const quickLinks=[["/stable/horses","My Stable"],["/shows","Enter Shows"],["/store/foundation-horses","LE Store"],["/marketplace","Marketplace"],["/professions","Professions"],["/community","Community"]];
 const articleIdFromPath=(path:string)=>path.match(/^\/news\/([0-9a-f-]{36})\/?$/i)?.[1]??"";
 const dateLabel=(value:string)=>new Date(value).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
 
@@ -27,7 +26,7 @@ export function HomeNews({notify,onNewCount,path="/home",navigate}:{notify:(m:st
   {primaryPinned&&<section className="featurednews" aria-labelledby="featured-news-title"><div className="sectionheading"><p className="eyebrow">FEATURED STORY</p><h2 id="featured-news-title">Featured / Important</h2></div><div className="featuredlist"><NewsCard post={primaryPinned} featured isNew={isNew(primaryPinned)} open={()=>go(`/news/${primaryPinned.id}`)}/></div></section>}
   <div className="homecontentgrid">
    <section className="latestnews" aria-labelledby="latest-news-title"><div className="sectionheading"><p className="eyebrow">THE LATEST</p><h2 id="latest-news-title">Latest News</h2></div><div ref={filtersRef} className="newsfilterviewport" aria-label="News categories"><div className="newsfilters">{filters.map(([id,label])=><button className={category===id?"active":""} onClick={()=>setCategory(id)} key={id}>{label}</button>)}</div></div><div ref={feedRef} className="newsfeed">{posts.map(post=><NewsCard key={post.id} post={post} isNew={isNew(post)} open={()=>go(`/news/${post.id}`)}/>)}{!posts.length&&<p className="newsempty">No news in this category yet.</p>}{more&&<button className="loadnews" onClick={()=>void load(false)}>LOAD MORE</button>}</div></section>
-   <aside className="homenewsside"><section className="homequick"><div className="sectionheading"><p className="eyebrow">JUMP BACK IN</p><h2>Quick Links</h2></div><nav>{quickLinks.map(([href,label])=><Link href={href} key={href}>{label}<span>→</span></Link>)}</nav></section>{around.length>0&&<section className="aroundle"><div className="sectionheading"><p className="eyebrow">COMMUNITY MOMENTS</p><h2>Around Legacy Equine</h2></div><div>{around.map(post=><button key={post.id} onClick={()=>go(`/news/${post.id}`)}><span>{labels[post.category]??post.category}</span><b>{post.title}</b><small>{dateLabel(post.published_at)}</small></button>)}</div></section>}</aside>
+   {around.length>0&&<aside className="homenewsside"><section className="aroundle"><div className="sectionheading"><p className="eyebrow">COMMUNITY MOMENTS</p><h2>Around Legacy Equine</h2></div><div>{around.map(post=><button key={post.id} onClick={()=>go(`/news/${post.id}`)}><span>{labels[post.category]??post.category}</span><b>{post.title}</b><small>{dateLabel(post.published_at)}</small></button>)}</div></section></aside>}
   </div>
  </div>
 }

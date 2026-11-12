@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 
 const chat=fs.readFileSync("app/community-chat.tsx","utf8");
+const chatMessageCss=fs.readFileSync("app/chat-message.css","utf8");
 const page=fs.readFileSync("app/page.tsx","utf8");
 const sql=fs.readFileSync("supabase/migrations/202611110003_chat_username_setup.sql","utf8");
 
@@ -27,5 +28,11 @@ describe("Community username setup",()=>{
   expect(send).toContain("await loadMessages()");
   expect(send).toContain('notify("Message posted.")');
   expect(chat).toContain('sending ? "Sending…" : "Send"');
+ });
+ it("keeps chat author metadata compact and readable",()=>{
+  expect(chatMessageCss).toContain(".chatmessage header");
+  expect(chatMessageCss).toContain("width: fit-content");
+  expect(chatMessageCss).toContain("background: transparent");
+  expect(chatMessageCss).toContain("color: #432d5f");
  });
 });

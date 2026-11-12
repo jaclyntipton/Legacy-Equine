@@ -1,0 +1,46 @@
+.chatmessage > div {
+  min-width: 0;
+}
+
+.chatmessage header {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #432d5f;
+}
+
+.chatmessage header a {
+  min-width: 0;
+  color: #432d5f;
+  font-weight: 850;
+  line-height: 1.25;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.chatmessage header a:hover {
+  color: #7046ae;
+  text-decoration: underline;
+}
+
+.chatmessage header b {
+  color: inherit;
+}
+
+.chatmessage header time {
+  width: auto;
+  margin-left: 0;
+  color: #756782;
+  white-space: nowrap;
+}
+

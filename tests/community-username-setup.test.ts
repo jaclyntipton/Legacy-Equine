@@ -21,4 +21,11 @@ describe("Community username setup",()=>{
   const settings=page.slice(page.lastIndexOf('{profileTab==="settings"'));
   expect(settings.indexOf("<SettingsView")).toBeLessThan(settings.indexOf("<AccountInformationPanel"));
  });
+ it("reloads the authoritative room after a successful post instead of depending on realtime delivery",()=>{
+  const send=chat.slice(chat.indexOf("const send = async"),chat.indexOf("const saveRoom"));
+  expect(send).toContain('rpc("send_chat_message"');
+  expect(send).toContain("await loadMessages()");
+  expect(send).toContain('notify("Message posted.")');
+  expect(chat).toContain('sending ? "Sending…" : "Send"');
+ });
 });

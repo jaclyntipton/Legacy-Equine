@@ -1,0 +1,15 @@
+HANOVERIAN MASTERS 01 - REQUIRED GROUPS NOT COMPLETED ACCURATELY / APPROXIMATE
+
+BOTH MASTERS (mare, stallion)
+- eye-left: present as an EMPTY group (data-status="hidden-in-right-facing-profile"); the horse's left eye is not visible in a right-facing profile.
+- face-*, pattern-*, marking-leg-*: inside the silhouette, but internal dividing lines are straight proportional cuts, not hand-drawn anatomical contours.
+- tack-anchors: provisional landmark positions (invisible circles).
+- body-highlight: very subtle (the source art is almost pure white, so little highlight area survives). body-shadow is stepped translucent bands.
+- Neck, head, ears, muzzle and hooves are separate recolorable paths; recoloring body-base alone does not color them.
+- Ears are polygon-cut zones of the head; the far ear (ear-left) is small and approximate. The forelock is part of mane-base.
+- Tail/rump gap and the far/near leg cuts are anatomical approximations. The tail's inner edge is snapped to the traced line; a thin strip of the near hind leg's outer line near the lower tail is grouped with the tail.
+- Registered on its own canvas fit (scale shared by the two Hanoverians only), NOT the QH or Arabian scale.
+
+STALLION ONLY
+- MANE: the approved stallion art has almost no mane (only a thin crest line plus a small forelock). mane-base is therefore just a thin crest strip + forelock and will recolor as a thin band. The mare's full mane was NOT reproduced. A regenerated stallion with a full outlined mane would be needed for parity.
+- The sheath contour is baked into the outline layer; it is not a separate hideable layer.

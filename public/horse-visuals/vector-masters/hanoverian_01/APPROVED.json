@@ -1,0 +1,19 @@
+{
+  "approval": "Owner #1 approved all supplied visuals exactly as they are",
+  "approved_at": "2026-11-13",
+  "masters": [
+    {
+      "file": "hanoverian_mare_master_01.svg",
+      "sha256": "f4f50d9a803144a5dad582311b85a64864f487e88413c8a1363cf148357d67b7",
+      "sex": "Mare",
+      "life_stage": "mature"
+    },
+    {
+      "file": "hanoverian_stallion_master_01.svg",
+      "sha256": "cd3895081ab7d26027c6956665df30100c9da24f1da07ec90b12644a1c3c2849",
+      "sex": "Stallion",
+      "life_stage": "mature"
+    }
+  ],
+  "foal_master_supplied": false
+}

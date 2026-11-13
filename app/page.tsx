@@ -24,6 +24,7 @@ import "@/app/store-filter-controls.css";
 import "@/app/show-tier-v2.css";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
+import { VisualStageCoverage } from "@/app/visual-stage-coverage";
 import { PublicAuth } from "@/app/public-auth";
 import { StableBrandSettings } from "@/app/stable-brand-settings";
 import { StableBrandsAdmin } from "@/app/stable-brands-admin";
@@ -1714,7 +1715,7 @@ function AdminConsole({
       <div className="admincrumbs"><button onClick={()=>openTopic("dashboard")}>Admin</button><span>›</span><b>{topics.find(x=>x.id===topic)?.label}</b></div>
       {message && <div className="notice">✦ {message}</div>}
       {topic==="dashboard"&&<section className="admindashboard"><article onClick={()=>openTopic("horses")}><span>HORSES</span><b>Horse Operations</b><small>Create, edit, and oversee horses</small></article><article onClick={()=>openTopic("visuals")}><span>HORSE VISUALS</span><b>Deterministic Library</b><small>Coverage, review, and production</small></article><article onClick={()=>openTopic("shows")}><span>SHOWS</span><b>Show Control</b><small>Open, scheduled, QA, and archive</small></article><article onClick={()=>openTopic("professions")}><span>PROFESSIONS</span><b>Career Operations</b><small>Providers, rates, and QA</small></article><article onClick={()=>openTopic("accounts")}><span>ACCOUNTS</span><b>{accounts.length} accounts</b><small>Roles, access, and capacity</small></article><article onClick={()=>openTopic("economy")}><span>ECONOMY</span><b>LED & Treasury</b><small>Ledgered controls and funds</small></article><article onClick={()=>openTopic("commerce")}><span>COMMERCE</span><b>Payment Readiness</b><small>Catalog, entitlements, subscriptions, audit</small></article><article onClick={()=>openTopic("system")}><span>SYSTEM</span><b>Production QA</b><small>Domain, database, schedulers</small></article></section>}
-      {topic==="visuals"&&<><VisualAssetRequirements notify={setMessage}/><VisualAssetImporter notify={setMessage}/><details className="adminaccordion"><summary>Legacy template administration</summary><HorseImageTemplates notify={setMessage} changed={changed}/></details></>}
+      {topic==="visuals"&&<><VisualStageCoverage notify={setMessage}/><VisualAssetRequirements notify={setMessage}/><VisualAssetImporter notify={setMessage}/><details className="adminaccordion"><summary>Legacy template administration</summary><HorseImageTemplates notify={setMessage} changed={changed}/></details></>}
       {topic==="balance"&&<div className="adminaccordions"><details open><summary>Foundation Horse Generation & Genetics</summary><BreedGeneticsAdmin notify={setMessage}/></details><details><summary>Feed, Tack, Wellness & Aging</summary><StoreWellnessAdmin notify={setMessage}/></details><details><summary>Show Scoring & Account Progression</summary><p className="featurehint">Configuration remains server-authoritative. Dedicated controls will appear here as they are introduced.</p></details></div>}
       {topic==="store"&&<StoreWellnessAdmin notify={setMessage}/>} 
       {topic==="shows"&&<AdminShows notify={setMessage}/>} 

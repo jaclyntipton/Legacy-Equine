@@ -265,7 +265,7 @@ export function HorseImageTemplates({
               </figure>
               <div className="alignmentdetails">
                 <b>Layer alignment contract</b>
-                <span>Canvas: 1500 × 1024 px</span>
+                <span>Canvas: 1496 × 1051 px</span>
                 <span>Origin: 0, 0</span>
                 <span>Scale: 100%</span>
                 <span>Transform: none</span>

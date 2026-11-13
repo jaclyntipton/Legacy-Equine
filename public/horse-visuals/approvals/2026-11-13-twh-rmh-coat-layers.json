@@ -1,0 +1,37 @@
+{
+  "approval": "Owner #1 approved all supplied Tennessee Walking Horse and Rocky Mountain Horse coat-layer sets",
+  "approved_at": "2026-11-13",
+  "activation": "approved_pending_full_layer_import",
+  "sets": [
+    {
+      "master_asset_key": "tennessee_walking_horse_mare_vector_master_01",
+      "master_sha256": "1896644d1d6b39711036e93d6120dda9bcf80dd1f507aabe851863c17893ccd1",
+      "package_sha256": "ed91be04e5f45254a39252a547d5eeffa7cecd13eeac61ae3309e32adbeff4de",
+      "layer_count": 113
+    },
+    {
+      "master_asset_key": "tennessee_walking_horse_stallion_vector_master_01",
+      "master_sha256": "84a5ad5723b66aaf1b314a1a6f341f35dd3a994607330ae5a3b68282db480e39",
+      "package_sha256": "e80d58017cf121f5f22369e2efb76b67d0b0987393e61e750e3b4e11f8d6ecf9",
+      "layer_count": 113
+    },
+    {
+      "master_asset_key": "rocky_mountain_horse_mare_vector_master_01",
+      "master_sha256": "48844f99f2251eabdb6b1bca6c88dd1aa9c9a71fd0620943d6cb932254b149ec",
+      "package_sha256": "6c162c52fd21f4ec24c35a80489c979f360846a06e7b6fe92268bb8c0fb8945d",
+      "layer_count": 108
+    },
+    {
+      "master_asset_key": "rocky_mountain_horse_stallion_vector_master_01",
+      "master_sha256": "e2fc78e3ea7b32ac276e0450a914bbe64a802d54b838bc867ec57f3119766ffc",
+      "package_sha256": "09f96ed8a60b87108677afb9fcc41f02ec7f4694c6d1afe30b8df516c3071a2f",
+      "layer_count": 108
+    }
+  ],
+  "approved_layer_count": 442,
+  "notes": [
+    "Exact package revisions identified by package_sha256 are approved; older duplicate packages are superseded.",
+    "Approval does not activate incomplete composites or bypass the deterministic visual-library requirements.",
+    "All foals continue to use qh_foal_vector_master_01."
+  ]
+}

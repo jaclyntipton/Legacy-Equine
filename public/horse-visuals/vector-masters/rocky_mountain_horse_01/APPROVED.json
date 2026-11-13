@@ -1,0 +1,19 @@
+{
+  "approval": "Owner #1 supplied the Rocky Mountain Horse master set for registration",
+  "approved_at": "2026-11-13",
+  "masters": [
+    {
+      "file": "rocky_mountain_horse_mare_master_01.svg",
+      "sha256": "48844f99f2251eabdb6b1bca6c88dd1aa9c9a71fd0620943d6cb932254b149ec",
+      "sex": "Mare",
+      "life_stage": "mature"
+    },
+    {
+      "file": "rocky_mountain_horse_stallion_master_01.svg",
+      "sha256": "e2fc78e3ea7b32ac276e0450a914bbe64a802d54b838bc867ec57f3119766ffc",
+      "sex": "Stallion",
+      "life_stage": "mature"
+    }
+  ],
+  "foal_master": "qh_foal_vector_master_01"
+}

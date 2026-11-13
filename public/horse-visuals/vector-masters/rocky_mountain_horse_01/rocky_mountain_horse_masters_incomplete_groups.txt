@@ -1,0 +1,29 @@
+ROCKY MOUNTAIN HORSE MASTERS 01 - INCOMPLETE / PROVISIONAL GROUPS
+(rocky_mountain_horse_mare_master_01.svg, rocky_mountain_horse_stallion_master_01.svg)
+
+Both files pass the structural validator: canvas 1496x1051, transparent, all
+required groups and IDs present, 12 marking regions present, no rasters/text/transforms.
+
+Incomplete or provisional:
+1. eye-left: empty group (data-status="hidden-in-right-facing-profile"). The horse faces
+   right, so the horse's left eye is not visible.
+2. leg-rh / leg-lh (hind): the near hind cannon is narrow and partly crossed by tail
+   strands, and the far hind leg's upper part is hidden behind the thigh. Leg shapes are
+   straight-cut at the stifle/groin, not full anatomical legs.
+3. tail-base: covers both the main tail and the lower strands hanging between the hind
+   legs, as a single shape.
+4. neck-base / pattern-neck: the long mane covers almost all of the neck side, so the
+   visible neck region is a thin strip along the throat.
+5. Forelock: the strands falling over the face are part of mane-base. head-base is
+   cut around them.
+6. Stallion mane: NOT thinned. The mane lines are fused to the silhouette outline in the
+   source art, so individual strands could not be removed cleanly. Thinning needs new art.
+7. marking-regions: straight-cut polygons (fill-opacity 0), not anatomically contoured.
+   Provisional until marking art is designed.
+8. tack-anchors: provisional positions, not yet verified against tack art.
+9. Stallion sheath is baked into the outline/shading; there is no separate hideable layer.
+10. Shading (highlight/shadow) is baked grey-scale tuned for recolor; it may need
+    per-coat adjustment.
+11. Registration/scale is independent of the QH, Arabian, Hanoverian, Morgan,
+    Thoroughbred and TWH masters; align before using them interchangeably in-game.
+12. Mane and tail are single shapes with baked strand lines (no separate strands).

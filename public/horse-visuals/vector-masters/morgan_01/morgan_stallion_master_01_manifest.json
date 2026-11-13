@@ -1,0 +1,109 @@
+{
+  "filename": "morgan_stallion_master_01.svg",
+  "preview_png": "morgan_stallion_master_01_preview.png",
+  "breed": "Morgan",
+  "life_stage": "mature",
+  "sex": "stallion",
+  "canvas": {
+    "width": 1496,
+    "height": 1051
+  },
+  "viewBox": "0 0 1496 1051",
+  "orientation": "Horse faces viewer-right; viewer sees the horse's RIGHT (near) side. Near legs/ear/eye = right; far legs/ear = left. Anatomical left/right used throughout.",
+  "group_ids": [
+    "horse",
+    "tail",
+    "legs",
+    "hooves",
+    "neck",
+    "head",
+    "mane",
+    "eyes",
+    "eye-left",
+    "body",
+    "body-highlight",
+    "body-shadow",
+    "outline",
+    "marking-regions",
+    "tack-anchors"
+  ],
+  "anatomical_ids": [
+    "body-base",
+    "body-highlight",
+    "body-shadow",
+    "head-base",
+    "muzzle",
+    "ear-left",
+    "ear-right",
+    "eye-left",
+    "eye-right",
+    "mane-base",
+    "tail-base",
+    "leg-lf",
+    "leg-rf",
+    "leg-lh",
+    "leg-rh",
+    "hoof-lf",
+    "hoof-rf",
+    "hoof-lh",
+    "hoof-rh"
+  ],
+  "marking_region_ids": [
+    "face-forehead",
+    "face-bridge",
+    "face-muzzle",
+    "pattern-neck",
+    "pattern-shoulder",
+    "pattern-barrel",
+    "pattern-belly",
+    "pattern-hindquarter",
+    "marking-leg-lf",
+    "marking-leg-rf",
+    "marking-leg-lh",
+    "marking-leg-rh"
+  ],
+  "tack_anchor_ids": [
+    "anchor-saddle",
+    "anchor-girth",
+    "anchor-breast-collar",
+    "anchor-bridle-poll",
+    "anchor-bridle-cheek",
+    "anchor-noseband",
+    "anchor-bit",
+    "anchor-halter-ring"
+  ],
+  "layer_order_back_to_front": [
+    "tail",
+    "legs",
+    "hooves",
+    "neck",
+    "head",
+    "mane",
+    "eyes",
+    "body (body-base, body-highlight, body-shadow)",
+    "outline",
+    "marking-regions",
+    "tack-anchors"
+  ],
+  "raster_image_embedded": false,
+  "background_transparent": true,
+  "transforms_used": false,
+  "scripts_or_external_urls": false,
+  "registration": "All three masters share one uniform scale and offset (baked into coordinates), so they register on the same canvas.",
+  "validation": {
+    "passed": true,
+    "errors": [],
+    "path_bbox": [
+      137.1,
+      33.7,
+      1358.3,
+      1017.3
+    ],
+    "rendered_alpha_bbox": [
+      137,
+      33,
+      1358,
+      1017
+    ]
+  }
+}

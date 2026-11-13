@@ -1,0 +1,20 @@
+MORGAN MASTERS 01 - INCOMPLETE / PROVISIONAL GROUPS
+(morgan_mare_master_01.svg, morgan_stallion_master_01.svg)
+
+Both files pass the structural validator: canvas 1496x1051, transparent, all
+required groups and IDs present, 12 marking regions present, no rasters/text/transforms.
+
+Incomplete or provisional:
+1. eye-left: empty group (data-status="hidden-in-right-facing-profile"). The horse faces
+   right, so the horse's left eye is not visible.
+2. leg-lh / hoof-lh (far hind): mostly hidden behind the tail in the source art, so only
+   a small visible fragment exists. Not a full leg. Recolor works, but the shape is partial.
+3. marking-regions: straight-cut polygons (fill-opacity 0), not anatomically contoured.
+   Provisional until marking art is designed.
+4. tack-anchors: provisional positions, not yet verified against tack art.
+5. Stallion sheath is baked into the body outline; there is no separate hideable layer.
+6. Shading (highlight/shadow) is baked grey-scale and tuned for recolor; it may need
+   per-coat adjustment.
+7. Registration/scale is independent of the QH, Arabian and Hanoverian masters; align
+   before using them interchangeably in-game.
+8. Mane and tail are single shapes with baked strand lines (no separate strands).

@@ -1,0 +1,34 @@
+{
+  "library": "Legacy Equine deterministic horse visuals",
+  "set": "Quarter Horse Vector Masters 01",
+  "approved": true,
+  "approvedBy": "Owner #1",
+  "approvedAt": "2026-11-13",
+  "decision": "Approved exactly as delivered; no visual revisions requested",
+  "canvas": { "width": 1496, "height": 1051 },
+  "masters": [
+    {
+      "assetKey": "qh_foal_vector_master_01",
+      "file": "qh_foal_master_01.svg",
+      "lifeStage": "foal",
+      "sex": null,
+      "sha256": "eaf20168d7b768d8bddca4057721fb4aa7147952eee8d3170c46995f18a77365"
+    },
+    {
+      "assetKey": "qh_mare_vector_master_01",
+      "file": "qh_mare_master_01.svg",
+      "lifeStage": "mature",
+      "sex": "Mare",
+      "sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1"
+    },
+    {
+      "assetKey": "qh_stallion_vector_master_01",
+      "file": "qh_stallion_master_01.svg",
+      "lifeStage": "mature",
+      "sex": "Stallion",
+      "sha256": "ed541fc2843166537891e61a2ab8ad75f79d76222d5a85715acb167442ec0dd8"
+    }
+  ],
+  "productionDisplay": false,
+  "productionDisplayReason": "Body masters are approved; genetic layer requirements remain incomplete."
+}

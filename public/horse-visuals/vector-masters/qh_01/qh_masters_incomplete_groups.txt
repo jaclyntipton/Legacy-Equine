@@ -1,0 +1,16 @@
+QH MASTERS 01 - REQUIRED GROUPS NOT COMPLETED ACCURATELY / APPROXIMATE
+
+ALL THREE MASTERS (foal, mare, stallion)
+- eye-left: present as an EMPTY group (data-status="hidden-in-right-facing-profile"). The horse's left eye is not visible in a right-facing profile, so there is nothing accurate to draw.
+- face-forehead, face-bridge, face-muzzle, pattern-neck, pattern-shoulder, pattern-barrel, pattern-belly, pattern-hindquarter: all stay inside the silhouette, but their internal dividing lines are straight proportional cuts, not hand-drawn anatomical contours. Needs refinement before pattern work.
+- marking-leg-lf/rf/lh/rh: lower-leg zones (below ~52% of leg length to hoof top); the upper edge is a straight cut.
+- tack-anchors: provisional landmark positions (invisible circles); not yet verified against real tack placement.
+- body-highlight: approximate (single soft highlight layer); body-shadow is stepped translucent tonal bands.
+- Leg separation (far/near, fore/hind) is based on anatomical segmentation cuts; overlapping areas near the elbow/stifle are approximations.
+
+MATURE MASTERS (mare, stallion)
+- Vector derivatives are traced from the protected PNGs; fine detail (hair texture, small edge noise) is simplified. Anatomy was not altered.
+- Stallion: the approved reference shows a small sheath contour. It was kept for fidelity to the protected PNG. The spec says no visible genitalia - please confirm whether to remove it (this would alter the reference).
+
+FOAL
+- Ears scaled to ~84% (a guess at "slightly smaller"); mane and forelock were rebuilt by tracing and may need tuning.

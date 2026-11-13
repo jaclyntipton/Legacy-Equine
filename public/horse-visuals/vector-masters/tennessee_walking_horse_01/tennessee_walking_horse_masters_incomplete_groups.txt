@@ -1,0 +1,30 @@
+TENNESSEE WALKING HORSE MASTERS 01 - INCOMPLETE / PROVISIONAL GROUPS
+(tennessee_walking_horse_mare_master_01.svg, tennessee_walking_horse_stallion_master_01.svg)
+
+Both files pass the structural validator: canvas 1496x1051, transparent, all
+required groups and IDs present, 12 marking regions present, no rasters/text/transforms.
+
+Incomplete or provisional:
+1. eye-left: empty group (data-status="hidden-in-right-facing-profile"). The horse faces
+   right, so the horse's left eye is not visible.
+2. leg-lh / hoof-lh (far hind): the upper far leg is a narrow strip along the front of the
+   near thigh, and the mid-section is hidden behind the tail. Only the strip, the lower
+   pastern and the hoof are visible shapes. Not a full leg.
+3. tail-base: covers both the upper tail and the lower strands that hang in front of the
+   far hind leg, as a single shape.
+4. neck-base / pattern-neck: the mane covers most of the neck side in this pose, so
+   the visible neck region is a narrow wedge on the throat side.
+5. Body vs. thigh split: leg-rh starts at the stifle/gaskin (straight-cut boundary).
+   pattern-hindquarter covers the rump only.
+6. marking-regions: straight-cut polygons (fill-opacity 0), not anatomically contoured.
+   Provisional until marking art is designed.
+7. tack-anchors: provisional positions, not yet verified against tack art or this
+   stretched show stance.
+8. Stallion sheath is baked into the outline/shading; there is no separate hideable layer.
+9. Shading (highlight/shadow) is baked grey-scale tuned for recolor; it may need
+   per-coat adjustment.
+10. Registration/scale is independent of the QH, Arabian, Hanoverian, Morgan and
+    Thoroughbred masters; align before using them interchangeably in-game.
+11. Mane and tail are single shapes with baked strand lines (no separate strands).
+12. The stretched show stance makes this master wider than the others, so it may need
+    scaling or different foot-placement handling in the game.

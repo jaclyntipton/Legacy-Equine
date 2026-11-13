@@ -1,0 +1,19 @@
+{
+  "approval": "Owner #1 supplied the Tennessee Walking Horse master set for registration",
+  "approved_at": "2026-11-13",
+  "masters": [
+    {
+      "file": "tennessee_walking_horse_mare_master_01.svg",
+      "sha256": "1896644d1d6b39711036e93d6120dda9bcf80dd1f507aabe851863c17893ccd1",
+      "sex": "Mare",
+      "life_stage": "mature"
+    },
+    {
+      "file": "tennessee_walking_horse_stallion_master_01.svg",
+      "sha256": "84a5ad5723b66aaf1b314a1a6f341f35dd3a994607330ae5a3b68282db480e39",
+      "sex": "Stallion",
+      "life_stage": "mature"
+    }
+  ],
+  "foal_master": "qh_foal_vector_master_01"
+}

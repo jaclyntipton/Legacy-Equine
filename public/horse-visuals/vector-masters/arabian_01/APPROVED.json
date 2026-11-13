@@ -1,0 +1,19 @@
+{
+  "approval": "Owner #1 approved all supplied visuals exactly as they are",
+  "approved_at": "2026-11-13",
+  "masters": [
+    {
+      "file": "arabian_mare_master_01.svg",
+      "sha256": "5caa54bf4a9b6c0d60f56354c2e128ab8ae9688cdcb94bef27a14108c096801b",
+      "sex": "Mare",
+      "life_stage": "mature"
+    },
+    {
+      "file": "arabian_stallion_master_01.svg",
+      "sha256": "ef0cd6b83740b9d951b0bafddb75fa42c6a811eb06b5c36983227665e42d4c5a",
+      "sex": "Stallion",
+      "life_stage": "mature"
+    }
+  ],
+  "foal_master_supplied": false
+}

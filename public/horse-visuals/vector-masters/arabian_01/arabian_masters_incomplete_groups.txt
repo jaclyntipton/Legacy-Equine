@@ -1,0 +1,16 @@
+ARABIAN MASTERS 01 - REQUIRED GROUPS NOT COMPLETED ACCURATELY / APPROXIMATE
+
+BOTH MASTERS (mare, stallion)
+- eye-left: present as an EMPTY group (data-status="hidden-in-right-facing-profile"). The horse's left eye is not visible in a right-facing profile.
+- face-forehead, face-bridge, face-muzzle, pattern-neck, pattern-shoulder, pattern-barrel, pattern-belly, pattern-hindquarter: inside the silhouette, but their internal dividing lines are straight proportional cuts, not hand-drawn anatomical contours.
+- marking-leg-lf/rf/lh/rh: lower-leg zones; the upper edge is a straight cut.
+- tack-anchors: provisional landmark positions (invisible circles), not verified against real tack.
+- body-highlight is approximate; body-shadow is stepped translucent bands.
+- Neck, head, ears and hooves are separate recolorable paths (neck-base, head-base, ear-*, hoof-*): recoloring body-base alone does not color them.
+- Ears (ear-left/ear-right) are polygon-cut zones of the head; edges are approximate. The forelock is part of mane-base.
+- Far/near leg and neck/head/body boundaries are anatomical cuts; overlap zones near the elbow, stifle and throat are approximations.
+- The tail/rump gap is cut transparent between the tail's inner line and the rump line. The tail's top outline and the root are traced as drawn.
+- Registered on its own canvas fit (scale shared by the two Arabians only), NOT the QH scale. Aligning to QH registration is a one-step change if wanted.
+
+STALLION ONLY
+- The sheath contour is baked into the outline layer. It is NOT on a separate hideable layer. Hiding it would need a separate no-sheath variant.

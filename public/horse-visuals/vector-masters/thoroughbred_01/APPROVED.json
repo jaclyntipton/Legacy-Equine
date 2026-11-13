@@ -1,0 +1,19 @@
+{
+  "approval": "Owner #1 confirmed Thoroughbred master images completed",
+  "approved_at": "2026-11-13",
+  "masters": [
+    {
+      "file": "thoroughbred_mare_master_01.svg",
+      "sha256": "f6a838b2bbcd0a41545f46ce30505c95053b1ca9f4c7cc1375fb9a6e1d0df325",
+      "sex": "Mare",
+      "life_stage": "mature"
+    },
+    {
+      "file": "thoroughbred_stallion_master_01.svg",
+      "sha256": "cd63b96f862534b9aa5fd6e520cea56b8c197680c7cddde50173963d9d076eef",
+      "sex": "Stallion",
+      "life_stage": "mature"
+    }
+  ],
+  "foal_master": "qh_foal_vector_master_01"
+}

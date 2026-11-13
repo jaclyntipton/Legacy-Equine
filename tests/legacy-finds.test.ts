@@ -1,0 +1,11 @@
+import{describe,expect,it}from"vitest";
+import{readFileSync}from"node:fs";
+const sql=readFileSync("supabase/migrations/202611130001_legacy_finds.sql","utf8"),ui=readFileSync("app/legacy-finds.tsx","utf8"),admin=readFileSync("app/admin-legacy-finds.tsx","utf8"),page=readFileSync("app/page.tsx","utf8");
+describe("Legacy Finds",()=>{
+ it("awards server-authoritative items and ledger-backed LED",()=>{expect(sql).toContain("create or replace function public.try_legacy_find");expect(sql).toContain("insert into player_store_items");expect(sql).toContain("update stables set balance=balance+amount");expect(sql).toContain("insert into currency_ledger");expect(sql).toContain("Legacy Find — ")});
+ it("is idempotent and protected from refresh farming",()=>{expect(sql).toContain("request_id uuid not null unique");expect(sql).toContain("pg_advisory_xact_lock");expect(sql).toContain("cooldown_minutes");expect(sql).toContain("daily_award_limit");expect(sql).toContain("if prior is not null then return prior")});
+ it("supports collectible supplies, Feed, Tack, and LED",()=>{for(const reward of["Worn Riding Glove","Lucky Horseshoe","Peppermint Treat","Grass Hay Sample","Quality Leg Boots","Lucky LED Find"])expect(sql).toContain(reward)});
+ it("mounts one global discovery popup on eligible player navigation",()=>{expect(page).toContain("<LegacyFinds");expect(ui).toContain('role="dialog"');expect(ui).toContain("try_legacy_find");expect(ui).toContain("View {destinationLabel")});
+ it("provides Owner balancing controls and player documentation",()=>{expect(page).toContain("<AdminLegacyFinds");expect(admin).toContain("Discovery chance %");expect(admin).toContain("Daily finds per player");expect(sql).toContain("admin_update_legacy_find_reward");expect(sql).toContain("Introducing Legacy Finds");expect(sql).toContain("'legacy-finds','world-economy'")});
+ it("keeps privileged tables private and exposes only the authorized claim RPC",()=>{expect(sql).toContain("alter table public.legacy_find_attempts enable row level security");expect(sql).toContain("revoke all on public.legacy_find_config");expect(sql).toContain("grant execute on function public.try_legacy_find(text,uuid,uuid)to authenticated")});
+});

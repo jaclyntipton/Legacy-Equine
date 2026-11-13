@@ -1,0 +1,62 @@
+{
+  "layer_id": "qh_mare_master_01__base_black",
+  "layer_name": "Black base coat",
+  "category": "base_coat",
+  "trait_key": "black",
+  "genetic_trigger": "E_ aa (at least one dominant Extension allele, homozygous recessive Agouti).",
+  "stacking_order": 100,
+  "blend_mode": "multiply",
+  "fill": "#2E2829",
+  "compatible_pigments": [
+    "black eumelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "ee (chestnut)",
+    "A_ (bay; use bay + points instead)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__base_chestnut",
+    "qh_mare_master_01__base_bay"
+  ],
+  "covers": "Entire visible hair coat (body, neck, head, ears, legs). Excludes mane, tail, hooves, eye.",
+  "notes": "Coat colour is #2E2829 rather than pure black so the master line art stays readable under multiply. Non-fading vs. sun-faded black is not modelled.",
+  "filename": "qh_mare_master_01__base_black.svg",
+  "preview_png": "qh_mare_master_01__base_black.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__base_black__mask-coat",
+    "qh_mare_master_01__base_black__mask-anatomy",
+    "qh_mare_master_01__base_black",
+    "qh_mare_master_01__base_black__coat",
+    "qh_mare_master_01__base_black__fill"
+  ],
+  "rendered_alpha_bbox": [
+    250,
+    62,
+    1362,
+    990
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "f5369ae16d2002a0cb74929518a639f51b72294b33831922bffb1f562b45f7ea",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "layer_id": "qh_mare_master_01__points_black",
+  "layer_name": "Black points (bay)",
+  "category": "leg_points",
+  "trait_key": "black",
+  "genetic_trigger": "E_ A_",
+  "requires": [
+    "base_coat:bay"
+  ],
+  "stacking_order": 110,
+  "blend_mode": "multiply",
+  "fill": "#2A2425",
+  "compatible_pigments": [
+    "black eumelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "ee (no eumelanin: chestnut has no points)",
+    "aa (black: whole coat already black, layer redundant)"
+  ],
+  "covers": "Lower legs to knee/hock with irregular soft upper edge; ear tips and ear rims. Mane and tail are separate layers.",
+  "notes": "Knee/hock boundary shapes are new hand-set curves (fixed coordinates, no randomness) clipped to the master leg paths; heights follow the master knee (y~755-785) and hock (y~705-735). Point height varies in real bays; this is one representative height. Hooves excluded (hoof layer comes later).",
+  "filename": "qh_mare_master_01__points_black.svg",
+  "preview_png": "qh_mare_master_01__points_black.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__points_black__mask-coat",
+    "qh_mare_master_01__points_black__leg-lf__clip",
+    "qh_mare_master_01__points_black__leg-lf__fade",
+    "qh_mare_master_01__points_black__leg-rf__clip",
+    "qh_mare_master_01__points_black__leg-rf__fade",
+    "qh_mare_master_01__points_black__leg-lh__clip",
+    "qh_mare_master_01__points_black__leg-lh__fade",
+    "qh_mare_master_01__points_black__leg-rh__clip",
+    "qh_mare_master_01__points_black__leg-rh__fade",
+    "qh_mare_master_01__points_black__ear-right__clip",
+    "qh_mare_master_01__points_black__ear-right__fade",
+    "qh_mare_master_01__points_black__ear-left__clip",
+    "qh_mare_master_01__points_black__ear-left__fade",
+    "qh_mare_master_01__points_black",
+    "qh_mare_master_01__points_black__leg-lf",
+    "qh_mare_master_01__points_black__leg-lf__blend",
+    "qh_mare_master_01__points_black__leg-lf__solid",
+    "qh_mare_master_01__points_black__leg-rf",
+    "qh_mare_master_01__points_black__leg-rf__blend",
+    "qh_mare_master_01__points_black__leg-rf__solid",
+    "qh_mare_master_01__points_black__leg-lh",
+    "qh_mare_master_01__points_black__leg-lh__blend",
+    "qh_mare_master_01__points_black__leg-lh__solid",
+    "qh_mare_master_01__points_black__leg-rh",
+    "qh_mare_master_01__points_black__leg-rh__blend",
+    "qh_mare_master_01__points_black__leg-rh__solid",
+    "qh_mare_master_01__points_black__ear-right",
+    "qh_mare_master_01__points_black__ear-right__rim",
+    "qh_mare_master_01__points_black__ear-right__blend",
+    "qh_mare_master_01__points_black__ear-right__solid",
+    "qh_mare_master_01__points_black__ear-left",
+    "qh_mare_master_01__points_black__ear-left__rim",
+    "qh_mare_master_01__points_black__ear-left__blend",
+    "qh_mare_master_01__points_black__ear-left__solid"
+  ],
+  "rendered_alpha_bbox": [
+    254,
+    62,
+    1273,
+    990
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "f10abecd3f4a7b58cafb832a26b3fb24c1075333a464d0f99d71147e57177754",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "layer_id": "qh_mare_master_01__base_chestnut",
+  "layer_name": "Chestnut base coat",
+  "category": "base_coat",
+  "trait_key": "chestnut",
+  "genetic_trigger": "ee (Extension recessive; MC1R). Agouti genotype irrelevant (masked).",
+  "stacking_order": 100,
+  "blend_mode": "multiply",
+  "fill": "#A65A2E",
+  "compatible_pigments": [
+    "red pheomelanin only"
+  ],
+  "incompatible_or_suppressed": [
+    "Any E_ genotype (use black or bay base instead)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__base_black",
+    "qh_mare_master_01__base_bay"
+  ],
+  "covers": "Entire visible hair coat (body, neck, head, ears, legs). Excludes mane, tail, hooves, eye.",
+  "notes": "Flat self-coloured red coat. Shade variation (sorrel/liver chestnut) and flaxen are future modifiers, not baked in.",
+  "filename": "qh_mare_master_01__base_chestnut.svg",
+  "preview_png": "qh_mare_master_01__base_chestnut.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__base_chestnut__mask-coat",
+    "qh_mare_master_01__base_chestnut__mask-anatomy",
+    "qh_mare_master_01__base_chestnut",
+    "qh_mare_master_01__base_chestnut__coat",
+    "qh_mare_master_01__base_chestnut__fill"
+  ],
+  "rendered_alpha_bbox": [
+    250,
+    62,
+    1362,
+    990
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "827deb1a8df90624e19d7a8884802f0e2d161fd7bb6b34cfb373652b343cbdf6",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

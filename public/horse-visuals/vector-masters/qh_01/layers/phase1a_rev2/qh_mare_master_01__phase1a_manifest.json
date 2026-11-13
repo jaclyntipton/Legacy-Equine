@@ -1,0 +1,630 @@
+{
+  "set": "Legacy Equine - qh_mare_master_01 - Phase 1A pigment foundation (revision 2)",
+  "status": "awaiting review - dilutions, white patterns, leopard complex and markings not started",
+  "master": {
+    "file": "qh_mare_master_01.svg",
+    "asset_key": "qh_mare_vector_master_01",
+    "sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+    "modified": false
+  },
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051",
+    "background": "transparent"
+  },
+  "compositing": {
+    "rule": "Draw the unchanged master first, then each enabled layer in ascending stacking_order using its blend_mode. Layers sharing a stacking_order do not overlap (mane and tail are disjoint).",
+    "blend_mode": "multiply for every Phase 1A layer (also embedded as style=\"mix-blend-mode:multiply\"). Composite inside an isolated group so multiply acts on the master, not the page background.",
+    "stacking_bands": {
+      "100": "base_coat",
+      "110": "leg_points",
+      "120": "mane, tail",
+      "(reserved) 200-299": "dilutions",
+      "(reserved) 300-399": "gray/roan/pinto/white",
+      "(reserved) 400-499": "leopard complex",
+      "(reserved) 500-599": "markings",
+      "(reserved) 600+": "hoof/eye/skin"
+    }
+  },
+  "genotype_resolution": {
+    "ee": [
+      "qh_mare_master_01__base_chestnut",
+      "qh_mare_master_01__mane_chestnut",
+      "qh_mare_master_01__tail_chestnut"
+    ],
+    "E_ aa": [
+      "qh_mare_master_01__base_black",
+      "qh_mare_master_01__mane_black",
+      "qh_mare_master_01__tail_black"
+    ],
+    "E_ A_": [
+      "qh_mare_master_01__base_bay",
+      "qh_mare_master_01__points_black",
+      "qh_mare_master_01__mane_black",
+      "qh_mare_master_01__tail_black"
+    ]
+  },
+  "layers": [
+    {
+      "layer_id": "qh_mare_master_01__base_chestnut",
+      "layer_name": "Chestnut base coat",
+      "category": "base_coat",
+      "trait_key": "chestnut",
+      "genetic_trigger": "ee (Extension recessive; MC1R). Agouti genotype irrelevant (masked).",
+      "stacking_order": 100,
+      "blend_mode": "multiply",
+      "fill": "#A65A2E",
+      "compatible_pigments": [
+        "red pheomelanin only"
+      ],
+      "incompatible_or_suppressed": [
+        "Any E_ genotype (use black or bay base instead)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__base_black",
+        "qh_mare_master_01__base_bay"
+      ],
+      "covers": "Entire visible hair coat (body, neck, head, ears, legs). Excludes mane, tail, hooves, eye.",
+      "notes": "Flat self-coloured red coat. Shade variation (sorrel/liver chestnut) and flaxen are future modifiers, not baked in.",
+      "filename": "qh_mare_master_01__base_chestnut.svg",
+      "preview_png": "qh_mare_master_01__base_chestnut.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__base_chestnut__mask-coat",
+        "qh_mare_master_01__base_chestnut__mask-anatomy",
+        "qh_mare_master_01__base_chestnut",
+        "qh_mare_master_01__base_chestnut__coat",
+        "qh_mare_master_01__base_chestnut__fill"
+      ],
+      "rendered_alpha_bbox": [
+        250,
+        62,
+        1362,
+        990
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "827deb1a8df90624e19d7a8884802f0e2d161fd7bb6b34cfb373652b343cbdf6",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__base_black",
+      "layer_name": "Black base coat",
+      "category": "base_coat",
+      "trait_key": "black",
+      "genetic_trigger": "E_ aa (at least one dominant Extension allele, homozygous recessive Agouti).",
+      "stacking_order": 100,
+      "blend_mode": "multiply",
+      "fill": "#2E2829",
+      "compatible_pigments": [
+        "black eumelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "ee (chestnut)",
+        "A_ (bay; use bay + points instead)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__base_chestnut",
+        "qh_mare_master_01__base_bay"
+      ],
+      "covers": "Entire visible hair coat (body, neck, head, ears, legs). Excludes mane, tail, hooves, eye.",
+      "notes": "Coat colour is #2E2829 rather than pure black so the master line art stays readable under multiply. Non-fading vs. sun-faded black is not modelled.",
+      "filename": "qh_mare_master_01__base_black.svg",
+      "preview_png": "qh_mare_master_01__base_black.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__base_black__mask-coat",
+        "qh_mare_master_01__base_black__mask-anatomy",
+        "qh_mare_master_01__base_black",
+        "qh_mare_master_01__base_black__coat",
+        "qh_mare_master_01__base_black__fill"
+      ],
+      "rendered_alpha_bbox": [
+        250,
+        62,
+        1362,
+        990
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "f5369ae16d2002a0cb74929518a639f51b72294b33831922bffb1f562b45f7ea",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__base_bay",
+      "layer_name": "Bay base coat",
+      "category": "base_coat",
+      "trait_key": "bay",
+      "genetic_trigger": "E_ A_ (dominant Extension + at least one dominant Agouti allele).",
+      "stacking_order": 100,
+      "blend_mode": "multiply",
+      "fill": "#7E4426",
+      "compatible_pigments": [
+        "red-brown body (pheomelanin) - points supplied separately as eumelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "ee (chestnut)",
+        "aa (black)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__base_chestnut",
+        "qh_mare_master_01__base_black"
+      ],
+      "covers": "Entire visible hair coat (body, neck, head, ears, legs). Excludes mane, tail, hooves, eye.",
+      "notes": "Body colour covers the whole hair coat including legs and ears; the black points layer is stacked above it. Requires lyr_points_black and lyr_mane_tail_black to read as bay. Seal brown (At) and wild bay (A+) are not modelled.",
+      "filename": "qh_mare_master_01__base_bay.svg",
+      "preview_png": "qh_mare_master_01__base_bay.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__base_bay__mask-coat",
+        "qh_mare_master_01__base_bay__mask-anatomy",
+        "qh_mare_master_01__base_bay",
+        "qh_mare_master_01__base_bay__coat",
+        "qh_mare_master_01__base_bay__fill"
+      ],
+      "rendered_alpha_bbox": [
+        250,
+        62,
+        1362,
+        990
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "08219216ecc71d5bed7a232816e7921a29b586f582214aeab0fe3147f8aa790f",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__points_black",
+      "layer_name": "Black points (bay)",
+      "category": "leg_points",
+      "trait_key": "black",
+      "genetic_trigger": "E_ A_",
+      "requires": [
+        "base_coat:bay"
+      ],
+      "stacking_order": 110,
+      "blend_mode": "multiply",
+      "fill": "#2A2425",
+      "compatible_pigments": [
+        "black eumelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "ee (no eumelanin: chestnut has no points)",
+        "aa (black: whole coat already black, layer redundant)"
+      ],
+      "covers": "Lower legs to knee/hock with irregular soft upper edge; ear tips and ear rims. Mane and tail are separate layers.",
+      "notes": "Knee/hock boundary shapes are new hand-set curves (fixed coordinates, no randomness) clipped to the master leg paths; heights follow the master knee (y~755-785) and hock (y~705-735). Point height varies in real bays; this is one representative height. Hooves excluded (hoof layer comes later).",
+      "filename": "qh_mare_master_01__points_black.svg",
+      "preview_png": "qh_mare_master_01__points_black.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__points_black__mask-coat",
+        "qh_mare_master_01__points_black__leg-lf__clip",
+        "qh_mare_master_01__points_black__leg-lf__fade",
+        "qh_mare_master_01__points_black__leg-rf__clip",
+        "qh_mare_master_01__points_black__leg-rf__fade",
+        "qh_mare_master_01__points_black__leg-lh__clip",
+        "qh_mare_master_01__points_black__leg-lh__fade",
+        "qh_mare_master_01__points_black__leg-rh__clip",
+        "qh_mare_master_01__points_black__leg-rh__fade",
+        "qh_mare_master_01__points_black__ear-right__clip",
+        "qh_mare_master_01__points_black__ear-right__fade",
+        "qh_mare_master_01__points_black__ear-left__clip",
+        "qh_mare_master_01__points_black__ear-left__fade",
+        "qh_mare_master_01__points_black",
+        "qh_mare_master_01__points_black__leg-lf",
+        "qh_mare_master_01__points_black__leg-lf__blend",
+        "qh_mare_master_01__points_black__leg-lf__solid",
+        "qh_mare_master_01__points_black__leg-rf",
+        "qh_mare_master_01__points_black__leg-rf__blend",
+        "qh_mare_master_01__points_black__leg-rf__solid",
+        "qh_mare_master_01__points_black__leg-lh",
+        "qh_mare_master_01__points_black__leg-lh__blend",
+        "qh_mare_master_01__points_black__leg-lh__solid",
+        "qh_mare_master_01__points_black__leg-rh",
+        "qh_mare_master_01__points_black__leg-rh__blend",
+        "qh_mare_master_01__points_black__leg-rh__solid",
+        "qh_mare_master_01__points_black__ear-right",
+        "qh_mare_master_01__points_black__ear-right__rim",
+        "qh_mare_master_01__points_black__ear-right__blend",
+        "qh_mare_master_01__points_black__ear-right__solid",
+        "qh_mare_master_01__points_black__ear-left",
+        "qh_mare_master_01__points_black__ear-left__rim",
+        "qh_mare_master_01__points_black__ear-left__blend",
+        "qh_mare_master_01__points_black__ear-left__solid"
+      ],
+      "rendered_alpha_bbox": [
+        254,
+        62,
+        1273,
+        990
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "f10abecd3f4a7b58cafb832a26b3fb24c1075333a464d0f99d71147e57177754",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__mane_black",
+      "layer_name": "Mane - black",
+      "category": "mane",
+      "trait_key": "black",
+      "genetic_trigger": "E_ (any eumelanin-producing genotype: black or bay)",
+      "stacking_order": 120,
+      "blend_mode": "multiply",
+      "fill": "#262122",
+      "compatible_pigments": [
+        "black eumelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "ee (use the chestnut layer)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__mane_chestnut"
+      ],
+      "covers": "Mane: crest and forelock (master mane-base), plus withers gap fill.",
+      "notes": "Used by both black and bay. Includes two small hand-set withers gap-fill polygons (new geometry, clipped to the master silhouette, stopping at the crest outline) covering slivers that lie outside the master mane-base path.",
+      "filename": "qh_mare_master_01__mane_black.svg",
+      "preview_png": "qh_mare_master_01__mane_black.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__mane_black__clip-silhouette",
+        "qh_mare_master_01__mane_black",
+        "qh_mare_master_01__mane_black__fill",
+        "qh_mare_master_01__mane_black__withers-gap-fill",
+        "qh_mare_master_01__mane_black__withers-gap-fill-1",
+        "qh_mare_master_01__mane_black__withers-gap-fill-2"
+      ],
+      "rendered_alpha_bbox": [
+        823,
+        101,
+        1292,
+        230
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "09724afb279d104a4bb191e132ac4088d8b2dd47c26c0a394d4991b5518c324e",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__tail_black",
+      "layer_name": "Tail - black",
+      "category": "tail",
+      "trait_key": "black",
+      "genetic_trigger": "E_ (any eumelanin-producing genotype: black or bay)",
+      "stacking_order": 120,
+      "blend_mode": "multiply",
+      "fill": "#262122",
+      "compatible_pigments": [
+        "black eumelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "ee (use the chestnut layer)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__tail_chestnut"
+      ],
+      "covers": "Visible tail: master tail-base minus body and legs drawn in front of it.",
+      "notes": "Used by both black and bay.",
+      "filename": "qh_mare_master_01__tail_black.svg",
+      "preview_png": "qh_mare_master_01__tail_black.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__tail_black__mask-tail",
+        "qh_mare_master_01__tail_black",
+        "qh_mare_master_01__tail_black__fill"
+      ],
+      "rendered_alpha_bbox": [
+        162,
+        273,
+        301,
+        921
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "66c435dcdad39e0bbb102ac9cb2575a1f4de2cb2eaa7324c19f5ab3a4ad3cff9",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__mane_chestnut",
+      "layer_name": "Mane - chestnut",
+      "category": "mane",
+      "trait_key": "chestnut",
+      "genetic_trigger": "ee",
+      "stacking_order": 120,
+      "blend_mode": "multiply",
+      "fill": "#94481F",
+      "compatible_pigments": [
+        "red pheomelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "E_ (use the black layer)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__mane_black"
+      ],
+      "covers": "Mane: crest and forelock (master mane-base), plus withers gap fill.",
+      "notes": "Self-coloured (matches body tone, slightly deeper). Flaxen is a separate future modifier. Includes two small hand-set withers gap-fill polygons (new geometry, clipped to the master silhouette, stopping at the crest outline) covering slivers that lie outside the master mane-base path.",
+      "filename": "qh_mare_master_01__mane_chestnut.svg",
+      "preview_png": "qh_mare_master_01__mane_chestnut.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__mane_chestnut__clip-silhouette",
+        "qh_mare_master_01__mane_chestnut",
+        "qh_mare_master_01__mane_chestnut__fill",
+        "qh_mare_master_01__mane_chestnut__withers-gap-fill",
+        "qh_mare_master_01__mane_chestnut__withers-gap-fill-1",
+        "qh_mare_master_01__mane_chestnut__withers-gap-fill-2"
+      ],
+      "rendered_alpha_bbox": [
+        823,
+        101,
+        1292,
+        230
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "f79d96d2e7ed75a538a1dc25c4599cf5c61c29d14970e4f4096d43a8c6607b2e",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    },
+    {
+      "layer_id": "qh_mare_master_01__tail_chestnut",
+      "layer_name": "Tail - chestnut",
+      "category": "tail",
+      "trait_key": "chestnut",
+      "genetic_trigger": "ee",
+      "stacking_order": 120,
+      "blend_mode": "multiply",
+      "fill": "#94481F",
+      "compatible_pigments": [
+        "red pheomelanin"
+      ],
+      "incompatible_or_suppressed": [
+        "E_ (use the black layer)"
+      ],
+      "mutually_exclusive_with": [
+        "qh_mare_master_01__tail_black"
+      ],
+      "covers": "Visible tail: master tail-base minus body and legs drawn in front of it.",
+      "notes": "Self-coloured (matches body tone, slightly deeper). Flaxen is a separate future modifier.",
+      "filename": "qh_mare_master_01__tail_chestnut.svg",
+      "preview_png": "qh_mare_master_01__tail_chestnut.png",
+      "svg_element_ids": [
+        "qh_mare_master_01__tail_chestnut__mask-tail",
+        "qh_mare_master_01__tail_chestnut",
+        "qh_mare_master_01__tail_chestnut__fill"
+      ],
+      "rendered_alpha_bbox": [
+        162,
+        273,
+        301,
+        921
+      ],
+      "canvas": {
+        "width": 1496,
+        "height": 1051,
+        "viewBox": "0 0 1496 1051"
+      },
+      "master": "qh_mare_master_01.svg",
+      "master_asset_key": "qh_mare_vector_master_01",
+      "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+      "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+      "sha256": "e806764ff79a9235c19271bfc078e28659703fc8ac3e4646b185203d7a8b52ac",
+      "validation": {
+        "passed": true,
+        "canvas": true,
+        "no_image": true,
+        "no_script": true,
+        "no_text": true,
+        "no_transform": true,
+        "no_external": true,
+        "no_style_element": true,
+        "ids_unique_in_file": true,
+        "png_size": true,
+        "transparent_bg": true,
+        "pixels_outside_master_silhouette": 0
+      }
+    }
+  ],
+  "composite_proofs": [
+    {
+      "file": "proofs/qh_mare_master_01__proof_chestnut.png",
+      "svg": "proofs/qh_mare_master_01__proof_chestnut.svg",
+      "layers": [
+        "base_chestnut",
+        "mane_chestnut",
+        "tail_chestnut"
+      ]
+    },
+    {
+      "file": "proofs/qh_mare_master_01__proof_black.png",
+      "svg": "proofs/qh_mare_master_01__proof_black.svg",
+      "layers": [
+        "base_black",
+        "mane_black",
+        "tail_black"
+      ]
+    },
+    {
+      "file": "proofs/qh_mare_master_01__proof_bay.png",
+      "svg": "proofs/qh_mare_master_01__proof_bay.svg",
+      "layers": [
+        "base_bay",
+        "points_black",
+        "mane_black",
+        "tail_black"
+      ]
+    },
+    {
+      "file": "proofs/qh_mare_master_01__proof_bay_no_points.png",
+      "svg": "proofs/qh_mare_master_01__proof_bay_no_points.svg",
+      "layers": [
+        "base_bay",
+        "mane_black",
+        "tail_black"
+      ],
+      "purpose": "shows the leg_points layer is independent"
+    }
+  ],
+  "review_sheet": "proofs/qh_mare_master_01__phase1a_review_sheet.png",
+  "verification": {
+    "renderers": [
+      "librsvg 2.58 (PNG previews)",
+      "Google Chrome (cross-check)"
+    ],
+    "all_layers_zero_pixels_outside_master_silhouette": true,
+    "unchanged_since_revision_1_byte_identical": [
+      "qh_mare_master_01__base_chestnut.svg",
+      "qh_mare_master_01__base_black.svg",
+      "qh_mare_master_01__base_bay.svg",
+      "qh_mare_master_01__points_black.svg"
+    ]
+  },
+  "changes_in_revision_2": [
+    "mane_tail_black / mane_tail_chestnut replaced by independent mane_black, tail_black, mane_chestnut, tail_chestnut (stacking_order 120).",
+    "points_black metadata: category leg_points, trait_key black, genetic_trigger E_ A_, requires base_coat:bay. Artwork, filename and IDs unchanged.",
+    "Base coat metadata: category base_coat with trait_key chestnut/black/bay, so requires base_coat:bay resolves. Artwork unchanged.",
+    "Withers gap fill added inside both mane layers (two polygons traced from the master line art, clipped to the master silhouette)."
+  ],
+  "known_issues_for_review": [
+    "Withers gap areas lie under both the base coat and the mane, so under multiply they render slightly darker than the rest of the mane on bay and chestnut (reads as shadow between tufts). On black it is invisible. An exact match would need the gaps cut out of the base coats, which was not done because the base coat artwork is frozen.",
+    "Hooves unpainted (master white) until the hoof base layer exists.",
+    "Eye excluded from coat layers; eye base layer comes later.",
+    "Bay point height is one representative height (to knee/hock).",
+    "Base coats are flat tones; form comes from master shading under multiply."
+  ]
+}

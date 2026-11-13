@@ -1,0 +1,58 @@
+{
+  "layer_id": "qh_mare_master_01__tail_chestnut",
+  "layer_name": "Tail - chestnut",
+  "category": "tail",
+  "trait_key": "chestnut",
+  "genetic_trigger": "ee",
+  "stacking_order": 120,
+  "blend_mode": "multiply",
+  "fill": "#94481F",
+  "compatible_pigments": [
+    "red pheomelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "E_ (use the black layer)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__tail_black"
+  ],
+  "covers": "Visible tail: master tail-base minus body and legs drawn in front of it.",
+  "notes": "Self-coloured (matches body tone, slightly deeper). Flaxen is a separate future modifier.",
+  "filename": "qh_mare_master_01__tail_chestnut.svg",
+  "preview_png": "qh_mare_master_01__tail_chestnut.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__tail_chestnut__mask-tail",
+    "qh_mare_master_01__tail_chestnut",
+    "qh_mare_master_01__tail_chestnut__fill"
+  ],
+  "rendered_alpha_bbox": [
+    162,
+    273,
+    301,
+    921
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "e806764ff79a9235c19271bfc078e28659703fc8ac3e4646b185203d7a8b52ac",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "layer_id": "qh_mare_master_01__mane_black",
+  "layer_name": "Mane - black",
+  "category": "mane",
+  "trait_key": "black",
+  "genetic_trigger": "E_ (any eumelanin-producing genotype: black or bay)",
+  "stacking_order": 120,
+  "blend_mode": "multiply",
+  "fill": "#262122",
+  "compatible_pigments": [
+    "black eumelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "ee (use the chestnut layer)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__mane_chestnut"
+  ],
+  "covers": "Mane: crest and forelock (master mane-base), plus withers gap fill.",
+  "notes": "Used by both black and bay. Includes two small hand-set withers gap-fill polygons (new geometry, clipped to the master silhouette, stopping at the crest outline) covering slivers that lie outside the master mane-base path.",
+  "filename": "qh_mare_master_01__mane_black.svg",
+  "preview_png": "qh_mare_master_01__mane_black.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__mane_black__clip-silhouette",
+    "qh_mare_master_01__mane_black",
+    "qh_mare_master_01__mane_black__fill",
+    "qh_mare_master_01__mane_black__withers-gap-fill",
+    "qh_mare_master_01__mane_black__withers-gap-fill-1",
+    "qh_mare_master_01__mane_black__withers-gap-fill-2"
+  ],
+  "rendered_alpha_bbox": [
+    823,
+    101,
+    1292,
+    230
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "09724afb279d104a4bb191e132ac4088d8b2dd47c26c0a394d4991b5518c324e",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

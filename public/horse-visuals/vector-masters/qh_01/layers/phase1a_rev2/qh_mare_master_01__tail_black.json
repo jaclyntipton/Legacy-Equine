@@ -1,0 +1,58 @@
+{
+  "layer_id": "qh_mare_master_01__tail_black",
+  "layer_name": "Tail - black",
+  "category": "tail",
+  "trait_key": "black",
+  "genetic_trigger": "E_ (any eumelanin-producing genotype: black or bay)",
+  "stacking_order": 120,
+  "blend_mode": "multiply",
+  "fill": "#262122",
+  "compatible_pigments": [
+    "black eumelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "ee (use the chestnut layer)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__tail_chestnut"
+  ],
+  "covers": "Visible tail: master tail-base minus body and legs drawn in front of it.",
+  "notes": "Used by both black and bay.",
+  "filename": "qh_mare_master_01__tail_black.svg",
+  "preview_png": "qh_mare_master_01__tail_black.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__tail_black__mask-tail",
+    "qh_mare_master_01__tail_black",
+    "qh_mare_master_01__tail_black__fill"
+  ],
+  "rendered_alpha_bbox": [
+    162,
+    273,
+    301,
+    921
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "66c435dcdad39e0bbb102ac9cb2575a1f4de2cb2eaa7324c19f5ab3a4ad3cff9",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

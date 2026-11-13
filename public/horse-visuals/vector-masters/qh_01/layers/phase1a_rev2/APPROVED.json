@@ -1,0 +1,17 @@
+{
+  "approval": "Owner #1 approved Quarter Horse mare Phase 1A Revision 2",
+  "approved_at": "2026-11-13",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "production_ready": false,
+  "layers": [
+    ["qh_mare_master_01__base_chestnut.svg", "827deb1a8df90624e19d7a8884802f0e2d161fd7bb6b34cfb373652b343cbdf6"],
+    ["qh_mare_master_01__base_black.svg", "f5369ae16d2002a0cb74929518a639f51b72294b33831922bffb1f562b45f7ea"],
+    ["qh_mare_master_01__base_bay.svg", "08219216ecc71d5bed7a232816e7921a29b586f582214aeab0fe3147f8aa790f"],
+    ["qh_mare_master_01__points_black.svg", "f10abecd3f4a7b58cafb832a26b3fb24c1075333a464d0f99d71147e57177754"],
+    ["qh_mare_master_01__mane_black.svg", "09724afb279d104a4bb191e132ac4088d8b2dd47c26c0a394d4991b5518c324e"],
+    ["qh_mare_master_01__tail_black.svg", "66c435dcdad39e0bbb102ac9cb2575a1f4de2cb2eaa7324c19f5ab3a4ad3cff9"],
+    ["qh_mare_master_01__mane_chestnut.svg", "f79d96d2e7ed75a538a1dc25c4599cf5c61c29d14970e4f4096d43a8c6607b2e"],
+    ["qh_mare_master_01__tail_chestnut.svg", "e806764ff79a9235c19271bfc078e28659703fc8ac3e4646b185203d7a8b52ac"]
+  ]
+}

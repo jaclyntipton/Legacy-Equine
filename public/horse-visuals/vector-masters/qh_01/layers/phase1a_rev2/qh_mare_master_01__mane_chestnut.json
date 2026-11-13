@@ -1,0 +1,61 @@
+{
+  "layer_id": "qh_mare_master_01__mane_chestnut",
+  "layer_name": "Mane - chestnut",
+  "category": "mane",
+  "trait_key": "chestnut",
+  "genetic_trigger": "ee",
+  "stacking_order": 120,
+  "blend_mode": "multiply",
+  "fill": "#94481F",
+  "compatible_pigments": [
+    "red pheomelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "E_ (use the black layer)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__mane_black"
+  ],
+  "covers": "Mane: crest and forelock (master mane-base), plus withers gap fill.",
+  "notes": "Self-coloured (matches body tone, slightly deeper). Flaxen is a separate future modifier. Includes two small hand-set withers gap-fill polygons (new geometry, clipped to the master silhouette, stopping at the crest outline) covering slivers that lie outside the master mane-base path.",
+  "filename": "qh_mare_master_01__mane_chestnut.svg",
+  "preview_png": "qh_mare_master_01__mane_chestnut.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__mane_chestnut__clip-silhouette",
+    "qh_mare_master_01__mane_chestnut",
+    "qh_mare_master_01__mane_chestnut__fill",
+    "qh_mare_master_01__mane_chestnut__withers-gap-fill",
+    "qh_mare_master_01__mane_chestnut__withers-gap-fill-1",
+    "qh_mare_master_01__mane_chestnut__withers-gap-fill-2"
+  ],
+  "rendered_alpha_bbox": [
+    823,
+    101,
+    1292,
+    230
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "f79d96d2e7ed75a538a1dc25c4599cf5c61c29d14970e4f4096d43a8c6607b2e",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "layer_id": "qh_mare_master_01__base_bay",
+  "layer_name": "Bay base coat",
+  "category": "base_coat",
+  "trait_key": "bay",
+  "genetic_trigger": "E_ A_ (dominant Extension + at least one dominant Agouti allele).",
+  "stacking_order": 100,
+  "blend_mode": "multiply",
+  "fill": "#7E4426",
+  "compatible_pigments": [
+    "red-brown body (pheomelanin) - points supplied separately as eumelanin"
+  ],
+  "incompatible_or_suppressed": [
+    "ee (chestnut)",
+    "aa (black)"
+  ],
+  "mutually_exclusive_with": [
+    "qh_mare_master_01__base_chestnut",
+    "qh_mare_master_01__base_black"
+  ],
+  "covers": "Entire visible hair coat (body, neck, head, ears, legs). Excludes mane, tail, hooves, eye.",
+  "notes": "Body colour covers the whole hair coat including legs and ears; the black points layer is stacked above it. Requires lyr_points_black and lyr_mane_tail_black to read as bay. Seal brown (At) and wild bay (A+) are not modelled.",
+  "filename": "qh_mare_master_01__base_bay.svg",
+  "preview_png": "qh_mare_master_01__base_bay.png",
+  "svg_element_ids": [
+    "qh_mare_master_01__base_bay__mask-coat",
+    "qh_mare_master_01__base_bay__mask-anatomy",
+    "qh_mare_master_01__base_bay",
+    "qh_mare_master_01__base_bay__coat",
+    "qh_mare_master_01__base_bay__fill"
+  ],
+  "rendered_alpha_bbox": [
+    250,
+    62,
+    1362,
+    990
+  ],
+  "canvas": {
+    "width": 1496,
+    "height": 1051,
+    "viewBox": "0 0 1496 1051"
+  },
+  "master": "qh_mare_master_01.svg",
+  "master_asset_key": "qh_mare_vector_master_01",
+  "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+  "registration": "Clip/mask geometry is the master path data copied verbatim; no transforms; identical canvas.",
+  "sha256": "08219216ecc71d5bed7a232816e7921a29b586f582214aeab0fe3147f8aa790f",
+  "validation": {
+    "passed": true,
+    "canvas": true,
+    "no_image": true,
+    "no_script": true,
+    "no_text": true,
+    "no_transform": true,
+    "no_external": true,
+    "no_style_element": true,
+    "ids_unique_in_file": true,
+    "png_size": true,
+    "transparent_bg": true,
+    "pixels_outside_master_silhouette": 0
+  }
+}

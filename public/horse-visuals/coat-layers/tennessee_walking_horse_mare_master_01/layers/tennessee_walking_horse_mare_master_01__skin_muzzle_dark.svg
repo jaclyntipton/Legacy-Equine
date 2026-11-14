@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="tennessee_walking_horse_mare_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1268.6,353.3 L1265.8,353.3 L1250.2,348.7 L1246.5,346.9 L1241.5,341.9 L1238.5,335.9 L1237.7,326.1 L1235.3,321.5 L1227.7,313.1 L1199.7,291.4 L1199.1,289.7 L1199.4,282.2 L1303.9,281.9 L1305.6,282.6 L1313.8,300.7 L1315.1,308.2 L1312.6,318.6 L1302.8,341.1 L1299.4,345.1 L1292.9,348.7 L1286.0,350.6 L1276.7,350.6Z"/></clipPath>
+<radialGradient id="tennessee_walking_horse_mare_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1282.6" cy="326.2" r="71.9"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="tennessee_walking_horse_mare_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#tennessee_walking_horse_mare_master_01__skin_muzzle_dark__clip)">
+<rect id="tennessee_walking_horse_mare_master_01__skin_muzzle_dark__fill" x="1179.1" y="261.9" width="156.0" height="111.4" fill="url(#tennessee_walking_horse_mare_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

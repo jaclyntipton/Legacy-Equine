@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="tennessee_walking_horse_mare_master_01__eye_pale__clip"><path clip-rule="evenodd" d="M1228.8,183.0 L1218.4,183.2 L1210.4,180.2 L1207.3,177.1 L1205.0,169.6 L1206.9,168.3 L1215.0,165.9 L1223.0,165.9 L1224.8,166.6 L1227.7,169.4 L1228.4,171.4Z"/></clipPath>
+<radialGradient id="tennessee_walking_horse_mare_master_01__eye_pale__iris" gradientUnits="userSpaceOnUse" cx="1216.9" cy="174.6" r="14.3"><stop offset="0" stop-color="#C9B48A"/><stop offset="0.75" stop-color="#4F3E24"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="tennessee_walking_horse_mare_master_01__eye_pale" clip-path="url(#tennessee_walking_horse_mare_master_01__eye_pale__clip)">
+<rect id="tennessee_walking_horse_mare_master_01__eye_pale__iris-fill" x="1203.0" y="163.9" width="27.8" height="21.3" fill="url(#tennessee_walking_horse_mare_master_01__eye_pale__iris)"/>
+<ellipse id="tennessee_walking_horse_mare_master_01__eye_pale__pupil" cx="1216.9" cy="175.4" rx="5.2" ry="2.8" fill="#0B0707"/>
+<circle id="tennessee_walking_horse_mare_master_01__eye_pale__catchlight" cx="1221.2" cy="171.4" r="2.1" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

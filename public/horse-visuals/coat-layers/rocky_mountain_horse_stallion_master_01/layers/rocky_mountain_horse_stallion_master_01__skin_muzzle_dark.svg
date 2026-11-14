@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="rocky_mountain_horse_stallion_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1290.4,382.7 L1284.5,382.2 L1266.4,378.0 L1259.8,374.9 L1256.2,372.0 L1253.4,367.9 L1251.5,362.1 L1250.1,352.7 L1245.9,346.7 L1238.9,342.0 L1221.4,333.0 L1221.4,301.2 L1329.0,301.3 L1337.9,320.0 L1338.6,322.9 L1338.6,332.2 L1336.7,340.4 L1330.6,354.5 L1328.5,362.6 L1322.8,370.8 L1317.3,375.1 L1306.2,378.7 L1300.3,378.9Z"/></clipPath>
+<radialGradient id="rocky_mountain_horse_stallion_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1305.8" cy="351.7" r="72.7"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="rocky_mountain_horse_stallion_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#rocky_mountain_horse_stallion_master_01__skin_muzzle_dark__clip)">
+<rect id="rocky_mountain_horse_stallion_master_01__skin_muzzle_dark__fill" x="1201.4" y="281.2" width="157.2" height="121.5" fill="url(#rocky_mountain_horse_stallion_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="tennessee_walking_horse_stallion_master_01__eye_amber__clip"><path clip-rule="evenodd" d="M1228.8,183.0 L1217.3,183.2 L1211.5,180.8 L1207.3,176.6 L1205.1,169.6 L1212.7,166.6 L1221.3,165.3 L1223.6,166.0 L1227.8,170.2 L1229.1,178.9Z"/></clipPath>
+<radialGradient id="tennessee_walking_horse_stallion_master_01__eye_amber__iris" gradientUnits="userSpaceOnUse" cx="1217.1" cy="174.2" r="14.4"><stop offset="0" stop-color="#B07A2C"/><stop offset="0.75" stop-color="#3C2410"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="tennessee_walking_horse_stallion_master_01__eye_amber" clip-path="url(#tennessee_walking_horse_stallion_master_01__eye_amber__clip)">
+<rect id="tennessee_walking_horse_stallion_master_01__eye_amber__iris-fill" x="1203.1" y="163.3" width="28.0" height="21.9" fill="url(#tennessee_walking_horse_stallion_master_01__eye_amber__iris)"/>
+<ellipse id="tennessee_walking_horse_stallion_master_01__eye_amber__pupil" cx="1217.1" cy="175.1" rx="5.3" ry="2.9" fill="#0B0707"/>
+<circle id="tennessee_walking_horse_stallion_master_01__eye_amber__catchlight" cx="1221.4" cy="171.0" r="2.1" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

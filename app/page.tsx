@@ -1065,8 +1065,8 @@ function Empty({ go }: { go: () => void }) {
     </div>
   );
 }
-function HorseArtworkImage({url,alt}:{url:string;alt:string}) {
-  return <ContainedHorseArtwork url={url} alt={alt}/>;
+function HorseArtworkImage({url,alt,horseId}:{url:string;alt:string;horseId?:string}) {
+  return <ContainedHorseArtwork horseId={horseId} url={url} alt={alt}/>;
 }
 function HorseListTools({horses,tiers,query,setQuery,breed,setBreed,sex,setSex,origin,setOrigin,ageFilter,setAge,tier,setTier,breeding,setBreeding,sort,setSort,viewMode,setViewMode}:{horses:Horse[];tiers:CompetitionTier[];query:string;setQuery:(v:string)=>void;breed:string;setBreed:(v:string)=>void;sex:string;setSex:(v:string)=>void;origin:string;setOrigin:(v:string)=>void;ageFilter:string;setAge:(v:string)=>void;tier:string;setTier:(v:string)=>void;breeding:string;setBreeding:(v:string)=>void;sort:string;setSort:(v:string)=>void;viewMode:"cards"|"compact";setViewMode:(v:"cards"|"compact")=>void}){
  const breeds=[...new Set(horses.map(h=>h.breed))].sort(),origins=[...new Set(horses.map(h=>h.origin))].sort();
@@ -1076,7 +1076,7 @@ function Card({ h,tiers, open, compact=false }: { h: Horse;tiers:CompetitionTier
   return (
     <article className={`horsecard ${compact?"compact":""}`} onClick={() => open(h)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")open(h)}} role="button" tabIndex={0} aria-label={`View ${h.name}`}>
       <div className="horsepic">
-        <HorseArtworkImage url={h.image_url} alt={h.name}/>
+        <HorseArtworkImage horseId={h.id} url={h.image_url} alt={h.name}/>
         <span>{h.origin}</span>
       </div>
       <div className="horsecardbody">
@@ -1113,7 +1113,7 @@ function StoreCard({
   return (
     <article className="storecard">
       <button className="storeimage" onClick={view}>
-        <HorseArtworkImage url="" alt={h.name}/>
+        <HorseArtworkImage horseId={h.horse_id} url="" alt={h.name}/>
       </button>
       <div className="storecardbody">
         <h3>{h.name}</h3>
@@ -1152,7 +1152,7 @@ function StorePreview({
       </button>
       <section className="storepreview">
         <div className="previewart">
-          <HorseArtworkImage url={h.image_url} alt={h.name}/>
+          <HorseArtworkImage horseId={h.horse_id} url={h.image_url} alt={h.name}/>
           <span>FOUNDATION HORSE</span>
         </div>
         <div className="previewinfo">
@@ -1207,7 +1207,7 @@ function TrainingCenter({
         <div className="featuregrid">
           {horses.map((h) => (
             <article className="featurecard" key={h.id}>
-              <HorseArtworkImage url={h.image_url} alt={h.name}/>
+              <HorseArtworkImage horseId={h.id} url={h.image_url} alt={h.name}/>
               <div>
                 <p className="eyebrow">
                   {h.breed} · {h.sex}
@@ -1359,7 +1359,7 @@ function MarketplaceView({
         {listings.map((h) => (
           <article className="storecard" key={h.listing_id}>
             <div className="storeimage">
-              <HorseArtworkImage url={h.image_url} alt={h.name}/>
+              <HorseArtworkImage horseId={h.horse_id} url={h.image_url} alt={h.name}/>
               <span>{h.sex}</span>
             </div>
             <div className="storecardbody">

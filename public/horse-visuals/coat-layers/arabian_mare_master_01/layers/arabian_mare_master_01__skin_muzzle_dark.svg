@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="arabian_mare_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1325.3,354.0 L1319.9,353.4 L1312.1,350.6 L1301.2,350.5 L1293.4,348.0 L1290.4,345.0 L1288.5,341.2 L1286.9,327.9 L1283.2,324.0 L1273.5,318.8 L1256.1,311.8 L1242.5,304.4 L1241.9,302.6 L1242.2,266.5 L1338.6,266.2 L1350.6,278.8 L1361.2,287.6 L1362.9,291.2 L1361.2,296.0 L1361.7,306.3 L1361.0,309.9 L1355.9,321.3 L1354.5,334.6 L1352.6,339.4 L1349.4,342.7 L1345.8,344.9 L1338.0,347.5 L1333.2,347.7 L1330.2,351.7Z"/></clipPath>
+<radialGradient id="arabian_mare_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1329.0" cy="320.6" r="75.0"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="arabian_mare_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#arabian_mare_master_01__skin_muzzle_dark__clip)">
+<rect id="arabian_mare_master_01__skin_muzzle_dark__fill" x="1221.9" y="246.2" width="161.0" height="127.8" fill="url(#arabian_mare_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

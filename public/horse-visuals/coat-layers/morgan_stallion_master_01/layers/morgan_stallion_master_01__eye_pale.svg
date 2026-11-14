@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="morgan_stallion_master_01__eye_pale__clip"><path clip-rule="evenodd" d="M1226.2,193.2 L1222.1,193.3 L1215.6,191.4 L1211.4,187.3 L1205.5,178.2 L1215.6,169.2 L1224.4,166.7 L1227.4,166.8 L1229.9,168.2 L1235.8,178.8 L1238.9,189.5 L1238.6,190.7 L1236.8,191.4Z"/></clipPath>
+<radialGradient id="morgan_stallion_master_01__eye_pale__iris" gradientUnits="userSpaceOnUse" cx="1222.2" cy="180.0" r="20.0"><stop offset="0" stop-color="#C9B48A"/><stop offset="0.75" stop-color="#4F3E24"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="morgan_stallion_master_01__eye_pale" clip-path="url(#morgan_stallion_master_01__eye_pale__clip)">
+<rect id="morgan_stallion_master_01__eye_pale__iris-fill" x="1203.5" y="164.7" width="37.4" height="30.6" fill="url(#morgan_stallion_master_01__eye_pale__iris)"/>
+<ellipse id="morgan_stallion_master_01__eye_pale__pupil" cx="1222.2" cy="181.3" rx="7.3" ry="4.3" fill="#0B0707"/>
+<circle id="morgan_stallion_master_01__eye_pale__catchlight" cx="1228.2" cy="175.2" r="3.2" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

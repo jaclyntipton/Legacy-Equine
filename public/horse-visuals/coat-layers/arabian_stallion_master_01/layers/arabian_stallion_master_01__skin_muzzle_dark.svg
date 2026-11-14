@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="arabian_stallion_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1321.7,352.8 L1318.1,352.9 L1312.1,351.2 L1297.6,351.1 L1289.8,348.6 L1287.8,346.6 L1285.9,341.8 L1285.3,338.2 L1285.7,328.5 L1280.8,322.8 L1274.7,319.4 L1245.0,306.3 L1244.3,304.4 L1244.6,278.6 L1353.0,278.2 L1355.1,279.1 L1361.5,286.2 L1362.8,288.8 L1365.4,303.8 L1364.0,310.5 L1358.3,318.3 L1355.9,323.1 L1353.2,335.2 L1350.9,338.8 L1342.8,346.2 L1338.0,348.1 L1328.9,348.9 L1325.3,351.6Z"/></clipPath>
+<radialGradient id="arabian_stallion_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1331.5" cy="324.5" r="75.1"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="arabian_stallion_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#arabian_stallion_master_01__skin_muzzle_dark__clip)">
+<rect id="arabian_stallion_master_01__skin_muzzle_dark__fill" x="1224.3" y="258.2" width="161.1" height="114.7" fill="url(#arabian_stallion_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

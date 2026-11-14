@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="qh_mare_master_01__hoof_lf_striped__clip"><path clip-rule="evenodd" d="M863.0,982.4 L841.9,982.0 L831.4,980.6 L823.9,974.5 L817.7,967.8 L820.4,966.8 L826.4,961.7 L840.0,954.3 L863.6,944.3 L867.3,944.4 L885.4,972.4 L886.8,976.1 L885.3,978.9 L882.8,980.0 L871.6,982.0Z"/></clipPath>
+</defs>
+<g id="qh_mare_master_01__hoof_lf_striped" style="mix-blend-mode:multiply" clip-path="url(#qh_mare_master_01__hoof_lf_striped__clip)">
+<path id="qh_mare_master_01__hoof_lf_striped__fill" fill="#E6D6B4" d="M863.0,982.4 L841.9,982.0 L831.4,980.6 L823.9,974.5 L817.7,967.8 L820.4,966.8 L826.4,961.7 L840.0,954.3 L863.6,944.3 L867.3,944.4 L885.4,972.4 L886.8,976.1 L885.3,978.9 L882.8,980.0 L871.6,982.0Z"/>
+<path id="qh_mare_master_01__hoof_lf_striped__stripes" fill="#3E3838" d="M820.7,942.3 L826.0,942.3 L824.6,984.4 L819.9,984.4 Z M834.4,942.3 L839.8,942.3 L838.6,984.4 L834.7,984.4 Z M846.1,942.3 L849.3,942.3 L848.3,984.4 L846.8,984.4 Z M856.9,942.3 L860.5,942.3 L858.5,984.4 L856.0,984.4 Z M869.1,942.3 L873.7,942.3 L874.4,984.4 L868.7,984.4 Z M880.0,942.3 L884.1,942.3 L883.1,984.4 L880.5,984.4 Z"/>
+</g>
+</svg>

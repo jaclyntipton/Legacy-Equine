@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="qh_stallion_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1312.9,375.6 L1302.4,374.0 L1285.7,373.9 L1281.3,372.6 L1277.9,369.9 L1274.4,364.4 L1273.0,360.6 L1272.2,352.6 L1269.6,348.2 L1234.2,331.5 L1234.2,297.5 L1348.3,297.1 L1350.8,297.8 L1357.1,312.3 L1358.5,324.7 L1357.1,331.5 L1351.9,342.0 L1348.4,355.7 L1346.6,359.4 L1343.9,362.2 L1335.9,368.2 L1329.1,370.8 L1321.6,370.3 L1318.5,373.8Z"/></clipPath>
+<radialGradient id="qh_stallion_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1323.7" cy="345.8" r="77.1"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="qh_stallion_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#qh_stallion_master_01__skin_muzzle_dark__clip)">
+<rect id="qh_stallion_master_01__skin_muzzle_dark__fill" x="1214.2" y="277.1" width="164.3" height="118.5" fill="url(#qh_stallion_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

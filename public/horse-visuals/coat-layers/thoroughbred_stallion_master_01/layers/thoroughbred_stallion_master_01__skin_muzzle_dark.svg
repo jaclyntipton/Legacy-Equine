@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="thoroughbred_stallion_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1280.2,332.5 L1257.3,331.5 L1251.0,329.1 L1246.2,324.4 L1243.4,318.1 L1242.5,311.2 L1239.5,307.5 L1205.5,292.2 L1204.8,290.5 L1205.1,259.0 L1308.9,258.7 L1311.2,259.3 L1317.1,269.9 L1320.1,280.8 L1319.5,288.2 L1316.3,299.1 L1313.1,314.0 L1310.9,318.1 L1304.3,323.9 L1295.2,327.9 L1286.6,328.8Z"/></clipPath>
+<radialGradient id="thoroughbred_stallion_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1287.8" cy="304.5" r="71.5"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="thoroughbred_stallion_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#thoroughbred_stallion_master_01__skin_muzzle_dark__clip)">
+<rect id="thoroughbred_stallion_master_01__skin_muzzle_dark__fill" x="1184.8" y="238.7" width="155.3" height="113.8" fill="url(#thoroughbred_stallion_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

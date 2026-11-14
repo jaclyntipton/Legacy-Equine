@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="qh_mare_master_01__eye_pale__clip"><path clip-rule="evenodd" d="M1265.8,212.1 L1257.2,212.2 L1252.2,210.2 L1248.3,205.7 L1247.1,200.1 L1251.6,197.4 L1258.4,195.6 L1266.5,195.6 L1269.1,201.3 L1270.5,210.6 L1269.6,211.6Z"/></clipPath>
+<radialGradient id="qh_mare_master_01__eye_pale__iris" gradientUnits="userSpaceOnUse" cx="1258.8" cy="203.9" r="14.0"><stop offset="0" stop-color="#C9B48A"/><stop offset="0.75" stop-color="#4F3E24"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="qh_mare_master_01__eye_pale" clip-path="url(#qh_mare_master_01__eye_pale__clip)">
+<rect id="qh_mare_master_01__eye_pale__iris-fill" x="1245.1" y="193.6" width="27.4" height="20.6" fill="url(#qh_mare_master_01__eye_pale__iris)"/>
+<ellipse id="qh_mare_master_01__eye_pale__pupil" cx="1258.8" cy="204.7" rx="5.1" ry="2.7" fill="#0B0707"/>
+<circle id="qh_mare_master_01__eye_pale__catchlight" cx="1263.0" cy="200.9" r="2.0" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

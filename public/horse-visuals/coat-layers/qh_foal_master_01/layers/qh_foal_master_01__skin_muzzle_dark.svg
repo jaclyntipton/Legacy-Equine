@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="qh_foal_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1321.0,381.2 L1314.2,381.4 L1309.8,380.2 L1296.8,380.7 L1289.4,378.1 L1284.9,373.0 L1281.5,362.5 L1278.9,357.2 L1272.7,353.0 L1246.6,340.3 L1238.6,335.2 L1238.6,306.8 L1354.0,306.7 L1360.2,318.5 L1362.1,324.1 L1362.8,334.6 L1361.4,340.8 L1353.4,362.5 L1350.1,367.1 L1343.3,372.6 L1333.4,376.3 L1326.0,376.6Z"/></clipPath>
+<radialGradient id="qh_foal_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1328.0" cy="353.0" r="77.0"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="qh_foal_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#qh_foal_master_01__skin_muzzle_dark__clip)">
+<rect id="qh_foal_master_01__skin_muzzle_dark__fill" x="1218.6" y="286.7" width="164.2" height="114.7" fill="url(#qh_foal_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

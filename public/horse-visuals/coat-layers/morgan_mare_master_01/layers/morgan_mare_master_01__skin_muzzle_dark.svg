@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="morgan_mare_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1310.1,366.3 L1304.2,366.5 L1298.9,364.7 L1286.5,365.3 L1280.6,364.0 L1277.0,362.2 L1273.2,359.1 L1269.8,353.2 L1267.1,340.8 L1265.5,337.8 L1262.5,334.9 L1256.3,331.2 L1240.4,323.8 L1240.4,282.3 L1346.2,282.0 L1348.0,282.7 L1355.8,294.7 L1358.9,304.1 L1358.1,316.0 L1350.8,336.1 L1348.7,346.7 L1345.3,352.6 L1337.9,358.1 L1327.9,361.7 L1317.2,362.5Z"/></clipPath>
+<radialGradient id="morgan_mare_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1325.7" cy="334.4" r="73.5"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="morgan_mare_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#morgan_mare_master_01__skin_muzzle_dark__clip)">
+<rect id="morgan_mare_master_01__skin_muzzle_dark__fill" x="1220.4" y="262.0" width="158.5" height="124.5" fill="url(#morgan_mare_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

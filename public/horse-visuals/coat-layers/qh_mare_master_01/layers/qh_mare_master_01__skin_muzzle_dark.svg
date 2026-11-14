@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="qh_mare_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1317.3,378.7 L1311.7,378.9 L1299.9,375.8 L1293.7,375.8 L1286.3,372.7 L1281.8,368.1 L1280.4,363.1 L1279.6,353.8 L1277.8,348.9 L1274.8,345.8 L1249.1,332.9 L1237.9,325.3 L1238.0,303.7 L1352.0,303.3 L1354.5,304.0 L1360.8,319.1 L1362.2,324.7 L1362.2,332.7 L1353.7,352.6 L1350.3,363.7 L1344.6,370.2 L1340.8,372.6 L1329.7,375.1 L1323.5,374.0 L1320.6,377.4Z"/></clipPath>
+<radialGradient id="qh_mare_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1327.4" cy="350.2" r="77.1"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="qh_mare_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#qh_mare_master_01__skin_muzzle_dark__clip)">
+<rect id="qh_mare_master_01__skin_muzzle_dark__fill" x="1217.9" y="283.3" width="164.3" height="115.6" fill="url(#qh_mare_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

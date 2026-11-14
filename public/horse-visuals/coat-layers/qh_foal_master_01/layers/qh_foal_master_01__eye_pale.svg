@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="qh_foal_master_01__eye_pale__clip"><path clip-rule="evenodd" d="M1247.9,219.5 L1241.7,219.5 L1234.2,215.9 L1231.6,213.1 L1229.7,209.4 L1230.5,203.6 L1236.7,200.5 L1244.8,198.6 L1249.7,198.6 L1252.8,199.8 L1255.5,202.6 L1256.7,207.5 L1250.3,217.7Z"/></clipPath>
+<radialGradient id="qh_foal_master_01__eye_pale__iris" gradientUnits="userSpaceOnUse" cx="1243.2" cy="209.1" r="16.2"><stop offset="0" stop-color="#C9B48A"/><stop offset="0.75" stop-color="#4F3E24"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="qh_foal_master_01__eye_pale" clip-path="url(#qh_foal_master_01__eye_pale__clip)">
+<rect id="qh_foal_master_01__eye_pale__iris-fill" x="1227.7" y="196.6" width="31.0" height="24.9" fill="url(#qh_foal_master_01__eye_pale__iris)"/>
+<ellipse id="qh_foal_master_01__eye_pale__pupil" cx="1243.2" cy="210.1" rx="5.9" ry="3.3" fill="#0B0707"/>
+<circle id="qh_foal_master_01__eye_pale__catchlight" cx="1248.1" cy="205.3" r="2.5" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

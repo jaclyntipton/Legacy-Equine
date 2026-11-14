@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="hanoverian_mare_master_01__eye_pale__clip"><path clip-rule="evenodd" d="M1223.5,177.9 L1210.4,177.9 L1205.6,175.1 L1197.2,165.9 L1209.2,156.8 L1214.0,155.0 L1218.1,155.0 L1224.8,162.3 L1228.4,175.4 L1228.2,177.2Z"/></clipPath>
+<radialGradient id="hanoverian_mare_master_01__eye_pale__iris" gradientUnits="userSpaceOnUse" cx="1212.8" cy="166.4" r="18.7"><stop offset="0" stop-color="#C9B48A"/><stop offset="0.75" stop-color="#4F3E24"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="hanoverian_mare_master_01__eye_pale" clip-path="url(#hanoverian_mare_master_01__eye_pale__clip)">
+<rect id="hanoverian_mare_master_01__eye_pale__iris-fill" x="1195.2" y="153.0" width="35.2" height="26.9" fill="url(#hanoverian_mare_master_01__eye_pale__iris)"/>
+<ellipse id="hanoverian_mare_master_01__eye_pale__pupil" cx="1212.8" cy="167.6" rx="6.9" ry="3.7" fill="#0B0707"/>
+<circle id="hanoverian_mare_master_01__eye_pale__catchlight" cx="1218.4" cy="162.3" r="2.7" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

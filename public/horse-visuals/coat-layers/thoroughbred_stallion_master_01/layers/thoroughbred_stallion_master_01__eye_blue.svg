@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="thoroughbred_stallion_master_01__eye_blue__clip"><path clip-rule="evenodd" d="M1205.1,175.9 L1199.3,175.9 L1193.0,173.0 L1185.0,164.8 L1187.9,162.9 L1199.9,158.9 L1207.4,158.8 L1209.7,159.5 L1211.0,161.4 L1212.7,171.7Z"/></clipPath>
+<radialGradient id="thoroughbred_stallion_master_01__eye_blue__iris" gradientUnits="userSpaceOnUse" cx="1198.8" cy="167.4" r="16.6"><stop offset="0" stop-color="#9CC0D8"/><stop offset="0.75" stop-color="#2E4E68"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="thoroughbred_stallion_master_01__eye_blue" clip-path="url(#thoroughbred_stallion_master_01__eye_blue__clip)">
+<rect id="thoroughbred_stallion_master_01__eye_blue__iris-fill" x="1183.0" y="156.8" width="31.7" height="21.1" fill="url(#thoroughbred_stallion_master_01__eye_blue__iris)"/>
+<ellipse id="thoroughbred_stallion_master_01__eye_blue__pupil" cx="1198.8" cy="168.2" rx="6.1" ry="2.7" fill="#0B0707"/>
+<circle id="thoroughbred_stallion_master_01__eye_blue__catchlight" cx="1203.8" cy="164.3" r="2.1" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="hanoverian_stallion_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1289.4,329.9 L1282.9,330.1 L1276.3,328.9 L1271.0,330.1 L1264.4,330.1 L1259.1,328.2 L1253.6,323.3 L1251.2,318.5 L1248.6,307.8 L1241.3,303.5 L1208.4,289.4 L1207.7,287.6 L1208.0,256.2 L1317.9,256.1 L1325.2,271.0 L1327.1,279.3 L1325.8,287.0 L1320.7,300.1 L1320.0,307.8 L1318.0,314.3 L1315.8,317.3 L1310.8,321.6 L1303.6,324.6 L1295.9,325.5Z"/></clipPath>
+<radialGradient id="hanoverian_stallion_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1293.7" cy="302.0" r="74.0"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="hanoverian_stallion_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#hanoverian_stallion_master_01__skin_muzzle_dark__clip)">
+<rect id="hanoverian_stallion_master_01__skin_muzzle_dark__fill" x="1187.7" y="236.1" width="159.4" height="114.0" fill="url(#hanoverian_stallion_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

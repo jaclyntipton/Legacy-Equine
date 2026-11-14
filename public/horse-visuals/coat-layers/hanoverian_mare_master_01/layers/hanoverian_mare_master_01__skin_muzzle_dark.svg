@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="hanoverian_mare_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1272.2,326.4 L1263.3,325.8 L1257.6,322.7 L1254.8,319.7 L1253.0,316.1 L1250.3,305.4 L1247.2,302.3 L1216.3,289.5 L1206.2,284.2 L1206.3,253.2 L1315.5,253.2 L1322.2,263.3 L1325.3,272.2 L1325.3,281.1 L1317.5,311.4 L1312.0,316.9 L1305.4,319.8 L1294.7,321.4 L1292.5,324.4 L1290.0,325.8 L1277.5,325.3Z"/></clipPath>
+<radialGradient id="hanoverian_mare_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1292.0" cy="298.6" r="73.8"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="hanoverian_mare_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#hanoverian_mare_master_01__skin_muzzle_dark__clip)">
+<rect id="hanoverian_mare_master_01__skin_muzzle_dark__fill" x="1186.2" y="233.2" width="159.1" height="113.2" fill="url(#hanoverian_mare_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

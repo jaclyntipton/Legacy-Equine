@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="morgan_stallion_master_01__skin_muzzle_dark__clip"><path clip-rule="evenodd" d="M1310.7,366.3 L1304.2,366.5 L1299.5,365.3 L1288.9,365.9 L1282.4,364.6 L1277.0,362.2 L1272.6,358.5 L1269.8,354.4 L1266.5,342.0 L1264.0,336.9 L1257.5,332.4 L1239.8,323.6 L1239.8,283.4 L1345.6,283.2 L1347.7,284.0 L1355.8,296.4 L1358.3,304.7 L1357.6,317.7 L1350.2,336.1 L1348.1,347.3 L1343.8,353.5 L1336.1,358.7 L1324.9,362.3 L1318.4,362.5Z"/></clipPath>
+<radialGradient id="morgan_stallion_master_01__skin_muzzle_dark__g" gradientUnits="userSpaceOnUse" cx="1325.1" cy="334.8" r="73.5"><stop offset="0" stop-color="#4A3B38" stop-opacity="0.55"/><stop offset="0.55" stop-color="#4A3B38" stop-opacity="0.22"/><stop offset="1" stop-color="#4A3B38" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="morgan_stallion_master_01__skin_muzzle_dark" style="mix-blend-mode:multiply" clip-path="url(#morgan_stallion_master_01__skin_muzzle_dark__clip)">
+<rect id="morgan_stallion_master_01__skin_muzzle_dark__fill" x="1219.8" y="263.2" width="158.5" height="123.3" fill="url(#morgan_stallion_master_01__skin_muzzle_dark__g)"/>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="arabian_stallion_master_01__eye_blue__clip"><path clip-rule="evenodd" d="M1252.5,189.0 L1248.8,188.4 L1243.8,185.2 L1242.5,181.0 L1243.2,174.9 L1243.9,173.1 L1245.2,172.4 L1251.2,171.0 L1256.7,171.2 L1261.7,174.3 L1263.5,179.8 L1263.5,182.8Z"/></clipPath>
+<radialGradient id="arabian_stallion_master_01__eye_blue__iris" gradientUnits="userSpaceOnUse" cx="1253.0" cy="180.0" r="12.6"><stop offset="0" stop-color="#9CC0D8"/><stop offset="0.75" stop-color="#2E4E68"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="arabian_stallion_master_01__eye_blue" clip-path="url(#arabian_stallion_master_01__eye_blue__clip)">
+<rect id="arabian_stallion_master_01__eye_blue__iris-fill" x="1240.5" y="169.0" width="25.0" height="22.0" fill="url(#arabian_stallion_master_01__eye_blue__iris)"/>
+<ellipse id="arabian_stallion_master_01__eye_blue__pupil" cx="1253.0" cy="180.9" rx="4.6" ry="2.9" fill="#0B0707"/>
+<circle id="arabian_stallion_master_01__eye_blue__catchlight" cx="1256.8" cy="176.8" r="2.2" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

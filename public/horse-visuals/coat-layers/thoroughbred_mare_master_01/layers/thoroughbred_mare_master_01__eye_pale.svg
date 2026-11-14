@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<clipPath id="thoroughbred_mare_master_01__eye_pale__clip"><path clip-rule="evenodd" d="M1203.9,175.9 L1199.3,175.9 L1193.6,173.6 L1187.6,167.7 L1186.0,164.8 L1195.3,160.1 L1203.9,158.2 L1208.5,158.9 L1210.4,160.8 L1213.4,171.7 L1210.8,173.6Z"/></clipPath>
+<radialGradient id="thoroughbred_mare_master_01__eye_pale__iris" gradientUnits="userSpaceOnUse" cx="1199.7" cy="167.1" r="16.4"><stop offset="0" stop-color="#C9B48A"/><stop offset="0.75" stop-color="#4F3E24"/><stop offset="1" stop-color="#0E0909"/></radialGradient>
+</defs>
+<g id="thoroughbred_mare_master_01__eye_pale" clip-path="url(#thoroughbred_mare_master_01__eye_pale__clip)">
+<rect id="thoroughbred_mare_master_01__eye_pale__iris-fill" x="1184.0" y="156.2" width="31.4" height="21.7" fill="url(#thoroughbred_mare_master_01__eye_pale__iris)"/>
+<ellipse id="thoroughbred_mare_master_01__eye_pale__pupil" cx="1199.7" cy="167.9" rx="6.0" ry="2.8" fill="#0B0707"/>
+<circle id="thoroughbred_mare_master_01__eye_pale__catchlight" cx="1204.6" cy="163.9" r="2.1" fill="#FFFFFF" fill-opacity="0.85"/>
+</g>
+</svg>

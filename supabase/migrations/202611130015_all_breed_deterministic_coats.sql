@@ -1,5 +1,14 @@
 -- Generalize the approved deterministic compositor recipe to every supplied
 -- breed master. All foals share the one Quarter Horse foal body master.
+create or replace function public.horse_visual_master_breed(p_breed text)
+returns text language sql immutable set search_path=public as $$
+ select case p_breed
+  when 'American Paint Horse' then 'Quarter Horse'
+  when 'Paint Horse' then 'Quarter Horse'
+  when 'Appaloosa' then 'Quarter Horse'
+  else p_breed end
+$$;
+
 create or replace function public.get_horse_visual_recipe(p_horse_id uuid)
 returns jsonb
 language plpgsql
@@ -52,3 +61,4 @@ from chosen c where c.id=h.id;
 
 revoke all on function public.get_horse_visual_recipe(uuid) from public;
 grant execute on function public.get_horse_visual_recipe(uuid) to authenticated;
+grant execute on function public.horse_visual_master_breed(text) to authenticated;

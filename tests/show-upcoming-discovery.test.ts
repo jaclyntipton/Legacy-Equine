@@ -19,4 +19,12 @@ describe("Upcoming Show discovery", () => {
     expect(upcoming).not.toContain("filteredShows");
     expect(shows).toContain('orderDiscoverableShows(shows.filter(s=>s.status==="open"))');
   });
+
+  it("opens a real Show detail view with its entered horses", () => {
+    expect(shows).toContain('from("player_show_entries")');
+    expect(shows).toContain('.eq("show_id",show.id)');
+    expect(shows).toContain("<ShowDetails");
+    expect(shows).toContain("Entered Horses");
+    expect(shows).not.toContain('onClick={()=>notify(s.description');
+  });
 });

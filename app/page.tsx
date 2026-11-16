@@ -632,7 +632,7 @@ export default function Home() {
         <main className={view === "professions" ? "profession-main" : undefined}>
           <GlobalToast message={notice} dismiss={dismissNotice}/>
           <LegacyFinds path={currentPath} onBalanceChange={()=>void load(user)} navigate={navigateHref}/>
-          <WeeklyFeedbackPrompt path={currentPath} navigate={navigateHref}/>
+          <WeeklyFeedbackPrompt navigate={navigateHref}/>
           {["horse","shows","professions","market"].includes(view)&&<button className="reportproblem" onClick={()=>navigateHref(`/support?from=${encodeURIComponent(currentPath)}`)}>Report a Problem</button>}
           {purchaseDestination&&<div className="purchasearrival"><span>Purchase complete — find it in your {purchaseDestination.label}.</span><button onClick={()=>{navigate("stable",{stableTab:purchaseDestination.tab});setPurchaseDestination(null)}}>Go to {purchaseDestination.label} →</button></div>}
           {view === "publicstable" && publicStableId && <PublicStableProfile stableId={publicStableId} notify={setNotice}/>}

@@ -1,0 +1,45 @@
+.handbook.article .handbookarticlehead {
+  display: block !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0;
+  padding: 22px 24px !important;
+  border: 1px solid #ded3e8 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  color: #3f2d50 !important;
+  box-shadow: 0 6px 20px rgba(64, 39, 86, .06) !important;
+}
+
+.handbookarticlehead span {
+  display: inline-flex;
+  margin: 0 0 9px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eee6f7;
+  color: #684391;
+  font-size: .7rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.handbook.article .handbookarticlehead h1 {
+  max-width: 22ch;
+  margin: 0;
+  color: #3f2856 !important;
+  font: 900 clamp(2rem, 5vw, 3rem)/1.02 var(--display);
+  letter-spacing: -.035em;
+}
+
+.handbook.article .handbookarticlehead p {
+  max-width: 62ch;
+  margin: 9px 0 0;
+  color: #706378 !important;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .handbook.article .handbookarticlehead { padding: 18px !important; }
+  .handbook.article .handbookarticlehead h1 { font-size: 2rem; }
+}

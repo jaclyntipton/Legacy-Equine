@@ -12,6 +12,7 @@ import { TreasuryDashboard } from "@/app/treasury";
 import { AdminLedGift } from "@/app/admin-led-gift";
 import { AccountEntitlementsAdmin } from "@/app/account-entitlements-admin";
 import { LegacyFinds } from "@/app/legacy-finds";
+import { WeeklyFeedbackPrompt } from "@/app/weekly-feedback-prompt";
 import { AdminLegacyFinds } from "@/app/admin-legacy-finds";
 import { CommunityHub,PublicPlayerProfile } from "@/app/community-directory";
 import { Bank } from "@/app/bank";
@@ -631,6 +632,7 @@ export default function Home() {
         <main className={view === "professions" ? "profession-main" : undefined}>
           <GlobalToast message={notice} dismiss={dismissNotice}/>
           <LegacyFinds path={currentPath} onBalanceChange={()=>void load(user)} navigate={navigateHref}/>
+          <WeeklyFeedbackPrompt path={currentPath} navigate={navigateHref}/>
           {["horse","shows","professions","market"].includes(view)&&<button className="reportproblem" onClick={()=>navigateHref(`/support?from=${encodeURIComponent(currentPath)}`)}>Report a Problem</button>}
           {purchaseDestination&&<div className="purchasearrival"><span>Purchase complete — find it in your {purchaseDestination.label}.</span><button onClick={()=>{navigate("stable",{stableTab:purchaseDestination.tab});setPurchaseDestination(null)}}>Go to {purchaseDestination.label} →</button></div>}
           {view === "publicstable" && publicStableId && <PublicStableProfile stableId={publicStableId} notify={setNotice}/>}

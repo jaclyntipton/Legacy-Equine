@@ -382,16 +382,20 @@ export default function Home() {
     setLoading(false);
   };
   const horse = horses.find((h) => h.id === selected) || null;
+  const ownedHorses = useMemo(
+    () => horses.filter((candidate) => candidate.owner_id === user?.id),
+    [horses, user?.id],
+  );
   useEffect(()=>{if(view!=="horse"||!selected||horse)return;let active=true;void supabase.from("horses").select("*").eq("id",selected).maybeSingle().then(({data,error})=>{if(!active)return;if(error)setNotice(error.message);else if(data)setHorses(current=>current.some(candidate=>candidate.id===data.id)?current:[...current,data as Horse])});return()=>{active=false}},[view,selected,horse]);
   const visibleHorses = useMemo(() => {
     const tierName = (h:Horse) => competitionTier(permanentStatAverage(h.stats),competitionTiers)?.name??"Unassigned";
-    const filtered = horses.filter((h) => {
+    const filtered = ownedHorses.filter((h) => {
       const years = age(h);
       const ageMatch = horseAge === "all" || (horseAge === "young" && years < 2) || (horseAge === "breeding" && years >= 2 && years < 26) || (horseAge === "senior" && years >= 26);
       return h.name.toLowerCase().includes(horseQuery.trim().toLowerCase()) && (horseBreed === "all" || h.breed === horseBreed) && (horseSex === "all" || h.sex === horseSex) && (horseOrigin === "all" || h.origin === horseOrigin) && ageMatch && (horseTier === "all" || tierName(h) === horseTier) && (horseBreeding === "all" || (horseBreeding === "eligible") === canBreed(h));
     });
     return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);
-  }, [horses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
+  }, [ownedHorses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
   const feedQualityOrder=useMemo(()=>[...new Set(storeProducts.filter(product=>product.department==="feed"&&product.quality).sort((a,b)=>a.sort_order-b.sort_order).map(product=>product.quality!))],[storeProducts]);
   const visibleStoreHorses=useMemo(()=>{const query=storeHorseQuery.trim().toLowerCase();return inventory.filter(h=>(!storeBreed||h.breed===storeBreed)&&(!query||`${h.name} ${h.breed} ${h.sex} ${h.color}`.toLowerCase().includes(query)))},[inventory,storeBreed,storeHorseQuery]);
   const visibleStoreProducts=useMemo(()=>{const tierOrder=storeDepartment==="tack"?[...STORE_TIERS]:feedQualityOrder;return storeProducts.filter(product=>product.department===storeDepartment&&(productType==="all"||(storeDepartment==="tack"?product.tack_slot===productType:product.feed_type===productType))&&(productTier==="all"||product.quality===productTier)&&`${product.name} ${product.description}`.toLowerCase().includes(productQuery.trim().toLowerCase())).sort((a,b)=>productSort==="price-asc"?a.price-b.price:productSort==="price-desc"?b.price-a.price:(tierOrder.indexOf(a.quality??"")-tierOrder.indexOf(b.quality??""))*(productSort==="tier-desc"?-1:1)||a.sort_order-b.sort_order)},[storeProducts,storeDepartment,productType,productTier,productSort,productQuery,feedQualityOrder]);
@@ -639,44 +643,44 @@ export default function Home() {
           {view === "publicplayer" && publicPlayerId && <PublicPlayerProfile stableId={publicPlayerId} notify={setNotice}/>}
           {view === "profile" && <>
             <nav className="sectiontabs profile-tabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>navigate("profile",{profileTab:"profile"})}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>navigate("profile",{profileTab:"artwork"})}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>navigate("profile",{profileTab:"settings"})}>Settings</button></nav>
-            {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{horses.length}</b></div><div><small>LAST ACTIVE</small><b>{new Date(stable.last_active_at||stable.created_at).toLocaleDateString()}</b></div></section></>}
+            {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{ownedHorses.length}</b></div><div><small>LAST ACTIVE</small><b>{new Date(stable.last_active_at||stable.created_at).toLocaleDateString()}</b></div></section></>}
             {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
             {profileTab==="settings"&&<><SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/><AccountInformationPanel/><PhoneVerificationPanel/></>}
           </>}
           {view === "stable" && (
             <>
-              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{horses.length} horse{horses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><div className="stableprofileactions"><button onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Stable Profile</button>{(stable.account_number===1||progression?.custom_stable_layout)&&<button onClick={()=>window.location.assign(`/stables/${stable.id}/customize`)}>Customize Stable</button>}<button onClick={()=>navigate("store",{storeDepartment:"horses"})}>Visit LE Store</button></div></section>
+              <section className="stablemanagementhead"><div><p className="eyebrow">MY STABLE</p><h1>{stable.name}</h1><p>{ownedHorses.length} horse{ownedHorses.length===1?"":"s"} · {capacity?.unlimited?"Unlimited stalls":`${capacity?.available??0} stalls available`}</p></div><div className="stableprofileactions"><button onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Stable Profile</button>{(stable.account_number===1||progression?.custom_stable_layout)&&<button onClick={()=>window.location.assign(`/stables/${stable.id}/customize`)}>Customize Stable</button>}<button onClick={()=>navigate("store",{storeDepartment:"horses"})}>Visit LE Store</button></div></section>
               <nav className="sectiontabs stable-desktop-tabs" aria-label="My Stable sections"><button className={stableTab==="horses"?"active":""} onClick={()=>navigate("stable",{stableTab:"horses"})}>My Horses</button><button className={stableTab==="tack"?"active":""} onClick={()=>navigate("stable",{stableTab:"tack"})}>Tack Room</button><button className={stableTab==="feed"?"active":""} onClick={()=>navigate("stable",{stableTab:"feed"})}>Feed Room</button><button className={stableTab==="supplies"?"active":""} onClick={()=>navigate("stable",{stableTab:"supplies"})}>Supply Room</button><button className={stableTab==="mailbox"?"active":""} onClick={()=>navigate("stable",{stableTab:"mailbox"})}>{mailUnread?`Mailbox (${mailUnread})`:"Mailbox"}</button></nav>
               <label className="stable-mobile-select">Stable Area:<select value={stableTab} onChange={event=>navigate("stable",{stableTab:event.target.value as StableTab})}><option value="horses">My Horses</option><option value="tack">Tack Room</option><option value="feed">Feed Room</option><option value="supplies">Supply Room</option><option value="mailbox">{mailUnread?`Mailbox (${mailUnread})`:"Mailbox"}</option></select></label>
               {stableTab==="horses"&&<>
               <section className="stats stable-overview desktop-stable-overview">
                 <div>
                   <small>STABLE CAPACITY</small>
-                  <b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b>
+                  <b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? ownedHorses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b>
                   <button className="textbutton" onClick={()=>navigate("stalls")}>+ Add Stalls</button>
                 </div>
                 <div>
                   <small>AVERAGE POINTS</small>
                   <b>
-                    {horses.length
+                    {ownedHorses.length
                       ? Math.round(
-                          horses.reduce((n, h) => n + overall(h), 0) /
-                            horses.length,
+                          ownedHorses.reduce((n, h) => n + overall(h), 0) /
+                            ownedHorses.length,
                         )
                       : 0}
                   </b>
                 </div>
                 <div>
                   <small>GENERATIONS BRED</small>
-                  <b>{Math.max(0, ...horses.map((h) => h.generation))}</b>
+                  <b>{Math.max(0, ...ownedHorses.map((h) => h.generation))}</b>
                 </div>
               </section>
               <section className="stablemailboxsummary"><div><small>MAILBOX</small><b>{mailUnread?`${mailUnread} unread message${mailUnread===1?"":"s"}`:"You're all caught up."}</b></div><button onClick={()=>navigate("stable",{stableTab:"mailbox"})}>Open Mailbox →</button></section>
               <SectionHeading title="Your Horses" subtitle="Your persistent Legacy Equine bloodline"/>
-              {horses.length ? (
+              {ownedHorses.length ? (
                 <>
-                  <HorseListTools horses={horses} tiers={competitionTiers} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
-                  <p className="horsecount">Showing {visibleHorses.length} of {horses.length} horses</p>
+                  <HorseListTools horses={ownedHorses} tiers={competitionTiers} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
+                  <p className="horsecount">Showing {visibleHorses.length} of {ownedHorses.length} horses</p>
                   <div className={`horsegrid ${horseView}`}>
                   {visibleHorses.map((h) => (
                     <Card key={h.id} h={h} tiers={competitionTiers} open={open} compact={horseView === "compact"} />
@@ -688,13 +692,13 @@ export default function Home() {
                 <Empty go={() => navigate("store",{storeDepartment:"horses"})} />
               )}
               <section className="stats stable-overview mobile-stable-overview">
-                <div><small>STABLE CAPACITY</small><b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b><button className="textbutton" onClick={()=>navigate("stalls")}>+ Add Stalls</button></div>
-                <div><small>AVERAGE POINTS</small><b>{horses.length?Math.round(horses.reduce((n,h)=>n+overall(h),0)/horses.length):0}</b></div>
-                <div><small>GENERATIONS BRED</small><b>{Math.max(0,...horses.map(h=>h.generation))}</b></div>
+                <div><small>STABLE CAPACITY</small><b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? ownedHorses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b><button className="textbutton" onClick={()=>navigate("stalls")}>+ Add Stalls</button></div>
+                <div><small>AVERAGE POINTS</small><b>{ownedHorses.length?Math.round(ownedHorses.reduce((n,h)=>n+overall(h),0)/ownedHorses.length):0}</b></div>
+                <div><small>GENERATIONS BRED</small><b>{Math.max(0,...ownedHorses.map(h=>h.generation))}</b></div>
               </section>
               </>}
               {stableTab==="mailbox"&&<SocialEligibilityGate><Mailbox initialRecipient={new URLSearchParams(location.search).get("compose")??""} notify={setNotice} onUnreadChange={setMailUnread}/></SocialEligibilityGate>}
-              {stableTab!=="horses"&&stableTab!=="mailbox"&&<>{stableTab==="feed"&&<HandbookHelpLink slug="feeding"/>}<StableInventory room={stableTab} horses={horses} notify={setNotice} refresh={()=>void load(user)}/></>}
+              {stableTab!=="horses"&&stableTab!=="mailbox"&&<>{stableTab==="feed"&&<HandbookHelpLink slug="feeding"/>}<StableInventory room={stableTab} horses={ownedHorses} notify={setNotice} refresh={()=>void load(user)}/></>}
             </>
           )}
           {view === "store" && (
@@ -730,7 +734,7 @@ export default function Home() {
                   />
                 ))}{!visibleStoreHorses.length&&<p className="featurehint">No Foundation horses match these filters.</p>}
               </div>
-              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? horses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>navigate("stalls")}>Add Stalls</button> or <button onClick={()=>navigate("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
+              <p className="storelimit">Stable Capacity: {capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? ownedHorses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}. Store purchases have no lifetime cap. {!capacity?.unlimited && (capacity?.available ?? 0)<1 && <><b> Your Stable Is Full.</b> <button onClick={()=>navigate("stalls")}>Add Stalls</button> or <button onClick={()=>navigate("sanctuary")}>Visit Sanctuary</button>.</>}</p></>}
               {storeDepartment!=="horses"&&<><div className="productfilters">
                 <label>{storeDepartment==="tack"?"Category":"Type"}<select aria-label={storeDepartment==="tack"?"Tack category":"Feed and hay type"} value={productType} onChange={e=>setProductType(e.target.value)}><option value="all">{storeDepartment==="tack"?"All Tack":"All Feed & Hay"}</option>{storeDepartment==="tack"?<><option value="bridle">Bridles</option><option value="saddle">Saddles</option><option value="saddle_pad">Saddle Pads</option><option value="leg_protection">Leg Protection</option></>:<><option value="hay">Hay</option><option value="grain">Grain</option></>}</select></label>
                 <label>{storeDepartment==="tack"?"Tier":"Tier / Quality"}<select aria-label={storeDepartment==="tack"?"Tack tier":"Feed tier or quality"} value={productTier} onChange={e=>setProductTier(e.target.value)}><option value="all">{storeDepartment==="tack"?"All Tiers":"All"}</option>{(storeDepartment==="tack"?STORE_TIERS:feedQualityOrder).map(tier=><option value={tier} key={tier}>{tier}</option>)}</select></label>
@@ -760,11 +764,11 @@ export default function Home() {
             <Bank balance={stable.balance} notify={setNotice} refreshAccount={()=>void load(user)} />
           )}
           {view === "stalls" && <StallExpansion capacity={capacity} notify={setNotice}/>} 
-          {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={horses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}
+          {view === "sanctuary" && <SanctuaryView horses={sanctuary} owned={ownedHorses} retire={async(h,name)=>{await action(async()=>{const{error}=await supabase.rpc("send_horse_to_sanctuary",{target_horse:h.id,confirmation_name:name});return{error}},`${h.name} is now permanently retired at the LE Equine Sanctuary.`);await loadSanctuary()}}/>}
           {view === "professions" && (
             <ProfessionalCenter
               path={currentPath}
-              horses={horses}
+              horses={ownedHorses}
               balance={stable.balance}
               notify={setNotice}
               refresh={() => void load(user)}
@@ -773,7 +777,7 @@ export default function Home() {
           )}
           {view === "training" && (
             <TrainingCenter
-              horses={horses}
+              horses={ownedHorses}
               open={open}
               train={async (h, s) =>
                 action(async () => {
@@ -788,7 +792,7 @@ export default function Home() {
           )}
           {view === "shows" && (
             <PlayerShows
-              horses={horses}
+              horses={ownedHorses}
               balance={stable.balance}
               notify={setNotice}
               refreshAccount={() => void load(user)}
@@ -797,7 +801,7 @@ export default function Home() {
           {view === "market" && (
             <MarketplaceView
               listings={market}
-              horses={horses}
+              horses={ownedHorses}
               balance={stable.balance}
               list={async (h, p) => {
                 await action(async () => {
@@ -846,7 +850,7 @@ export default function Home() {
               <HorsePage
                 key={`${horse.id}:${horse.image_url}`}
                 h={horse}
-                horses={horses}
+                horses={ownedHorses}
                 tiers={competitionTiers}
                 stableName={`${stable.name} · #${stable.account_number}`}
                 canEdit={horse.owner_id === user.id}

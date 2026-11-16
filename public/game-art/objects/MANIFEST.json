@@ -1,0 +1,19 @@
+{
+  "library": "Legacy Equine Game Objects — Batch 01",
+  "source_zip_sha256": "96b99276f2a94d9863a4973889ed0c091435c12652204f1ceeddb1d9b9e33044",
+  "source_files_preserved": true,
+  "asset_count": 22,
+  "legacy_find_assets": {
+    "worn_glove": "/game-art/objects/riding-glove.png",
+    "lucky_horseshoe": "/game-art/objects/lucky-horseshoe.png",
+    "boot_polish": "/game-art/objects/boot-polish-tin.png",
+    "peppermint": "/game-art/objects/peppermint-treats.png",
+    "vet_wrap": "/game-art/objects/vet-wrap.png",
+    "braided_crop": "/game-art/objects/braided-riding-crop.png",
+    "hay_sample": "/game-art/objects/hay-bundle-sample.png",
+    "leg_boots": "/game-art/objects/quality-leg-boots.png",
+    "led_small": "/game-art/objects/led-coins-small.png",
+    "led_medium": "/game-art/objects/led-coin-pouch.png",
+    "led_rare": "/game-art/objects/led-treasure-box.png"
+  }
+}

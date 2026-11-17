@@ -27,4 +27,10 @@ describe("Upcoming Show discovery", () => {
     expect(shows).toContain("Entered Horses");
     expect(shows).not.toContain('onClick={()=>notify(s.description');
   });
+
+  it("filters Enter Shows by each configured Show Level", () => {
+    expect(shows).toContain('aria-label="Show Level"');
+    expect(shows).toContain("tiers.map(x=><option");
+    expect(shows).toContain("s.tier_id===showTier");
+  });
 });

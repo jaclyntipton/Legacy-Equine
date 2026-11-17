@@ -40,6 +40,7 @@ describe("career rate editor", () => {
   it("keeps QA-only validation out of persisted market offerings", () => {
     expect(ui).toContain("career.qa && !runNormal");
     expect(ui).toContain("live market data unchanged");
-    expect(ui).toContain("VALIDATE QA RATE");
+    expect(ui).toContain("setQaRateServices(nextQaRates)");
+    expect(ui).toContain('"set_service_offering"');
   });
 });

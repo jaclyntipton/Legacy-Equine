@@ -20,7 +20,7 @@ describe("global full-horse artwork containment",()=>{
  });
  it("keeps the profile hero near a 40/60 desktop split",()=>expect(css).toContain("minmax(280px,2fr) minmax(0,3fr)"));
  it("uses the shared renderer throughout game horse cards and horse uploads",()=>{
-  expect(page).toContain("return <ContainedHorseArtwork url={url} alt={alt}/>");
+  expect(page).toContain("return <ContainedHorseArtwork horseId={horseId} url={url} alt={alt}/>");
   expect(page).toContain('shape === "horse" ? <ContainedHorseArtwork');
  });
  it("falls back without replacing or transforming player artwork",()=>{

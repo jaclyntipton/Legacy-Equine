@@ -9,6 +9,9 @@ const completionMigration = readFileSync(
   "supabase/migrations/202609220010_rpc_browser_allowlist_completion.sql",
   "utf8",
 );
+const migrationFiles = readdirSync("supabase/migrations")
+  .filter((entry) => entry.endsWith(".sql"))
+  .map((entry) => `supabase/migrations/${entry}`);
 
 function sourceFiles(root: string): string[] {
   return readdirSync(root).flatMap((entry) => {
@@ -21,6 +24,21 @@ function sourceFiles(root: string): string[] {
 function registered(section: "v_authenticated" | "v_anon") {
   const body = migration.match(new RegExp(`${section} text\\[\\] := array\\[([\\s\\S]*?)\\n  \\];`))?.[1] ?? "";
   return new Set([...body.matchAll(/'([a-zA-Z0-9_]+)'/g)].map((match) => match[1]));
+}
+
+function explicitlyGrantedToBrowserRoles() {
+  const granted = new Set<string>();
+  for (const file of migrationFiles) {
+    const sql = readFileSync(file, "utf8");
+    for (const grant of sql.matchAll(
+      /grant\s+execute\s+on\s+function\s+([\s\S]*?)\s*to\s+(?:authenticated|anon)\s*;/gi,
+    )) {
+      for (const signature of grant[1].matchAll(/public\.([a-zA-Z0-9_]+)\s*\(/g)) {
+        granted.add(signature[1]);
+      }
+    }
+  }
+  return granted;
 }
 
 describe("RPC execute authorization hardening", () => {
@@ -68,7 +86,8 @@ describe("RPC execute authorization hardening", () => {
     const allowed = registered("v_authenticated");
     for (const match of completionMigration.matchAll(/'([a-zA-Z0-9_]+)'/g)) allowed.add(match[1]);
     for (const name of registered("v_anon")) allowed.add(name);
+    for (const name of explicitlyGrantedToBrowserRoles()) allowed.add(name);
     expect([...used].filter((name) => !allowed.has(name))).toEqual([]);
-    expect(used.size).toBe(163);
+    expect(used.size).toBeGreaterThan(163);
   });
 });

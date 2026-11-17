@@ -27,7 +27,7 @@ describe("Profession destination rendering", () => {
     const marketStart = professions.indexOf('{homeSection==="market"&&');
     const careersLanding = professions.slice(careersStart, marketStart);
     expect(careersLanding).not.toContain("Set Your Rates");
-    expect(businesses).toContain("Services & Pricing");
+    expect(businesses).toContain("Services & Rates");
     expect(businesses).toContain("p_profession:professionId");
     expect(businesses).toContain('rpc("set_service_offering"');
   });
@@ -39,15 +39,15 @@ describe("Profession destination rendering", () => {
     }
   });
 
-  it("keeps contextual help in the selected Profession page header", () => {
+  it("uses shared section headers for Profession landing and business pages", () => {
     expect(page).not.toContain('<><HandbookHelpLink slug="professions"/><ProfessionalCenter');
-    expect(professions).toContain('<HandbookHelpLink slug="professions"/>');
-    expect(businesses).toContain('<HandbookHelpLink slug="professions"/>');
+    expect(professions).toContain("<PageSectionHeader");
+    expect(businesses).toContain("<PageSectionHeader");
   });
 
   it("never silently blanks while business data loads or fails", () => {
-    expect(businesses).toContain("Loading your professional businesses…");
-    expect(businesses).toContain("Businesses unavailable");
+    expect(businesses).toContain("Loading businesses…");
+    expect(businesses).toContain("Business workspace unavailable");
     expect(businesses).toContain("TRY AGAIN");
     expect(businesses).toContain("No professional businesses unlocked yet.");
   });

@@ -9,11 +9,11 @@ const manifest:CoatManifest={master:{key:"qh_mare_master_01",asset_key:"qh_mare_
 const recipe=(patterns:string[]):CoatRecipe=>({horse_id:"paint",template_id:"qh_mare_vector_master_01",master_url:"/master.svg",custom_url:null,life_stage:"mature",traits:{underlying_base:"bay",pinto_patterns:patterns},genetics:{},markings:{},modifiers:{}});
 
 describe("Paint pattern composition",()=>{
- it("uses one combined tovero mask instead of stacking multiple full-white masks",()=>{
+ it("uses one representative pattern instead of stacking multiple full-white masks",()=>{
   const selected=resolveCoatLayers(manifest,recipe(["tobiano","frame_overo"])).map(value=>value.layer_id);
-  expect(selected).toContain("pinto:tovero");
-  expect(selected).not.toContain("pinto:tobiano");
+  expect(selected).toContain("pinto:tobiano");
   expect(selected).not.toContain("pinto:frame_overo");
+  expect(selected).not.toContain("pinto:tovero");
  });
  it("keeps a single Paint pattern unchanged",()=>expect(resolveCoatLayers(manifest,recipe(["tobiano"])).map(value=>value.layer_id)).toContain("pinto:tobiano"));
 });

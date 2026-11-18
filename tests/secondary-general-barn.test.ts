@@ -1,7 +1,7 @@
 import{describe,expect,it}from"vitest";
 import{readFileSync}from"node:fs";
 
-const page=readFileSync("app/page.tsx","utf8"),migration=readFileSync("supabase/migrations/202611180002_secondary_general_barn.sql","utf8");
+const page=readFileSync("app/page.tsx","utf8"),migration=readFileSync("supabase/migrations/202611180004_secondary_general_barn.sql","utf8");
 
 describe("Training and private General Barn",()=>{
  it("keeps barn placement horse-specific without changing ownership or capacity",()=>{expect(migration).toContain("stable_barn text not null default 'training'");expect(migration).toContain("move_owned_horse_to_barn");expect(migration).not.toMatch(/update stables set|stable_capacity_allocations/)});

@@ -595,12 +595,13 @@
     "points_black",
     "mane_black"
    ],
-   "sha256": "646fa0263d3996a0399e678b005c59f1baa4589aa5921926cc077d339b200999",
+   "sha256": "2097427f7575e5c5a5d3580d9904b0507fd771f73c0e33a9dc3cced742bd53bf",
    "preview_sha256": "232c3d76b379cb02246f81941a93353a595574e8baadbeb907116ac2657f6171",
    "svg_element_ids": [
     "thoroughbred_mare_master_01__mane_black__clip-silhouette",
     "thoroughbred_mare_master_01__mane_black",
-    "thoroughbred_mare_master_01__mane_black__fill"
+    "thoroughbred_mare_master_01__mane_black__fill",
+    "thoroughbred_mare_master_01__mane_black__poll_bridge"
    ],
    "validation": {
     "canvas": true,
@@ -656,12 +657,13 @@
     "hoof_rh_base",
     "mane_chestnut"
    ],
-   "sha256": "8d87f263d8686a547151ec5b50d9111955d723bbe484088e658cd3e409c26159",
+   "sha256": "240b5613f316b3344d63d627373f7de9c3d3c6d2584fa7f374a1f2d2de879b4c",
    "preview_sha256": "e723d0b082a992bfbae644e1f1494021227716ef25ca89b69bc011fc8b9b8fb1",
    "svg_element_ids": [
     "thoroughbred_mare_master_01__mane_chestnut__clip-silhouette",
     "thoroughbred_mare_master_01__mane_chestnut",
-    "thoroughbred_mare_master_01__mane_chestnut__fill"
+    "thoroughbred_mare_master_01__mane_chestnut__fill",
+    "thoroughbred_mare_master_01__mane_chestnut__poll_bridge"
    ],
    "validation": {
     "canvas": true,

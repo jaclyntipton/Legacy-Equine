@@ -42,7 +42,7 @@ import { AdminProfessions } from "@/app/admin-professions";
 import { AdminCommerce } from "@/app/admin-commerce";
 import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
-import { NewsEmailPreferences } from "@/app/news-email-preferences";
+import { NewsDigestSignInPrompt, NewsEmailPreferences } from "@/app/news-email-preferences";
 import "@/app/admin-news.css";
 import "@/app/admin-section-header.css";
 import { PageSectionHeader, SectionHeading } from "@/app/page-section-header";
@@ -638,6 +638,7 @@ export default function Home() {
         </header>
         <main className={view === "professions" ? "profession-main" : undefined}>
           <GlobalToast message={notice} dismiss={dismissNotice}/>
+          <NewsDigestSignInPrompt notify={setNotice}/>
           <LegacyFinds path={currentPath} onBalanceChange={()=>void load(user)} navigate={navigateHref}/>
           <WeeklyFeedbackPrompt navigate={navigateHref}/>
           {["horse","shows","professions","market"].includes(view)&&<button className="reportproblem" onClick={()=>navigateHref(`/support?from=${encodeURIComponent(currentPath)}`)}>Report a Problem</button>}

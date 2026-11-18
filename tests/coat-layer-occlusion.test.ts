@@ -6,6 +6,22 @@ const masters = ["qh_mare_master_01", "qh_stallion_master_01"];
 const traits = ["tobiano", "frame_overo", "sabino", "sabino_roaning", "splash_white", "medicine_hat", "tovero", "lp_blanket", "lp_snowcap", "lp_spotted_blanket", "lp_leopard", "lp_fewspot", "lp_snowflake", "lp_varnish_roan", "lp_frost"];
 
 describe("registered coat-layer occlusion", () => {
+  it("covers the Thoroughbred tail head without changing the master anatomy", () => {
+    for (const sex of ["mare", "stallion"]) {
+      const master = `thoroughbred_${sex}_master_01`;
+      const manifest = JSON.parse(fs.readFileSync(`public/horse-visuals/coat-layers/${master}/manifest.json`, "utf8"));
+
+      for (const pigment of ["black", "chestnut"]) {
+        const layerId = `${master}__tail_${pigment}`;
+        const svg = fs.readFileSync(`public/horse-visuals/coat-layers/${master}/layers/${layerId}.svg`, "utf8");
+        const record = manifest.layers.find((layer: { layer_id: string }) => layer.layer_id === layerId);
+
+        expect(svg).toContain(`${layerId}__dock`);
+        expect(record.svg_element_ids).toContain(`${layerId}__dock`);
+      }
+    }
+  });
+
   it.each(masters)("prevents broad %s body patterns from bleeding into the foreground LH gaskin", master => {
     for (const trait of traits) {
       const layerId = `${master}__${trait}`;

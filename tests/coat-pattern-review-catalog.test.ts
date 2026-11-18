@@ -14,6 +14,6 @@ describe("complete coat pattern approval catalog",()=>{
   expect(component).toContain("qh_mare_master_01");expect(component).toContain("qh_stallion_master_01");expect(component).toContain("admin_list_pattern_standard_reviews");expect(component).toContain("admin_review_pattern_standard");
  });
  it("keeps review records protected and auditable",()=>{
-  expect(migration).toContain("enable row level security");expect(migration).toContain("revoke all on public.horse_pattern_standard_reviews from anon,authenticated");expect(migration).toContain("perform require_owner()");expect(migration).toContain("insert into admin_audit_log");
+  expect(migration).toContain("enable row level security");expect(migration).toContain("revoke all on public.horse_pattern_standard_reviews from anon,authenticated");expect(migration).toContain("public.is_owner_account()");expect(migration).not.toContain("require_owner()");expect(migration).toContain("insert into admin_audit_log");
  });
 });

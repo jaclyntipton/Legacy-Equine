@@ -13,7 +13,7 @@ describe("natural coat-pattern edges",()=>{
     expect(svg).toContain("<feTurbulence");
     expect(svg).toContain("<feDisplacementMap");
     expect(svg).toContain('<feComponentTransfer in="displaced">');
-    expect(svg).toContain('<feFuncA type="discrete" tableValues="0 0 1 1"/>');
+    expect(svg).toContain('<feFuncA type="discrete" tableValues="0 0 0 1"/>');
     expect(svg).toMatch(new RegExp(`<g id="${master}__${trait}__coat"[^>]+filter="url\\(#${master}__${trait}__organic-edge\\)"`));
     expect(svg).toContain(`mask="url(#${master}__${trait}__mask-anatomy)"`);
    }

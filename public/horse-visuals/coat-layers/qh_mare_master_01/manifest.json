@@ -4063,7 +4063,7 @@
     "points_black",
     "tobiano"
    ],
-   "sha256": "80ab89716f1093ed7b6e65835571736653212aea5302104125fb8a89a8e26205",
+   "sha256": "9eee742d8a516e9cb777a7a435819e402800c609c2ab9c589c547a33ddba718b",
    "preview_sha256": "6ab262b29f42a9e869defb8500324ed420bdd7dc7b2becea29df95523205ead8",
    "svg_element_ids": [
     "qh_mare_master_01__tobiano__mask-coat",
@@ -4136,7 +4136,7 @@
     "points_black",
     "frame_overo"
    ],
-   "sha256": "06b43c8c0940721110ce4450cb3c2dda176452d88eee5fc711f9fa253894ac77",
+   "sha256": "91a21487cff82c98ba35f0d81e519fd1581d798dabfe4cf248a7c88defd336de",
    "preview_sha256": "fd03538197eafe14a41cf750caa1e22cf887d5392648b8c7f511d9dfa7b7b76a",
    "svg_element_ids": [
     "qh_mare_master_01__frame_overo__mask-coat",
@@ -4205,7 +4205,7 @@
     "points_black",
     "splash_white"
    ],
-   "sha256": "2e314cd8420dd6df0b983f1c9f131521b9894763fba8ecbcadc7d34bda1a48c6",
+   "sha256": "31f57fec4f8dd1876cf0cd6788113815f4c9b18cc15edd6e03f22eecc5f5d2b5",
    "preview_sha256": "19a1862164d3eac510a268a2ea1491ab7284aa0b36686e670948c44f66e6ff6f",
    "svg_element_ids": [
     "qh_mare_master_01__splash_white__mask-coat",
@@ -4278,7 +4278,7 @@
     "points_black",
     "sabino"
    ],
-   "sha256": "fdae36d84f350c89b2520b53a141ca6f14c2776a35c96408b9725bb13d64c992",
+   "sha256": "f439de2d8851660627f8b58cf0f6be982660d18c48d7dfaabf1ed6f37270c721",
    "preview_sha256": "bc77af94fef0fd9cfe78642dc4950410fb12684fbab22be844be38950e2a73b4",
    "svg_element_ids": [
     "qh_mare_master_01__sabino__mask-coat",
@@ -4354,7 +4354,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "b349184b674a9d06bc99b040a40b2017dc5f11fb8f1dc1b7b9fdcbf5f7d10e40",
+   "sha256": "9d276e2ce49a2cb4be7f25e7637b159b98fc06e2242ff5b9f78a01f3b132c320",
    "preview_sha256": "2a0b0769c1a47f989fbdb8a4970088b5c680079119c6dfc0adf432285a6dbfa2",
    "svg_element_ids": [
     "qh_mare_master_01__sabino_roaning__mask-coat",
@@ -4441,7 +4441,7 @@
     "points_black",
     "medicine_hat"
    ],
-   "sha256": "a5648d81e69d6c80e960fcd778a7f714129e2d8525e928d18d0752c7f59f07fe",
+   "sha256": "5b0220cf5fcf4e094f7d8f78daf582fefc9b05a0fc6acad35750c590009e334b",
    "preview_sha256": "481ac4b791b811f09ac1003536394f3a90c77987d5288ea35133691079e38dbb",
    "svg_element_ids": [
     "qh_mare_master_01__medicine_hat__mask-coat",
@@ -4510,7 +4510,7 @@
     "points_black",
     "tovero"
    ],
-   "sha256": "0804f30e3d4b742df524890ff8cfdbeac7b2f11dc3d79237b969f1ee1b7eb173",
+   "sha256": "e9deaf77afa4d3f12070b200400a50e8e6e8022026d5167d4a1d4d49c562c23d",
    "preview_sha256": "a4a8a2ee21748b2a8e936d76391814cca21d22fb4fcd176f3a88d6e3a37a6f36",
    "svg_element_ids": [
     "qh_mare_master_01__tovero__mask-coat",
@@ -4644,7 +4644,7 @@
     "points_black",
     "lp_blanket"
    ],
-   "sha256": "b1d8fed67a408f751492443b4c5860a11a624387d5bccb68314db8e03fb39006",
+   "sha256": "68fe2afcd523d1ff98d2ed598cdf07a2092268dde0139dfbc2dfec9c781b6a9f",
    "preview_sha256": "9e9c093de3aeec1550e9c00936677afa96104a2473342d257be6fd20f0d82a82",
    "svg_element_ids": [
     "qh_mare_master_01__lp_blanket__mask-coat",
@@ -4711,7 +4711,7 @@
     "points_black",
     "lp_snowcap"
    ],
-   "sha256": "34b1ce943b212d7f4c5bd5b4861edcb153afdb6a982152407f13240cbb44b54f",
+   "sha256": "767e1799860ba4d8f21747c5bfe00b8d88ad21bcbe6d8aabcae3b2b80158dc0c",
    "preview_sha256": "191e81c9fd17e8cc7e070acfbe8cac4e1fd424004b70fc0bf245d4d7d8cd64d7",
    "svg_element_ids": [
     "qh_mare_master_01__lp_snowcap__mask-coat",
@@ -4778,7 +4778,7 @@
     "points_black",
     "lp_spotted_blanket"
    ],
-   "sha256": "f13fa411f2826593ee867fe2ce12599352ab2bf8511a1ae8cc6c3e844b964f6a",
+   "sha256": "18832d756187e009296f488b1b14bce0da895c4ed1a2acb73e3b268701ccf028",
    "preview_sha256": "2aeb70da56be7baa0692a7e1c3a8e62285a25073d72566145510686335f1db4b",
    "svg_element_ids": [
     "qh_mare_master_01__lp_spotted_blanket__mask-coat",
@@ -4845,7 +4845,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "261c313e39f1fc5cd42574bafdf6319ceb06c5264aa7e73d1ed1bed37350c2ef",
+   "sha256": "a43bf1dbf301a36f035742589b17ea46680619be4b1602472420e38f1d0b13fd",
    "preview_sha256": "2d0131274436f8f12ea6e5c3e84f27b0dd9090db7cb97d2b9d28477584bd151f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_leopard__mask-coat",
@@ -4912,7 +4912,7 @@
     "points_black",
     "lp_fewspot"
    ],
-   "sha256": "7bee430802e257fb720a637bf0f6af9d3818549a6f5592d7752f8752b30e10e3",
+   "sha256": "a1dfca5408994c20b31532926616078bd31d3d4d0680c6dc25d27da2b6ea0367",
    "preview_sha256": "fb094bb6db2a6fd69e49eb041bd9ac51f7a9603da68a6e7ab6f1a7ff4a85ea94",
    "svg_element_ids": [
     "qh_mare_master_01__lp_fewspot__mask-coat",
@@ -4979,7 +4979,7 @@
     "points_black",
     "lp_snowflake"
    ],
-   "sha256": "23a2cf11b2bcdfa685c89d483cc3c9543204516d448540beef9c5d3b89030f22",
+   "sha256": "531a1ab1fa4dc0d2036fd2abf27412bbb152980ab286b826124f7fa37e6c47cd",
    "preview_sha256": "38c5a748bd90524a0c0150957f02ec6d7f0d9c5919077c892588527e74725e1f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_snowflake__mask-coat",
@@ -5045,7 +5045,7 @@
     "points_black",
     "lp_varnish_roan"
    ],
-   "sha256": "e7c46f5e42da9c7a81db32deb10e1b85dbdc27f4794b4296e0b691516d899d79",
+   "sha256": "c0d7197dc9b08ba8989efd5bbaaa1156aa3a5aa1a9afb0c2c7c80c2d1931bcf9",
    "preview_sha256": "77a37d0fb26ad45f43854774b0a9277c4c4a93d7d0d0531b4d21e2866181198c",
    "svg_element_ids": [
     "qh_mare_master_01__lp_varnish_roan__mask-coat",

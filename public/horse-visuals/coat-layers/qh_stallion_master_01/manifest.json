@@ -5039,7 +5039,7 @@
     "points_black",
     "lp_varnish_roan"
    ],
-   "sha256": "605279bea72dd8c5e07dc25459b5fe66f3ccbe3972c08bf9dea31f49a19786b0",
+   "sha256": "3b32951a4bca1d7152bbe8e04eba5bedf4e2278b23078458b1033af419c8a0d3",
    "preview_sha256": "c253222eccd698e8a684ae8c45ecdb7a5f895233bcfd29ddbcbf5db277a71a03",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_varnish_roan__mask-coat",
@@ -5121,13 +5121,14 @@
     "points_black",
     "lp_frost"
    ],
-   "sha256": "21bbb709bf0e37b90a75a397b83edf248d7afa33c7e5e0c66706e17cb3b2dfb4",
+   "sha256": "1ed0722edcec4ef51dc1afbf11e3fbe8d8688b6ccb57268f853d871516735cc1",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_frost__mask-coat",
     "qh_stallion_master_01__lp_frost__mask-anatomy",
     "qh_stallion_master_01__lp_frost",
     "qh_stallion_master_01__lp_frost__coat",
     "qh_stallion_master_01__lp_frost__flecks",
+    "qh_stallion_master_01__lp_frost__visible-frost",
     "qh_stallion_master_01__lp_frost__rear-overlap-guard"
    ],
    "validation": {

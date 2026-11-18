@@ -39,7 +39,12 @@ describe("registered coat-layer occlusion", () => {
     const varnish = fs.readFileSync(path.join(root, "qh_stallion_master_01__lp_varnish_roan.svg"), "utf8");
     const frost = fs.readFileSync(path.join(root, "qh_stallion_master_01__lp_frost.svg"), "utf8");
     expect(varnish).not.toContain("<circle");
+    expect(varnish).not.toContain("M904 306");
+    expect(varnish).not.toContain("M229 306");
+    expect(varnish).not.toContain("M365 477");
+    expect(varnish).not.toContain("M922 510");
     expect(frost).toContain('id="qh_stallion_master_01__lp_frost__flecks"');
+    expect(frost).toContain('id="qh_stallion_master_01__lp_frost__visible-frost"');
     expect(frost).toContain('opacity="0.34"');
   });
 

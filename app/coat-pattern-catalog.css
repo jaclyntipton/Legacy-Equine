@@ -2,5 +2,6 @@
 .pattern-catalog .coat-review-heading{margin-bottom:18px}
 .pattern-catalog .coat-review-grid canvas,.pattern-catalog .coat-review-preview canvas{display:block;width:100%;height:100%}
 .pattern-catalog .coat-review-grid article>div>small{display:block;margin:-2px 0 12px;color:#766883;line-height:1.4}
+.pattern-card-actions{display:flex;gap:10px;align-items:center;margin-top:auto}.pattern-card-actions button{flex:1;min-height:42px}.pattern-card-actions .primary{background:#7443b8;color:#fff}.pattern-card-actions .primary:disabled{background:#e8deef;color:#695b76;cursor:default}
 .pattern-catalog .coat-review-modal section{max-height:calc(100dvh - 32px);overflow:auto}
 @media(max-width:640px){.pattern-catalog{padding:18px 14px;border-radius:18px}.pattern-catalog .coat-review-filters{grid-template-columns:1fr}.pattern-catalog .coat-review-grid{grid-template-columns:1fr}}

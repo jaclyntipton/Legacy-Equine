@@ -27,5 +27,6 @@ describe("Owner Treasury contribution",()=>{
   expect(ui).toContain("Add LED to the Legacy Equine Treasury");
   expect(ui).toContain("owner_contribute_to_treasury");
   expect(ui).toContain("Confirm Treasury transfer");
+  expect(ui).toContain("ownerFund&&treasuryFund&&<section");
  });
 });

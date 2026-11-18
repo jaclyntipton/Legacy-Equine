@@ -27,6 +27,7 @@ import { StoreBulkPurchase } from "@/app/store-bulk-purchase";
 import "@/app/store-filter-controls.css";
 import "@/app/store-catalog-cleanup.css";
 import "@/app/show-tier-v2.css";
+import "@/app/stable-barns.css";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { VisualStageCoverage } from "@/app/visual-stage-coverage";
@@ -86,6 +87,7 @@ type Horse = {
   last_bred_at: string | null;
   last_trained_at: string | null;
   retired: boolean;
+  stable_barn: "training" | "general";
   brand_code_at_assignment?: string | null;
   brand_mark_at_assignment?: string | null;
   brand_origin?: string | null;
@@ -280,6 +282,7 @@ export default function Home() {
     [horseBreeding, setHorseBreeding] = useState("all"),
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards"),
+    [barnView,setBarnView]=useState<"training"|"general">("training"),
     [mobileMenuOpen,setMobileMenuOpen]=useState(false),
     [currentPath,setCurrentPath]=useState("/home"),
     [showExactBalance,setShowExactBalance]=useState(false),
@@ -389,16 +392,18 @@ export default function Home() {
     () => horses.filter((candidate) => candidate.owner_id === user?.id),
     [horses, user?.id],
   );
+  const barnHorses=useMemo(()=>ownedHorses.filter(h=>(h.stable_barn??"training")===barnView),[ownedHorses,barnView]);
   useEffect(()=>{if(view!=="horse"||!selected||horse)return;let active=true;void supabase.from("horses").select("*").eq("id",selected).maybeSingle().then(({data,error})=>{if(!active)return;if(error)setNotice(error.message);else if(data)setHorses(current=>current.some(candidate=>candidate.id===data.id)?current:[...current,data as Horse])});return()=>{active=false}},[view,selected,horse]);
   const visibleHorses = useMemo(() => {
     const tierName = (h:Horse) => competitionTier(permanentStatAverage(h.stats),competitionTiers)?.name??"Unassigned";
-    const filtered = ownedHorses.filter((h) => {
+    const filtered = barnHorses.filter((h) => {
       const years = age(h);
       const ageMatch = horseAge === "all" || (horseAge === "young" && years < 2) || (horseAge === "breeding" && years >= 2 && years < 26) || (horseAge === "senior" && years >= 26);
       return h.name.toLowerCase().includes(horseQuery.trim().toLowerCase()) && (horseBreed === "all" || h.breed === horseBreed) && (horseSex === "all" || h.sex === horseSex) && (horseOrigin === "all" || h.origin === horseOrigin) && ageMatch && (horseTier === "all" || tierName(h) === horseTier) && (horseBreeding === "all" || (horseBreeding === "eligible") === canBreed(h));
     });
     return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);
-  }, [ownedHorses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
+  }, [barnHorses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
+  const moveHorseToBarn=async(h:Horse,barn:"training"|"general")=>{await action(async()=>{const{error}=await supabase.rpc("move_owned_horse_to_barn",{p_horse:h.id,p_barn:barn});return{error}},`${h.name} moved to the ${barn==="training"?"Training Barn":"General Barn"}.`)};
   const feedQualityOrder=useMemo(()=>[...new Set(storeProducts.filter(product=>product.department==="feed"&&product.quality).sort((a,b)=>a.sort_order-b.sort_order).map(product=>product.quality!))],[storeProducts]);
   const visibleStoreHorses=useMemo(()=>{const query=storeHorseQuery.trim().toLowerCase();return inventory.filter(h=>(!storeBreed||h.breed===storeBreed)&&(!query||`${h.name} ${h.breed} ${h.sex} ${h.color}`.toLowerCase().includes(query)))},[inventory,storeBreed,storeHorseQuery]);
   const visibleStoreProducts=useMemo(()=>{const tierOrder=storeDepartment==="tack"?[...STORE_TIERS]:feedQualityOrder;return storeProducts.filter(product=>product.department===storeDepartment&&(productType==="all"||(storeDepartment==="tack"?product.tack_slot===productType:product.feed_type===productType))&&(productTier==="all"||product.quality===productTier)&&`${product.name} ${product.description}`.toLowerCase().includes(productQuery.trim().toLowerCase())).sort((a,b)=>productSort==="price-asc"?a.price-b.price:productSort==="price-desc"?b.price-a.price:(tierOrder.indexOf(a.quality??"")-tierOrder.indexOf(b.quality??""))*(productSort==="tier-desc"?-1:1)||a.sort_order-b.sort_order)},[storeProducts,storeDepartment,productType,productTier,productSort,productQuery,feedQualityOrder]);
@@ -681,19 +686,21 @@ export default function Home() {
               </section>
               <section className="stablemailboxsummary"><div><small>MAILBOX</small><b>{mailUnread?`${mailUnread} unread message${mailUnread===1?"":"s"}`:"You're all caught up."}</b></div><button onClick={()=>navigate("stable",{stableTab:"mailbox"})}>Open Mailbox →</button></section>
               <SectionHeading title="Your Horses" subtitle="Your persistent Legacy Equine bloodline"/>
-              {ownedHorses.length ? (
+              <nav className="barnswitcher" aria-label="Horse barn location"><button className={barnView==="training"?"active":""} onClick={()=>setBarnView("training")}><span>Training Barn</span><small>{ownedHorses.filter(h=>(h.stable_barn??"training")==="training").length} horses</small></button><button className={barnView==="general"?"active":""} onClick={()=>setBarnView("general")}><span>General Barn</span><small>{ownedHorses.filter(h=>h.stable_barn==="general").length} horses</small></button></nav>
+              <p className="barnnote">{barnView==="training"?"Your active working barn. These horses appear on your Public Stable.":"Private holding for horses outside your active group. They remain available for breeding, Shows, care, and all other gameplay."}</p>
+              {barnHorses.length ? (
                 <>
-                  <HorseListTools horses={ownedHorses} tiers={competitionTiers} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
-                  <p className="horsecount">Showing {visibleHorses.length} of {ownedHorses.length} horses</p>
+                  <HorseListTools horses={barnHorses} tiers={competitionTiers} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
+                  <p className="horsecount">Showing {visibleHorses.length} of {barnHorses.length} horses in {barnView==="training"?"Training Barn":"General Barn"}</p>
                   <div className={`horsegrid ${horseView}`}>
                   {visibleHorses.map((h) => (
-                    <Card key={h.id} h={h} tiers={competitionTiers} open={open} compact={horseView === "compact"} />
+                    <div className="barnhorse" key={h.id}><Card h={h} tiers={competitionTiers} open={open} compact={horseView === "compact"}/><button className="barnmove" disabled={loading} onClick={()=>void moveHorseToBarn(h,barnView==="training"?"general":"training")}>Move to {barnView==="training"?"General Barn":"Training Barn"}</button></div>
                   ))}
                   </div>
                   {!visibleHorses.length&&<p className="panel featurehint">No horses match these filters.</p>}
                 </>
               ) : (
-                <Empty go={() => navigate("store",{storeDepartment:"horses"})} />
+                ownedHorses.length?<section className="empty barnempty"><div>⌂</div><h3>{barnView==="training"?"Your Training Barn is empty":"Your General Barn is empty"}</h3><p>{barnView==="training"?"Move a horse here from General Barn to make it public and return it to your active group.":"Move horses here to keep them private and out of your active Training Barn."}</p></section>:<Empty go={() => navigate("store",{storeDepartment:"horses"})} />
               )}
               <section className="stats stable-overview mobile-stable-overview">
                 <div><small>STABLE CAPACITY</small><b>{capacity?.unlimited ? "Unlimited" : `${capacity?.occupied ?? ownedHorses.length} / ${capacity?.total_capacity ?? GAME.baseStableCapacity}`}</b><button className="textbutton" onClick={()=>navigate("stalls")}>+ Add Stalls</button></div>
@@ -917,6 +924,7 @@ export default function Home() {
               />
             </>
           )}{" "}
+          {!loading&&!horse&&view==="horse"&&<section className="panel"><h2>Horse Profile unavailable</h2><p>This horse is not currently part of its owner&apos;s public Training Barn.</p><button onClick={()=>history.back()}>Go Back</button></section>}{" "}
           {horse && view === "pedigree" && (
             <Pedigree h={horse} horses={horses} open={open} />
           )}{" "}

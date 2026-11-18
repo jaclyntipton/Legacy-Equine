@@ -607,12 +607,13 @@
     "points_black",
     "mane_black"
    ],
-   "sha256": "da587d6ec3560ba0ea18dba7237999418731ff50b42c0317730f39c67d80b71b",
+   "sha256": "c257b367906163a7a33661e0a8fa920603e8976020687268159927b2f2f4ed8a",
    "preview_sha256": "00e025aebfd5ba8eac7cfcbafd4850b329c028ade223ef032ed954a8bf9e3cf0",
    "svg_element_ids": [
     "qh_foal_master_01__mane_black__clip-silhouette",
     "qh_foal_master_01__mane_black",
-    "qh_foal_master_01__mane_black__fill"
+    "qh_foal_master_01__mane_black__fill",
+    "qh_foal_master_01__mane_black__poll_bridge"
    ],
    "validation": {
     "canvas": true,
@@ -668,12 +669,13 @@
     "hoof_rh_base",
     "mane_chestnut"
    ],
-   "sha256": "ccff4a886837f83d2c82af0fcbae72ab054949620efd353224b9fa7e0f144dcf",
+   "sha256": "106d62b833771f052ecac70629935fd09a69432861fcfad4d33ac2d3bd3c354a",
    "preview_sha256": "29ebf524c3125fc5504a631f34faf906e451486f84e8934ec5692d38803a4ed6",
    "svg_element_ids": [
     "qh_foal_master_01__mane_chestnut__clip-silhouette",
     "qh_foal_master_01__mane_chestnut",
-    "qh_foal_master_01__mane_chestnut__fill"
+    "qh_foal_master_01__mane_chestnut__fill",
+    "qh_foal_master_01__mane_chestnut__poll_bridge"
    ],
    "validation": {
     "canvas": true,

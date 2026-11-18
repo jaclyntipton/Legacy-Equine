@@ -4057,7 +4057,7 @@
     "points_black",
     "tobiano"
    ],
-   "sha256": "e77baecdf5c0c428dc6d5ea6331acf043ef3183133e355f48e8b7f7e04e8eee2",
+   "sha256": "b628e1250c5bbc6da506b52d1919f9044d2d7b6554f4e947fee0e6b8a31ba41f",
    "preview_sha256": "80af3d6a1c47915350fc27ec7d9fb4a1520b77cffcc7a55281115b68ab82bafe",
    "svg_element_ids": [
     "qh_stallion_master_01__tobiano__mask-coat",
@@ -4129,7 +4129,7 @@
     "points_black",
     "frame_overo"
    ],
-   "sha256": "81835c22107fc556ecde60828000837c70a236c80642b872383ad56b85dfd40d",
+   "sha256": "00ee5c504e93e6576ca95dc28fd2a10f8cdacb741b64a7e8234b37cbc9f63128",
    "preview_sha256": "734da8073a401688fc5d4acf78c4d96ebca34adee7cdec21819099bd7331900e",
    "svg_element_ids": [
     "qh_stallion_master_01__frame_overo__mask-coat",
@@ -4197,7 +4197,7 @@
     "points_black",
     "splash_white"
    ],
-   "sha256": "87b5e63457322e1dc243ed71980515b702612ba721f5a241bbc3f88921e5e0f0",
+   "sha256": "b1fc9e897262d5a2c95281c1412fad78e015a1d73b734e9b89cd9bdf965b2a59",
    "preview_sha256": "d7d5b94e660b54ece9e19c2f6c8c6b3fbb40994690f6d0895447056c9b2c369c",
    "svg_element_ids": [
     "qh_stallion_master_01__splash_white__mask-coat",
@@ -4269,7 +4269,7 @@
     "points_black",
     "sabino"
    ],
-   "sha256": "1e8d8440af09584945d4c9b8f6ce13c4c13ee218adf8e162620f6791f331e43d",
+   "sha256": "22fb190a15c72b4c532cd4c60a67c1ca7b31cc502088b37a3271467acd3479b5",
    "preview_sha256": "90f7cc7bb2015d6561e4f9c5c5703747847aac508a01a976aa2bcac46e8b4682",
    "svg_element_ids": [
     "qh_stallion_master_01__sabino__mask-coat",
@@ -4344,7 +4344,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "1c14fd3ab3616e8701c7c60af83c46eed884bae106aee32acf47d34872ec4e40",
+   "sha256": "44a6300475b77552d7da151af88c682f206d8bac16922ea8566c1f84b74cd755",
    "preview_sha256": "91e9cd572dbd37314798f446ce88b2a2647986bdc87deac4b3183cc7f79f456a",
    "svg_element_ids": [
     "qh_stallion_master_01__sabino_roaning__mask-coat",
@@ -4430,7 +4430,7 @@
     "points_black",
     "medicine_hat"
    ],
-   "sha256": "b06581605ff61ca39affaebb9c3df1ca3f3a416838c8a80d6180e5fe0f2d101e",
+   "sha256": "5bb7c2bcf6e34fa4ba8ccca26171ac62f74023247e8f9034350500da1be5112e",
    "preview_sha256": "fd486c18741c4244a7ff316634e0ed515c4caa665530a3b7d669fc17d1c1f818",
    "svg_element_ids": [
     "qh_stallion_master_01__medicine_hat__mask-coat",
@@ -4498,7 +4498,7 @@
     "points_black",
     "tovero"
    ],
-   "sha256": "efaf94eb9829a9b96773cfa33351c9c92b9179036d5f112d9df7da91330cf6a4",
+   "sha256": "ae071630d6ae17abe35ef6a3df9eeb4385d8fed434fbf861dc16b41fd0c4ca10",
    "preview_sha256": "46a6f9510b7a2367706a5a2d394c2e7086341ca5960d8e2bb34111546d4ed483",
    "svg_element_ids": [
     "qh_stallion_master_01__tovero__mask-coat",
@@ -4631,7 +4631,7 @@
     "points_black",
     "lp_blanket"
    ],
-   "sha256": "e034f61b38927078c462e27be161ddf8277886024ea1c40d971e5ae9b098b6a9",
+   "sha256": "2cb8e5f52db01c68b4c1370303f9f49faf3b992388f0fa8331f8e8fff9ff5cdb",
    "preview_sha256": "62db92c0878f1f537835876887056801301a3b57977ef68b14ede256147feac5",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_blanket__mask-coat",
@@ -4697,7 +4697,7 @@
     "points_black",
     "lp_snowcap"
    ],
-   "sha256": "c2805d0e72d0ad1c8f994967b9c6327054a1067426e8dc6f14180dbc3b71054f",
+   "sha256": "70cda9315f19242743b57e5b4ec38dc844b749712439e65f5996ae980df9c9f2",
    "preview_sha256": "eca49950b6d91cb9bf5d11543b1d850b2a5f1adef0e4454c17622344cabc0e9e",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_snowcap__mask-coat",
@@ -4763,7 +4763,7 @@
     "points_black",
     "lp_spotted_blanket"
    ],
-   "sha256": "d0add1b9e6ebb484c025b0f52a0a621fe0b6f345cb55df9aec4e5b74e97d633f",
+   "sha256": "df6a6c47671ca468c50542af8ab2250273ab7b0fa260f9da6cc76fe26c52af3e",
    "preview_sha256": "a94d83b22882aa12f208f56039345cb6afdb8a39beefcab20786b708a4d23235",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_spotted_blanket__mask-coat",
@@ -4829,7 +4829,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "dea40576f7201e5ced1e7a4cc3c76c2f515df26b33a5d0904f664f51172cc2de",
+   "sha256": "6ca2c49c54c13202c82a80fd657444f7c8583da80cf800c93feba056c1c5f883",
    "preview_sha256": "95e25fc44110f244f19aa8e51f02a3919ac85c18d8b3b77d384f67cdaf01ea75",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_leopard__mask-coat",
@@ -4895,7 +4895,7 @@
     "points_black",
     "lp_fewspot"
    ],
-   "sha256": "d24e37f4a3b80704011ef0dd76127414e983eeaf975901b392072629b25cfba7",
+   "sha256": "b370ae6680b9365b271a442b43eb2a1df11e844ae8ed6620c203035ba8b0a613",
    "preview_sha256": "903ecfc8975422007359dfd8b82f2cdffda2cb2f198defa7476b365dcf527873",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_fewspot__mask-coat",
@@ -4961,7 +4961,7 @@
     "points_black",
     "lp_snowflake"
    ],
-   "sha256": "953e5dbc344f6e5fa1f2c1f4dd403624c17cabf02e33eeb05dcdb7e61dd36536",
+   "sha256": "4ce90e1089d71b259cb26a50fc7fe2b88fbd407835a4cee29e739eb34edfb2a1",
    "preview_sha256": "9dfa7a7e7d983236742f66167998ccda563f3c8ba139eef7be2f4666ab0a50f4",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_snowflake__mask-coat",
@@ -5026,7 +5026,7 @@
     "points_black",
     "lp_varnish_roan"
    ],
-   "sha256": "4af80a09aee812955a2dbd372e1816a5c494d13365f08e90cb54f9bd03cbff6d",
+   "sha256": "97080cfc10d48cca311f05d3606f279dbdd117777c16ab5cb10642aa582ca654",
    "preview_sha256": "c253222eccd698e8a684ae8c45ecdb7a5f895233bcfd29ddbcbf5db277a71a03",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_varnish_roan__mask-coat",

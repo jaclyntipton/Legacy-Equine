@@ -4354,7 +4354,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "2c59ec0a37644a3a0db9c4c00331d7675b6390eb633efce72df937d80114fb63",
+   "sha256": "0ca59b07d07a6305bcb72586576513912a2fe480587b373ee7a64f963c66dd53",
    "preview_sha256": "2a0b0769c1a47f989fbdb8a4970088b5c680079119c6dfc0adf432285a6dbfa2",
    "svg_element_ids": [
     "qh_mare_master_01__sabino_roaning__mask-coat",
@@ -4374,7 +4374,9 @@
     "qh_mare_master_01__sabino_roaning__sr0",
     "qh_mare_master_01__sabino_roaning__sr1",
     "qh_mare_master_01__sabino_roaning__sr2",
-    "qh_mare_master_01__sabino_roaning__rear-overlap-guard"
+    "qh_mare_master_01__sabino_roaning__rear-overlap-guard",
+    "qh_mare_master_01__sabino_roaning__hair-noise",
+    "qh_mare_master_01__sabino_roaning__irregular-roan"
    ],
    "validation": {
     "canvas": true,
@@ -4845,7 +4847,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "1191d1747100a75817da8549ed68bd98847081e3133c5df4986f2881fc1a26c7",
+   "sha256": "7dbe1694ee6486704db8aa554e286a9e1e9ea0c21fe35473ba697594f2f1e99c",
    "preview_sha256": "2d0131274436f8f12ea6e5c3e84f27b0dd9090db7cb97d2b9d28477584bd151f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_leopard__mask-coat",

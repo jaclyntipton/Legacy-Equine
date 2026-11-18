@@ -180,9 +180,6 @@
       <rect width="1496" height="1051" fill="#ffffff"/>
       <path fill="#000000" fill-rule="evenodd" d="M418.0,970.6 L413.6,970.5 L411.6,966.2 L411.6,961.8 L415.8,949.4 L408.8,937.7 L401.8,930.7 L393.2,927.3 L385.5,922.8 L381.9,917.2 L375.5,885.0 L373.0,867.6 L362.3,819.9 L343.1,746.8 L335.4,725.7 L333.9,715.8 L332.2,713.9 L332.9,709.6 L336.6,699.7 L359.2,667.4 L360.8,663.1 L370.4,646.4 L385.2,612.9 L387.0,605.5 L391.9,603.0 L391.6,599.3 L392.4,597.4 L398.7,587.3 L404.6,580.0 L408.0,577.3 L417.3,577.7 L481.0,532.9 L483.0,532.7 L483.7,533.6 L480.1,544.1 L460.6,576.9 L453.1,593.7 L437.9,649.5 L432.4,663.1 L419.1,689.7 L415.3,699.0 L410.9,716.4 L409.4,727.6 L403.6,746.1 L401.6,757.3 L400.9,771.6 L404.7,795.7 L416.6,849.7 L422.2,868.9 L430.5,888.1 L435.8,908.5 L438.9,914.7 L451.1,930.8 L462.3,940.1 L465.1,945.7 L453.3,952.1 L431.6,961.7Z"/>
     </mask>
-    <clipPath id="qh_mare_master_01__lp_leopard__lh-inner-clip">
-      <path d="M332 714 C347 700 375 690 409 716 L401 772 L417 849 L436 908 L465 946 L453 962 L418 971 L399 932 L382 918 L362 820 Z"/>
-    </clipPath>
     <filter id="qh_mare_master_01__lp_leopard__spot-soften" x="-3%" y="-3%" width="106%" height="106%">
       <feTurbulence type="fractalNoise" baseFrequency="0.018 0.025" numOctaves="2" seed="113" result="noise"/>
       <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
@@ -190,11 +187,8 @@
   </defs>
   <g id="qh_mare_master_01__lp_leopard" mask="url(#qh_mare_master_01__lp_leopard__mask-anatomy)">
     <g id="qh_mare_master_01__lp_leopard__coat" mask="url(#qh_mare_master_01__lp_leopard__mask-coat)" filter="url(#qh_mare_master_01__lp_leopard__organic-edge)">
-      <g mask="url(#qh_mare_master_01__lp_leopard__rear-overlap-guard)" filter="url(#qh_mare_master_01__lp_leopard__spot-soften)">
+      <g filter="url(#qh_mare_master_01__lp_leopard__spot-soften)">
         <rect id="qh_mare_master_01__lp_leopard__fill" x="0" y="0" width="1496" height="1051" fill="#FFFFFF" mask="url(#qh_mare_master_01__lp_leopard__m)"/>
-      </g>
-      <g clip-path="url(#qh_mare_master_01__lp_leopard__lh-inner-clip)" filter="url(#qh_mare_master_01__lp_leopard__spot-soften)">
-        <rect x="0" y="0" width="1496" height="1051" fill="#FFFFFF" mask="url(#qh_mare_master_01__lp_leopard__m)"/>
       </g>
     </g>
   </g>

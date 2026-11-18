@@ -283,6 +283,7 @@ export default function Home() {
     [horseSort, setHorseSort] = useState("name"),
     [horseView, setHorseView] = useState<"cards" | "compact">("cards"),
     [barnView,setBarnView]=useState<"training"|"general">("training"),
+    [selectedBarnHorses,setSelectedBarnHorses]=useState<Set<string>>(()=>new Set()),
     [mobileMenuOpen,setMobileMenuOpen]=useState(false),
     [currentPath,setCurrentPath]=useState("/home"),
     [showExactBalance,setShowExactBalance]=useState(false),
@@ -393,6 +394,7 @@ export default function Home() {
     [horses, user?.id],
   );
   const barnHorses=useMemo(()=>ownedHorses.filter(h=>(h.stable_barn??"training")===barnView),[ownedHorses,barnView]);
+  useEffect(()=>setSelectedBarnHorses(new Set()),[barnView]);
   useEffect(()=>{if(view!=="horse"||!selected||horse)return;let active=true;void supabase.from("horses").select("*").eq("id",selected).maybeSingle().then(({data,error})=>{if(!active)return;if(error)setNotice(error.message);else if(data)setHorses(current=>current.some(candidate=>candidate.id===data.id)?current:[...current,data as Horse])});return()=>{active=false}},[view,selected,horse]);
   const visibleHorses = useMemo(() => {
     const tierName = (h:Horse) => competitionTier(permanentStatAverage(h.stats),competitionTiers)?.name??"Unassigned";
@@ -403,7 +405,9 @@ export default function Home() {
     });
     return filtered.sort((a, b) => horseSort === "name" ? a.name.localeCompare(b.name) : horseSort === "age" ? age(b) - age(a) : horseSort === "newest" ? new Date(b.birth_date).getTime() - new Date(a.birth_date).getTime() : horseSort === "career" ? b.career_points - a.career_points : GAME.stats.includes(horseSort as typeof GAME.stats[number]) ? (b.stats[horseSort] ?? 0) - (a.stats[horseSort] ?? 0) : 0);
   }, [barnHorses, horseQuery, horseBreed, horseSex, horseOrigin, horseAge, horseTier, horseBreeding, horseSort,competitionTiers]);
-  const moveHorseToBarn=async(h:Horse,barn:"training"|"general")=>{await action(async()=>{const{error}=await supabase.rpc("move_owned_horse_to_barn",{p_horse:h.id,p_barn:barn});return{error}},`${h.name} moved to the ${barn==="training"?"Training Barn":"General Barn"}.`)};
+  const moveHorseToBarn=async(h:Horse,barn:"training"|"general")=>{let moved=false;await action(async()=>{const{error}=await supabase.rpc("move_owned_horse_to_barn",{p_horse:h.id,p_barn:barn});moved=!error;return{error}},`${h.name} moved to the ${barn==="training"?"Training Barn":"General Barn"}.`);if(moved)setSelectedBarnHorses(current=>{const next=new Set(current);next.delete(h.id);return next})};
+  const moveSelectedToBarn=async()=>{const ids=[...selectedBarnHorses],target=barnView==="training"?"general":"training";if(!ids.length)return;let moved=false;await action(async()=>{const{error}=await supabase.rpc("move_owned_horses_to_barn",{p_horses:ids,p_barn:target});moved=!error;return{error}},`${ids.length} horse${ids.length===1?"":"s"} moved to the ${target==="training"?"Training Barn":"General Barn"}.`);if(moved)setSelectedBarnHorses(new Set())};
+  const toggleBarnHorse=(id:string)=>setSelectedBarnHorses(current=>{const next=new Set(current);if(next.has(id))next.delete(id);else next.add(id);return next});
   const feedQualityOrder=useMemo(()=>[...new Set(storeProducts.filter(product=>product.department==="feed"&&product.quality).sort((a,b)=>a.sort_order-b.sort_order).map(product=>product.quality!))],[storeProducts]);
   const visibleStoreHorses=useMemo(()=>{const query=storeHorseQuery.trim().toLowerCase();return inventory.filter(h=>(!storeBreed||h.breed===storeBreed)&&(!query||`${h.name} ${h.breed} ${h.sex} ${h.color}`.toLowerCase().includes(query)))},[inventory,storeBreed,storeHorseQuery]);
   const visibleStoreProducts=useMemo(()=>{const tierOrder=storeDepartment==="tack"?[...STORE_TIERS]:feedQualityOrder;return storeProducts.filter(product=>product.department===storeDepartment&&(productType==="all"||(storeDepartment==="tack"?product.tack_slot===productType:product.feed_type===productType))&&(productTier==="all"||product.quality===productTier)&&`${product.name} ${product.description}`.toLowerCase().includes(productQuery.trim().toLowerCase())).sort((a,b)=>productSort==="price-asc"?a.price-b.price:productSort==="price-desc"?b.price-a.price:(tierOrder.indexOf(a.quality??"")-tierOrder.indexOf(b.quality??""))*(productSort==="tier-desc"?-1:1)||a.sort_order-b.sort_order)},[storeProducts,storeDepartment,productType,productTier,productSort,productQuery,feedQualityOrder]);
@@ -691,10 +695,11 @@ export default function Home() {
               {barnHorses.length ? (
                 <>
                   <HorseListTools horses={barnHorses} tiers={competitionTiers} query={horseQuery} setQuery={setHorseQuery} breed={horseBreed} setBreed={setHorseBreed} sex={horseSex} setSex={setHorseSex} origin={horseOrigin} setOrigin={setHorseOrigin} ageFilter={horseAge} setAge={setHorseAge} tier={horseTier} setTier={setHorseTier} breeding={horseBreeding} setBreeding={setHorseBreeding} sort={horseSort} setSort={setHorseSort} viewMode={horseView} setViewMode={setHorseView}/>
+                  <div className="barnbulk"><b>{selectedBarnHorses.size} selected</b><span><button disabled={!visibleHorses.length} onClick={()=>setSelectedBarnHorses(current=>new Set([...current,...visibleHorses.map(h=>h.id)]))}>Select All Shown</button><button disabled={!selectedBarnHorses.size} onClick={()=>setSelectedBarnHorses(new Set())}>Clear</button><button className="primary" disabled={loading||!selectedBarnHorses.size} onClick={()=>void moveSelectedToBarn()}>Move {selectedBarnHorses.size||"Selected"} to {barnView==="training"?"General Barn":"Training Barn"}</button></span></div>
                   <p className="horsecount">Showing {visibleHorses.length} of {barnHorses.length} horses in {barnView==="training"?"Training Barn":"General Barn"}</p>
                   <div className={`horsegrid ${horseView}`}>
                   {visibleHorses.map((h) => (
-                    <div className="barnhorse" key={h.id}><Card h={h} tiers={competitionTiers} open={open} compact={horseView === "compact"}/><button className="barnmove" disabled={loading} onClick={()=>void moveHorseToBarn(h,barnView==="training"?"general":"training")}>Move to {barnView==="training"?"General Barn":"Training Barn"}</button></div>
+                    <div className={`barnhorse ${selectedBarnHorses.has(h.id)?"selected":""}`} key={h.id}><label className="barncheck"><input type="checkbox" checked={selectedBarnHorses.has(h.id)} onChange={()=>toggleBarnHorse(h.id)}/><span>Select {h.name}</span></label><Card h={h} tiers={competitionTiers} open={open} compact={horseView === "compact"}/><button className="barnmove" disabled={loading} onClick={()=>void moveHorseToBarn(h,barnView==="training"?"general":"training")}>Move only this horse to {barnView==="training"?"General Barn":"Training Barn"}</button></div>
                   ))}
                   </div>
                   {!visibleHorses.length&&<p className="panel featurehint">No horses match these filters.</p>}

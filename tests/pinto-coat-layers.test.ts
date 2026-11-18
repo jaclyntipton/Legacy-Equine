@@ -1,5 +1,5 @@
 import {describe,expect,it} from "vitest";
-import {resolveCoatLayers,type CoatLayer,type CoatManifest,type CoatRecipe} from "../lib/game/horse-coat-compositor";
+import {pintoVariationPlan,resolveCoatLayers,type CoatLayer,type CoatManifest,type CoatRecipe} from "../lib/game/horse-coat-compositor";
 
 const layer=(trait_key:string):CoatLayer=>({layer_id:`pinto:${trait_key}`,category:"pinto",trait_key,stacking_order:600,compositing_group:"erase",blend_mode:"normal",variant_for_base:null,leg:null,file:`${trait_key}.svg`});
 const manifest:CoatManifest={master:{key:"qh_mare_master_01",asset_key:"qh_mare_vector_master_01"},canvas:{width:1496,height:1051},layers:[
@@ -31,5 +31,13 @@ describe("Paint pattern composition",()=>{
   expect(selected).not.toContain("dilution:cream_single:bay");
   expect(selected).not.toContain("dilution:dun:bay");
   expect(selected).not.toContain("roan:roan");
+ });
+ it("gives each horse a stable, bounded expression variation",()=>{
+  const first=pintoVariationPlan("horse-alpha"),repeat=pintoVariationPlan("horse-alpha"),second=pintoVariationPlan("horse-beta");
+  expect(first).toEqual(repeat);
+  expect(second).not.toEqual(first);
+  expect(first).toHaveLength(4);
+  expect(first.map(value=>value.kind)).toEqual(["pigment","pigment","white","white"]);
+  for(const patch of [...first,...second]){expect(patch.x).toBeGreaterThanOrEqual(240);expect(patch.x).toBeLessThanOrEqual(1120);expect(patch.y).toBeGreaterThanOrEqual(240);expect(patch.y).toBeLessThanOrEqual(540)}
  });
 });

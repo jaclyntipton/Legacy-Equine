@@ -49,6 +49,7 @@ describe("registered coat-layer occlusion", () => {
 
       expect(svg).toContain(`${layerId}__poll_bridge`);
       expect(record.svg_element_ids).toContain(`${layerId}__poll_bridge`);
+      expect(record.compositing_group).toBe("top");
     }
   });
 

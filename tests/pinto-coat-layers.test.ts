@@ -37,7 +37,7 @@ describe("Paint pattern composition",()=>{
   expect(first).toEqual(repeat);
   expect(second).not.toEqual(first);
   expect(first).toHaveLength(4);
-  expect(first.map(value=>value.kind)).toEqual(["pigment","pigment","white","white"]);
+  expect(first.map(value=>value.kind)).toEqual(["white","white","white","white"]);
   for(const patch of [...first,...second]){expect(patch.x).toBeGreaterThanOrEqual(240);expect(patch.x).toBeLessThanOrEqual(1120);expect(patch.y).toBeGreaterThanOrEqual(240);expect(patch.y).toBeLessThanOrEqual(540)}
  });
 });

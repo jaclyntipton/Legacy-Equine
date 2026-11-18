@@ -4348,7 +4348,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "5768620d55986a75024972b61424024499669d0bbf9c443c626255e89e3bde7b",
+   "sha256": "d8e984ade169ad4fd9007b1eeb24d823e5f1bd61d0a23d5466c4d57736a22e35",
    "preview_sha256": "91e9cd572dbd37314798f446ce88b2a2647986bdc87deac4b3183cc7f79f456a",
    "svg_element_ids": [
     "qh_stallion_master_01__sabino_roaning__mask-coat",
@@ -4839,7 +4839,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "4502625a544cbeb8737245825c627d64f40907d28b2e65505e91c64b6cbd41d3",
+   "sha256": "5f352c26f5d035f92742a7e02cf9f224384674ec4c48acfcb483187f730b7a78",
    "preview_sha256": "95e25fc44110f244f19aa8e51f02a3919ac85c18d8b3b77d384f67cdaf01ea75",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_leopard__mask-coat",
@@ -5039,7 +5039,7 @@
     "points_black",
     "lp_varnish_roan"
    ],
-   "sha256": "033a3e445fe8601082a0c8742ba453f8475e0339c87c24d029407605711c62b3",
+   "sha256": "605279bea72dd8c5e07dc25459b5fe66f3ccbe3972c08bf9dea31f49a19786b0",
    "preview_sha256": "c253222eccd698e8a684ae8c45ecdb7a5f895233bcfd29ddbcbf5db277a71a03",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_varnish_roan__mask-coat",
@@ -5078,6 +5078,71 @@
     "mane": 0,
     "tail": 0
    }
+  },
+  {
+   "layer_id": "qh_stallion_master_01__lp_frost",
+   "master_key": "qh_stallion_master_01",
+   "master_asset_key": "qh_stallion_vector_master_01",
+   "master_file": "qh_stallion_master_01.svg",
+   "master_sha256": "ed541fc2843166537891e61a2ab8ad75f79d76222d5a85715acb167442ec0dd8",
+   "category": "leopard_complex",
+   "trait_key": "frost",
+   "genetic_trigger": "LP/n (frost expression)",
+   "stacking_order": 405,
+   "compositing_group": "erase",
+   "compositing_group_meaning": "unioned and removed from the pigment group (destination-out)",
+   "blend_mode": "erase",
+   "requires": [],
+   "suppressed_by": [],
+   "variant_for_base": null,
+   "phenotype": null,
+   "leg": null,
+   "applicability": {
+    "status": "required",
+    "basis": [
+     "appaloosa:leopard_complex=required"
+    ]
+   },
+   "status": "generated_pending_review",
+   "provenance": "pipeline v1 (deterministic)",
+   "file": "layers/qh_stallion_master_01__lp_frost.svg",
+   "preview_png": "layers/qh_stallion_master_01__lp_frost.png",
+   "composite_proof": "proofs/assets/qh_stallion_master_01__lp_frost__proof.jpg",
+   "composite_proof_stack": [
+    "base_bay",
+    "skin_muzzle_dark",
+    "mane_black",
+    "tail_black",
+    "eye_brown",
+    "hoof_lf_black",
+    "hoof_rf_black",
+    "hoof_lh_black",
+    "hoof_rh_black",
+    "points_black",
+    "lp_frost"
+   ],
+   "sha256": "21bbb709bf0e37b90a75a397b83edf248d7afa33c7e5e0c66706e17cb3b2dfb4",
+   "svg_element_ids": [
+    "qh_stallion_master_01__lp_frost__mask-coat",
+    "qh_stallion_master_01__lp_frost__mask-anatomy",
+    "qh_stallion_master_01__lp_frost",
+    "qh_stallion_master_01__lp_frost__coat",
+    "qh_stallion_master_01__lp_frost__flecks",
+    "qh_stallion_master_01__lp_frost__rear-overlap-guard"
+   ],
+   "validation": {
+    "canvas": true,
+    "forbidden": [],
+    "ids_unique_in_file": true,
+    "ids_prefixed": true,
+    "png_size": true,
+    "transparent_background": true,
+    "overflow_pixels": 0,
+    "overflow_max_alpha": 0,
+    "empty": false,
+    "passed": true
+   },
+   "notes": "Low-density irregular frost flecking, distinct from snowflake."
   },
   {
    "layer_id": "qh_stallion_master_01__face_bald_face",

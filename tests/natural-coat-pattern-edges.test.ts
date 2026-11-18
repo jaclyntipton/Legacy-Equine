@@ -2,7 +2,7 @@ import fs from"node:fs";
 import path from"node:path";
 import{describe,expect,it}from"vitest";
 
-const traits=["tobiano","frame_overo","sabino","splash_white","tovero","lp_blanket","lp_snowcap","lp_spotted_blanket","lp_leopard","lp_varnish_roan"];
+const traits=["tobiano","frame_overo","sabino","splash_white","tovero","lp_blanket","lp_snowcap","lp_spotted_blanket","lp_leopard","lp_varnish_roan","lp_frost"];
 
 describe("natural coat-pattern edges",()=>{
  for(const sex of["mare","stallion"]){

@@ -27,6 +27,8 @@ describe("registered coat-layer occlusion", () => {
       const sabino = fs.readFileSync(`public/horse-visuals/coat-layers/${master}/layers/${master}__sabino_roaning.svg`, "utf8");
       expect(leopard).not.toContain("lh-inner-clip");
       expect(sabino).toContain("sabino_roaning__hair-noise");
+      expect(sabino).toContain("sabino_roaning__visible-hairs");
+      expect(sabino).toMatch(/fill="url\(#qh_(?:mare|stallion)_master_01__sabino_roaning__visible-hairs\)"/);
       expect(sabino).toMatch(/<feTurbulence type="fractalNoise" baseFrequency="0\.08[25] 0\.1(?:55|6)"/);
       expect(sabino).not.toContain("M305 485 l9 -5");
     }

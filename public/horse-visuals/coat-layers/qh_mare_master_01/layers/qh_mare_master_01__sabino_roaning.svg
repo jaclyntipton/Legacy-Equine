@@ -86,6 +86,16 @@
       <feColorMatrix in="grain" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .34 .34 .34 0 -0.72" result="sparse"/>
       <feComposite in="sparse" in2="SourceGraphic" operator="in"/>
     </filter>
+    <pattern id="qh_mare_master_01__sabino_roaning__visible-hairs" patternUnits="userSpaceOnUse" width="71" height="59">
+      <path d="M4 11 q7 -5 15 1 q-5 6 -14 4Z" fill="#fff" opacity=".92"/>
+      <path d="M31 7 q5 -3 11 2 q-4 5 -10 3Z" fill="#fff" opacity=".72"/>
+      <path d="M54 17 q8 -4 13 2 q-6 5 -13 3Z" fill="#fff" opacity=".86"/>
+      <path d="M18 29 q6 -4 13 0 q-3 7 -12 5Z" fill="#fff" opacity=".8"/>
+      <path d="M42 34 q9 -5 16 1 q-5 6 -15 4Z" fill="#fff" opacity=".94"/>
+      <path d="M2 47 q5 -3 12 1 q-4 5 -11 3Z" fill="#fff" opacity=".74"/>
+      <path d="M27 51 q8 -5 14 0 q-4 7 -13 5Z" fill="#fff" opacity=".88"/>
+      <path d="M57 49 q6 -3 11 1 q-4 5 -10 3Z" fill="#fff" opacity=".68"/>
+    </pattern>
   </defs>
   <g id="qh_mare_master_01__sabino_roaning" mask="url(#qh_mare_master_01__sabino_roaning__mask-anatomy)">
     <g id="qh_mare_master_01__sabino_roaning__coat" mask="url(#qh_mare_master_01__sabino_roaning__mask-coat)" filter="url(#qh_mare_master_01__sabino_roaning__organic-edge)">
@@ -101,7 +111,7 @@
         <path fill="#000000" fill-rule="evenodd" d="M1260.3,117.8 L1243.5,110.8 L1243.3,96.6 L1244.1,95.5 L1248.1,94.7 L1259.0,84.5 L1268.3,69.7 L1269.6,68.6 L1271.4,68.4 L1273.4,69.9 L1273.4,74.9 L1266.0,104.0Z"/>
         <path fill="#000000" fill-rule="evenodd" d="M1203.2,137.6 L1200.8,137.6 L1192.4,130.7 L1193.2,121.4 L1198.4,114.6 L1198.9,110.9 L1203.2,110.2 L1203.9,107.2 L1205.7,106.5 L1215.3,96.0 L1232.0,80.5 L1241.4,66.2 L1245.2,62.5 L1247.2,62.4 L1248.8,66.2 L1244.5,85.4 L1244.4,109.6 L1243.5,110.5 L1238.6,110.8 L1233.3,119.5 L1233.5,123.9 L1236.9,128.2 L1237.3,131.3 L1236.1,131.4 L1231.8,127.4 L1226.2,125.0 L1217.5,124.8 L1210.7,127.9 L1206.3,132.3Z"/>
         <g id="qh_mare_master_01__sabino_roaning__irregular-roan" fill="#FFFFFF" opacity="0.9">
-          <path filter="url(#qh_mare_master_01__sabino_roaning__hair-noise)" d="M245 424 C300 398 360 410 418 438 C480 468 538 448 604 466 C672 484 724 462 792 478 C855 493 916 477 982 505 C1015 519 1027 548 1001 568 C967 593 914 580 864 598 C807 619 744 604 687 616 C623 629 558 615 497 604 C434 593 369 601 315 574 C274 554 226 520 230 476 C232 454 236 438 245 424 Z"/>
+          <path fill="url(#qh_mare_master_01__sabino_roaning__visible-hairs)" d="M245 424 C300 398 360 410 418 438 C480 468 538 448 604 466 C672 484 724 462 792 478 C855 493 916 477 982 505 C1015 519 1027 548 1001 568 C967 593 914 580 864 598 C807 619 744 604 687 616 C623 629 558 615 497 604 C434 593 369 601 315 574 C274 554 226 520 230 476 C232 454 236 438 245 424 Z"/>
         </g>
       </g>
     </g>

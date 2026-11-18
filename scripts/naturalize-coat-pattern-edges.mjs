@@ -22,7 +22,7 @@ for(const sex of["mare","stallion"]){
   const original=readFileSync(filePath,"utf8");
   const oldHash=sha(original);
   const filterId=`${layerId}__organic-edge`;
-  const filter=`<filter id="${filterId}" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.014 0.021" numOctaves="2" seed="${seed}" result="edgeNoise"/><feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="${scale}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+  const filter=`<filter id="${filterId}" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.014 0.021" numOctaves="2" seed="${seed}" result="edgeNoise"/><feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="${scale}" xChannelSelector="R" yChannelSelector="G" result="displaced"/><feComponentTransfer in="displaced"><feFuncA type="discrete" tableValues="0 0 1 1"/></feComponentTransfer></filter>`;
   let next=original;
   if(next.includes(filterId))next=next.replace(new RegExp(`<filter id="${filterId}"[^]*?</filter>`),filter);
   else next=next.replace("<defs>",`<defs>\n${filter}`);

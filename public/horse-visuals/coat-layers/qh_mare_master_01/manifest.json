@@ -4354,7 +4354,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "9d276e2ce49a2cb4be7f25e7637b159b98fc06e2242ff5b9f78a01f3b132c320",
+   "sha256": "d8b6348493892cdb3f7b5eb83972808b27f4342ec01f2318899302ff30ac732c",
    "preview_sha256": "2a0b0769c1a47f989fbdb8a4970088b5c680079119c6dfc0adf432285a6dbfa2",
    "svg_element_ids": [
     "qh_mare_master_01__sabino_roaning__mask-coat",
@@ -4845,7 +4845,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "a43bf1dbf301a36f035742589b17ea46680619be4b1602472420e38f1d0b13fd",
+   "sha256": "46494548886aa7fab0d733188c3cf1d78b1187f5d9ba4bc0a0dc0ff0daa1a137",
    "preview_sha256": "2d0131274436f8f12ea6e5c3e84f27b0dd9090db7cb97d2b9d28477584bd151f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_leopard__mask-coat",
@@ -4979,7 +4979,7 @@
     "points_black",
     "lp_snowflake"
    ],
-   "sha256": "531a1ab1fa4dc0d2036fd2abf27412bbb152980ab286b826124f7fa37e6c47cd",
+   "sha256": "6d94beb930f9cbceabd12421405a4b34f9d3b854872f4d0a0bd3892e148bc7a2",
    "preview_sha256": "38c5a748bd90524a0c0150957f02ec6d7f0d9c5919077c892588527e74725e1f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_snowflake__mask-coat",
@@ -5002,6 +5002,73 @@
     "passed": true
    },
    "notes": "Small white flecks on a dark body, denser over hips."
+  },
+  {
+   "layer_id": "qh_mare_master_01__lp_frost",
+   "master_key": "qh_mare_master_01",
+   "master_asset_key": "qh_mare_vector_master_01",
+   "master_file": "qh_mare_master_01.svg",
+   "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
+   "category": "leopard_complex",
+   "trait_key": "frost",
+   "genetic_trigger": "LP/n (frost expression)",
+   "stacking_order": 403,
+   "compositing_group": "erase",
+   "compositing_group_meaning": "unioned and removed from the pigment group (destination-out)",
+   "blend_mode": "erase",
+   "requires": [],
+   "suppressed_by": [],
+   "variant_for_base": null,
+   "phenotype": null,
+   "leg": null,
+   "applicability": {
+    "status": "required",
+    "basis": [
+     "appaloosa:leopard_complex=required"
+    ]
+   },
+   "status": "generated_pending_review",
+   "provenance": "pipeline v1 (deterministic)",
+   "file": "layers/qh_mare_master_01__lp_frost.svg",
+   "preview_png": "layers/qh_mare_master_01__lp_frost.png",
+   "composite_proof": "proofs/assets/qh_mare_master_01__lp_frost__proof.jpg",
+   "composite_proof_stack": [
+    "base_bay",
+    "skin_muzzle_dark",
+    "mane_black",
+    "tail_black",
+    "eye_brown",
+    "hoof_lf_black",
+    "hoof_rf_black",
+    "hoof_lh_black",
+    "hoof_rh_black",
+    "points_black",
+    "lp_snowflake"
+   ],
+   "sha256": "5d586fbe6288750cb1f38b36a4ac7ffae920c9aa78710bbf48e299f9d3af0c55",
+   "preview_sha256": "38c5a748bd90524a0c0150957f02ec6d7f0d9c5919077c892588527e74725e1f",
+   "svg_element_ids": [
+    "qh_mare_master_01__lp_snowflake__mask-coat",
+    "qh_mare_master_01__lp_snowflake__mask-anatomy",
+    "qh_mare_master_01__lp_snowflake",
+    "qh_mare_master_01__lp_snowflake__coat",
+    "qh_mare_master_01__lp_snowflake__flecks",
+    "qh_mare_master_01__lp_snowflake__rear-overlap-guard"
+   ],
+   "validation": {
+    "canvas": true,
+    "forbidden": [],
+    "ids_unique_in_file": true,
+    "ids_prefixed": true,
+    "png_size": true,
+    "transparent_background": true,
+    "overflow_pixels": 0,
+    "overflow_max_alpha": 0,
+    "empty": false,
+    "passed": true
+   },
+   "notes": "Sparse white frosting concentrated over the croup and topline; distinct from Snowflake.",
+   "required_ids": []
   },
   {
    "layer_id": "qh_mare_master_01__lp_varnish_roan",

@@ -5,7 +5,7 @@ const clean=(value:unknown)=>String(value??"").trim().toLowerCase().replace(/[\s
 const alleles=(genetics:Record<string,unknown>,gene:string)=>{const entry=Object.entries(genetics).find(([key])=>clean(key)===clean(gene))?.[1];return Array.isArray(entry)?entry.map(String):entry&&typeof entry==="object"?Object.values(entry as Record<string,unknown>).map(String):typeof entry==="string"?entry.split(/[\s,/|]+/):[]};
 const count=(g:Record<string,unknown>,gene:string,allele:string)=>alleles(g,gene).filter(value=>clean(value)===clean(allele)).length,has=(g:Record<string,unknown>,gene:string,allele:string)=>count(g,gene,allele)>0;
 const normalizePinto=(value:unknown)=>({frame:"frame_overo",overo:"frame_overo",splashed_white:"splash_white"}[clean(value)]??clean(value));
-export const normalizeLeopardPattern=(value:unknown)=>({few_spot:"fewspot",few_spot_leopard:"fewspot",fewspot_leopard:"fewspot",blanket_spots:"spotted_blanket",spotted_blanket_leopard:"spotted_blanket",varnish:"varnish_roan",frost:"snowflake",pintaloosa:"spotted_blanket"}[clean(value)]??clean(value));
+export const normalizeLeopardPattern=(value:unknown)=>({few_spot:"fewspot",few_spot_leopard:"fewspot",fewspot_leopard:"fewspot",blanket_spots:"spotted_blanket",spotted_blanket_leopard:"spotted_blanket",varnish:"varnish_roan",pintaloosa:"spotted_blanket"}[clean(value)]??clean(value));
 export function resolvePintoPattern(values:unknown[]){
  const patterns=[...new Set(values.map(normalizePinto).filter(pattern=>!none(pattern)))];
  if(!patterns.length)return null;

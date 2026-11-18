@@ -48,6 +48,7 @@ describe("registered coat-layer occlusion", () => {
       const record = manifest.layers.find((layer: { layer_id: string }) => layer.layer_id === layerId);
 
       expect(svg).toContain(`${layerId}__poll_bridge`);
+      expect(svg).toContain(`</g>\n<path id="${layerId}__poll_bridge"`);
       expect(record.svg_element_ids).toContain(`${layerId}__poll_bridge`);
       expect(record.compositing_group).toBe("top");
     }

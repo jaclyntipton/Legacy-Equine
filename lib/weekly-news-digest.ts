@@ -34,6 +34,24 @@ async function sendWithProvider(input:{to:string;subject:string;html:string;text
 export function adminClient(){const url=process.env.NEXT_PUBLIC_SUPABASE_URL,service=process.env.SUPABASE_SERVICE_ROLE_KEY;if(!url||!service)throw new Error("supabase_admin_unavailable");return createClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}})}
 export const digestProviderReady=()=>Boolean(process.env.RESEND_API_KEY&&process.env.EMAIL_FROM&&unsubscribeSecret());
 
+async function digestContent(db:SupabaseClient){
+ const cfgResult=await db.from("news_digest_config").select("enabled,window_days,max_articles,subject_prefix").eq("singleton",true).single();
+ if(cfgResult.error)throw cfgResult.error;const config=cfgResult.data as DigestConfig,now=new Date(),cutoff=now.getTime()-config.window_days*86400000;
+ const postResult=await db.from("news_posts").select("id,title,summary,body,category,destination_url,published_at,publish_at,created_at,pinned,expires_at").eq("status","published").order("pinned",{ascending:false}).order("published_at",{ascending:false}).limit(100);
+ if(postResult.error)throw postResult.error;
+ const posts=(postResult.data as DigestPost[]).filter(post=>{const date=effectiveDate(post).getTime();return date<=now.getTime()&&date>=cutoff&&(!post.expires_at||new Date(post.expires_at)>now)}).slice(0,config.max_articles);
+ return{config,posts,now};
+}
+
+export async function sendWeeklyNewsDigestTest(stableId:string,email:string){
+ if(!digestProviderReady())throw new Error("email_provider_unavailable");
+ const db=adminClient(),{config,posts,now}=await digestContent(db);
+ if(!posts.length)throw new Error("no_recent_news");
+ const rendered=renderDigest(posts,stableId),minute=now.toISOString().slice(0,16);
+ const result=await sendWithProvider({to:email,subject:`[TEST] ${config.subject_prefix} — ${now.toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"})}`,html:rendered.html,text:rendered.text,unsubscribe:rendered.unsubscribe,idempotencyKey:`le-owner-digest-test-${stableId}-${minute}`});
+ return{status:"sent",provider_message_id:result.id,articles:posts.length};
+}
+
 async function claimDelivery(db:SupabaseClient,runId:string,stableId:string){
  const inserted=await db.from("news_digest_deliveries").insert({run_id:runId,stable_id:stableId,status:"processing"}).select("id").maybeSingle();
  if(!inserted.error&&inserted.data)return true;
@@ -45,15 +63,9 @@ async function claimDelivery(db:SupabaseClient,runId:string,stableId:string){
 }
 
 export async function runWeeklyNewsDigest(){
- const db=adminClient(),week=mondayKey(),now=new Date();
- const cfgResult=await db.from("news_digest_config").select("enabled,window_days,max_articles,subject_prefix").eq("singleton",true).single();
- if(cfgResult.error)throw cfgResult.error;const config=cfgResult.data as DigestConfig;
+ const db=adminClient(),week=mondayKey(),{config,posts,now}=await digestContent(db);
  if(!config.enabled)return{status:"skipped",reason:"digest_disabled"};
  if(!digestProviderReady())return{status:"skipped",reason:"provider_not_configured"};
- const cutoff=now.getTime()-config.window_days*86400000;
- const postResult=await db.from("news_posts").select("id,title,summary,body,category,destination_url,published_at,publish_at,created_at,pinned,expires_at").eq("status","published").order("pinned",{ascending:false}).order("published_at",{ascending:false}).limit(100);
- if(postResult.error)throw postResult.error;
- const posts=(postResult.data as DigestPost[]).filter(post=>{const date=effectiveDate(post).getTime();return date<=now.getTime()&&date>=cutoff&&(!post.expires_at||new Date(post.expires_at)>now)}).slice(0,config.max_articles);
  if(!posts.length)return{status:"skipped",reason:"no_recent_news"};
  let runResult=await db.from("news_digest_runs").insert({week_key:week,article_ids:posts.map(post=>post.id)}).select("id,status,article_ids").maybeSingle();
  if(runResult.error?.code==="23505")runResult=await db.from("news_digest_runs").select("id,status,article_ids").eq("week_key",week).single();

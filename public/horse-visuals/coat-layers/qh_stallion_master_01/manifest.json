@@ -15,19 +15,19 @@
   "landmarks": {
    "legs": {
     "lf": {
-     "top": 638.0,
+     "top": 638,
      "hoof_top": 945.5,
      "joint": 792.5,
      "measured": 792.5,
-     "bottom": 970.0,
+     "bottom": 970,
      "hoof_bottom": 986.9,
-     "D": 153.0,
+     "D": 153,
      "fetlock": 911.84,
      "bbox": [
       780.2,
-      638.0,
+      638,
       851.5,
-      970.0
+      970
      ],
      "hoof_bbox": [
       798.5,
@@ -84,7 +84,7 @@
      "joint_source": "measured_point_of_hock"
     },
     "rh": {
-     "top": 586.0,
+     "top": 586,
      "hoof_top": 964.7,
      "joint": 732.239,
      "measured": 837.74,
@@ -94,8 +94,8 @@
      "fetlock": 913.55858,
      "bbox": [
       186.5,
-      586.0,
-      365.0,
+      586,
+      365,
       988.6
      ],
      "hoof_bbox": [
@@ -4057,7 +4057,7 @@
     "points_black",
     "tobiano"
    ],
-   "sha256": "b628e1250c5bbc6da506b52d1919f9044d2d7b6554f4e947fee0e6b8a31ba41f",
+   "sha256": "69ec901150e5e0b0ea61af84b9bdc38e28e7e9634825825df39f52b275ebf031",
    "preview_sha256": "80af3d6a1c47915350fc27ec7d9fb4a1520b77cffcc7a55281115b68ab82bafe",
    "svg_element_ids": [
     "qh_stallion_master_01__tobiano__mask-coat",
@@ -4069,7 +4069,8 @@
     "qh_stallion_master_01__tobiano",
     "qh_stallion_master_01__tobiano__coat",
     "qh_stallion_master_01__tobiano__body",
-    "qh_stallion_master_01__tobiano__neck"
+    "qh_stallion_master_01__tobiano__neck",
+    "qh_stallion_master_01__tobiano__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4129,7 +4130,7 @@
     "points_black",
     "frame_overo"
    ],
-   "sha256": "00ee5c504e93e6576ca95dc28fd2a10f8cdacb741b64a7e8234b37cbc9f63128",
+   "sha256": "b20a970a04fa2e5aefa00defed823654de5debb4ac2126fb994041c9caf69bdc",
    "preview_sha256": "734da8073a401688fc5d4acf78c4d96ebca34adee7cdec21819099bd7331900e",
    "svg_element_ids": [
     "qh_stallion_master_01__frame_overo__mask-coat",
@@ -4137,7 +4138,8 @@
     "qh_stallion_master_01__frame_overo",
     "qh_stallion_master_01__frame_overo__coat",
     "qh_stallion_master_01__frame_overo__body",
-    "qh_stallion_master_01__frame_overo__neck"
+    "qh_stallion_master_01__frame_overo__neck",
+    "qh_stallion_master_01__frame_overo__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4197,7 +4199,7 @@
     "points_black",
     "splash_white"
    ],
-   "sha256": "b1fc9e897262d5a2c95281c1412fad78e015a1d73b734e9b89cd9bdf965b2a59",
+   "sha256": "b7e730f8339b3e912dada4ae49e6d5614603dbe54449a622cbf6dce4d4cd8a16",
    "preview_sha256": "d7d5b94e660b54ece9e19c2f6c8c6b3fbb40994690f6d0895447056c9b2c369c",
    "svg_element_ids": [
     "qh_stallion_master_01__splash_white__mask-coat",
@@ -4209,7 +4211,8 @@
     "qh_stallion_master_01__splash_white",
     "qh_stallion_master_01__splash_white__coat",
     "qh_stallion_master_01__splash_white__belly",
-    "qh_stallion_master_01__splash_white__face"
+    "qh_stallion_master_01__splash_white__face",
+    "qh_stallion_master_01__splash_white__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4269,7 +4272,7 @@
     "points_black",
     "sabino"
    ],
-   "sha256": "22fb190a15c72b4c532cd4c60a67c1ca7b31cc502088b37a3271467acd3479b5",
+   "sha256": "c8e5764b0478a30c58225e592c7005d22b338f2b5f8c627f4aea007d8f09aea7",
    "preview_sha256": "90f7cc7bb2015d6561e4f9c5c5703747847aac508a01a976aa2bcac46e8b4682",
    "svg_element_ids": [
     "qh_stallion_master_01__sabino__mask-coat",
@@ -4281,7 +4284,8 @@
     "qh_stallion_master_01__sabino",
     "qh_stallion_master_01__sabino__coat",
     "qh_stallion_master_01__sabino__belly",
-    "qh_stallion_master_01__sabino__face"
+    "qh_stallion_master_01__sabino__face",
+    "qh_stallion_master_01__sabino__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4344,7 +4348,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "44a6300475b77552d7da151af88c682f206d8bac16922ea8566c1f84b74cd755",
+   "sha256": "d50f35c2c85baa439cd4b151955a98c4f556c596a6a62d7b1a59427d2644bd3b",
    "preview_sha256": "91e9cd572dbd37314798f446ce88b2a2647986bdc87deac4b3183cc7f79f456a",
    "svg_element_ids": [
     "qh_stallion_master_01__sabino_roaning__mask-coat",
@@ -4363,7 +4367,8 @@
     "qh_stallion_master_01__sabino_roaning__speckle",
     "qh_stallion_master_01__sabino_roaning__sr0",
     "qh_stallion_master_01__sabino_roaning__sr1",
-    "qh_stallion_master_01__sabino_roaning__sr2"
+    "qh_stallion_master_01__sabino_roaning__sr2",
+    "qh_stallion_master_01__sabino_roaning__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4379,8 +4384,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -4430,7 +4435,7 @@
     "points_black",
     "medicine_hat"
    ],
-   "sha256": "5bb7c2bcf6e34fa4ba8ccca26171ac62f74023247e8f9034350500da1be5112e",
+   "sha256": "85089b2627c3c81c7df360c076b122b20ef7225a6d07a281f3e5a94ddc0db0f7",
    "preview_sha256": "fd486c18741c4244a7ff316634e0ed515c4caa665530a3b7d669fc17d1c1f818",
    "svg_element_ids": [
     "qh_stallion_master_01__medicine_hat__mask-coat",
@@ -4438,7 +4443,8 @@
     "qh_stallion_master_01__medicine_hat__keep",
     "qh_stallion_master_01__medicine_hat",
     "qh_stallion_master_01__medicine_hat__coat",
-    "qh_stallion_master_01__medicine_hat__fill"
+    "qh_stallion_master_01__medicine_hat__fill",
+    "qh_stallion_master_01__medicine_hat__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4498,7 +4504,7 @@
     "points_black",
     "tovero"
    ],
-   "sha256": "ae071630d6ae17abe35ef6a3df9eeb4385d8fed434fbf861dc16b41fd0c4ca10",
+   "sha256": "3b709ecd45857271f8e50dcfa7518819c28694857791c785395632eaff499021",
    "preview_sha256": "46a6f9510b7a2367706a5a2d394c2e7086341ca5960d8e2bb34111546d4ed483",
    "svg_element_ids": [
     "qh_stallion_master_01__tovero__mask-coat",
@@ -4506,7 +4512,8 @@
     "qh_stallion_master_01__tovero__keep",
     "qh_stallion_master_01__tovero",
     "qh_stallion_master_01__tovero__coat",
-    "qh_stallion_master_01__tovero__fill"
+    "qh_stallion_master_01__tovero__fill",
+    "qh_stallion_master_01__tovero__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4631,7 +4638,7 @@
     "points_black",
     "lp_blanket"
    ],
-   "sha256": "2cb8e5f52db01c68b4c1370303f9f49faf3b992388f0fa8331f8e8fff9ff5cdb",
+   "sha256": "8e344c1cf5b50366f9856ac1cb6dd41be9d71a29e14dd4ecad9fa7ded1ba3188",
    "preview_sha256": "62db92c0878f1f537835876887056801301a3b57977ef68b14ede256147feac5",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_blanket__mask-coat",
@@ -4639,7 +4646,8 @@
     "qh_stallion_master_01__lp_blanket__m",
     "qh_stallion_master_01__lp_blanket",
     "qh_stallion_master_01__lp_blanket__coat",
-    "qh_stallion_master_01__lp_blanket__fill"
+    "qh_stallion_master_01__lp_blanket__fill",
+    "qh_stallion_master_01__lp_blanket__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4663,7 +4671,7 @@
    "master_sha256": "ed541fc2843166537891e61a2ab8ad75f79d76222d5a85715acb167442ec0dd8",
    "category": "leopard_complex",
    "trait_key": "snowcap",
-   "genetic_trigger": "LP/n + PATN1 (blanket without spots) \u2014 LE pattern genes",
+   "genetic_trigger": "LP/n + PATN1 (blanket without spots) — LE pattern genes",
    "stacking_order": 400,
    "compositing_group": "erase",
    "compositing_group_meaning": "unioned and removed from the pigment group (destination-out)",
@@ -4697,7 +4705,7 @@
     "points_black",
     "lp_snowcap"
    ],
-   "sha256": "70cda9315f19242743b57e5b4ec38dc844b749712439e65f5996ae980df9c9f2",
+   "sha256": "9bde9788083aef83a60b71cdc4abc70738db8278786a616d33bcf53e29302d71",
    "preview_sha256": "eca49950b6d91cb9bf5d11543b1d850b2a5f1adef0e4454c17622344cabc0e9e",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_snowcap__mask-coat",
@@ -4705,7 +4713,8 @@
     "qh_stallion_master_01__lp_snowcap__m",
     "qh_stallion_master_01__lp_snowcap",
     "qh_stallion_master_01__lp_snowcap__coat",
-    "qh_stallion_master_01__lp_snowcap__fill"
+    "qh_stallion_master_01__lp_snowcap__fill",
+    "qh_stallion_master_01__lp_snowcap__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4763,7 +4772,7 @@
     "points_black",
     "lp_spotted_blanket"
    ],
-   "sha256": "df6a6c47671ca468c50542af8ab2250273ab7b0fa260f9da6cc76fe26c52af3e",
+   "sha256": "8c751d5ba80a748c2d7d56a8b000e7e6e0786acee4e9415b34474e5745cf4b5f",
    "preview_sha256": "a94d83b22882aa12f208f56039345cb6afdb8a39beefcab20786b708a4d23235",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_spotted_blanket__mask-coat",
@@ -4771,7 +4780,8 @@
     "qh_stallion_master_01__lp_spotted_blanket__m",
     "qh_stallion_master_01__lp_spotted_blanket",
     "qh_stallion_master_01__lp_spotted_blanket__coat",
-    "qh_stallion_master_01__lp_spotted_blanket__fill"
+    "qh_stallion_master_01__lp_spotted_blanket__fill",
+    "qh_stallion_master_01__lp_spotted_blanket__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4829,7 +4839,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "6ca2c49c54c13202c82a80fd657444f7c8583da80cf800c93feba056c1c5f883",
+   "sha256": "ff5179b1a16e269f33e3e931489ff1ec55be28d44916aeec62dd1a3f8041a028",
    "preview_sha256": "95e25fc44110f244f19aa8e51f02a3919ac85c18d8b3b77d384f67cdaf01ea75",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_leopard__mask-coat",
@@ -4837,7 +4847,8 @@
     "qh_stallion_master_01__lp_leopard__m",
     "qh_stallion_master_01__lp_leopard",
     "qh_stallion_master_01__lp_leopard__coat",
-    "qh_stallion_master_01__lp_leopard__fill"
+    "qh_stallion_master_01__lp_leopard__fill",
+    "qh_stallion_master_01__lp_leopard__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4895,7 +4906,7 @@
     "points_black",
     "lp_fewspot"
    ],
-   "sha256": "b370ae6680b9365b271a442b43eb2a1df11e844ae8ed6620c203035ba8b0a613",
+   "sha256": "2c107c542b6e4dc2e75ba02af14efaa1912cf10286a842d8fde0e88d856b2d6a",
    "preview_sha256": "903ecfc8975422007359dfd8b82f2cdffda2cb2f198defa7476b365dcf527873",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_fewspot__mask-coat",
@@ -4903,7 +4914,8 @@
     "qh_stallion_master_01__lp_fewspot__m",
     "qh_stallion_master_01__lp_fewspot",
     "qh_stallion_master_01__lp_fewspot__coat",
-    "qh_stallion_master_01__lp_fewspot__fill"
+    "qh_stallion_master_01__lp_fewspot__fill",
+    "qh_stallion_master_01__lp_fewspot__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4961,14 +4973,15 @@
     "points_black",
     "lp_snowflake"
    ],
-   "sha256": "4ce90e1089d71b259cb26a50fc7fe2b88fbd407835a4cee29e739eb34edfb2a1",
+   "sha256": "02297990d9d37ca0282a7a0bcfc81046e431e2b70ad36146d8c7af016a6b5c2e",
    "preview_sha256": "9dfa7a7e7d983236742f66167998ccda563f3c8ba139eef7be2f4666ab0a50f4",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_snowflake__mask-coat",
     "qh_stallion_master_01__lp_snowflake__mask-anatomy",
     "qh_stallion_master_01__lp_snowflake",
     "qh_stallion_master_01__lp_snowflake__coat",
-    "qh_stallion_master_01__lp_snowflake__flecks"
+    "qh_stallion_master_01__lp_snowflake__flecks",
+    "qh_stallion_master_01__lp_snowflake__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -5026,7 +5039,7 @@
     "points_black",
     "lp_varnish_roan"
    ],
-   "sha256": "97080cfc10d48cca311f05d3606f279dbdd117777c16ab5cb10642aa582ca654",
+   "sha256": "666abc541a419adb7811ef3fb4359bafe79f8f3c65697bdd62096eb8bab9d33d",
    "preview_sha256": "c253222eccd698e8a684ae8c45ecdb7a5f895233bcfd29ddbcbf5db277a71a03",
    "svg_element_ids": [
     "qh_stallion_master_01__lp_varnish_roan__mask-coat",
@@ -5042,7 +5055,8 @@
     "qh_stallion_master_01__lp_varnish_roan__nz",
     "qh_stallion_master_01__lp_varnish_roan",
     "qh_stallion_master_01__lp_varnish_roan__coat",
-    "qh_stallion_master_01__lp_varnish_roan__speckle"
+    "qh_stallion_master_01__lp_varnish_roan__speckle",
+    "qh_stallion_master_01__lp_varnish_roan__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,

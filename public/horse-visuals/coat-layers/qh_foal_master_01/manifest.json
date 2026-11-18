@@ -23,7 +23,7 @@
      "hoof_top": 951.7,
      "joint": 764.6,
      "measured": 764.6,
-     "bottom": 975.0,
+     "bottom": 975,
      "hoof_bottom": 986.9,
      "D": 187.10000000000002,
      "fetlock": 910.538,
@@ -31,7 +31,7 @@
       802.5,
       572.3,
       873.6,
-      975.0
+      975
      ],
      "hoof_bbox": [
       827.4,
@@ -66,7 +66,7 @@
     },
     "lh": {
      "top": 484.3,
-     "hoof_top": 951.0,
+     "hoof_top": 951,
      "joint": 705.64,
      "measured": 705.64,
      "bottom": 975.6,
@@ -81,7 +81,7 @@
      ],
      "hoof_bbox": [
       422.1,
-      951.0,
+      951,
       486.4,
       986.9
      ],
@@ -92,15 +92,15 @@
      "hoof_top": 979.5,
      "joint": 712.746,
      "measured": 687.6600000000001,
-     "bottom": 1001.0,
+     "bottom": 1001,
      "hoof_bottom": 1017.3,
      "D": 266.754,
      "fetlock": 920.81412,
      "bbox": [
-      251.0,
+      251,
       589.7,
       404.6,
-      1001.0
+      1001
      ],
      "hoof_bbox": [
       277.1,
@@ -575,7 +575,7 @@
    "category": "mane",
    "trait_key": "black",
    "genetic_trigger": "E_",
-   "stacking_order": 120,
+   "stacking_order": 615,
    "compositing_group": "pigment",
    "compositing_group_meaning": "drawn into the isolated pigment group",
    "blend_mode": "multiply",
@@ -637,7 +637,7 @@
    "category": "mane",
    "trait_key": "chestnut",
    "genetic_trigger": "ee",
-   "stacking_order": 120,
+   "stacking_order": 615,
    "compositing_group": "pigment",
    "compositing_group_meaning": "drawn into the isolated pigment group",
    "blend_mode": "multiply",
@@ -698,7 +698,7 @@
    "category": "tail",
    "trait_key": "black",
    "genetic_trigger": "E_",
-   "stacking_order": 120,
+   "stacking_order": 615,
    "compositing_group": "pigment",
    "compositing_group_meaning": "drawn into the isolated pigment group",
    "blend_mode": "multiply",
@@ -760,7 +760,7 @@
    "category": "tail",
    "trait_key": "chestnut",
    "genetic_trigger": "ee",
-   "stacking_order": 120,
+   "stacking_order": 615,
    "compositing_group": "pigment",
    "compositing_group_meaning": "drawn into the isolated pigment group",
    "blend_mode": "multiply",
@@ -4058,8 +4058,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -4345,7 +4345,7 @@
    "master_sha256": "eaf20168d7b768d8bddca4057721fb4aa7147952eee8d3170c46995f18a77365",
    "category": "leopard_complex",
    "trait_key": "snowcap",
-   "genetic_trigger": "LP/n + PATN1 (blanket without spots) \u2014 LE pattern genes",
+   "genetic_trigger": "LP/n + PATN1 (blanket without spots) — LE pattern genes",
    "stacking_order": 400,
    "compositing_group": "erase",
    "compositing_group_meaning": "unioned and removed from the pigment group (destination-out)",

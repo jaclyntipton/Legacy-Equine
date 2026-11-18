@@ -4063,7 +4063,7 @@
     "points_black",
     "tobiano"
    ],
-   "sha256": "723cad6d5ebcdb94c8f0e0133a02a706fd88d38fd65af00b7074000dd3299612",
+   "sha256": "2a8fb0f4cd13c30300ab129d05ff67b7770d53a070c3856c8cee1d94112fd436",
    "preview_sha256": "6ab262b29f42a9e869defb8500324ed420bdd7dc7b2becea29df95523205ead8",
    "svg_element_ids": [
     "qh_mare_master_01__tobiano__mask-coat",
@@ -4075,7 +4075,8 @@
     "qh_mare_master_01__tobiano",
     "qh_mare_master_01__tobiano__coat",
     "qh_mare_master_01__tobiano__body",
-    "qh_mare_master_01__tobiano__neck"
+    "qh_mare_master_01__tobiano__neck",
+    "qh_mare_master_01__tobiano__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4135,7 +4136,7 @@
     "points_black",
     "frame_overo"
    ],
-   "sha256": "d188df725176cafd5c93dfd9725beedad6a0b366c6212d617873c246826f427c",
+   "sha256": "09f16917029c81705790938cfa1ec971dc2607c9136dbf1ae601738e68ba7a75",
    "preview_sha256": "fd03538197eafe14a41cf750caa1e22cf887d5392648b8c7f511d9dfa7b7b76a",
    "svg_element_ids": [
     "qh_mare_master_01__frame_overo__mask-coat",
@@ -4143,7 +4144,8 @@
     "qh_mare_master_01__frame_overo",
     "qh_mare_master_01__frame_overo__coat",
     "qh_mare_master_01__frame_overo__body",
-    "qh_mare_master_01__frame_overo__neck"
+    "qh_mare_master_01__frame_overo__neck",
+    "qh_mare_master_01__frame_overo__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4203,7 +4205,7 @@
     "points_black",
     "splash_white"
    ],
-   "sha256": "250494c11f4410dc30bea034f5660f016776e8fc534087cf097b04dc9c8aa8c6",
+   "sha256": "cf938aa3d22fe7c19a5b45232ece6159d8c2035e4e3147b27ac2f520f40bef70",
    "preview_sha256": "19a1862164d3eac510a268a2ea1491ab7284aa0b36686e670948c44f66e6ff6f",
    "svg_element_ids": [
     "qh_mare_master_01__splash_white__mask-coat",
@@ -4215,7 +4217,8 @@
     "qh_mare_master_01__splash_white",
     "qh_mare_master_01__splash_white__coat",
     "qh_mare_master_01__splash_white__belly",
-    "qh_mare_master_01__splash_white__face"
+    "qh_mare_master_01__splash_white__face",
+    "qh_mare_master_01__splash_white__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4275,7 +4278,7 @@
     "points_black",
     "sabino"
    ],
-   "sha256": "193396cb1cf3d433663815d696eab3d86974771e2e6e94d11d36d26c7b2e2516",
+   "sha256": "51391dd0e5afee92aecc14f1130868ce4394525c44b78c6982d064d69e8b795e",
    "preview_sha256": "bc77af94fef0fd9cfe78642dc4950410fb12684fbab22be844be38950e2a73b4",
    "svg_element_ids": [
     "qh_mare_master_01__sabino__mask-coat",
@@ -4287,7 +4290,8 @@
     "qh_mare_master_01__sabino",
     "qh_mare_master_01__sabino__coat",
     "qh_mare_master_01__sabino__belly",
-    "qh_mare_master_01__sabino__face"
+    "qh_mare_master_01__sabino__face",
+    "qh_mare_master_01__sabino__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4350,7 +4354,7 @@
     "sabino",
     "sabino_roaning"
    ],
-   "sha256": "1e6ca8ea7a0559a4c5ed74bdcf8a304765bc1d63bc88aa4e565fb8ff489897df",
+   "sha256": "f734a27a03a9338290148800f54263dcfa357d9e1c2e20f4829f4d90f11ad361",
    "preview_sha256": "2a0b0769c1a47f989fbdb8a4970088b5c680079119c6dfc0adf432285a6dbfa2",
    "svg_element_ids": [
     "qh_mare_master_01__sabino_roaning__mask-coat",
@@ -4369,7 +4373,8 @@
     "qh_mare_master_01__sabino_roaning__speckle",
     "qh_mare_master_01__sabino_roaning__sr0",
     "qh_mare_master_01__sabino_roaning__sr1",
-    "qh_mare_master_01__sabino_roaning__sr2"
+    "qh_mare_master_01__sabino_roaning__sr2",
+    "qh_mare_master_01__sabino_roaning__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4385,8 +4390,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -4436,7 +4441,7 @@
     "points_black",
     "medicine_hat"
    ],
-   "sha256": "2adc30387de61cf9f2cfb1abba8d40e81b10adbc6afa223f101206a6e2c450e4",
+   "sha256": "3ea735d6ff4a92b8dfbc30cc14a1d7747c3b858c402577aaee7d3d05172d6354",
    "preview_sha256": "481ac4b791b811f09ac1003536394f3a90c77987d5288ea35133691079e38dbb",
    "svg_element_ids": [
     "qh_mare_master_01__medicine_hat__mask-coat",
@@ -4444,7 +4449,8 @@
     "qh_mare_master_01__medicine_hat__keep",
     "qh_mare_master_01__medicine_hat",
     "qh_mare_master_01__medicine_hat__coat",
-    "qh_mare_master_01__medicine_hat__fill"
+    "qh_mare_master_01__medicine_hat__fill",
+    "qh_mare_master_01__medicine_hat__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4504,7 +4510,7 @@
     "points_black",
     "tovero"
    ],
-   "sha256": "360ac7761ab6e2993828fc1b08436255a2cb80166a05b4116caac3c782e24b4b",
+   "sha256": "28a63d7f5a88b580506231e8182fdafb13980dd5fe2c8bedc79c2edc92ed36d3",
    "preview_sha256": "a4a8a2ee21748b2a8e936d76391814cca21d22fb4fcd176f3a88d6e3a37a6f36",
    "svg_element_ids": [
     "qh_mare_master_01__tovero__mask-coat",
@@ -4512,7 +4518,8 @@
     "qh_mare_master_01__tovero__keep",
     "qh_mare_master_01__tovero",
     "qh_mare_master_01__tovero__coat",
-    "qh_mare_master_01__tovero__fill"
+    "qh_mare_master_01__tovero__fill",
+    "qh_mare_master_01__tovero__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4637,7 +4644,7 @@
     "points_black",
     "lp_blanket"
    ],
-   "sha256": "98415ca0c718ec83e667f1c4dd5392a39b2351047669b135046ca551b68466eb",
+   "sha256": "f0e1286998e396679f70cdf7113aabc92023be65940fb3b58e2d2776da57b270",
    "preview_sha256": "9e9c093de3aeec1550e9c00936677afa96104a2473342d257be6fd20f0d82a82",
    "svg_element_ids": [
     "qh_mare_master_01__lp_blanket__mask-coat",
@@ -4645,7 +4652,8 @@
     "qh_mare_master_01__lp_blanket__m",
     "qh_mare_master_01__lp_blanket",
     "qh_mare_master_01__lp_blanket__coat",
-    "qh_mare_master_01__lp_blanket__fill"
+    "qh_mare_master_01__lp_blanket__fill",
+    "qh_mare_master_01__lp_blanket__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4669,7 +4677,7 @@
    "master_sha256": "3e239ed8c0571b27b42219739329825ec87386528747379a3aa8081a2ff632f1",
    "category": "leopard_complex",
    "trait_key": "snowcap",
-   "genetic_trigger": "LP/n + PATN1 (blanket without spots) \u2014 LE pattern genes",
+   "genetic_trigger": "LP/n + PATN1 (blanket without spots) — LE pattern genes",
    "stacking_order": 400,
    "compositing_group": "erase",
    "compositing_group_meaning": "unioned and removed from the pigment group (destination-out)",
@@ -4703,7 +4711,7 @@
     "points_black",
     "lp_snowcap"
    ],
-   "sha256": "eca4b31f1136d52245852cd6dfd78de13f362f6d61af5190d751847b14998188",
+   "sha256": "e38e284b9bd86b0ad71503fb2f271c0d0595679ffeaf9b14a11c3d2042e60e6a",
    "preview_sha256": "191e81c9fd17e8cc7e070acfbe8cac4e1fd424004b70fc0bf245d4d7d8cd64d7",
    "svg_element_ids": [
     "qh_mare_master_01__lp_snowcap__mask-coat",
@@ -4711,7 +4719,8 @@
     "qh_mare_master_01__lp_snowcap__m",
     "qh_mare_master_01__lp_snowcap",
     "qh_mare_master_01__lp_snowcap__coat",
-    "qh_mare_master_01__lp_snowcap__fill"
+    "qh_mare_master_01__lp_snowcap__fill",
+    "qh_mare_master_01__lp_snowcap__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4769,7 +4778,7 @@
     "points_black",
     "lp_spotted_blanket"
    ],
-   "sha256": "05761a8c6d01a3362c500c42e525988655061a48d785fa44c089da2fc2f4a0ee",
+   "sha256": "18ead10663557acf1260c932f8ec5c5bbbe2acb1b28c043ad993fe81ccc22933",
    "preview_sha256": "2aeb70da56be7baa0692a7e1c3a8e62285a25073d72566145510686335f1db4b",
    "svg_element_ids": [
     "qh_mare_master_01__lp_spotted_blanket__mask-coat",
@@ -4777,7 +4786,8 @@
     "qh_mare_master_01__lp_spotted_blanket__m",
     "qh_mare_master_01__lp_spotted_blanket",
     "qh_mare_master_01__lp_spotted_blanket__coat",
-    "qh_mare_master_01__lp_spotted_blanket__fill"
+    "qh_mare_master_01__lp_spotted_blanket__fill",
+    "qh_mare_master_01__lp_spotted_blanket__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4835,7 +4845,7 @@
     "points_black",
     "lp_leopard"
    ],
-   "sha256": "2ac65f7c1578f3554e715dbf4a9f7992cb8d718b0e3c82c7a636dbd962759db4",
+   "sha256": "165332d3a6e59eb47b93eb2aaa8c636bf9a51bb88302b60ae1c462f75ce53c7f",
    "preview_sha256": "2d0131274436f8f12ea6e5c3e84f27b0dd9090db7cb97d2b9d28477584bd151f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_leopard__mask-coat",
@@ -4843,7 +4853,8 @@
     "qh_mare_master_01__lp_leopard__m",
     "qh_mare_master_01__lp_leopard",
     "qh_mare_master_01__lp_leopard__coat",
-    "qh_mare_master_01__lp_leopard__fill"
+    "qh_mare_master_01__lp_leopard__fill",
+    "qh_mare_master_01__lp_leopard__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4901,7 +4912,7 @@
     "points_black",
     "lp_fewspot"
    ],
-   "sha256": "ef6f3b1eea2f86247618305ab6c3aab9ab6d58bfd10b9686bd58368cf780d6b0",
+   "sha256": "b2571d909973efef6d3fdaceb9be66cc4a963dad349eadebbef714fb4028b455",
    "preview_sha256": "fb094bb6db2a6fd69e49eb041bd9ac51f7a9603da68a6e7ab6f1a7ff4a85ea94",
    "svg_element_ids": [
     "qh_mare_master_01__lp_fewspot__mask-coat",
@@ -4909,7 +4920,8 @@
     "qh_mare_master_01__lp_fewspot__m",
     "qh_mare_master_01__lp_fewspot",
     "qh_mare_master_01__lp_fewspot__coat",
-    "qh_mare_master_01__lp_fewspot__fill"
+    "qh_mare_master_01__lp_fewspot__fill",
+    "qh_mare_master_01__lp_fewspot__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -4967,14 +4979,15 @@
     "points_black",
     "lp_snowflake"
    ],
-   "sha256": "dc43abbe2906e099a3c94c61333b0be5aa07678667dd1ec0a2531f229fe695e9",
+   "sha256": "50c01271636c06be6f118b9a6e911fa1b991afb086183023ee495a3b6073e3d4",
    "preview_sha256": "38c5a748bd90524a0c0150957f02ec6d7f0d9c5919077c892588527e74725e1f",
    "svg_element_ids": [
     "qh_mare_master_01__lp_snowflake__mask-coat",
     "qh_mare_master_01__lp_snowflake__mask-anatomy",
     "qh_mare_master_01__lp_snowflake",
     "qh_mare_master_01__lp_snowflake__coat",
-    "qh_mare_master_01__lp_snowflake__flecks"
+    "qh_mare_master_01__lp_snowflake__flecks",
+    "qh_mare_master_01__lp_snowflake__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,
@@ -5032,7 +5045,7 @@
     "points_black",
     "lp_varnish_roan"
    ],
-   "sha256": "e6db05807ad8158702f70983682eab4f86d251b6cf590532b04874fc789e5534",
+   "sha256": "1b36d34ee683e758a05497f912285053b00a4313ce60655f9d9ebb2905e8a301",
    "preview_sha256": "77a37d0fb26ad45f43854774b0a9277c4c4a93d7d0d0531b4d21e2866181198c",
    "svg_element_ids": [
     "qh_mare_master_01__lp_varnish_roan__mask-coat",
@@ -5048,7 +5061,8 @@
     "qh_mare_master_01__lp_varnish_roan__nz",
     "qh_mare_master_01__lp_varnish_roan",
     "qh_mare_master_01__lp_varnish_roan__coat",
-    "qh_mare_master_01__lp_varnish_roan__speckle"
+    "qh_mare_master_01__lp_varnish_roan__speckle",
+    "qh_mare_master_01__lp_varnish_roan__rear-overlap-guard"
    ],
    "validation": {
     "canvas": true,

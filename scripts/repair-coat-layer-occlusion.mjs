@@ -8,6 +8,12 @@ const traits = [
   "medicine_hat", "tovero", "lp_blanket", "lp_snowcap", "lp_spotted_blanket",
   "lp_leopard", "lp_fewspot", "lp_snowflake", "lp_varnish_roan",
 ];
+const guardedElement = {
+  tobiano: "body", frame_overo: "body", sabino: "belly", sabino_roaning: "speckle",
+  splash_white: "belly", medicine_hat: "fill", tovero: "fill", lp_blanket: "fill",
+  lp_snowcap: "fill", lp_spotted_blanket: "fill", lp_leopard: "fill", lp_fewspot: "fill",
+  lp_snowflake: "flecks", lp_varnish_roan: "speckle",
+};
 
 const digest = value => crypto.createHash("sha256").update(value).digest("hex");
 
@@ -23,12 +29,21 @@ for (const master of roots) {
     const layerId = `${master}__${trait}`;
     const file = path.join(directory, "layers", `${layerId}.svg`);
     let svg = fs.readFileSync(file, "utf8");
-    if (!svg.includes(`${layerId}__rear-overlap-guard`)) {
-      const coatMask = new RegExp(`(<mask id="${layerId}__mask-coat"[\\s\\S]*?)(</mask>)`);
-      if (!coatMask.test(svg)) throw new Error(`Missing coat mask in ${file}`);
-      svg = svg.replace(coatMask, `$1<path id="${layerId}__rear-overlap-guard" fill="#000000" fill-rule="evenodd" d="${lhReference[1]}"/>$2`);
-      fs.writeFileSync(file, svg);
+    svg = svg.replace(new RegExp(`<path id="${layerId}__rear-overlap-guard"[^>]+/>`), "");
+    const guardId = `${layerId}__rear-overlap-guard`;
+    const guard = `<mask id="${guardId}" maskUnits="userSpaceOnUse" x="0" y="0" width="1496" height="1051"><rect width="1496" height="1051" fill="#ffffff"/><path fill="#000000" fill-rule="evenodd" d="${lhReference[1]}"/></mask>`;
+    if (!svg.includes(`<mask id="${guardId}"`)) svg = svg.replace("</defs>", `${guard}\n</defs>`);
+    const elementId = `${layerId}__${guardedElement[trait]}`;
+    const directGuard = `id="${elementId}" mask="url(#${guardId})"`;
+    const element = new RegExp(`(<(?:path|rect|g) id="${elementId}")(?![^>]*mask=)`);
+    if (element.test(svg)) {
+      svg = svg.replace(element, `$1 mask="url(#${guardId})"`);
+    } else if (!svg.includes(directGuard) && !svg.includes(`<g mask="url(#${guardId})"><rect id="${elementId}"`)) {
+      const maskedElement = new RegExp(`(<rect id="${elementId}"[^>]*/>)`);
+      if (!maskedElement.test(svg)) throw new Error(`Missing guarded element ${elementId}`);
+      svg = svg.replace(maskedElement, `<g mask="url(#${guardId})">$1</g>`);
     }
+    fs.writeFileSync(file, svg);
     const record = manifest.layers.find(layer => layer.layer_id === layerId);
     if (!record) throw new Error(`Missing manifest record ${layerId}`);
     record.sha256 = digest(svg);

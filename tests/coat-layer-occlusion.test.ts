@@ -10,8 +10,9 @@ describe("registered coat-layer occlusion", () => {
     for (const trait of traits) {
       const layerId = `${master}__${trait}`;
       const svg = fs.readFileSync(path.join("public/horse-visuals/coat-layers", master, "layers", `${layerId}.svg`), "utf8");
-      expect(svg).toContain(`id="${layerId}__rear-overlap-guard"`);
-      expect(svg).toMatch(new RegExp(`<mask id="${layerId}__mask-coat"[\\s\\S]*${layerId}__rear-overlap-guard[\\s\\S]*</mask>`));
+      expect(svg).toContain(`<mask id="${layerId}__rear-overlap-guard"`);
+      expect(svg).toContain(`mask="url(#${layerId}__rear-overlap-guard)"`);
+      expect(svg).not.toMatch(new RegExp(`<mask id="${layerId}__mask-coat"[\\s\\S]*<path id="${layerId}__rear-overlap-guard"[\\s\\S]*</mask>`));
     }
   });
 

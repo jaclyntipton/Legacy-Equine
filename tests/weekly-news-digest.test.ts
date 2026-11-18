@@ -1,0 +1,12 @@
+import{describe,expect,it}from"vitest";import{readFileSync}from"node:fs";
+const migration=readFileSync("supabase/migrations/202611180001_weekly_news_digest.sql","utf8"),worker=readFileSync("lib/weekly-news-digest.ts","utf8"),cron=readFileSync("app/api/cron/weekly-news-digest/route.ts","utf8"),unsubscribe=readFileSync("app/api/email/unsubscribe/route.ts","utf8"),settings=readFileSync("app/news-email-preferences.tsx","utf8"),admin=readFileSync("app/admin-news.tsx","utf8"),vercel=readFileSync("vercel.json","utf8");
+describe("weekly News digest",()=>{
+ it("is explicit opt-in and separate from required account mail",()=>{expect(migration).toContain("subscribed boolean not null default false");expect(settings).toContain("This is optional and separate from essential account and security messages");expect(settings).toContain('save_news_email_preference')});
+ it("uses authoritative published News and a bounded weekly preview",()=>{expect(migration).toContain("from news_posts where status='published'");expect(migration).toContain("max_articles");expect(admin).toContain("NEXT DIGEST PREVIEW")});
+ it("keeps Auth email out of gameplay preference tables and requires verification",()=>{expect(migration).not.toContain("email text");expect(worker).toContain("db.auth.admin.getUserById");expect(worker).toContain("user.email_confirmed_at")});
+ it("is idempotent per week and recipient",()=>{expect(migration).toContain("week_key date not null unique");expect(migration).toContain("unique(run_id,stable_id)");expect(worker).toContain('"Idempotency-Key"')});
+ it("provides signed unsubscribe and one-click headers",()=>{expect(worker).toContain("createHmac");expect(worker).toContain("List-Unsubscribe-Post");expect(unsubscribe).toContain("validUnsubscribeSignature");expect(unsubscribe).toContain("subscribed:false")});
+ it("keeps provider secrets server-only and sends no tracking pixels",()=>{expect(worker).toContain("process.env.RESEND_API_KEY");expect(worker).toContain("process.env.EMAIL_FROM");expect(worker).not.toContain("NEXT_PUBLIC_RESEND");expect(worker).not.toContain("tracking_pixel")});
+ it("runs from the protected Vercel scheduler",()=>{expect(cron).toContain("CRON_SECRET");expect(vercel).toContain("/api/cron/weekly-news-digest");expect(vercel).toContain("0 14 * * 0")});
+ it("gives Owner preview, configuration and delivery history",()=>{for(const value of["Weekly Game Digest","Save Digest Settings","DELIVERY HISTORY","subscriber_count"])expect(admin).toContain(value);expect(migration).toContain("can_manage_news()")});
+});

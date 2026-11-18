@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import "./news-digest-admin.css";
 
 const supabase = createClient();
 
@@ -37,6 +38,9 @@ type NewsForm = {
 };
 
 type LibraryFilter = "all" | "draft" | "published" | "scheduled" | "archived";
+type DigestPost={id:string;title:string;summary:string;category:string;destination_url:string|null;published_at:string};
+type DigestRun={week_key:string;status:string;eligible_count:number;sent_count:number;failed_count:number;skip_reason:string|null;started_at:string;completed_at:string|null};
+type DigestData={config:{enabled:boolean;window_days:number;max_articles:number;subject_prefix:string};subscriber_count:number;preview_posts:DigestPost[];recent_runs:DigestRun[]};
 
 const blank: NewsForm = {
   id: null,
@@ -254,6 +258,8 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
         </aside>
       </div>
 
+      <WeeklyDigestAdmin notify={notify}/>
+
       {confirmUnpublish && <div className="news-confirm-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setConfirmUnpublish(false); }}>
         <section role="alertdialog" aria-modal="true" aria-labelledby="unpublish-title">
           <p className="eyebrow">CONFIRM ACTION</p><h3 id="unpublish-title">Unpublish this article?</h3><p>Players will no longer see it in the public News feed. The article record and content will be preserved.</p>
@@ -262,6 +268,14 @@ export function AdminNews({ notify }: { notify: (message: string) => void }) {
       </div>}
     </section>
   );
+}
+
+function WeeklyDigestAdmin({notify}:{notify:(message:string)=>void}){
+ const[data,setData]=useState<DigestData|null>(null),[enabled,setEnabled]=useState(false),[days,setDays]=useState(7),[max,setMax]=useState(8),[subject,setSubject]=useState("Legacy Equine Weekly"),[providerReady,setProviderReady]=useState(false),[busy,setBusy]=useState(false);
+ const load=useCallback(async()=>{const[{data:value,error},{data:{session}}]=await Promise.all([supabase.rpc("admin_get_news_digest"),supabase.auth.getSession()]);if(error)return notify(error.message);const next=value as DigestData;setData(next);setEnabled(next.config.enabled);setDays(next.config.window_days);setMax(next.config.max_articles);setSubject(next.config.subject_prefix);if(session){const response=await fetch("/api/admin/news-digest/status",{headers:{Authorization:`Bearer ${session.access_token}`}});if(response.ok)setProviderReady(Boolean((await response.json()).provider_ready))}},[notify]);
+ useEffect(()=>{const timer=setTimeout(()=>void load(),0);return()=>clearTimeout(timer)},[load]);
+ const save=async()=>{setBusy(true);const{error}=await supabase.rpc("admin_save_news_digest_config",{p_enabled:enabled,p_window_days:days,p_max_articles:max,p_subject_prefix:subject});setBusy(false);if(error)return notify(error.message);notify(enabled?"Weekly Digest schedule enabled.":"Weekly Digest schedule disabled.");await load()};
+ return <section className="news-digest-admin"><header><div><p className="eyebrow">PLAYER EMAILS</p><h2>Weekly Game Digest</h2><p>Build one consent-only weekly email from authoritative published News. Routine gameplay is never emailed automatically.</p></div><span className={enabled&&providerReady?"ready":"notready"}>{enabled?(providerReady?"READY":"PROVIDER SETUP REQUIRED"):"DISABLED"}</span></header><div className="digest-admin-grid"><div className="digest-config"><label className="news-feature-toggle"><input type="checkbox" checked={enabled} onChange={event=>setEnabled(event.target.checked)}/><span><b>Enable weekly delivery</b><small>Only players who explicitly opted in and have a verified login email are eligible.</small></span></label><label>News window<input type="number" min="1" max="30" value={days} onChange={event=>setDays(Number(event.target.value))}/><small>Published articles from the previous 1–30 days.</small></label><label>Maximum articles<input type="number" min="1" max="12" value={max} onChange={event=>setMax(Number(event.target.value))}/></label><label>Subject prefix<input maxLength={80} value={subject} onChange={event=>setSubject(event.target.value)}/></label><button className="primary" disabled={busy||!subject.trim()} onClick={()=>void save()}>{busy?"Saving…":"Save Digest Settings"}</button><p className="digest-schedule"><b>Schedule:</b> Sunday morning ET<br/><b>Subscribers:</b> {data?.subscriber_count??0}<br/><b>Privacy:</b> No open or click tracking.</p></div><div className="digest-preview"><p className="eyebrow">NEXT DIGEST PREVIEW</p><h3>{subject||"Legacy Equine Weekly"}</h3>{data?.preview_posts.map(post=><article key={post.id}><span>{categories[post.category]??post.category}</span><b>{post.title}</b><small>{post.summary}</small></article>)}{!data?.preview_posts.length&&<p>No eligible published News is currently available.</p>}</div><div className="digest-runs"><p className="eyebrow">DELIVERY HISTORY</p>{data?.recent_runs.map(run=><article key={run.week_key}><b>{new Date(`${run.week_key}T12:00:00Z`).toLocaleDateString()}</b><span>{run.status}</span><small>{run.sent_count} sent · {run.failed_count} failed · {run.eligible_count} eligible{run.skip_reason?` · ${run.skip_reason}`:""}</small></article>)}{!data?.recent_runs.length&&<p>No weekly digest has run yet.</p>}</div></div></section>
 }
 
 function PublicPreview({ form, date, live }: { form: NewsForm; date: Date; live: boolean }) {

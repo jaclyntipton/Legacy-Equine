@@ -42,6 +42,7 @@ import { AdminProfessions } from "@/app/admin-professions";
 import { AdminCommerce } from "@/app/admin-commerce";
 import { HomeNews } from "@/app/home-news";
 import { AdminNews } from "@/app/admin-news";
+import { NewsEmailPreferences } from "@/app/news-email-preferences";
 import "@/app/admin-news.css";
 import "@/app/admin-section-header.css";
 import { PageSectionHeader, SectionHeading } from "@/app/page-section-header";
@@ -647,7 +648,7 @@ export default function Home() {
             <nav className="sectiontabs profile-tabs" aria-label="My Profile sections"><button className={profileTab==="profile"?"active":""} onClick={()=>navigate("profile",{profileTab:"profile"})}>Profile</button><button className={profileTab==="artwork"?"active":""} onClick={()=>navigate("profile",{profileTab:"artwork"})}>Artwork Album</button><button className={profileTab==="settings"?"active":""} onClick={()=>navigate("profile",{profileTab:"settings"})}>Settings</button></nav>
             {profileTab==="profile"&&<><section className="hero playerprofilehero"><div><p className="eyebrow">LE ACCOUNT #{stable.account_number} · ESTABLISHED {new Date(stable.created_at).getFullYear()}</p><h1>{stable.username?`@${stable.username}`:stable.name}</h1>{progression&&<p className="herolevel">Level {progression.level}{progression.legacy_stable?" — Legacy Stable":""} · {progression.account_xp.toLocaleString()} XP</p>}<p>{stable.bio||"Tell the Legacy Equine community about yourself."}</p></div><div className="crest">{stable.avatar_url?<img src={stable.avatar_url} alt={`${stable.username??stable.name} avatar`}/>:<span>LE</span>}<small>{stable.username?`@${stable.username}`:`ACCOUNT #${stable.account_number}`}</small></div></section><button className="primary profilepubliclink" onClick={()=>navigate("publicstable",{publicStableId:stable.id})}>View Public Stable Profile</button><section className="stats"><div><small>PLAYER LEVEL</small><b>{progression?.level??1}</b></div><div><small>ACCOUNT XP</small><b>{(progression?.account_xp??0).toLocaleString()}</b></div><div><small>HORSES OWNED</small><b>{ownedHorses.length}</b></div><div><small>LAST ACTIVE</small><b>{new Date(stable.last_active_at||stable.created_at).toLocaleDateString()}</b></div></section></>}
             {profileTab==="artwork"&&<ArtworkAlbum upload={async file=>uploadMedia(file,"horses")} notify={setNotice}/>} 
-            {profileTab==="settings"&&<><SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/><AccountInformationPanel/><PhoneVerificationPanel/></>}
+            {profileTab==="settings"&&<><SettingsView stable={stable} save={(name,username,bio)=>action(async()=>{const{error}=await supabase.rpc("update_stable_profile",{new_name:name,new_username:username,new_bio:bio});return{error}},"Account profile updated.")} uploadRanch={file=>uploadStableMedia("ranch",file)} uploadAvatar={file=>uploadStableMedia("avatar",file)}/><NewsEmailPreferences notify={setNotice}/><AccountInformationPanel/><PhoneVerificationPanel/></>}
           </>}
           {view === "stable" && (
             <>

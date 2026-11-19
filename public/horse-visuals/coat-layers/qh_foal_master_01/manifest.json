@@ -3,7 +3,7 @@
   "key": "qh_foal_master_01",
   "asset_key": "qh_foal_vector_master_01",
   "file": "qh_foal_master_01.svg",
-  "sha256": "eaf20168d7b768d8bddca4057721fb4aa7147952eee8d3170c46995f18a77365",
+  "sha256": "938ce13fa0ff2287a23a980b306ee026250b3ad66f2da0cd52733413084bcfd1",
   "breed_body": "qh",
   "sex": "foal",
   "life_stage": "foal",
@@ -167,7 +167,7 @@
     "points_black",
     "base_bay"
    ],
-   "sha256": "65625806d5b0e332a30220b033b7b487fa0d421ef657f989b7a10eec6f547e82",
+   "sha256": "2a8dae17e2941a41a4e465a520a0948908cc6cde22b062d9a09381ba5c75643b",
    "preview_sha256": "275cc042d6866415388f13d899ae6f5888d189053e79077e592a00d4b09df43b",
    "svg_element_ids": [
     "qh_foal_master_01__base_bay__mask-coat",
@@ -175,7 +175,8 @@
     "qh_foal_master_01__base_bay",
     "qh_foal_master_01__base_bay__coat",
     "qh_foal_master_01__base_bay__fill",
-    "qh_foal_master_01__base_bay__poll-undercoat"
+    "qh_foal_master_01__base_bay__poll-mask",
+    "qh_foal_master_01__base_bay__poll-coat-repair"
    ],
    "validation": {
     "canvas": true,
@@ -234,7 +235,7 @@
     "hoof_rh_black",
     "base_black"
    ],
-   "sha256": "d26f46dc6affc14766d2832ba3a9cdf8d7e12d52487d6c237b18891e1364fcf6",
+   "sha256": "d7ee53544270e5ade770ad8088f803e7e5f07cad1c1e8ae6a214eaa7c1d0a38b",
    "preview_sha256": "bdb0bfd72d3b1fb0b9c71a4548414a4e61c75ddc4c471f7bb5a8dc15b7216f98",
    "svg_element_ids": [
     "qh_foal_master_01__base_black__mask-coat",
@@ -242,7 +243,8 @@
     "qh_foal_master_01__base_black",
     "qh_foal_master_01__base_black__coat",
     "qh_foal_master_01__base_black__fill",
-    "qh_foal_master_01__base_black__poll-undercoat"
+    "qh_foal_master_01__base_black__poll-mask",
+    "qh_foal_master_01__base_black__poll-coat-repair"
    ],
    "validation": {
     "canvas": true,
@@ -309,7 +311,7 @@
     "points_black",
     "base_brown"
    ],
-   "sha256": "3efe1baf5185ff7ad58ec076b06d48223338fdb30bda094ee61c77427fc8e510",
+   "sha256": "32318cd63f6ad5e3289f55a6ec206bd524baa76e0af96d60bebdcecf4676c771",
    "preview_sha256": "fb13fb381f098750c578d5a75f32fffa8e3dc907365bec266fc086f51e2b662b",
    "svg_element_ids": [
     "qh_foal_master_01__base_brown__mask-coat",
@@ -327,7 +329,8 @@
     "qh_foal_master_01__base_brown__light-2",
     "qh_foal_master_01__base_brown__light-3",
     "qh_foal_master_01__base_brown__light-4",
-    "qh_foal_master_01__base_brown__poll-undercoat"
+    "qh_foal_master_01__base_brown__poll-mask",
+    "qh_foal_master_01__base_brown__poll-coat-repair"
    ],
    "validation": {
     "canvas": true,
@@ -385,7 +388,7 @@
     "hoof_rh_base",
     "base_chestnut"
    ],
-   "sha256": "a96b9857108d4b3861d6eede92a6e7ec3d633a07896a2a5825bf611f3f1bf139",
+   "sha256": "70bd5bda774f6cb4e0bdc22b4ee50ddc0d269a495fda6ce234542cb1aec3cb50",
    "preview_sha256": "63aafdd04f682882dad993c874b401d657cc2858886ed7b16292f19f4f9ed689",
    "svg_element_ids": [
     "qh_foal_master_01__base_chestnut__mask-coat",
@@ -393,7 +396,8 @@
     "qh_foal_master_01__base_chestnut",
     "qh_foal_master_01__base_chestnut__coat",
     "qh_foal_master_01__base_chestnut__fill",
-    "qh_foal_master_01__base_chestnut__poll-undercoat"
+    "qh_foal_master_01__base_chestnut__poll-mask",
+    "qh_foal_master_01__base_chestnut__poll-coat-repair"
    ],
    "validation": {
     "canvas": true,
@@ -611,12 +615,16 @@
     "points_black",
     "mane_black"
    ],
-   "sha256": "da587d6ec3560ba0ea18dba7237999418731ff50b42c0317730f39c67d80b71b",
+   "sha256": "cef51a89e7e0a0bfa7c38562a8ae62f58c05a26dbc1d9c78669610936652b856",
    "preview_sha256": "00e025aebfd5ba8eac7cfcbafd4850b329c028ade223ef032ed954a8bf9e3cf0",
    "svg_element_ids": [
     "qh_foal_master_01__mane_black__clip-silhouette",
     "qh_foal_master_01__mane_black",
-    "qh_foal_master_01__mane_black__fill"
+    "qh_foal_master_01__mane_black__fill",
+    "qh_foal_master_01__mane_black__poll-mane-repair",
+    "qh_foal_master_01__mane_black__poll-mane-repair",
+    "qh_foal_master_01__mane_black__poll-mane-repair",
+    "qh_foal_master_01__mane_black__poll-mane-repair"
    ],
    "validation": {
     "canvas": true,
@@ -672,12 +680,16 @@
     "hoof_rh_base",
     "mane_chestnut"
    ],
-   "sha256": "ccff4a886837f83d2c82af0fcbae72ab054949620efd353224b9fa7e0f144dcf",
+   "sha256": "54ccaa9f4a5b631cd7fa1370b9b0401d854ac19ab84bf501adb7bf727a0cd7a0",
    "preview_sha256": "29ebf524c3125fc5504a631f34faf906e451486f84e8934ec5692d38803a4ed6",
    "svg_element_ids": [
     "qh_foal_master_01__mane_chestnut__clip-silhouette",
     "qh_foal_master_01__mane_chestnut",
-    "qh_foal_master_01__mane_chestnut__fill"
+    "qh_foal_master_01__mane_chestnut__fill",
+    "qh_foal_master_01__mane_chestnut__poll-mane-repair",
+    "qh_foal_master_01__mane_chestnut__poll-mane-repair",
+    "qh_foal_master_01__mane_chestnut__poll-mane-repair",
+    "qh_foal_master_01__mane_chestnut__poll-mane-repair"
    ],
    "validation": {
     "canvas": true,

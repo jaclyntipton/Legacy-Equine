@@ -17,7 +17,7 @@ const guardedElement = {
 
 const digest = value => crypto.createHash("sha256").update(value).digest("hex");
 
-for (const master of roots) {
+if (!process.argv.includes("--foal-only")) for (const master of roots) {
   const directory = path.join("public/horse-visuals/coat-layers", master);
   const manifestPath = path.join(directory, "manifest.json");
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
@@ -62,27 +62,83 @@ for (const layer of foalManifest.layers) {
 }
 
 const foalDirectory = "public/horse-visuals/coat-layers/qh_foal_master_01/layers";
-const foalPollUndercoatPath = "M1158,92 C1183,84 1215,88 1240,103 C1246,109 1249,117 1248,126 C1232,128 1218,126 1204,122 C1187,117 1171,113 1158,109Z";
-const foalBaseColors = {
-  bay: "#7E4426",
-  black: "#2E2829",
-  brown: "#3E2820",
-  chestnut: "#A65A2E",
-};
-
-for (const [trait, color] of Object.entries(foalBaseColors)) {
+const foalMalformedPollOutlineStarts = new Set([
+  "M1246.4,94.9",
+  "M1248.6,97.0",
+  "M1259.9,112.4",
+  "M1240.8,128.2",
+  "M1262.1,123.9",
+  "M1226.6,124.2",
+  "M1260.3,134.4",
+]);
+const foalMalformedForelock = "M1257.8,136.5 L1236.1,135.2 L1234.2,134.0 L1227.1,125.9 L1224.2,120.9 L1223.8,112.7 L1225.2,111.6 L1227.8,111.1 L1230.2,112.6 L1232.0,112.6 L1233.5,111.3 L1236.6,110.7 L1238.2,107.7 L1236.3,104.5 L1226.2,104.1 L1223.3,103.0 L1220.3,105.7 L1218.1,94.2 L1219.5,91.9 L1239.1,85.4 L1248.3,86.4 L1251.7,89.2 L1256.7,94.8 L1256.3,99.1 L1262.9,105.9 L1267.8,116.4 L1268.6,121.4 L1268.3,122.8 L1265.5,125.7 L1257.0,132.5 L1256.9,133.8 L1258.5,135.6ZM1228.0,91.1 L1229.5,90.0 L1228.6,89.8 L1226.9,91.0Z";
+const foalResidualForelockHoles = [
+  "M1228.0,91.1 L1229.5,90.0 L1228.6,89.8 L1226.9,91.0Z",
+  "M1232.2,112.4 L1237.2,110.1 L1238.2,107.7 L1237.6,105.5 L1232.7,103.6 L1226.2,104.1 L1223.3,103.0 L1222.5,103.5 L1217.3,113.3 L1221.7,110.4 L1226.7,108.6 L1230.3,108.6 L1230.6,109.7 L1228.9,111.7 L1230.4,112.7Z",
+];
+const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1220,101 1235,102 1248,108 C1258,113 1264,122 1265,133 L1244,136 L1234,133 L1226,126 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
+const foalMasterPath = "public/horse-visuals/vector-masters/qh_01/qh_foal_master_01.svg";
+let foalMasterSvg = fs.readFileSync(foalMasterPath, "utf8");
+foalMasterSvg = foalMasterSvg.replace(/<path id="poll-silhouette-repair"[^>]+\/>\n?/, "");
+foalMasterSvg = foalMasterSvg.replace('<path id="head-base"', `<path id="poll-silhouette-repair" fill="#ffffff" d="${foalPollSilhouetteRepair}"/>\n<path id="head-base"`);
+foalMasterSvg = foalMasterSvg.replace(/(<path id="mane-base"[^>]* d=")([^"]+)("\/?>)/, (match, prefix, d, suffix) => {
+  let cleaned = d.replaceAll(foalMalformedForelock, "");
+  for (const hole of foalResidualForelockHoles) cleaned = cleaned.replaceAll(hole, "");
+  return `${prefix}${cleaned}${suffix}`;
+});
+foalMasterSvg = foalMasterSvg.replace(/(<path id="outline-lines"[^>]* d=")([^"]+)("\/?>)/, (match, prefix, d, suffix) => {
+  const cleaned = d
+    .split(/(?=M)/)
+    .filter(subpath => {
+      const start = subpath.match(/^M[-\d.]+,[-\d.]+/)?.[0];
+      return start !== "M1149.4,97.8"
+        && start !== "M1172.8,94.3"
+        && !foalMalformedPollOutlineStarts.has(start);
+    })
+    .join("");
+  return `${prefix}${cleaned}${suffix}`;
+});
+fs.writeFileSync(foalMasterPath, foalMasterSvg);
+foalManifest.master.sha256 = digest(foalMasterSvg);
+for (const trait of ["bay", "black", "brown", "chestnut"]) {
   const layerId = `qh_foal_master_01__base_${trait}`;
   const file = path.join(foalDirectory, `${layerId}.svg`);
   let svg = fs.readFileSync(file, "utf8");
   svg = svg.replace(new RegExp(`<path id="${layerId}__poll-undercoat"[^>]+/>\\n?`), "");
-  svg = svg.replace("</svg>", `<path id="${layerId}__poll-undercoat" fill="${color}" d="${foalPollUndercoatPath}"/>\n</svg>`);
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll-mask-[^"]+"[^>]+/>\\n?`, "g"), "");
+  svg = svg.replace(new RegExp(`<clipPath id="${layerId}__poll-clip">[\\s\\S]*?<\\/clipPath>\\n?`), "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll-pigment"[^>]+/>\\n?`), "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll-underlay"[^>]+/>\\n?`), "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll-coat-repair"[^>]+/>\\n?`), "");
+  // This same malformed forelock path was embedded as a black exclusion in
+  // every base-coat mask. Removing the exclusion lets the normal coat layer
+  // pigment the poll continuously without a separate overlay patch.
+  svg = svg.replaceAll(foalMalformedForelock, "");
+  for (const hole of foalResidualForelockHoles) svg = svg.replaceAll(hole, "");
+  svg = svg.replace(
+    new RegExp(`<path id="${layerId}__fill" fill="([^"]+)" fill-rule="evenodd" d="[^"]+"\\/>`),
+    `<rect id="${layerId}__fill" width="1496" height="1051" fill="$1"/>`,
+  );
+  const baseFill = svg.match(new RegExp(`id="${layerId}__fill"[^>]+fill="([^"]+)"`))?.[1];
+  if (!baseFill) throw new Error(`Missing base fill for ${layerId}`);
+  svg = svg.replace("</svg>", `<path id="${layerId}__poll-coat-repair" fill="${baseFill}" d="${foalPollSilhouetteRepair}"/>\n</svg>`);
   fs.writeFileSync(file, svg);
   const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
   if (!record) throw new Error(`Missing manifest record ${layerId}`);
   record.sha256 = digest(svg);
   record.svg_element_ids ??= [];
   record.svg_element_ids = record.svg_element_ids.filter(id => id !== `${layerId}__poll-undercoat`);
-  record.svg_element_ids.push(`${layerId}__poll-undercoat`);
+  record.svg_element_ids = record.svg_element_ids.filter(id => !id.startsWith(`${layerId}__poll-mask-`));
+  record.svg_element_ids = record.svg_element_ids.filter(id => id !== `${layerId}__poll-clip` && id !== `${layerId}__poll-pigment`);
+  record.svg_element_ids = record.svg_element_ids.filter(id => id !== `${layerId}__poll-underlay`);
+  if (!record.svg_element_ids.includes(`${layerId}__poll-coat-repair`)) record.svg_element_ids.push(`${layerId}__poll-coat-repair`);
+}
+
+foalManifest.layers = foalManifest.layers.filter(layer => layer.category !== "poll_cleanup");
+foalManifest.layers = foalManifest.layers.filter(layer => layer.category !== "poll_coat");
+for (const trait of ["bay", "black", "brown", "chestnut"]) {
+  const obsolete = path.join(foalDirectory, `qh_foal_master_01__poll_coat_${trait}.svg`);
+  if (fs.existsSync(obsolete)) fs.unlinkSync(obsolete);
 }
 
 for (const trait of ["black", "chestnut"]) {
@@ -90,10 +146,16 @@ for (const trait of ["black", "chestnut"]) {
   const file = path.join(foalDirectory, `${layerId}.svg`);
   let svg = fs.readFileSync(file, "utf8");
   svg = svg.replace(new RegExp(`<path id="${layerId}__poll_bridge"[^>]+/>\\n?`), "");
+  svg = svg.replace(foalMalformedForelock, "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-[1-4]"[^>]+/>\\n?`, "g"), "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-redraw"[^>]+/>\\n?`), "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll-mane-repair"[^>]+/>\\n?`), "");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-repair"[^>]+/>\\n?`), "");
   fs.writeFileSync(file, svg);
   const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
   if (!record) throw new Error(`Missing manifest record ${layerId}`);
   record.sha256 = digest(svg);
   record.svg_element_ids = (record.svg_element_ids ?? []).filter(id => id !== `${layerId}__poll_bridge`);
+  record.svg_element_ids = record.svg_element_ids.filter(id => !id.startsWith(`${layerId}__forelock-`));
 }
 fs.writeFileSync(foalManifestPath, `${JSON.stringify(foalManifest, null, 1)}\n`);

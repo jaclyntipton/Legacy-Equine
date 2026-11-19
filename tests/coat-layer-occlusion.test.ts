@@ -42,13 +42,19 @@ describe("registered coat-layer occlusion", () => {
   it("fills the shared foal poll with matching base-coat pigment beneath the mane", async () => {
     const master = "qh_foal_master_01";
     const manifest = JSON.parse(fs.readFileSync(`public/horse-visuals/coat-layers/${master}/manifest.json`, "utf8"));
+    const masterSvg = fs.readFileSync(`public/horse-visuals/vector-masters/qh_01/${master}.svg`, "utf8");
+
+    expect(masterSvg).toContain('id="poll-silhouette-repair"');
+    expect(masterSvg).not.toContain("M1246.4,94.9");
+    expect(masterSvg).not.toContain("M1149.4,97.8");
 
     for (const base of ["bay", "black", "brown", "chestnut"]) {
       const layerId = `${master}__base_${base}`;
       const svg = fs.readFileSync(`public/horse-visuals/coat-layers/${master}/layers/${layerId}.svg`, "utf8");
       const record = manifest.layers.find((layer: { layer_id: string }) => layer.layer_id === layerId);
-      expect(svg).toContain(`${layerId}__poll-undercoat`);
-      expect(record.svg_element_ids).toContain(`${layerId}__poll-undercoat`);
+      expect(svg).toContain(`${layerId}__poll-coat-repair`);
+      expect(record.svg_element_ids).toContain(`${layerId}__poll-coat-repair`);
+      expect(svg).not.toContain(`${layerId}__poll-undercoat`);
     }
 
     for (const pigment of ["black", "chestnut"]) {
@@ -62,13 +68,14 @@ describe("registered coat-layer occlusion", () => {
     }
 
     const root = `public/horse-visuals/coat-layers/${master}/layers`;
+    const registeredMaster = await sharp(`public/horse-visuals/vector-masters/qh_01/${master}.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const base = await sharp(`${root}/${master}__base_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const mane = await sharp(`${root}/${master}__mane_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const {data, info} = await sharp({create: {width: 1496, height: 1051, channels: 4, background: {r: 0, g: 0, b: 0, alpha: 0}}})
-      .composite([{input: base}, {input: mane}])
+      .composite([{input: registeredMaster}, {input: base, blend: "multiply"}, {input: mane, blend: "multiply"}])
       .raw()
       .toBuffer({resolveWithObject: true});
-    for (const [x, y] of [[1180, 105], [1205, 115], [1230, 120]]) {
+    for (const [x, y] of [[1172, 118], [1205, 110], [1235, 120], [1255, 130]]) {
       expect(data[(y * info.width + x) * info.channels + 3]).toBeGreaterThan(240);
     }
   });

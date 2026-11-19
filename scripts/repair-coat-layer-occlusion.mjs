@@ -76,7 +76,16 @@ const foalResidualForelockHoles = [
   "M1228.0,91.1 L1229.5,90.0 L1228.6,89.8 L1226.9,91.0Z",
   "M1232.2,112.4 L1237.2,110.1 L1238.2,107.7 L1237.6,105.5 L1232.7,103.6 L1226.2,104.1 L1223.3,103.0 L1222.5,103.5 L1217.3,113.3 L1221.7,110.4 L1226.7,108.6 L1230.3,108.6 L1230.6,109.7 L1228.9,111.7 L1230.4,112.7Z",
 ];
-const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1220,101 1235,102 1248,108 C1258,113 1264,122 1265,133 L1244,136 L1234,133 L1226,126 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
+// Repair only the actual poll gap. Extending this bridge behind the left ear
+// exposes white silhouette pixels between the ears after coat compositing.
+const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1214,104 1220,107 1224,112 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
+// Pigment the existing head/ear silhouette around the forelock. This is
+// intentionally broader than the silhouette bridge because the legacy base
+// masks omitted this region and otherwise leave white master pixels exposed.
+const foalPollCoatRepair = "M1164,119 C1178,109 1192,103 1207,104 C1218,101 1228,102 1236,107 L1244,114 L1241,123 L1234,130 L1228,124 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
+// A compact mane-colored tuft covers the silhouette bridge between the ears.
+// It replaces the malformed legacy forelock without painting over the face.
+const foalForelockRepair = "M1213,117 C1216,106 1218,91 1223,78 L1231,91 C1236,84 1242,78 1247,82 C1252,88 1254,97 1252,106 L1262,114 L1257,120 L1263,125 L1258,130 L1262,134 L1253,133 C1247,130 1241,130 1233,134 C1228,129 1224,124 1220,121 C1218,119 1215,118 1213,117Z";
 const foalMasterPath = "public/horse-visuals/vector-masters/qh_01/qh_foal_master_01.svg";
 let foalMasterSvg = fs.readFileSync(foalMasterPath, "utf8");
 foalMasterSvg = foalMasterSvg.replace(/<path id="poll-silhouette-repair"[^>]+\/>\n?/, "");
@@ -121,7 +130,7 @@ for (const trait of ["bay", "black", "brown", "chestnut"]) {
   );
   const baseFill = svg.match(new RegExp(`id="${layerId}__fill"[^>]+fill="([^"]+)"`))?.[1];
   if (!baseFill) throw new Error(`Missing base fill for ${layerId}`);
-  svg = svg.replace("</svg>", `<path id="${layerId}__poll-coat-repair" fill="${baseFill}" d="${foalPollSilhouetteRepair}"/>\n</svg>`);
+  svg = svg.replace("</svg>", `<path id="${layerId}__poll-coat-repair" fill="${baseFill}" d="${foalPollCoatRepair}"/>\n</svg>`);
   fs.writeFileSync(file, svg);
   const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
   if (!record) throw new Error(`Missing manifest record ${layerId}`);
@@ -151,11 +160,15 @@ for (const trait of ["black", "chestnut"]) {
   svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-redraw"[^>]+/>\\n?`), "");
   svg = svg.replace(new RegExp(`<path id="${layerId}__poll-mane-repair"[^>]+/>\\n?`), "");
   svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-repair"[^>]+/>\\n?`), "");
+  const maneFill = svg.match(/fill="(#[0-9A-Fa-f]{6})"/)?.[1];
+  if (!maneFill) throw new Error(`Missing mane fill for ${layerId}`);
+  svg = svg.replace("</svg>", `<path id="${layerId}__forelock-repair" fill="${maneFill}" d="${foalForelockRepair}"/>\n</svg>`);
   fs.writeFileSync(file, svg);
   const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
   if (!record) throw new Error(`Missing manifest record ${layerId}`);
   record.sha256 = digest(svg);
   record.svg_element_ids = (record.svg_element_ids ?? []).filter(id => id !== `${layerId}__poll_bridge`);
   record.svg_element_ids = record.svg_element_ids.filter(id => !id.startsWith(`${layerId}__forelock-`));
+  record.svg_element_ids.push(`${layerId}__forelock-repair`);
 }
 fs.writeFileSync(foalManifestPath, `${JSON.stringify(foalManifest, null, 1)}\n`);

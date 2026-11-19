@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import sharp from "sharp";
 import {describe, expect, it} from "vitest";
 
 const masters = ["qh_mare_master_01", "qh_stallion_master_01"];
@@ -38,19 +39,37 @@ describe("registered coat-layer occlusion", () => {
     }
   });
 
-  it("connects the shared foal mane pigment through the poll and forelock", () => {
+  it("fills the shared foal poll with matching base-coat pigment beneath the mane", async () => {
     const master = "qh_foal_master_01";
     const manifest = JSON.parse(fs.readFileSync(`public/horse-visuals/coat-layers/${master}/manifest.json`, "utf8"));
+
+    for (const base of ["bay", "black", "brown", "chestnut"]) {
+      const layerId = `${master}__base_${base}`;
+      const svg = fs.readFileSync(`public/horse-visuals/coat-layers/${master}/layers/${layerId}.svg`, "utf8");
+      const record = manifest.layers.find((layer: { layer_id: string }) => layer.layer_id === layerId);
+      expect(svg).toContain(`${layerId}__poll-undercoat`);
+      expect(record.svg_element_ids).toContain(`${layerId}__poll-undercoat`);
+    }
 
     for (const pigment of ["black", "chestnut"]) {
       const layerId = `${master}__mane_${pigment}`;
       const svg = fs.readFileSync(`public/horse-visuals/coat-layers/${master}/layers/${layerId}.svg`, "utf8");
       const record = manifest.layers.find((layer: { layer_id: string }) => layer.layer_id === layerId);
 
-      expect(svg).toContain(`${layerId}__poll_bridge`);
-      expect(svg).toContain(`</g>\n<path id="${layerId}__poll_bridge"`);
-      expect(record.svg_element_ids).toContain(`${layerId}__poll_bridge`);
+      expect(svg).not.toContain(`${layerId}__poll_bridge`);
+      expect(record.svg_element_ids).not.toContain(`${layerId}__poll_bridge`);
       expect(record.compositing_group).toBe("top");
+    }
+
+    const root = `public/horse-visuals/coat-layers/${master}/layers`;
+    const base = await sharp(`${root}/${master}__base_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
+    const mane = await sharp(`${root}/${master}__mane_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
+    const {data, info} = await sharp({create: {width: 1496, height: 1051, channels: 4, background: {r: 0, g: 0, b: 0, alpha: 0}}})
+      .composite([{input: base}, {input: mane}])
+      .raw()
+      .toBuffer({resolveWithObject: true});
+    for (const [x, y] of [[1180, 105], [1205, 115], [1230, 120]]) {
+      expect(data[(y * info.width + x) * info.channels + 3]).toBeGreaterThan(240);
     }
   });
 

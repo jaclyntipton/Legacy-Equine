@@ -60,4 +60,40 @@ const foalManifest = JSON.parse(fs.readFileSync(foalManifestPath, "utf8"));
 for (const layer of foalManifest.layers) {
   if (layer.category === "mane" || layer.category === "tail") layer.stacking_order = 615;
 }
+
+const foalDirectory = "public/horse-visuals/coat-layers/qh_foal_master_01/layers";
+const foalPollUndercoatPath = "M1158,92 C1183,84 1215,88 1240,103 C1246,109 1249,117 1248,126 C1232,128 1218,126 1204,122 C1187,117 1171,113 1158,109Z";
+const foalBaseColors = {
+  bay: "#7E4426",
+  black: "#2E2829",
+  brown: "#3E2820",
+  chestnut: "#A65A2E",
+};
+
+for (const [trait, color] of Object.entries(foalBaseColors)) {
+  const layerId = `qh_foal_master_01__base_${trait}`;
+  const file = path.join(foalDirectory, `${layerId}.svg`);
+  let svg = fs.readFileSync(file, "utf8");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll-undercoat"[^>]+/>\\n?`), "");
+  svg = svg.replace("</svg>", `<path id="${layerId}__poll-undercoat" fill="${color}" d="${foalPollUndercoatPath}"/>\n</svg>`);
+  fs.writeFileSync(file, svg);
+  const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
+  if (!record) throw new Error(`Missing manifest record ${layerId}`);
+  record.sha256 = digest(svg);
+  record.svg_element_ids ??= [];
+  record.svg_element_ids = record.svg_element_ids.filter(id => id !== `${layerId}__poll-undercoat`);
+  record.svg_element_ids.push(`${layerId}__poll-undercoat`);
+}
+
+for (const trait of ["black", "chestnut"]) {
+  const layerId = `qh_foal_master_01__mane_${trait}`;
+  const file = path.join(foalDirectory, `${layerId}.svg`);
+  let svg = fs.readFileSync(file, "utf8");
+  svg = svg.replace(new RegExp(`<path id="${layerId}__poll_bridge"[^>]+/>\\n?`), "");
+  fs.writeFileSync(file, svg);
+  const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
+  if (!record) throw new Error(`Missing manifest record ${layerId}`);
+  record.sha256 = digest(svg);
+  record.svg_element_ids = (record.svg_element_ids ?? []).filter(id => id !== `${layerId}__poll_bridge`);
+}
 fs.writeFileSync(foalManifestPath, `${JSON.stringify(foalManifest, null, 1)}\n`);

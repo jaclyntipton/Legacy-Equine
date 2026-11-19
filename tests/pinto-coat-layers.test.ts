@@ -1,3 +1,4 @@
+import {readFileSync} from "node:fs";
 import {describe,expect,it} from "vitest";
 import {pintoVariationPlan,resolveCoatLayers,type CoatLayer,type CoatManifest,type CoatRecipe} from "../lib/game/horse-coat-compositor";
 
@@ -12,6 +13,12 @@ const manifest:CoatManifest={master:{key:"qh_mare_master_01",asset_key:"qh_mare_
 const recipe=(patterns:string[]):CoatRecipe=>({horse_id:"paint",template_id:"qh_mare_vector_master_01",master_url:"/master.svg",custom_url:null,life_stage:"mature",traits:{underlying_base:"bay",pinto_patterns:patterns},genetics:{},markings:{},modifiers:{}});
 
 describe("Paint pattern composition",()=>{
+ it("draws mane and tail after white-pattern erasure so pinto masks cannot punch holes through hair",()=>{
+  const source=readFileSync(new URL("../lib/game/horse-coat-compositor.ts",import.meta.url),"utf8");
+  expect(source).toContain('hairLayers=layers.filter');
+  expect(source).toContain('x.category!=="mane"&&x.category!=="tail"');
+  expect(source.indexOf('for(const layer of hairLayers)')).toBeGreaterThan(source.indexOf('p.drawImage(erase,0,0)'));
+ });
  it("uses the deliberate Tovero artwork for Tobiano plus an overo-family pattern",()=>{
   const selected=resolveCoatLayers(manifest,recipe(["tobiano","frame_overo"])).map(value=>value.layer_id);
   expect(selected).toContain("pinto:tovero");

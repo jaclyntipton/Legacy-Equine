@@ -4,7 +4,7 @@ const page=readFileSync(new URL("../app/page.tsx",import.meta.url),"utf8");
 describe("horse ownership isolation",()=>{
  it("keeps externally viewed horses out of My Stable",()=>{
   expect(page).toContain("horses.filter((candidate) => candidate.owner_id === user?.id)");
-  expect(page).toContain("const barnHorses=useMemo(()=>ownedHorses.filter");
+  expect(page).toContain("const barnHorses=useMemo(()=>hasPrivateBarns?ownedHorses.filter");
   expect(page).toContain("const filtered = barnHorses.filter((h) =>");
   expect(page).toContain("Showing {visibleHorses.length} of {barnHorses.length} horses");
   expect(page).toContain("<HorseListTools horses={barnHorses}");

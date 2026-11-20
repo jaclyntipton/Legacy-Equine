@@ -29,6 +29,7 @@ import "@/app/store-catalog-cleanup.css";
 import "@/app/show-tier-v2.css";
 import "@/app/stable-barns.css";
 import { StoreWellnessAdmin } from "@/app/store-wellness-admin";
+import { StoreGeneticsAndStats } from "@/app/store-genetic-profile";
 import { VisualAssetImporter } from "@/app/visual-asset-importer";
 import { VisualStageCoverage } from "@/app/visual-stage-coverage";
 import { PublicAuth } from "@/app/public-auth";
@@ -1189,14 +1190,16 @@ function StorePreview({
             <span>Overall foundation points</span>
             <b>{storeOverall(h)}</b>
           </div>
-          <div className="previewstats">
-            {GAME.stats.map((s) => (
-              <div key={s}>
-                <span>{s}</span>
-                <b>{h.stats[s]}</b>
-              </div>
-            ))}
-          </div>
+          <StoreGeneticsAndStats key={h.horse_id} horseId={h.horse_id} coat={h.color}>
+            <div className="previewstats">
+              {GAME.stats.map((s) => (
+                <div key={s}>
+                  <span>{s}</span>
+                  <b>{h.stats[s]}</b>
+                </div>
+              ))}
+            </div>
+          </StoreGeneticsAndStats>
           <div className="previewbuy">
             <strong>
               {money(h.price)} <small>LE Dollars</small>

@@ -419,8 +419,10 @@ export function ProfessionalCenter({
       `Owner QA Progression Override ✓ Actual Services remain ${p.qualifying_credit}.`,
     );
   };
+  const isLivePractice = (p: Profession) =>
+    Boolean(career?.qa && runNormal && p.level === 4);
   const study = async (p: Profession) => {
-    if (career?.qa && !runNormal) {
+    if ((career?.qa && !runNormal) || isLivePractice(p)) {
       setQaStage("test");
       setCareerTab("test");
       setCareerNotice(
@@ -429,8 +431,7 @@ export function ProfessionalCenter({
       await openTest(p, qaLevel);
       return;
     }
-    // Live gameplay must always advance the authoritative next level. QA
-    // selectors are preview-only and may intentionally point out of order.
+    // Live certification writes always use the authoritative next level.
     const targetLevel = p.next_level;
     const { error } = await supabase.rpc("complete_profession_study", {
       target_profession: p.id,
@@ -459,7 +460,7 @@ export function ProfessionalCenter({
     setQaServiceCredit(0);
   };
   const openTest = async (p: Profession, level = p.next_level) => {
-    const qa = career?.qa && !runNormal;
+    const qa = (career?.qa && !runNormal) || isLivePractice(p);
     const { data, error } = await supabase.rpc(
       qa ? "get_profession_qa_questions" : "get_certification_questions",
       { target_profession: p.id, target_level: level },
@@ -473,9 +474,10 @@ export function ProfessionalCenter({
   const submit = async () => {
     if (!testing?.next_level) return;
     const qa = career?.qa && !runNormal;
+    const practice = isLivePractice(testing);
     const testedLevel = testing.next_level;
     const { data, error } = await supabase.rpc(
-      qa ? "grade_profession_qa_test" : "take_certification_test",
+      qa || practice ? "grade_profession_qa_test" : "take_certification_test",
       {
         target_profession: testing.id,
         target_level: testedLevel,
@@ -484,6 +486,7 @@ export function ProfessionalCenter({
     );
     if (error) return notify(error.message);
     setTestResult({ passed: Boolean(data.passed), score: Number(data.score) });
+    if (practice) return;
     if (data.passed) {
       if (career?.qa) {
         setQaStage("services");
@@ -841,8 +844,9 @@ export function ProfessionalCenter({
           const names = ["Basic", "Proficient", "Advanced", "Professional"];
           const qaWorkspace = career.qa;
           const qa = qaWorkspace && !runNormal;
+          const practice = isLivePractice(p);
           const liveLevel = p.next_level ?? Math.max(1, p.level);
-          const level = qa ? qaLevel : liveLevel;
+          const level = qa || practice ? qaLevel : liveLevel;
           const normalStage =
             {
               STUDY_REQUIRED: "study",
@@ -896,8 +900,8 @@ export function ProfessionalCenter({
           const allowed = (tab: string) =>
             tab === "overview" ||
             (tab === "rates" && (qaWorkspace || p.level > 0)) ||
-            (tab === "study" && ["study", "test"].includes(stage)) ||
-            (tab === "test" && stage === "test") ||
+            (tab === "study" && (practice || ["study", "test"].includes(stage))) ||
+            (tab === "test" && (practice || stage === "test")) ||
             (tab === "services" &&
               allRequiredRatesConfigured &&
               ["services", "advancement"].includes(stage)) ||
@@ -1029,7 +1033,11 @@ export function ProfessionalCenter({
                           />{" "}
                           Run as Normal Gameplay
                         </label>
-                        {runNormal && (
+                        {runNormal && practice && (
+                          <p>Choose a level to review Study or take a Practice Test.
+                            Practice tests cost 0 LED and do not change certification.</p>
+                        )}
+                        {runNormal && !practice && (
                           <div className="liveenrollmentprompt" role="status">
                             <b>Live Gameplay follows your saved career.</b>
                             <p>
@@ -1222,7 +1230,8 @@ export function ProfessionalCenter({
                         className="primary"
                         onClick={() =>
                           setCareerTab(
-                            stage === "certified" ? "progression" : stage,
+                            practice ? (qaStage === "test" ? "test" : "study") :
+                              stage === "certified" ? "progression" : stage,
                           )
                         }
                       >
@@ -1247,7 +1256,7 @@ export function ProfessionalCenter({
                   )}
                   {careerTab === "test" && (
                     <>
-                      <h2>{levelName} Certification Test</h2>
+                      <h2>{practice ? `${names[level - 1]} Practice Test` : `${levelName} Certification Test`}</h2>
                       <p>Study Complete ✓</p>
                       {!testing && (
                         <>
@@ -1259,7 +1268,7 @@ export function ProfessionalCenter({
                             className="primary"
                             onClick={() => void openTest(p, level)}
                           >
-                            OPEN CERTIFICATION TEST
+                            {practice ? "OPEN PRACTICE TEST" : "OPEN CERTIFICATION TEST"}
                           </button>
                         </>
                       )}
@@ -1301,7 +1310,7 @@ export function ProfessionalCenter({
                             }
                             onClick={() => void submit()}
                           >
-                            {career.qa && !runNormal
+                            {practice ? "Submit Practice Test — 0 LED" : career.qa && !runNormal
                               ? "Submit QA Test — Not Saved"
                               : "Submit Certification Test"}
                           </button>
@@ -1315,7 +1324,7 @@ export function ProfessionalCenter({
                               : "Test Not Passed"}
                           </h3>
                           <p>Score: {testResult.score}%</p>
-                          {testResult.passed ? (
+                          {testResult.passed && !practice ? (
                             <button
                               className="primary"
                               onClick={() => {

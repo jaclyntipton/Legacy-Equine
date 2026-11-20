@@ -85,7 +85,7 @@ const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1214,10
 const foalPollCoatRepair = "M1164,119 C1178,109 1192,103 1207,104 C1218,101 1228,102 1236,107 L1244,114 L1241,123 L1234,130 L1228,124 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
 // A compact mane-colored tuft covers the silhouette bridge between the ears.
 // It replaces the malformed legacy forelock without painting over the face.
-const foalForelockRepair = "M1213,117 C1216,106 1218,91 1223,78 L1231,91 C1236,84 1242,78 1247,82 C1252,88 1254,97 1252,106 L1262,114 L1257,120 L1263,125 L1258,130 L1262,134 L1253,133 C1247,138 1240,137 1233,134 C1228,129 1224,124 1220,121 C1218,119 1215,118 1213,117Z M1149,101 C1155,104 1160,102 1167,105 C1175,106 1183,104 1194,103 L1190,112 C1179,117 1164,119 1154,118Z";
+const foalForelockRepair = "M1221,113 C1227,105 1234,91 1243,87 C1247,92 1250,100 1250,106 C1254,111 1259,113 1262,116 L1257,117 C1258,122 1262,126 1264,128 L1258,127 C1258,130 1260,134 1263,136 C1254,135 1249,139 1243,137 C1234,135 1227,124 1221,113Z M1148,99 C1153,103 1158,101 1162,104 L1160,100 C1167,103 1171,106 1178,106 C1185,106 1190,103 1196,103 C1190,108 1188,113 1181,115 C1170,118 1162,120 1154,118Z";
 const foalMasterPath = "public/horse-visuals/vector-masters/qh_01/qh_foal_master_01.svg";
 let foalMasterSvg = fs.readFileSync(foalMasterPath, "utf8");
 foalMasterSvg = foalMasterSvg.replace(/<path id="poll-silhouette-repair"[^>]+\/>\n?/, "");
@@ -162,13 +162,19 @@ for (const trait of ["black", "chestnut"]) {
   svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-repair"[^>]+/>\\n?`), "");
   const maneFill = svg.match(/fill="(#[0-9A-Fa-f]{6})"/)?.[1];
   if (!maneFill) throw new Error(`Missing mane fill for ${layerId}`);
-  svg = svg.replace("</svg>", `<path id="${layerId}__forelock-repair" fill="${maneFill}" d="${foalForelockRepair}"/>\n</svg>`);
+  const nearEar = foalMasterSvg.match(/<path id="ear-right"[^>]* d="([^"]+)"/)?.[1];
+  if (!nearEar) throw new Error("Missing near ear geometry for the foal");
+  const earMask = `${layerId}__near-ear-occlusion`;
+  svg = svg.replace(new RegExp(`<mask id="${earMask}"[^>]*>.*?</mask>\\n?`), "");
+  svg = svg.replace("</defs>", `<mask id="${earMask}" maskUnits="userSpaceOnUse" x="0" y="0" width="1496" height="1051"><rect width="1496" height="1051" fill="white"/><path fill="black" fill-rule="evenodd" d="${nearEar}"/></mask>\n</defs>`);
+  svg = svg.replace("</svg>", `<path id="${layerId}__forelock-repair" mask="url(#${earMask})" fill="${maneFill}" d="${foalForelockRepair}"/>\n</svg>`);
   fs.writeFileSync(file, svg);
   const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
   if (!record) throw new Error(`Missing manifest record ${layerId}`);
   record.sha256 = digest(svg);
   record.svg_element_ids = (record.svg_element_ids ?? []).filter(id => id !== `${layerId}__poll_bridge`);
   record.svg_element_ids = record.svg_element_ids.filter(id => !id.startsWith(`${layerId}__forelock-`));
-  record.svg_element_ids.push(`${layerId}__forelock-repair`);
+  record.svg_element_ids = record.svg_element_ids.filter(id => id !== earMask);
+  record.svg_element_ids.push(earMask, `${layerId}__forelock-repair`);
 }
 fs.writeFileSync(foalManifestPath, `${JSON.stringify(foalManifest, null, 1)}\n`);

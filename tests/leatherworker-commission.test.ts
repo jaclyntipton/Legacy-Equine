@@ -9,6 +9,7 @@ describe("Leatherworker commission architecture",()=>{
   for(const [level,tier,budget]of [[1,"Entry",1],[2,"Quality",2],[3,"Elite",3],[4,"Legendary",4]])expect(sql).toContain(`(${level},'${tier}',${budget},true)`);
   for(const slot of["bridle","saddle","saddle_pad","leg_protection"])expect(sql).toContain(`'${slot}'`);
  });
+ it("unlocks live rate tiers only through the authoritative earned level",()=>{expect(ui).toContain("const earnedLevel = qa ? qaLevel : p.level");expect(ui).toContain("service.minimum_level <= rateLevel");expect(sql).toContain("coalesce(earned,0)<svc.minimum_level")});
  it("server-validates Effective-only allocations",()=>{expect(sql).toContain("Invalid Effective Stat allocation");expect(sql).toContain("Allocate between 1 and % Effective Stat points");expect(sql).toContain("custom_tack_bonuses");});
  it("atomically pays the maker and delivers a Tack Room item",()=>{expect(sql).toContain("update stables set balance=balance-rate");expect(sql).toContain("update stables set balance=balance+rate");expect(sql).toContain("insert into currency_ledger");expect(sql).toContain("insert into player_store_items");expect(ui).toContain("purchase_leatherwork_commission");});
  it("snapshots branded and unbranded maker provenance",()=>{for(const field of["maker_brand_id","maker_brand_code","maker_stable_name","maker_account_number"])expect(sql).toContain(field);expect(inventory).toContain("Crafted by");});

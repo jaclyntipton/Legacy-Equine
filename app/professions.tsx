@@ -429,7 +429,9 @@ export function ProfessionalCenter({
       await openTest(p, qaLevel);
       return;
     }
-    const targetLevel = career?.qa ? qaLevel : p.next_level;
+    // Live gameplay must always advance the authoritative next level. QA
+    // selectors are preview-only and may intentionally point out of order.
+    const targetLevel = p.next_level;
     const { error } = await supabase.rpc("complete_profession_study", {
       target_profession: p.id,
       target_level: targetLevel,
@@ -437,7 +439,6 @@ export function ProfessionalCenter({
     if (error) return notify(error.message);
     await load();
     refresh();
-    if (career?.qa) setQaStage("test");
     setCareerTab("test");
     setCareerNotice(
       `Study Complete ✓ You’re ready for your ${["Basic", "Proficient", "Advanced", "Professional"][(targetLevel ?? 1) - 1]} ${p.name} Certification Test.`,
@@ -840,7 +841,8 @@ export function ProfessionalCenter({
           const names = ["Basic", "Proficient", "Advanced", "Professional"];
           const qaWorkspace = career.qa;
           const qa = qaWorkspace && !runNormal;
-          const level = qaWorkspace ? qaLevel : (p.next_level ?? 4);
+          const liveLevel = p.next_level ?? Math.max(1, p.level);
+          const level = qa ? qaLevel : liveLevel;
           const normalStage =
             {
               STUDY_REQUIRED: "study",
@@ -852,18 +854,17 @@ export function ProfessionalCenter({
               NEXT_LEVEL_STUDY: "study",
               PROFESSIONAL_CERTIFIED: "certified",
             }[p.career_state] ?? "study";
-          const stage = qaWorkspace ? qaStage : normalStage;
+          const stage = qa ? qaStage : normalStage;
+          const earnedLevel = qa ? qaLevel : p.level;
           const displayLevel =
-            !qaWorkspace && ["rates", "services", "advancement"].includes(stage)
-              ? Math.max(1, p.level)
+            ["rates", "services", "advancement", "certified"].includes(stage)
+              ? Math.max(1, earnedLevel)
               : level;
           const levelName = names[displayLevel - 1];
           const requiredServices =
             requirements[`${p.id}:${displayLevel}`] ?? p.required_services;
-          const advanceName = qaWorkspace
-            ? names[Math.min(3, qaLevel)]
-            : names[level - 1];
-          const atProfessional = qaWorkspace ? qaLevel >= 4 : p.level >= 4;
+          const advanceName = names[Math.min(3, displayLevel)];
+          const atProfessional = displayLevel >= 4;
           const step =
             stage === "study"
               ? 1
@@ -875,7 +876,7 @@ export function ProfessionalCenter({
           const studyContent = modules.find(
             (item) => item.profession_id === p.id && item.level === level,
           );
-          const rateLevel = qaWorkspace ? qaLevel : p.level;
+          const rateLevel = earnedLevel;
           const rateServices = catalog.filter(
             (service) =>
               service.profession_id === p.id &&

@@ -5,6 +5,7 @@ import{useCallback,useEffect,useState}from"react";
 import{createClient}from"@/lib/supabase/client";
 import{PageSectionHeader}from"@/app/page-section-header";
 import"./profession-businesses.css";
+import"./profession-workspace.css";
 
 const supabase=createClient();
 const stats=["Agility","Speed","Endurance","Temperament","Strength","Intelligence","Conformation"];

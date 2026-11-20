@@ -1,0 +1,123 @@
+.businessworkspace {
+  --workspace-accent: #6840a0;
+  --workspace-border: #ded1ee;
+  --workspace-tint: #f6f0fc;
+  min-width: 0;
+}
+
+.businessworkspace .businesshero {
+  isolation: isolate;
+  min-height: 9rem !important;
+  display: grid;
+  align-items: end;
+  background: linear-gradient(120deg, #392459, #7150a0) !important;
+  color: white;
+}
+
+.businessworkspace .businesshero img {
+  opacity: .6;
+}
+
+.businessworkspace .businesshero:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #29183edd, #29183e44);
+  pointer-events: none;
+}
+
+.businessworkspace .businesshero > div { z-index: 1; }
+.businessworkspace .businesshero :is(h1, p, .eyebrow) { color: white; }
+
+.businessworkspace .businessnav {
+  padding-block: .6rem;
+  border-bottom: 1px solid var(--workspace-border);
+}
+
+.businessworkspace .businessnav button {
+  min-height: 44px;
+  border: 1px solid var(--workspace-border);
+}
+
+.businessworkspace .businessnav button.active {
+  background: var(--workspace-accent);
+  border-color: var(--workspace-accent);
+  color: white;
+}
+
+.businessworkspace > section.panel { padding: clamp(1rem, 2.4vw, 1.75rem); }
+.businessworkspace h2 { margin-block: .25rem .6rem; }
+
+.businessworkspace :is(.businessservices, .tackshopinventory) article,
+.businessworkspace .businessmetrics article {
+  border: 1px solid var(--workspace-border);
+  border-radius: .85rem;
+  background: var(--workspace-tint);
+  padding: .85rem;
+}
+
+.businessworkspace :is(input:not([type=file]), select, textarea) {
+  min-width: 0;
+  min-height: 44px;
+  padding: .55rem .7rem;
+  border: 1px solid #bcabd0;
+  border-radius: .65rem;
+  background: white;
+  color: #302441;
+}
+
+.businessworkspace :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--workspace-accent);
+  outline-offset: 3px;
+}
+
+.businessworkspace .crafttack {
+  display: grid;
+  gap: .9rem;
+}
+
+.businessworkspace .crafttack > :is(p, h2) { margin: 0; }
+.businessworkspace .crafttack > label,
+.businessworkspace .tackmakerchoices > label {
+  display: grid;
+  gap: .35rem;
+  font-weight: 700;
+}
+.businessworkspace .tackmakerchoices option { text-transform: capitalize; }
+.businessworkspace .bonusbuilder {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: .6rem;
+}
+.businessworkspace .bonusbuilder > b { grid-column: 1 / -1; }
+.businessworkspace .bonusbuilder > label {
+  display: grid;
+  gap: .35rem;
+  padding: .65rem;
+  border: 1px solid var(--workspace-border);
+  border-radius: .75rem;
+  background: var(--workspace-tint);
+}
+.businessworkspace .bonusstepper {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  gap: .35rem;
+}
+.businessworkspace .bonusstepper button {
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--workspace-border);
+  background: white;
+}
+.businessworkspace .bonusstepper input {
+  width: 100%;
+  text-align: center;
+  appearance: textfield;
+}
+.businessworkspace .bonusstepper input::-webkit-inner-spin-button { appearance: none; }
+.businessworkspace .tackreview { gap: .5rem; border: 1px solid var(--workspace-border); }
+.businessworkspace .crafttack > .primary { justify-self: end; min-height: 44px; }
+
+@media (max-width: 520px) {
+  .businessworkspace .crafttack > .primary { width: 100%; }
+  .businessworkspace .businesshero { min-height: 7rem !important; }
+}

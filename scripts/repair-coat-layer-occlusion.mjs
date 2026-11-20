@@ -85,7 +85,7 @@ const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1214,10
 const foalPollCoatRepair = "M1164,119 C1178,109 1192,103 1207,104 C1218,101 1228,102 1236,107 L1244,114 L1241,123 L1234,130 L1228,124 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
 // A compact mane-colored tuft covers the silhouette bridge between the ears.
 // It replaces the malformed legacy forelock without painting over the face.
-const foalForelockRepair = "M1213,117 C1216,106 1218,91 1223,78 L1231,91 C1236,84 1242,78 1247,82 C1252,88 1254,97 1252,106 L1262,114 L1257,120 L1263,125 L1258,130 L1262,134 L1253,133 C1247,130 1241,130 1233,134 C1228,129 1224,124 1220,121 C1218,119 1215,118 1213,117Z";
+const foalForelockRepair = "M1213,117 C1216,106 1218,91 1223,78 L1231,91 C1236,84 1242,78 1247,82 C1252,88 1254,97 1252,106 L1262,114 L1257,120 L1263,125 L1258,130 L1262,134 L1253,133 C1247,138 1240,137 1233,134 C1228,129 1224,124 1220,121 C1218,119 1215,118 1213,117Z M1149,101 C1155,104 1160,102 1167,105 C1175,106 1183,104 1194,103 L1190,112 C1179,117 1164,119 1154,118Z";
 const foalMasterPath = "public/horse-visuals/vector-masters/qh_01/qh_foal_master_01.svg";
 let foalMasterSvg = fs.readFileSync(foalMasterPath, "utf8");
 foalMasterSvg = foalMasterSvg.replace(/<path id="poll-silhouette-repair"[^>]+\/>\n?/, "");

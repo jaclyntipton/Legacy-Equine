@@ -15,8 +15,8 @@
     "lf": {
      "top": 633.1,
      "hoof_top": 981.1,
-     "joint": 809.0,
-     "measured": 809.0,
+     "joint": 809,
+     "measured": 809,
      "bottom": 982.8,
      "hoof_bottom": 1017.3,
      "D": 172.10000000000002,
@@ -70,7 +70,7 @@
      "bbox": [
       400.1,
       577.5,
-      535.0,
+      535,
       958.1
      ],
      "hoof_bbox": [
@@ -88,7 +88,7 @@
      "measured": 744.9,
      "bottom": 982.7,
      "hoof_bottom": 1008.9,
-     "D": 236.0,
+     "D": 236,
      "fetlock": 928.98,
      "bbox": [
       288.7,
@@ -3761,8 +3761,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -3810,14 +3810,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "8d772756952b4c5d2624fcc1a30483b607971e5b1c3d263ea100015e3f9e6897",
+   "sha256": "9c0e17aa3e0ac2aae462d7bcfdc0ae6cea05d8bda0f4f1215e9eebd07226d6d0",
    "preview_sha256": "2a34a43e4553ff962882febf7f5476798a41414125469e37937bc94190f58e48",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__face_bald_face__mask-coat",
     "rocky_mountain_horse_stallion_master_01__face_bald_face__mask-anatomy",
     "rocky_mountain_horse_stallion_master_01__face_bald_face",
     "rocky_mountain_horse_stallion_master_01__face_bald_face__coat",
-    "rocky_mountain_horse_stallion_master_01__face_bald_face__marking"
+    "rocky_mountain_horse_stallion_master_01__face_bald_face__marking",
+    "rocky_mountain_horse_stallion_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -3876,7 +3877,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "d72d937100412a77115336b7f87c72bf9343e3db12dbee1c2d4d9032fd9097ca",
+   "sha256": "4581a30930bfd7d0f57c86985e3c48e9955999c1c29597f17ab05fde4046ffe1",
    "preview_sha256": "b62b51c23f9eb34b4aa24dbcafefdc21f3ac171e1b3c140b9dfb6e729bcf794a",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__face_blaze__mask-coat",
@@ -3942,7 +3943,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "09e1e964f92e787096d497a39d7631a0b1353f1d88b688ab728111be71fcd677",
+   "sha256": "acbd6b122ef73989bd42eac4e25116b2b76797c045dcee2d90f842c6fced9127",
    "preview_sha256": "bbfe67ddbce12616bacff6b6b1af1ba80eafbda6142e22c50df34f2a10a5df8b",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__face_blaze_snip__mask-coat",
@@ -4304,7 +4305,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "b3fc0fc825d435d4b543eee8f205c6cb973b3d09bfc4fabde97f5b5cd1fba8ba",
+   "sha256": "43572d81c74bb20a86c6ebb83f2a6372cf8a8c737a8a9dd5bfb17934cd732427",
    "preview_sha256": "710a3f962d24972a1ed6300e2494cce21996419d572e2bab8d4ace72ba770659",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__face_irregular_blaze__mask-coat",
@@ -4502,7 +4503,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "0bf249e11f0b04d641bf5be439423129df020dd17bb2e689f3bd397a3469e051",
+   "sha256": "4b99f060bbc6d6531644931f83a8ecd0d9f65c0032ee7ce6b1af41a60246546b",
    "preview_sha256": "ec6bbbb02b93f56d27ff1198712359cf28355ab45cd8f087d1ad5e41d83802a8",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__face_star_stripe__mask-coat",
@@ -4568,7 +4569,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "ce066fe9d907376f2e6e8caed1ceda26a9dd87f18862d4c6c35ed5b12a50e76b",
+   "sha256": "b680b4e3896f5730f848b064d86b186914526872424df92bc8b08dfaf2e602a1",
    "preview_sha256": "a0380b2d2f719643f96bda4a57a4ddf0e5b780129e9dc2506ad8da326389d180",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__face_stripe__mask-coat",
@@ -7460,7 +7461,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -7493,10 +7494,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "26cf381f4ffd5d8905a43f78750a3db180c71bd542c33eac8520e6e11ad9d1a1",
+   "sha256": "68a4d7ae3106ed939aabc2249c3ca2b2660c036482fd4ac9fa3b1790e3d4d917",
    "preview_sha256": "e0cea7771c4094c39cac4c9d0cb6bc3c9f2a765042ce9eb6c9088ed7dbc5b429",
    "svg_element_ids": [
-    "rocky_mountain_horse_stallion_master_01__skin_pink__face_bald_face__clip",
+    "rocky_mountain_horse_stallion_master_01__face_bald_face__mask-coat",
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_bald_face__muzzle-edge",
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_bald_face",
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -7526,7 +7528,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -7559,12 +7561,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "79591f899922231e072f544b483513fd89301f47955b22ffa2d7b19f93f821d8",
+   "sha256": "2cb6bda1b152e56c4fec0d386bf9c6e61ec422e9c987d063fe7a25602945eb57",
    "preview_sha256": "5824318964ca3ff732f3e0f0cfb28d6452294a13cf7fd60fc71f4abac9d76051",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze__clip",
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze",
-    "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze__pink"
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze__pink",
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7592,7 +7595,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -7625,12 +7628,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "956a487cbadc7b5f0377f6fa64a03214d8fefc3af231888c61f9ac8c126cbfb4",
+   "sha256": "3dc3a2649529132bb0bfbf1d44fd9bf2fadc73c9cbfd1178110e16f98815ff6a",
    "preview_sha256": "eb4babb49e1096cde043a05012f7835fe4c9b90e314570cdb0fc87b4de5b2fa5",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze_snip__clip",
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze_snip",
-    "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze_snip__pink"
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze_snip__pink",
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7658,7 +7662,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -7691,12 +7695,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "748c5de5dda503109e3b932748625d72fdbab4d78d15ae59bb708baa0c6f0a6a",
+   "sha256": "9592ee7f21a42c7c71e6c175b420c600a875d304470bc9f2318d0beb27d7901a",
    "preview_sha256": "7e2779c7ec97fcd29b9f5a3e1e3657bc7b478fb30e0117168438e48877c91f78",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_irregular_blaze__clip",
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_irregular_blaze",
-    "rocky_mountain_horse_stallion_master_01__skin_pink__face_irregular_blaze__pink"
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_irregular_blaze__pink",
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7724,7 +7729,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -7757,12 +7762,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "f6d388d93eb70c9f03d7eab7e978b23621ef6356b548d61827aa00ac391c54bc",
+   "sha256": "18ec50884351dc440e428fc4c0640b45847c970fc61be46dee6e8d4d53e4d9b3",
    "preview_sha256": "78c1d2d13eb1c8bde3cc48642c580324dd6d4fbceff3e3ca9641d0b1a5b64141",
    "svg_element_ids": [
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_snip__clip",
     "rocky_mountain_horse_stallion_master_01__skin_pink__face_snip",
-    "rocky_mountain_horse_stallion_master_01__skin_pink__face_snip__pink"
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_snip__pink",
+    "rocky_mountain_horse_stallion_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8039,5 +8045,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

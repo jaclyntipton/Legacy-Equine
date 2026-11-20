@@ -14,11 +14,11 @@
    "legs": {
     "lf": {
      "top": 610.5,
-     "hoof_top": 942.0,
+     "hoof_top": 942,
      "joint": 777.9,
      "measured": 777.9,
      "bottom": 966.2,
-     "hoof_bottom": 984.0,
+     "hoof_bottom": 984,
      "D": 164.10000000000002,
      "fetlock": 905.898,
      "bbox": [
@@ -29,9 +29,9 @@
      ],
      "hoof_bbox": [
       781.9,
-      942.0,
+      942,
       854.9,
-      984.0
+      984
      ],
      "joint_source": "master_marking_zone_top"
     },
@@ -76,7 +76,7 @@
      "hoof_bbox": [
       386.6,
       946.6,
-      461.0,
+      461,
       988.8
      ],
      "joint_source": "estimated_from_knees"
@@ -2551,8 +2551,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -2665,14 +2665,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "512536465602da4b9fd117d83f9040298953f519c73b9b5d1f1932b40e634076",
+   "sha256": "0298493c048c66658ac9c644e8befa9b8a701fb81c4e80dd78755e0dfb6eb083",
    "preview_sha256": "ebf69ccca714739cb4fb4eb645f0060a8193631b4f4a88b8d6e41b3d5970ef97",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__face_bald_face__mask-coat",
     "hanoverian_stallion_master_01__face_bald_face__mask-anatomy",
     "hanoverian_stallion_master_01__face_bald_face",
     "hanoverian_stallion_master_01__face_bald_face__coat",
-    "hanoverian_stallion_master_01__face_bald_face__marking"
+    "hanoverian_stallion_master_01__face_bald_face__marking",
+    "hanoverian_stallion_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -2731,7 +2732,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "bff464a7da6116f531930a186d7d7d6ae22ef0a574e11953b95de9eb8ebd60ff",
+   "sha256": "6a62086fed3b5f859a794b463f6ecf4f8aa243983e654ef647687dd49bb5450e",
    "preview_sha256": "e41e84aba070095fd0604b2c46b40cb118fe095ed1d0b2d72226bb99aa14696b",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__face_blaze__mask-coat",
@@ -2797,7 +2798,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "35388d03230e1968b8d7e52855b163271efac412661c9ce4b19969c4d569b034",
+   "sha256": "8a11d10493a91bd7153c1d3028c0ab7f9428d0272356a73e4eec61ca93d49ee2",
    "preview_sha256": "86f3f7dc12f5047004ff0a6730c3bc5a33efec982ef61a8227a9128669bd5304",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__face_blaze_snip__mask-coat",
@@ -3159,7 +3160,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "7fe281777171548b2ba7a931d0e19e264c7af5acbb5d1122226c9444c3fee820",
+   "sha256": "96a4315db51396e023abddd5deabc22b2702254c4b42b607c02966fa0ea2e6fb",
    "preview_sha256": "1d3be4ecba7c07b0298ebafdaee27a8f15075bee25dc5e89e1e2499ddf6f1970",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__face_irregular_blaze__mask-coat",
@@ -3357,7 +3358,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "981e03b1d14e933eb4a2c2f1ba78364bd82a6f5a307050dfcd2381e75a24a2e4",
+   "sha256": "ecc3dee38fe028836f8dae3ddb1e22a5c530e5066ead5e0e5fe25c78b9161daf",
    "preview_sha256": "8f142ed9e5cb4b59a809f2d25c22013cb0fbf9b987f3334b953b8e27170b6344",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__face_star_stripe__mask-coat",
@@ -3423,7 +3424,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "735e3669c21f340be8c539754026bc4dd43b0d5dea57af297639acec279dab83",
+   "sha256": "187dabcd587eba45345645a80de86a68799f1a2022ad6cbebd4bd690719b7494",
    "preview_sha256": "3a48781336ecd97c26eb8cde08b1f98aad98ede08224498004039310ed9b5c5a",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__face_stripe__mask-coat",
@@ -6315,7 +6316,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -6348,10 +6349,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "0dec22e528dfb76c97b5c4fb61a65977f86abc1548d8e762f384f6982818fc56",
+   "sha256": "949920fde12e437ac3593821edebe99b9d39121ee0bf2e02cd666571948921ea",
    "preview_sha256": "9258d5b944ff03eb8235f1a1f9182697dff21be2c911a2a2d532ab48a15fae09",
    "svg_element_ids": [
-    "hanoverian_stallion_master_01__skin_pink__face_bald_face__clip",
+    "hanoverian_stallion_master_01__face_bald_face__mask-coat",
+    "hanoverian_stallion_master_01__skin_pink__face_bald_face__muzzle-edge",
     "hanoverian_stallion_master_01__skin_pink__face_bald_face",
     "hanoverian_stallion_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -6381,7 +6383,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -6414,12 +6416,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "f99d48cb36c7ce8fdea00334652a5fc076cfabcd04c4c8775b7796a9238a7cf1",
+   "sha256": "e38338b1ac8a769b35f7c6a454b6969a4386aff2fe041460adb156320b849071",
    "preview_sha256": "e7a3ab9ada448dfe40deef581bf9370d14a54ba0592cc0810cb9bd986ce2a255",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__skin_pink__face_blaze__clip",
     "hanoverian_stallion_master_01__skin_pink__face_blaze",
-    "hanoverian_stallion_master_01__skin_pink__face_blaze__pink"
+    "hanoverian_stallion_master_01__skin_pink__face_blaze__pink",
+    "hanoverian_stallion_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6447,7 +6450,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -6480,12 +6483,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "f1ee772c83b2ca193dabb70b383146a981f5c26279ece2eb44164eb28784ae3c",
+   "sha256": "4a80087195f5d305f6d89cb1fadc58d00472224a0c1b5a2f1c0540bbc97164b7",
    "preview_sha256": "44509a5ead41b5b860f6616d77c442ed37088ff9e4042a4c635346496d04032e",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__skin_pink__face_blaze_snip__clip",
     "hanoverian_stallion_master_01__skin_pink__face_blaze_snip",
-    "hanoverian_stallion_master_01__skin_pink__face_blaze_snip__pink"
+    "hanoverian_stallion_master_01__skin_pink__face_blaze_snip__pink",
+    "hanoverian_stallion_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6513,7 +6517,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -6546,12 +6550,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "5a46c12e95729cee2147ce89e138e095ca62845f3ea1cd86355f1c592517b74f",
+   "sha256": "313a46c69a320d452d4c8181f8dfb9f41db09068e2b6ef9175192dd9bb9f54a9",
    "preview_sha256": "44399a8de305d18326c94ea8e9cbb304534c4bb1a7f2387d5b5cf8cc719f6fe0",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__skin_pink__face_irregular_blaze__clip",
     "hanoverian_stallion_master_01__skin_pink__face_irregular_blaze",
-    "hanoverian_stallion_master_01__skin_pink__face_irregular_blaze__pink"
+    "hanoverian_stallion_master_01__skin_pink__face_irregular_blaze__pink",
+    "hanoverian_stallion_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6579,7 +6584,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -6612,12 +6617,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "b7e055b2d5e2fd6ae5ef2b50b17922bae9378f8cae0b9b2edd08ab56ecd5583d",
+   "sha256": "5bdd428712737fa5fb0b19b81da5592fa35fef80961c90d79a0c5e1e86f94f77",
    "preview_sha256": "0a8d5278d911348de62bcc16ff2cc7f21a1e9b537152414412fb7756f76bcd3d",
    "svg_element_ids": [
     "hanoverian_stallion_master_01__skin_pink__face_snip__clip",
     "hanoverian_stallion_master_01__skin_pink__face_snip",
-    "hanoverian_stallion_master_01__skin_pink__face_snip__pink"
+    "hanoverian_stallion_master_01__skin_pink__face_snip__pink",
+    "hanoverian_stallion_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6830,5 +6836,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

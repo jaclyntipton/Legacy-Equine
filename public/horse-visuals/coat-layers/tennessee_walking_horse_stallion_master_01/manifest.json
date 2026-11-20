@@ -15,8 +15,8 @@
     "lf": {
      "top": 626.5,
      "hoof_top": 962.6,
-     "joint": 796.0,
-     "measured": 796.0,
+     "joint": 796,
+     "measured": 796,
      "bottom": 983.1,
      "hoof_bottom": 998.2,
      "D": 166.60000000000002,
@@ -28,7 +28,7 @@
       983.1
      ],
      "hoof_bbox": [
-      923.0,
+      923,
       962.6,
       963.6,
       998.2
@@ -37,12 +37,12 @@
     },
     "rf": {
      "top": 584.4,
-     "hoof_top": 973.0,
-     "joint": 781.0,
-     "measured": 781.0,
+     "hoof_top": 973,
+     "joint": 781,
+     "measured": 781,
      "bottom": 995.8,
      "hoof_bottom": 1013.7,
-     "D": 192.0,
+     "D": 192,
      "fetlock": 930.76,
      "bbox": [
       936.5,
@@ -52,7 +52,7 @@
      ],
      "hoof_bbox": [
       957.3,
-      973.0,
+      973,
       1029.9,
       1013.7
      ],
@@ -68,13 +68,13 @@
      "D": 263.03999999999996,
      "fetlock": 916.9312,
      "bbox": [
-      249.0,
+      249,
       528.5,
       600.5,
       980.3
      ],
      "hoof_bbox": [
-      251.0,
+      251,
       974.8,
       318.1,
       995.9
@@ -3897,8 +3897,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -4143,14 +4143,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "e69a0238abb4b5076e6f9e7f06fb33f03fccf52328f9b49ef402772e0d7280ab",
+   "sha256": "1fcbb6a4ef1260d857e8fc128b6b0f882a9176ff6fdff6a63bd62b21af950e24",
    "preview_sha256": "0f3fa4cc32bee9a771d5694afd87636502de37f376212e9d293401f0efa33cca",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__face_bald_face__mask-coat",
     "tennessee_walking_horse_stallion_master_01__face_bald_face__mask-anatomy",
     "tennessee_walking_horse_stallion_master_01__face_bald_face",
     "tennessee_walking_horse_stallion_master_01__face_bald_face__coat",
-    "tennessee_walking_horse_stallion_master_01__face_bald_face__marking"
+    "tennessee_walking_horse_stallion_master_01__face_bald_face__marking",
+    "tennessee_walking_horse_stallion_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -4209,7 +4210,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "ff72f5994e3dbdf59462478ddc68862ca51e6ff2de2653f686e88cf82507ca67",
+   "sha256": "a1d44fa2cdefbf100152d2b46b64be43bf15352af745e3ebe123fb65ed33930f",
    "preview_sha256": "c619a5438b14c14a112c1720c3a12bda21297a1a7915b6074a4c08a12d2e1867",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__face_blaze__mask-coat",
@@ -4275,7 +4276,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "603f4a1ebe17212d2328611a3a7dd2a23f268410000bc48a94a37e1a8aef8715",
+   "sha256": "aaabd4019654f513cf7352cee5c7c403f2f5e87638c76d5a6798f6b8fba286c9",
    "preview_sha256": "b89c557efbcca2d08bfa0d5b2d4be125ba6f06abd8a4dd078681e8cfd43843fe",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__face_blaze_snip__mask-coat",
@@ -4637,7 +4638,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "3333edb6098ba38995df1d4c17ab73c6cf935fde626209fa81e5826be11e639f",
+   "sha256": "b5fbb46b0505ebac480041ac07d3542aff585ce3f1a2f46dedce68b3867406b2",
    "preview_sha256": "22661d44d4071aba5c3119ea31ee699bb95066f64ccb2bb435ca4d8fa0f5b4e4",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__face_irregular_blaze__mask-coat",
@@ -4835,7 +4836,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "108f2bcb52cc0ea79c2d96c43e82ab4be861dd8914bed3da57cae39cf3458362",
+   "sha256": "9a1f7fbd6bc27f27aaeed39fc2ea9be7e697d7ed3e5b2dc00ac3765869c4d8a4",
    "preview_sha256": "6bc0e41b1bcfbfdfbff3c8397f3e78b0889dddccad58e3d3db503870ba6cb0b3",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__face_star_stripe__mask-coat",
@@ -4901,7 +4902,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "e8fffeedef34f30b4d44549e16337f58206b9b4e9a939842760e87e450d378da",
+   "sha256": "58a40f5426427f7b93e2e634392e5d9ebc98bdeea272ea73511124c63e556f8e",
    "preview_sha256": "5fd306bc798a0c8bc4b8809f969512a919b255830a2b981b1564c5b516edb399",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__face_stripe__mask-coat",
@@ -7793,7 +7794,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -7826,10 +7827,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "cd1111d0884ddb96a3d98da8591120ad310210a9490e5ef466fa66fbfd99b444",
+   "sha256": "2fd66dcb6fac867f5a86f37133c9a79c5ea97ecb9c217a1366393ad9245d28bd",
    "preview_sha256": "0f8cb7327c37ebf668b3532d71ec95305cbe57d96abd6437cc651a8f713060f8",
    "svg_element_ids": [
-    "tennessee_walking_horse_stallion_master_01__skin_pink__face_bald_face__clip",
+    "tennessee_walking_horse_stallion_master_01__face_bald_face__mask-coat",
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_bald_face__muzzle-edge",
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_bald_face",
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -7859,7 +7861,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -7892,12 +7894,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "b4fded7055abdec4ee9b5999061fc65626c1583754df2943c737b1a0e95adee9",
+   "sha256": "a633f7aa1f88081a675e3c87f8f732752beedc00cbc946d34e6da89b3db36426",
    "preview_sha256": "cd3ccb5e244e0f16b76f7c6b24eb8a022919ce4ce041597671d38a2181186e70",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze__clip",
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze",
-    "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze__pink"
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze__pink",
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7925,7 +7928,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -7958,12 +7961,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "58b1c6ae2f68c22f9949ea1895ebd0ad885ea16b03cfefdf601d2a5c0380f95a",
+   "sha256": "3fc600e9bb40495e7cca1963987024dfa20903804610ae6676357cbe0fe6c0ac",
    "preview_sha256": "b7623c5ad7782c682a443fb712de0f01f18b75be2dadf4d168bde8daf5a3a7d7",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze_snip__clip",
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze_snip",
-    "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze_snip__pink"
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze_snip__pink",
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7991,7 +7995,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -8024,12 +8028,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "c1da3d5959e3c52332591bf9553828077d2b51b5804e47b367f0a9a5460e6cd3",
+   "sha256": "1267f8c51a908334c8027540cb02e47942343ed517d72135c1b4599d008acd76",
    "preview_sha256": "3e62639f57581b227e20aac578a8a16ada17d72431e6beaf2b182c44ce515a3b",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_irregular_blaze__clip",
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_irregular_blaze",
-    "tennessee_walking_horse_stallion_master_01__skin_pink__face_irregular_blaze__pink"
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_irregular_blaze__pink",
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8057,7 +8062,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -8090,12 +8095,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "b04957b03a8195345749792a39dac1e301cfb68cc6c78d410fd78f3986a0a6dc",
+   "sha256": "e38c2f3d505dfdaa168a7cb4823ef1f2e5e209a4c304691047e25cda9246be04",
    "preview_sha256": "8ea21a80634a9c6be9fa7b86746304fa0c19c5e23d1f6eed72ed3f7385884351",
    "svg_element_ids": [
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_snip__clip",
     "tennessee_walking_horse_stallion_master_01__skin_pink__face_snip",
-    "tennessee_walking_horse_stallion_master_01__skin_pink__face_snip__pink"
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_snip__pink",
+    "tennessee_walking_horse_stallion_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8375,5 +8381,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

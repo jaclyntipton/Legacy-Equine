@@ -4817,14 +4817,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "92248d196ccc9c23a7a4317cecd1eda73b734b42443143e1ceba7ee9fd291df1",
+   "sha256": "3ac1fbc99653dc9e0d432236ed408c09032e01eda7a267f3eaa7383c2da30837",
    "preview_sha256": "879006aa93575f58aa17dfb296397fb70fc4c16dd382ba58662087783635e24e",
    "svg_element_ids": [
     "qh_foal_master_01__face_bald_face__mask-coat",
     "qh_foal_master_01__face_bald_face__mask-anatomy",
     "qh_foal_master_01__face_bald_face",
     "qh_foal_master_01__face_bald_face__coat",
-    "qh_foal_master_01__face_bald_face__marking"
+    "qh_foal_master_01__face_bald_face__marking",
+    "qh_foal_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -4883,7 +4884,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "ca5136fb2a9fe6f3f9deb1464356b934efa125fb408264ad689ebde60a448567",
+   "sha256": "cb5fefd69b60f9c690327099371d15f7eab7317415fe041a10107ae29b01c4d5",
    "preview_sha256": "138732317a98e9c236b21b5d31befc79a1bb85cd3b5da942cb1382271a07ef21",
    "svg_element_ids": [
     "qh_foal_master_01__face_blaze__mask-coat",
@@ -4949,7 +4950,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "fbd776371aa25a7038483aac18ee4a7fd2c6f2621da8b1d76f074c19258f37d9",
+   "sha256": "66275346aa5a16c1613ae629ef2b3e2b746e417efb7b9cf0717098ea20206580",
    "preview_sha256": "34f42124b66ec83e0c0849f448bf59aa1e5b77e800f6ff86ba881a888d486375",
    "svg_element_ids": [
     "qh_foal_master_01__face_blaze_snip__mask-coat",
@@ -5311,7 +5312,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "a05cf7344cb63b81a3bdc6a58e306ec7e2a8105e77b9f257383b0c95d2669f78",
+   "sha256": "75735229adf1ca30a22f22783f1c4776856598bc7d2982f8d54b85abb22113b2",
    "preview_sha256": "6deb757daf0f6597d3d1af7b3e382e82dd5375d2a61b949c62016858987782bd",
    "svg_element_ids": [
     "qh_foal_master_01__face_irregular_blaze__mask-coat",
@@ -5509,7 +5510,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "44872f08cde743478af850d7da4cba00c89fd4362368105113c03093acf6bc46",
+   "sha256": "3ad05c623cf90f66cca4c0847f04b44374da51e318913db6bac7587bfc9d06ae",
    "preview_sha256": "a9e23f1355ee3db7cbba25ab18c4d95ce6d2144ae3ba7679d60ce470191b4e28",
    "svg_element_ids": [
     "qh_foal_master_01__face_star_stripe__mask-coat",
@@ -5575,7 +5576,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "a9951e47b4c79079b5fb44d7dbdfc31385b8317dc7e62d8ffd47fb0e2e955d7a",
+   "sha256": "6c72e261d01997fe4bded64d5ced16e5bcfd574a143cd5cf7440d53dac4dc666",
    "preview_sha256": "4e34e68d99d0ca3feaeeacca9a7f331a31faf68fd361346ee4e5f74cc47c2722",
    "svg_element_ids": [
     "qh_foal_master_01__face_stripe__mask-coat",
@@ -8719,7 +8720,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -8752,10 +8753,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "2941157a065248b273bd5c69ad63127dff59cbe1a3ef604dceb86ff33897ad61",
+   "sha256": "1dd178d06f03b0ef66e93ba8b312dfb964d8c6b4eada9304cbcbff1a818385d2",
    "preview_sha256": "d2e8ba31ebf0b65798fdc5258260eb5e33bcbf78deb5eaa0fa913379283fdaa2",
    "svg_element_ids": [
-    "qh_foal_master_01__skin_pink__face_bald_face__clip",
+    "qh_foal_master_01__face_bald_face__mask-coat",
+    "qh_foal_master_01__skin_pink__face_bald_face__muzzle-edge",
     "qh_foal_master_01__skin_pink__face_bald_face",
     "qh_foal_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -8785,7 +8787,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -8818,12 +8820,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "6f238ce5bfcb5d0bae43d5276493eb17dad6c3808d44f19d71167a1eb7e6f218",
+   "sha256": "db8bd49d061698cb8bb7fb03967719d3134e684bff7b26a694a26aeae0ea5973",
    "preview_sha256": "210229b03e998813404e5c0985393bcb2a5cb24ce2c3baf8a9c541cbb3d2147b",
    "svg_element_ids": [
     "qh_foal_master_01__skin_pink__face_blaze__clip",
     "qh_foal_master_01__skin_pink__face_blaze",
-    "qh_foal_master_01__skin_pink__face_blaze__pink"
+    "qh_foal_master_01__skin_pink__face_blaze__pink",
+    "qh_foal_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8851,7 +8854,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -8884,12 +8887,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "af3092d5d370d832c0cdd5f3b84d04769774c2942fcc47d74a889b544071da3d",
+   "sha256": "86b48985e0e9fbb16933cc42ae48c1ab46a497f50f9f8df6d5f6a81521b9ae75",
    "preview_sha256": "6e435ec33790251a93b58ea8e4959a4f3d42580ec7e2d1b7a4496b893982e1aa",
    "svg_element_ids": [
     "qh_foal_master_01__skin_pink__face_blaze_snip__clip",
     "qh_foal_master_01__skin_pink__face_blaze_snip",
-    "qh_foal_master_01__skin_pink__face_blaze_snip__pink"
+    "qh_foal_master_01__skin_pink__face_blaze_snip__pink",
+    "qh_foal_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8917,7 +8921,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -8950,12 +8954,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "d8ebc50ab4a1ed153dfea8a55b638ab9ce0c06547373c4eda86ad4700effa933",
+   "sha256": "d8a8822d694477b18a777607edfd169699a5b68cabbd21b565f6bdc07e307a59",
    "preview_sha256": "8c57363fc0a3df395bd092c59fcf902bda53de304a182c1518ac6b9f5c5e4057",
    "svg_element_ids": [
     "qh_foal_master_01__skin_pink__face_irregular_blaze__clip",
     "qh_foal_master_01__skin_pink__face_irregular_blaze",
-    "qh_foal_master_01__skin_pink__face_irregular_blaze__pink"
+    "qh_foal_master_01__skin_pink__face_irregular_blaze__pink",
+    "qh_foal_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8983,7 +8988,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -9016,12 +9021,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "1eb19dd3f15f64bd31ee2b820a4516a3c5a3d92864075dc18b847bca6e92154d",
+   "sha256": "9e6b3b74448202c6530e172dfdb9a3ce69784b80920c17eeddbe6fdb0c72e196",
    "preview_sha256": "2a7d336a4f6df2140b609f247c3babd616d1e2bbedd7b4eb7ce65b9006297445",
    "svg_element_ids": [
     "qh_foal_master_01__skin_pink__face_snip__clip",
     "qh_foal_master_01__skin_pink__face_snip",
-    "qh_foal_master_01__skin_pink__face_snip__pink"
+    "qh_foal_master_01__skin_pink__face_snip__pink",
+    "qh_foal_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -9457,6 +9463,85 @@
     "passed": true
    },
    "notes": "White sclera at the caudal corner of the eye; draw above the eye layer."
+  },
+  {
+   "layer_id": "qh_foal_master_01__face_badger_face",
+   "master_key": "qh_foal_master_01",
+   "master_asset_key": "qh_foal_vector_master_01",
+   "master_file": "qh_foal_master_01.svg",
+   "master_sha256": "eaf20168d7b768d8bddca4057721fb4aa7147952eee8d3170c46995f18a77365",
+   "category": "face_marking",
+   "trait_key": "badger_face",
+   "genetic_trigger": "badger_face_01 (Legacy Equine appearance code)",
+   "stacking_order": 500,
+   "compositing_group": "erase",
+   "compositing_group_meaning": "unioned and removed from the pigment group (destination-out)",
+   "blend_mode": "erase",
+   "requires": [],
+   "suppressed_by": [],
+   "variant_for_base": null,
+   "phenotype": null,
+   "leg": null,
+   "applicability": {
+    "status": "required",
+    "basis": [
+     "always applicable"
+    ]
+   },
+   "status": "generated_pending_review",
+   "provenance": "Owner reference-led Quarter Horse review candidate",
+   "file": "layers/qh_foal_master_01__face_badger_face.svg",
+   "sha256": "429a8e1746d9a99adbf5981867b63e21a584875a13894c7cfd6e4fcb98732cc1",
+   "svg_element_ids": [
+    "qh_foal_master_01__face_badger_face__mask-coat",
+    "qh_foal_master_01__face_badger_face__mask-anatomy",
+    "qh_foal_master_01__face_badger_face",
+    "qh_foal_master_01__face_badger_face__coat",
+    "qh_foal_master_01__face_badger_face__marking",
+    "qh_foal_master_01__face_badger_face__muzzle-erase",
+    "qh_foal_master_01__face_badger_face__pigmented-center"
+   ],
+   "notes": "",
+   "reaches_muzzle": true
+  },
+  {
+   "layer_id": "qh_foal_master_01__skin_pink__face_badger_face",
+   "master_key": "qh_foal_master_01",
+   "master_asset_key": "qh_foal_vector_master_01",
+   "master_file": "qh_foal_master_01.svg",
+   "master_sha256": "eaf20168d7b768d8bddca4057721fb4aa7147952eee8d3170c46995f18a77365",
+   "category": "skin",
+   "trait_key": "pink_under_badger_face",
+   "genetic_trigger": "badger_face_01 (Legacy Equine appearance code)",
+   "stacking_order": 620,
+   "compositing_group": "top",
+   "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
+   "blend_mode": "normal",
+   "requires": [
+    "face_marking:bald_face"
+   ],
+   "suppressed_by": [],
+   "variant_for_base": null,
+   "phenotype": null,
+   "leg": null,
+   "applicability": {
+    "status": "required",
+    "basis": [
+     "always applicable"
+    ]
+   },
+   "status": "generated_pending_review",
+   "provenance": "Owner reference-led Quarter Horse review candidate",
+   "file": "layers/qh_foal_master_01__skin_pink__face_badger_face.svg",
+   "sha256": "863d24e531b12b09eba9075567c6d5d835ae157e4f2b3a5f72ba42c64d86a3b4",
+   "svg_element_ids": [
+    "qh_foal_master_01__face_badger_face__mask-coat",
+    "qh_foal_master_01__skin_pink__face_badger_face__muzzle-edge",
+    "qh_foal_master_01__skin_pink__face_badger_face",
+    "qh_foal_master_01__skin_pink__face_badger_face__pink"
+   ],
+   "notes": "Pink skin where the marking covers the muzzle."
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

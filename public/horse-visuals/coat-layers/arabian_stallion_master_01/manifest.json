@@ -18,7 +18,7 @@
      "joint": 772.2,
      "measured": 772.2,
      "bottom": 979.3,
-     "hoof_bottom": 992.0,
+     "hoof_bottom": 992,
      "D": 182.5999999999999,
      "fetlock": 914.6279999999999,
      "bbox": [
@@ -31,7 +31,7 @@
       845.1,
       954.8,
       910.6,
-      992.0
+      992
      ],
      "joint_source": "master_marking_zone_top"
     },
@@ -60,7 +60,7 @@
     },
     "lh": {
      "top": 543.9,
-     "hoof_top": 956.0,
+     "hoof_top": 956,
      "joint": 716.3199999999999,
      "measured": 716.3199999999999,
      "bottom": 982.8,
@@ -75,7 +75,7 @@
      ],
      "hoof_bbox": [
       436.7,
-      956.0,
+      956,
       506.5,
       995.5
      ],
@@ -83,12 +83,12 @@
     },
     "rh": {
      "top": 584.5,
-     "hoof_top": 977.0,
-     "joint": 715.0,
-     "measured": 715.0,
+     "hoof_top": 977,
+     "joint": 715,
+     "measured": 715,
      "bottom": 999.1,
      "hoof_bottom": 1017.1,
-     "D": 262.0,
+     "D": 262,
      "fetlock": 919.36,
      "bbox": [
       278.2,
@@ -97,8 +97,8 @@
       999.1
      ],
      "hoof_bbox": [
-      296.0,
-      977.0,
+      296,
+      977,
       365.4,
       1017.1
      ],
@@ -1552,8 +1552,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -1666,14 +1666,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "299f5e8281b0fe008a40b58a8893430d3b212bee6a39ec5a5776a5f57e0011c0",
+   "sha256": "3d750191ed006b43dee824227e2b7adab1058a6cea324dee73858b8ccea5d03e",
    "preview_sha256": "9166bfc1c9187ea62ce1736fcbedcd3edf794fbdbf16ca0c34079214c07a23dc",
    "svg_element_ids": [
     "arabian_stallion_master_01__face_bald_face__mask-coat",
     "arabian_stallion_master_01__face_bald_face__mask-anatomy",
     "arabian_stallion_master_01__face_bald_face",
     "arabian_stallion_master_01__face_bald_face__coat",
-    "arabian_stallion_master_01__face_bald_face__marking"
+    "arabian_stallion_master_01__face_bald_face__marking",
+    "arabian_stallion_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -1732,7 +1733,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "9e1cfdfb26481f2aa9de688d0024cde2bce811cf4c894eb9224325af4a0b7956",
+   "sha256": "c138b59c3204bbaeac39eb6bcf296a59d9c908d75043cd0cc674c53c5c4b266b",
    "preview_sha256": "ca2eaaa6e44cacbf0a03038efbd627e0fbf8910e2d79b4f8543beb817a2f0607",
    "svg_element_ids": [
     "arabian_stallion_master_01__face_blaze__mask-coat",
@@ -1798,7 +1799,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "f2d19e37c4519336eed9eaa3ffe148530eb2896dd0575f09ec7eb0bce092b0dc",
+   "sha256": "d2b2fdaa7c4594af73ba14b67d0e26b1d10daca799578147026994978d324faa",
    "preview_sha256": "a7915e188a5beedafc0f7a43bd4143daa3b571fba2816abdf569c5a9efabccee",
    "svg_element_ids": [
     "arabian_stallion_master_01__face_blaze_snip__mask-coat",
@@ -2160,7 +2161,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "d9949f109090a2b20785117123cd069c62887e360fbc82bc7d58c7db1afd5098",
+   "sha256": "4bde5189789d4c25cb071c685cd2155d901417db478ddd41723c8102bd5f1bbc",
    "preview_sha256": "485cafd6e4efdb3bad5fc94e787f69a276173a974352181857a2f676c9401baf",
    "svg_element_ids": [
     "arabian_stallion_master_01__face_irregular_blaze__mask-coat",
@@ -2358,7 +2359,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "c4203d33a169e5542056616dbf8929964d08c6b8aa1b9ac260adcb1095df970c",
+   "sha256": "7aa250a870baa6d7786f10f163c1c72d3a4604b9aeb0ab47c003eb5ca11e4891",
    "preview_sha256": "e7c5fe8176e93f1fb110da53572c30970731a374e1bdd91d31812ecfd1cdfb7c",
    "svg_element_ids": [
     "arabian_stallion_master_01__face_star_stripe__mask-coat",
@@ -2424,7 +2425,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "f50c14c3cc0ae4c4719ff0bb2727d33f5a6fdcb6f571bc379250aeec7927f747",
+   "sha256": "831ee969b43baccc9f9ee59c9dc35d2da1b8465b26acd0f86f364be773d23019",
    "preview_sha256": "758be496f81349509204dddc6386cb301e0ece2ba846665469644484422ccc40",
    "svg_element_ids": [
     "arabian_stallion_master_01__face_stripe__mask-coat",
@@ -5316,7 +5317,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -5349,10 +5350,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "d02091f5f1ad9e1948dafc043cda019b64be6ff80799c6034896f5bd710b0569",
+   "sha256": "f62d2646c9238b094e6d6a754fe1df931d464450143a732defc946cd984f30d3",
    "preview_sha256": "9c8adc92c90e8d7bd8dfe52d9e4508a045421bae492d00586c2f6286eebd5930",
    "svg_element_ids": [
-    "arabian_stallion_master_01__skin_pink__face_bald_face__clip",
+    "arabian_stallion_master_01__face_bald_face__mask-coat",
+    "arabian_stallion_master_01__skin_pink__face_bald_face__muzzle-edge",
     "arabian_stallion_master_01__skin_pink__face_bald_face",
     "arabian_stallion_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -5382,7 +5384,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -5415,12 +5417,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "4170b6e87734254295ffe03f87c06577dfb4f5d537c3ae2667f3c5e8cb8d3987",
+   "sha256": "b67e08967f412f2ae6bf07f97136305d815f5851853fcd53fbd45d0cc8326559",
    "preview_sha256": "ea8bb47404603d7846889d48583c00db7ccf0a8ef91fc2ff966b12fc023177c5",
    "svg_element_ids": [
     "arabian_stallion_master_01__skin_pink__face_blaze__clip",
     "arabian_stallion_master_01__skin_pink__face_blaze",
-    "arabian_stallion_master_01__skin_pink__face_blaze__pink"
+    "arabian_stallion_master_01__skin_pink__face_blaze__pink",
+    "arabian_stallion_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5448,7 +5451,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -5481,12 +5484,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "1d86ffac2d07b5b3d9f5464ae8f78d3942054cdf3720bb4092415aa7edb9fb0a",
+   "sha256": "2c8bd77e8a34824f07be66036251fa80cf20bde6d428790351b210d846eb6822",
    "preview_sha256": "5856a4682e01fad6c5f6b6d51ad6af627e6fc196c17941c9540f7df69a3bf65f",
    "svg_element_ids": [
     "arabian_stallion_master_01__skin_pink__face_blaze_snip__clip",
     "arabian_stallion_master_01__skin_pink__face_blaze_snip",
-    "arabian_stallion_master_01__skin_pink__face_blaze_snip__pink"
+    "arabian_stallion_master_01__skin_pink__face_blaze_snip__pink",
+    "arabian_stallion_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5514,7 +5518,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -5547,12 +5551,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "4bc47ff2fa566abb4e77af0b748cac260a49ccb60e9f8ea1dfec56a638aed210",
+   "sha256": "81467f288d6a7ff08c5e171b9f5643685bfec0d30fb75aad98c2cfe24a8f9253",
    "preview_sha256": "af9a6454e9baca0c2aaf7c05800dd196460368ce85f5d449527f95c39fd7be41",
    "svg_element_ids": [
     "arabian_stallion_master_01__skin_pink__face_irregular_blaze__clip",
     "arabian_stallion_master_01__skin_pink__face_irregular_blaze",
-    "arabian_stallion_master_01__skin_pink__face_irregular_blaze__pink"
+    "arabian_stallion_master_01__skin_pink__face_irregular_blaze__pink",
+    "arabian_stallion_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5580,7 +5585,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -5613,12 +5618,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "c4b1da51c2d2dc3ca01a8462c8ff95606809f38ec8808509e76f327573a115c8",
+   "sha256": "eab2330a69568d22848cbb3d1c2c9b937ab9430ba919000dce4c439f396a37e1",
    "preview_sha256": "183381d09608a118de4401e830d499036cc35fba0a1bcc9e9fd41df6a5675938",
    "svg_element_ids": [
     "arabian_stallion_master_01__skin_pink__face_snip__clip",
     "arabian_stallion_master_01__skin_pink__face_snip",
-    "arabian_stallion_master_01__skin_pink__face_snip__pink"
+    "arabian_stallion_master_01__skin_pink__face_snip__pink",
+    "arabian_stallion_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5764,5 +5770,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

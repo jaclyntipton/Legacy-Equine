@@ -3382,8 +3382,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -3431,14 +3431,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "44a43f60f18844555556904769e3e593b6f9b964c15d8035e5e373747ce2bba0",
+   "sha256": "ffd076aebf0177beb6b6f5580bb6bfff4ee46f9c84c56d998a5fb1f68955c725",
    "preview_sha256": "e9f9ce78738ea6a495710baa243ad80b239993a975ba716816577b2d5e23e11a",
    "svg_element_ids": [
     "morgan_stallion_master_01__face_bald_face__mask-coat",
     "morgan_stallion_master_01__face_bald_face__mask-anatomy",
     "morgan_stallion_master_01__face_bald_face",
     "morgan_stallion_master_01__face_bald_face__coat",
-    "morgan_stallion_master_01__face_bald_face__marking"
+    "morgan_stallion_master_01__face_bald_face__marking",
+    "morgan_stallion_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -3497,7 +3498,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "e677fe13827db37b9bd2bfe3866a8babb869c83685a61cd6ac0d4b2816eecfae",
+   "sha256": "e07a786e8d3dea1729620cfbe2d1cafd4f8a8aa359ca7dfe14efbd1fe89f26b2",
    "preview_sha256": "d06349b504ac1e160d16b4c461dfe7268a6ab07a01036a2d7887a129a5a7d98d",
    "svg_element_ids": [
     "morgan_stallion_master_01__face_blaze__mask-coat",
@@ -3563,7 +3564,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "c786818d5f0c0e321980389941fcfee1ea93a6f5a5e921fb06fd8a8919d6a59e",
+   "sha256": "71f1634f8e5704f6d15728381ffcd40fd3a8adf06bb7cbb07b8f608fc67cc0f8",
    "preview_sha256": "0c5f90436c2858ed845671d65d32d2dc33792a9a62503b6db04c525b7e9e6f2c",
    "svg_element_ids": [
     "morgan_stallion_master_01__face_blaze_snip__mask-coat",
@@ -3925,7 +3926,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "c0bd67cebc35be4f72a89e4ebce25ca60645be20595aad64aa820cb00c2bafb7",
+   "sha256": "77768d0745098838e5bb3bd04e50435d3c943bcd82afa8b7969e41d7ddaf2956",
    "preview_sha256": "631eba4bce3668cc09ecbc4e60afd11ca5e223fc57d9a6564ef0dd292a83539c",
    "svg_element_ids": [
     "morgan_stallion_master_01__face_irregular_blaze__mask-coat",
@@ -4123,7 +4124,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "3d11b7107ef9c6a8bf3c80b3687667438a79b15dd160426b4ff6f529c736abe0",
+   "sha256": "0990199b57191120fb0945da6d7aea2c4454e7dc3b4ce43037730982839b75b8",
    "preview_sha256": "4f0a461db2e7b32c23687012e3fc4a74066bf908615cad6888db61969a045642",
    "svg_element_ids": [
     "morgan_stallion_master_01__face_star_stripe__mask-coat",
@@ -4189,7 +4190,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "15046c509f988b9e6d21050ce72bbb0074016120de1fd4aa634afbb7edfbffd4",
+   "sha256": "2b6fb7fd540334717a1f5662c69eba1c7cd692973b59ef9bbe963e1ab39f215b",
    "preview_sha256": "2f2d45cfd9843f654264fa8706f618d54326114fa64704cf31ca867c231d74f6",
    "svg_element_ids": [
     "morgan_stallion_master_01__face_stripe__mask-coat",
@@ -7081,7 +7082,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -7114,10 +7115,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "3d872e0c8e999d7d7aa3166f3e3eca873f3a42d6a25354e15efa1044b707ab76",
+   "sha256": "905b896fcaf9e28bd73270ddd028303810f0de1da4d56ec772285e7c485cabca",
    "preview_sha256": "0391ad75c5192f6d343f36af5c52d1044f7b8a63fabd6bbfeca78713c1890baa",
    "svg_element_ids": [
-    "morgan_stallion_master_01__skin_pink__face_bald_face__clip",
+    "morgan_stallion_master_01__face_bald_face__mask-coat",
+    "morgan_stallion_master_01__skin_pink__face_bald_face__muzzle-edge",
     "morgan_stallion_master_01__skin_pink__face_bald_face",
     "morgan_stallion_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -7147,7 +7149,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -7180,12 +7182,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "b11c0fd215b20488d254a4e93c60dbf5c934cae07bf7ea55e46a4190215cea2f",
+   "sha256": "c644ed9bf4f53c7d0e6e144c0c8a122ce888fe34338ea66179694cd32e0f2ab1",
    "preview_sha256": "cab9eedb559b431286e0ac59ffdc8a4e8ed380d32c8f68396456aaadeb053816",
    "svg_element_ids": [
     "morgan_stallion_master_01__skin_pink__face_blaze__clip",
     "morgan_stallion_master_01__skin_pink__face_blaze",
-    "morgan_stallion_master_01__skin_pink__face_blaze__pink"
+    "morgan_stallion_master_01__skin_pink__face_blaze__pink",
+    "morgan_stallion_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7213,7 +7216,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -7246,12 +7249,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "d3ce6ddf2fdcc45ff02859da534c446ae1cd994f07215b743f3c195f96371b1f",
+   "sha256": "b7bef01121fa85a0de392f32eb9407aea1fa511d1e781c5f45c45fba989a502b",
    "preview_sha256": "945b8f699e94349d2bb6717023495ea4e7cd1a211fcb54560c2c500ee1fe1f78",
    "svg_element_ids": [
     "morgan_stallion_master_01__skin_pink__face_blaze_snip__clip",
     "morgan_stallion_master_01__skin_pink__face_blaze_snip",
-    "morgan_stallion_master_01__skin_pink__face_blaze_snip__pink"
+    "morgan_stallion_master_01__skin_pink__face_blaze_snip__pink",
+    "morgan_stallion_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7279,7 +7283,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -7312,12 +7316,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "17d38433e9b7445a857ec9e792d04aa8a1794bdacc45ebd42c5ebbdc1644af05",
+   "sha256": "ed081a1f20954ed254a1bd8aa0152e22b3c477279cc2115c94c0c709a13e952b",
    "preview_sha256": "1b98855fadcc4b68f9ed1c5c5de69d7535473ebf464655afd67e25eaf3f232f6",
    "svg_element_ids": [
     "morgan_stallion_master_01__skin_pink__face_irregular_blaze__clip",
     "morgan_stallion_master_01__skin_pink__face_irregular_blaze",
-    "morgan_stallion_master_01__skin_pink__face_irregular_blaze__pink"
+    "morgan_stallion_master_01__skin_pink__face_irregular_blaze__pink",
+    "morgan_stallion_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7345,7 +7350,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -7378,12 +7383,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "4705405b5312c981333df5dbafc052e49243642551aeaf195cc542bf92d2f084",
+   "sha256": "37c33786d1311a9ee417fb0b1d5c8feb9efcc2fe1816dc7416c0ddb6c6251c50",
    "preview_sha256": "b36e2afa5d4f787856dada482712bf8b3dbd26e84fb3592d19db3ca09b8de4f9",
    "svg_element_ids": [
     "morgan_stallion_master_01__skin_pink__face_snip__clip",
     "morgan_stallion_master_01__skin_pink__face_snip",
-    "morgan_stallion_master_01__skin_pink__face_snip__pink"
+    "morgan_stallion_master_01__skin_pink__face_snip__pink",
+    "morgan_stallion_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7596,5 +7602,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

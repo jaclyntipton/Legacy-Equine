@@ -15,8 +15,8 @@
     "lf": {
      "top": 626.5,
      "hoof_top": 962.6,
-     "joint": 796.0,
-     "measured": 796.0,
+     "joint": 796,
+     "measured": 796,
      "bottom": 983.1,
      "hoof_bottom": 998.6,
      "D": 166.60000000000002,
@@ -28,7 +28,7 @@
       983.1
      ],
      "hoof_bbox": [
-      923.0,
+      923,
       962.6,
       963.6,
       998.6
@@ -38,8 +38,8 @@
     "rf": {
      "top": 584.4,
      "hoof_top": 972.9,
-     "joint": 781.0,
-     "measured": 781.0,
+     "joint": 781,
+     "measured": 781,
      "bottom": 995.2,
      "hoof_bottom": 1013.2,
      "D": 191.89999999999998,
@@ -68,7 +68,7 @@
      "D": 263.03999999999996,
      "fetlock": 916.9312,
      "bbox": [
-      249.0,
+      249,
       528.5,
       600.3,
       980.3
@@ -3897,8 +3897,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -4143,14 +4143,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "823d44db5311c3fe7f3922d64edd58ae969ea0bb1e98c9d22e8eab6715a5766d",
+   "sha256": "0281438c6e5d62f94a3995ece87e3f151a67000b8555a12e64cf56dc136008a3",
    "preview_sha256": "dc4eed5172a61b7cb5c087592b39560b041d789e6c4d5330faba86d80aede0f8",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__face_bald_face__mask-coat",
     "tennessee_walking_horse_mare_master_01__face_bald_face__mask-anatomy",
     "tennessee_walking_horse_mare_master_01__face_bald_face",
     "tennessee_walking_horse_mare_master_01__face_bald_face__coat",
-    "tennessee_walking_horse_mare_master_01__face_bald_face__marking"
+    "tennessee_walking_horse_mare_master_01__face_bald_face__marking",
+    "tennessee_walking_horse_mare_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -4209,7 +4210,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "b44d5bdb00d0406a62eee91be89715c50a58f11e8a5263662b6c59e58d3b83a0",
+   "sha256": "675d80d50bc8ff83f520cd8d2d5723ee98c5bc1acb30ff31869cec91586498fe",
    "preview_sha256": "465c020a702a7c49aeb980cde1569f7ba3732ea885da2150e691b6e401d62ea7",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__face_blaze__mask-coat",
@@ -4275,7 +4276,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "f79b657e3d1e9cebcd8fda627a8b734e775f5d887e7ece8b278e74b0abedf699",
+   "sha256": "6d10a9d17f582c29a7200447bd9d6bc36316d5b6d5bb91aaaca55ebd03ab0eb8",
    "preview_sha256": "7b2d5c791027469e83fcced8c902795ae6e49c047949e3c9fc50be60eae96ecb",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__face_blaze_snip__mask-coat",
@@ -4637,7 +4638,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "e8a57fc6a05d176cac9cf235e419385829e992eb9e884f63b9c1b78007d47ad4",
+   "sha256": "c9718b423394cfaec0b538b12a260595c3452abcec11129e8bb87dd9e310a256",
    "preview_sha256": "546d93bafe07d0aa5cd7d3a15c943d1239f26d5453ae18e9ef001b7d7e0e977f",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__face_irregular_blaze__mask-coat",
@@ -4835,7 +4836,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "f5b7ccb9419c5e5ba2e65bd889fc8e28c95c6277d0c51f8fab4a519be869572c",
+   "sha256": "3fb8361555fce7808ed79592cf0b05496ef04b7b6fcfc17ec5f1fed36bf87390",
    "preview_sha256": "bdb51138de85a5f5e10099be32162546d818efcc73fd2900b6e670f7fdf4b4da",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__face_star_stripe__mask-coat",
@@ -4901,7 +4902,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "a098d7527face6d87cba4dbe3a8aaa3263a3f0b2ed5456de78c431e955e160fe",
+   "sha256": "720e1fcc90f5b33350e3ada3be4fca0d2fff23c422cfc2908a75c28d9fba29d0",
    "preview_sha256": "fdcc40765c5d9185c84f121033618b32777dfa0e3daa258da6232a33311ae7a8",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__face_stripe__mask-coat",
@@ -7793,7 +7794,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -7826,10 +7827,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "0dce83fd86f30a4c949266eaadb379a7478903cf74db1d01ea3454cde156d12d",
+   "sha256": "f0db74f518f7c5ac91c5d4bedd5abc696c3dc15a3592ec8613f17d7f8dda8c1f",
    "preview_sha256": "4be91f326d096cb5f14f9a1e0cd94596181df9503d219fd6506bad913ca6494e",
    "svg_element_ids": [
-    "tennessee_walking_horse_mare_master_01__skin_pink__face_bald_face__clip",
+    "tennessee_walking_horse_mare_master_01__face_bald_face__mask-coat",
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_bald_face__muzzle-edge",
     "tennessee_walking_horse_mare_master_01__skin_pink__face_bald_face",
     "tennessee_walking_horse_mare_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -7859,7 +7861,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -7892,12 +7894,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "22676edc2043224ae574335afd235b04b03b6f8f2f4ba74428bee7250b9712a1",
+   "sha256": "fd212c061164dbd0f80e4399e41448d5304c381a85b75f2af82a0b0699c56295",
    "preview_sha256": "3fd349442f613789377df7822edb26c393ccf6c4039d862086ec686a3f8bba7f",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze__clip",
     "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze",
-    "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze__pink"
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze__pink",
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7925,7 +7928,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -7958,12 +7961,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "03c060bf2dac4b1825937574c59d8fa25ceda7bcfcc46b0ffd2c6c24a598db8d",
+   "sha256": "b52572a68b65c75d7fd0b874103b67c81cb02e13b7f5e7300c9d10c9315f787e",
    "preview_sha256": "def0eec50b4df1aeb932b54a2d29f11dafb7f13f8164cb4197157fa02389a4a5",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze_snip__clip",
     "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze_snip",
-    "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze_snip__pink"
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze_snip__pink",
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -7991,7 +7995,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -8024,12 +8028,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "69c9e93410e96182421d953c6c1b65b17e5e3af8ea09690d0b8881d2aea678bd",
+   "sha256": "4246d3fc4c4294eee123cd558b1f9d68e5e5acba0e076193b558d52ebab8f6e1",
    "preview_sha256": "a881cbe43b13d2936b495b785a9e9d23d3e114ee632857112b6e5c192f3cd0fa",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__skin_pink__face_irregular_blaze__clip",
     "tennessee_walking_horse_mare_master_01__skin_pink__face_irregular_blaze",
-    "tennessee_walking_horse_mare_master_01__skin_pink__face_irregular_blaze__pink"
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_irregular_blaze__pink",
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8057,7 +8062,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -8090,12 +8095,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "29e41738e3621ac3e09ad149a901f0f29675302ca1ffa33943ab96a99229d30b",
+   "sha256": "83b83881f9615d7f52bf084691c567a4dc4e441841702508fedbf934604b0d5f",
    "preview_sha256": "2ed0759e4c428e08aa6958974197c1766c913ab2120878b6fb860b91a286f809",
    "svg_element_ids": [
     "tennessee_walking_horse_mare_master_01__skin_pink__face_snip__clip",
     "tennessee_walking_horse_mare_master_01__skin_pink__face_snip",
-    "tennessee_walking_horse_mare_master_01__skin_pink__face_snip__pink"
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_snip__pink",
+    "tennessee_walking_horse_mare_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -8375,5 +8381,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

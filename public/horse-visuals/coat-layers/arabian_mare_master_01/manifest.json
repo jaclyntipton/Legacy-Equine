@@ -18,7 +18,7 @@
      "joint": 771.6,
      "measured": 771.6,
      "bottom": 978.7,
-     "hoof_bottom": 992.0,
+     "hoof_bottom": 992,
      "D": 182.60000000000002,
      "fetlock": 914.028,
      "bbox": [
@@ -31,15 +31,15 @@
       844.4,
       954.2,
       910.8,
-      992.0
+      992
      ],
      "joint_source": "master_marking_zone_top"
     },
     "rf": {
      "top": 573.4,
      "hoof_top": 969.2,
-     "joint": 774.0,
-     "measured": 774.0,
+     "joint": 774,
+     "measured": 774,
      "bottom": 991.8,
      "hoof_bottom": 1008.2,
      "D": 195.20000000000005,
@@ -63,7 +63,7 @@
      "hoof_top": 955.4,
      "joint": 716.44,
      "measured": 716.44,
-     "bottom": 981.0,
+     "bottom": 981,
      "hoof_bottom": 995.6,
      "D": 238.95999999999992,
      "fetlock": 902.8288,
@@ -71,7 +71,7 @@
       363.8,
       519.2,
       522.7,
-      981.0
+      981
      ],
      "hoof_bbox": [
       435.7,
@@ -83,12 +83,12 @@
     },
     "rh": {
      "top": 584.5,
-     "hoof_top": 977.0,
-     "joint": 715.0,
-     "measured": 715.0,
+     "hoof_top": 977,
+     "joint": 715,
+     "measured": 715,
      "bottom": 999.6,
      "hoof_bottom": 1017.3,
-     "D": 262.0,
+     "D": 262,
      "fetlock": 919.36,
      "bbox": [
       278.2,
@@ -97,8 +97,8 @@
       999.6
      ],
      "hoof_bbox": [
-      296.0,
-      977.0,
+      296,
+      977,
       366.3,
       1017.3
      ],
@@ -1552,8 +1552,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -1666,14 +1666,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "83587bba40abeb6cad2fe9eed0da0dd9994b544808cbeb602180e1934f42e86b",
+   "sha256": "fae6e8c61bb61a7d3b960bc3e943fa8c4c853897641c04a2f814fa3f58c11df1",
    "preview_sha256": "d9648d2d2c907c6142672e28f251323158c6cae8ed4eaba411a879483b8e2329",
    "svg_element_ids": [
     "arabian_mare_master_01__face_bald_face__mask-coat",
     "arabian_mare_master_01__face_bald_face__mask-anatomy",
     "arabian_mare_master_01__face_bald_face",
     "arabian_mare_master_01__face_bald_face__coat",
-    "arabian_mare_master_01__face_bald_face__marking"
+    "arabian_mare_master_01__face_bald_face__marking",
+    "arabian_mare_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -1732,7 +1733,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "8a8ca4d1cc18b17445dac8e2728bcac2a0840eda0ee63434ffe950b4a76f0464",
+   "sha256": "c99680cc263d184a3f85f9baa4ea1554acbc0cead816a7d69e749047d1b7cd31",
    "preview_sha256": "8b5639afb86473dc54a4cd98edc792e953cdb55d16c7a7b62b439ad2926d5edf",
    "svg_element_ids": [
     "arabian_mare_master_01__face_blaze__mask-coat",
@@ -1798,7 +1799,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "dd7548d40fe63a8eca32703e69a1244dcd275bc98918db21dd2208b90b416fc5",
+   "sha256": "2dcbabcf33090f822dc109f14c177124329066d4ef72d303e3a8694bfe5e8ec9",
    "preview_sha256": "3a6160277849b73598ba5f6ce1f6be26c263e2497dcf1f89d8ef64182f0cfac8",
    "svg_element_ids": [
     "arabian_mare_master_01__face_blaze_snip__mask-coat",
@@ -2160,7 +2161,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "bbe9028357aa48734be7d4d9f8d91c28d36e85c2a745e7093b87c9099260ed25",
+   "sha256": "6499794d34bc6599db0fcca9b4ae9bf2b85a2d4d3a36dd8d8076e87bda263783",
    "preview_sha256": "8b64df9b2a63edce762d20df9dc26e71f89b8d90b65723a42f9e65c19432cec6",
    "svg_element_ids": [
     "arabian_mare_master_01__face_irregular_blaze__mask-coat",
@@ -2358,7 +2359,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "ba47bab4e8b88ba422bb8e3865f65c9045984699e4b050154d4b8e0cc47d6ec3",
+   "sha256": "e002bd65bc7c6b082aef152a812fe34a51056d5987568c6d0ae59415b8a0812b",
    "preview_sha256": "f2b1ae21518cb63f1a341273a8d16aa3ce8a63d470ff0827fe9c03796d4633e7",
    "svg_element_ids": [
     "arabian_mare_master_01__face_star_stripe__mask-coat",
@@ -2424,7 +2425,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "e71bf3dab03b587c7fd5daf46604474c8d38a107d161e92c3da43aa3832a638c",
+   "sha256": "768a91bb775efe156fec7268a4a39745ef7d520d88e4e10c03b5c865611f8eb9",
    "preview_sha256": "9e452aa7ab81ce1fb1be3db772babef2317cd3e6f56ff7cd094fae5772858950",
    "svg_element_ids": [
     "arabian_mare_master_01__face_stripe__mask-coat",
@@ -5316,7 +5317,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -5349,10 +5350,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "c57f40693d949b9d0e1eb88c959d5a39fe2313720812884b7001c178bfe814d2",
+   "sha256": "bdcf31987644b7afe7764156112cc4ec407a65f21f94f9ccc65e4534984fa95c",
    "preview_sha256": "2dac02a87c58ec0792e8a35c439ce494871ba350d57c304a28fa50d2601ed715",
    "svg_element_ids": [
-    "arabian_mare_master_01__skin_pink__face_bald_face__clip",
+    "arabian_mare_master_01__face_bald_face__mask-coat",
+    "arabian_mare_master_01__skin_pink__face_bald_face__muzzle-edge",
     "arabian_mare_master_01__skin_pink__face_bald_face",
     "arabian_mare_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -5382,7 +5384,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -5415,12 +5417,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "13da862d6356acf92f9403df9943a62b3df190bd28eaed2e3ce0b04a51f5c3a6",
+   "sha256": "88bf946af0f85607de96f8b9384c3a99162c9bd4d7d6393bb2c79ff6f5c10598",
    "preview_sha256": "13f6c6b180e916988494137a836af228de232780f524375ff43f6aebf71d8a6d",
    "svg_element_ids": [
     "arabian_mare_master_01__skin_pink__face_blaze__clip",
     "arabian_mare_master_01__skin_pink__face_blaze",
-    "arabian_mare_master_01__skin_pink__face_blaze__pink"
+    "arabian_mare_master_01__skin_pink__face_blaze__pink",
+    "arabian_mare_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5448,7 +5451,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -5481,12 +5484,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "c2080f802e68ad2f1b0dca49bc2d95357526fe271e1cde0b7686f2afebb0303a",
+   "sha256": "5520a66388b2723a96493bc0cfb171ea630ff794fba1ca2cc8adfe6bb7245687",
    "preview_sha256": "ab67030b262682d73b0e28c8fea5e9fed0b82e1762b71ee20eccbd9aa3a330b3",
    "svg_element_ids": [
     "arabian_mare_master_01__skin_pink__face_blaze_snip__clip",
     "arabian_mare_master_01__skin_pink__face_blaze_snip",
-    "arabian_mare_master_01__skin_pink__face_blaze_snip__pink"
+    "arabian_mare_master_01__skin_pink__face_blaze_snip__pink",
+    "arabian_mare_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5514,7 +5518,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -5547,12 +5551,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "405387af044e88a2a923240c5374493958643bf8d90b62791428dc4af52a51b8",
+   "sha256": "8c00d952465a68d0ada14a3df2c69b389fbc469ee5ee840a2b5bd08eeed0ee7d",
    "preview_sha256": "5de61576bcee3aa38860bd7158ff3b6308bdf39084433dbabba1357e8846509f",
    "svg_element_ids": [
     "arabian_mare_master_01__skin_pink__face_irregular_blaze__clip",
     "arabian_mare_master_01__skin_pink__face_irregular_blaze",
-    "arabian_mare_master_01__skin_pink__face_irregular_blaze__pink"
+    "arabian_mare_master_01__skin_pink__face_irregular_blaze__pink",
+    "arabian_mare_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5580,7 +5585,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -5613,12 +5618,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "2d45675e2c8fce2abbbfa9e01eabb766588679ddb74ccc05fcff7023f70ee587",
+   "sha256": "6d504b6ffcffc1600fd86011fc51703463ba6d92b46183ae682187c4bc1960dd",
    "preview_sha256": "8a3bc2ee5ba351e69003cf807a02a1de733edd7ff111486e1c3265e3d0ff7a14",
    "svg_element_ids": [
     "arabian_mare_master_01__skin_pink__face_snip__clip",
     "arabian_mare_master_01__skin_pink__face_snip",
-    "arabian_mare_master_01__skin_pink__face_snip__pink"
+    "arabian_mare_master_01__skin_pink__face_snip__pink",
+    "arabian_mare_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -5764,5 +5770,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

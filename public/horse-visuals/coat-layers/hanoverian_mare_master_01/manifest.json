@@ -18,20 +18,20 @@
      "joint": 777.9,
      "measured": 777.9,
      "bottom": 966.2,
-     "hoof_bottom": 984.0,
+     "hoof_bottom": 984,
      "D": 164.70000000000005,
      "fetlock": 906.366,
      "bbox": [
       772.4,
       610.5,
-      865.0,
+      865,
       966.2
      ],
      "hoof_bbox": [
       781.9,
       942.6,
       854.9,
-      984.0
+      984
      ],
      "joint_source": "master_marking_zone_top"
     },
@@ -93,7 +93,7 @@
      "bbox": [
       233.1,
       580.1,
-      398.0,
+      398,
       997.7
      ],
      "hoof_bbox": [
@@ -2551,8 +2551,8 @@
    },
    "notes": "Roaned edges / flank roaning that accompanies sabino.",
    "density": {
-    "body": 0.0,
-    "head": 0.0,
+    "body": 0,
+    "head": 0,
     "legs": 0.3,
     "mane": 0,
     "tail": 0
@@ -2665,14 +2665,15 @@
     "points_black",
     "face_bald_face"
    ],
-   "sha256": "deae4f41ad9043d3a996753954c78177b870b06049e76e2b8e9cabd6ee2dce2b",
+   "sha256": "03a67a82e1a7c754498d72daf58df8340ebe1bd6fbc4f8eec6cb69c8cc927bb2",
    "preview_sha256": "33d24d5740151c962dad0ec3fb3c4d220963dfb726067bc87d3b46c5d7b6d370",
    "svg_element_ids": [
     "hanoverian_mare_master_01__face_bald_face__mask-coat",
     "hanoverian_mare_master_01__face_bald_face__mask-anatomy",
     "hanoverian_mare_master_01__face_bald_face",
     "hanoverian_mare_master_01__face_bald_face__coat",
-    "hanoverian_mare_master_01__face_bald_face__marking"
+    "hanoverian_mare_master_01__face_bald_face__marking",
+    "hanoverian_mare_master_01__face_bald_face__muzzle-erase"
    ],
    "validation": {
     "canvas": true,
@@ -2731,7 +2732,7 @@
     "points_black",
     "face_blaze"
    ],
-   "sha256": "f9f494c4f5d3d8631798154918425935de669d924302d516b60ca3c61b39450d",
+   "sha256": "3cf5840be4ffe440aaeba84f168f3ef9e677dc9c8645d3dc3125bda07b9ebcbf",
    "preview_sha256": "a10e7b1026d2ca3fd7ad950e0196044630370540e2147e8474cc812e1106dcf9",
    "svg_element_ids": [
     "hanoverian_mare_master_01__face_blaze__mask-coat",
@@ -2797,7 +2798,7 @@
     "points_black",
     "face_blaze_snip"
    ],
-   "sha256": "f17a91bdb506c4dcc388bf795c02a41f7787ae598265e16c4bb32b797ed3dc43",
+   "sha256": "503c9582d2064ae9271449b6b962058101e44c4f520a4275176acb28e154836f",
    "preview_sha256": "a4961d36307f2c5f95bbdd4c1f295815a59497a617948281577365ea5cc56d91",
    "svg_element_ids": [
     "hanoverian_mare_master_01__face_blaze_snip__mask-coat",
@@ -3159,7 +3160,7 @@
     "points_black",
     "face_irregular_blaze"
    ],
-   "sha256": "44bd7d61b52f0c35427d2d6d0c496a880d96b61757d66f1fb1a2767e4ba97e13",
+   "sha256": "3fb77ccecda8d844669ec1d818ef475b1543bac5718a2f7ade66be0dff128f3d",
    "preview_sha256": "e1ee07bb0f44487ec57178cbdc9682972c1a1149e2ea28192b49587611dd9b0e",
    "svg_element_ids": [
     "hanoverian_mare_master_01__face_irregular_blaze__mask-coat",
@@ -3357,7 +3358,7 @@
     "points_black",
     "face_star_stripe"
    ],
-   "sha256": "d8136148f5524947ae75fa754ee3c0ca6b318afba17e7503eb179ae4455618c3",
+   "sha256": "27621b75da0cbb87f055ee1e97ce531488e528d75685176df886c0ca71b88aba",
    "preview_sha256": "d002ac392550ac6ae2067343781e411cf98cc2b9f5b292ef33bb525a19fb4478",
    "svg_element_ids": [
     "hanoverian_mare_master_01__face_star_stripe__mask-coat",
@@ -3423,7 +3424,7 @@
     "points_black",
     "face_stripe"
    ],
-   "sha256": "149a96bf84517806086accc617edb62da5715fe5376b73d06ad8d7bbf99863e2",
+   "sha256": "ec9a61ce60cc5ffb248f9f5e18c2129860f17a96a86a8c3bac5fcd5d7175192c",
    "preview_sha256": "022142382072d4f332831083ae53066aba7ae333090b6497c1dc1e19ed7b1dd0",
    "svg_element_ids": [
     "hanoverian_mare_master_01__face_stripe__mask-coat",
@@ -6315,7 +6316,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:bald_face"
    ],
@@ -6348,10 +6349,11 @@
     "face_bald_face",
     "skin_pink__face_bald_face"
    ],
-   "sha256": "b3a2eedde54d88f62774dc1ed05e339cb2d7c0b34de4d885ed39e848bf4f84f7",
+   "sha256": "73dfd84c584c7a9f073257d7110cd3545ee555cc859b054154a30c6e2bc922c8",
    "preview_sha256": "fffe6720a0faf55b77a168d4636ac1717fa7e39f619e15d7db3cbe894ef9e3e7",
    "svg_element_ids": [
-    "hanoverian_mare_master_01__skin_pink__face_bald_face__clip",
+    "hanoverian_mare_master_01__face_bald_face__mask-coat",
+    "hanoverian_mare_master_01__skin_pink__face_bald_face__muzzle-edge",
     "hanoverian_mare_master_01__skin_pink__face_bald_face",
     "hanoverian_mare_master_01__skin_pink__face_bald_face__pink"
    ],
@@ -6381,7 +6383,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze"
    ],
@@ -6414,12 +6416,13 @@
     "face_blaze",
     "skin_pink__face_blaze"
    ],
-   "sha256": "d2c7227b7ecbfebcf504a8a27dcfaa464b825e1fad9bc1678fb2ade30b9db4dd",
+   "sha256": "63d4dbf55dac295f7df1e1b13c6786f8974272e9274ce982bb40da47cca73a21",
    "preview_sha256": "25b7bde7caac9a64b8cb22cddf081706ff8029ac43ecfbbc67f3715666d9631c",
    "svg_element_ids": [
     "hanoverian_mare_master_01__skin_pink__face_blaze__clip",
     "hanoverian_mare_master_01__skin_pink__face_blaze",
-    "hanoverian_mare_master_01__skin_pink__face_blaze__pink"
+    "hanoverian_mare_master_01__skin_pink__face_blaze__pink",
+    "hanoverian_mare_master_01__skin_pink__face_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6447,7 +6450,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:blaze_snip"
    ],
@@ -6480,12 +6483,13 @@
     "face_blaze_snip",
     "skin_pink__face_blaze_snip"
    ],
-   "sha256": "6e662c57a947b8de01ce95c5054cca8cc6159cd262503c3139d723515a057070",
+   "sha256": "85a7f6f8363f49a400e03db5e582f4cc9939650cce53fdbf09a7adf0d3f088a3",
    "preview_sha256": "e4a658c47f81619c701c900cbe687359143dbe2daefe4824315a36c3974414b7",
    "svg_element_ids": [
     "hanoverian_mare_master_01__skin_pink__face_blaze_snip__clip",
     "hanoverian_mare_master_01__skin_pink__face_blaze_snip",
-    "hanoverian_mare_master_01__skin_pink__face_blaze_snip__pink"
+    "hanoverian_mare_master_01__skin_pink__face_blaze_snip__pink",
+    "hanoverian_mare_master_01__skin_pink__face_blaze_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6513,7 +6517,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:irregular_blaze"
    ],
@@ -6546,12 +6550,13 @@
     "face_irregular_blaze",
     "skin_pink__face_irregular_blaze"
    ],
-   "sha256": "488aab24790e9aba57a80a3ee218c3a638207f726282b76c5e96ace7f9653da9",
+   "sha256": "8300a2ed2733b6f7f49589983b29489c7b5907994c96348de3bfcd7d446c26cf",
    "preview_sha256": "2b691fa2913087d6e3545a33a883a9d7a91b03e0815b1540dcd5abc7e618b591",
    "svg_element_ids": [
     "hanoverian_mare_master_01__skin_pink__face_irregular_blaze__clip",
     "hanoverian_mare_master_01__skin_pink__face_irregular_blaze",
-    "hanoverian_mare_master_01__skin_pink__face_irregular_blaze__pink"
+    "hanoverian_mare_master_01__skin_pink__face_irregular_blaze__pink",
+    "hanoverian_mare_master_01__skin_pink__face_irregular_blaze__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6579,7 +6584,7 @@
    "stacking_order": 620,
    "compositing_group": "top",
    "compositing_group_meaning": "drawn on top after the pigment group is multiplied onto the master",
-   "blend_mode": "multiply",
+   "blend_mode": "normal",
    "requires": [
     "face_marking:snip"
    ],
@@ -6612,12 +6617,13 @@
     "face_snip",
     "skin_pink__face_snip"
    ],
-   "sha256": "c621ee10c509e37afc32d287fc9e4422fe10e5bc318a1306fb9c2d953aae14ff",
+   "sha256": "84b2030464f5ae16a87d7faefe2a8ff840c891d67aa76e2674bdfa34437b8fec",
    "preview_sha256": "9bc8a57bdf770d5d0cac460f582587170e541ffe2e495d5ada445a654d0e6004",
    "svg_element_ids": [
     "hanoverian_mare_master_01__skin_pink__face_snip__clip",
     "hanoverian_mare_master_01__skin_pink__face_snip",
-    "hanoverian_mare_master_01__skin_pink__face_snip__pink"
+    "hanoverian_mare_master_01__skin_pink__face_snip__pink",
+    "hanoverian_mare_master_01__skin_pink__face_snip__muzzle-transition"
    ],
    "validation": {
     "canvas": true,
@@ -6830,5 +6836,6 @@
    },
    "notes": ""
   }
- ]
+ ],
+ "face_marking_refinement": 6
 }

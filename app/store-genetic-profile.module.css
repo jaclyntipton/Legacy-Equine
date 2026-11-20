@@ -1,13 +1,12 @@
 .layout {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  gap: 1.25rem;
-  align-items: start;
+  gap: 1rem;
 }
 
-.profile {
+.card {
   min-width: 0;
-  padding: .875rem 1rem;
+  padding: 1rem;
   border: 1px solid var(--line);
   border-radius: 1rem;
   background: #f7f2fc;
@@ -15,18 +14,33 @@
   font-size: .85rem;
 }
 
-.profile h2 { font-size: 1.125rem; margin: 0 0 .4rem; }
-.profile h3 { font-size: .85rem; margin: .65rem 0 .25rem; }
-.profile p { margin: 0; }
-.profile button { text-decoration: underline; }
+.card h2 { font-size: 1.05rem; font-weight: 750; margin: 0 0 .7rem; }
+.card h3 { font-size: .78rem; font-weight: 750; margin: .75rem 0 .3rem; }
+.card p { margin: 0; }
+.card button { text-decoration: underline; }
+.coat strong, .coat span { display: block; }
+.coat strong { font-size: .78rem; }
+.coat span { color: #5f4f71; }
+.card :global(.previewstats) { gap: 0; }
+.card :global(.previewstats) > div,
+.results div {
+  padding: .32rem 0;
+  border-top: 1px solid var(--line);
+  font-size: .8125rem;
+  line-height: 1.35;
+}
+.card :global(.previewstats) > div {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
 .results { margin: 0; }
 .results div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: .15rem .5rem;
-  padding: .25rem 0;
-  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: .45rem;
 }
-.results dt span { margin-inline-start: .35rem; }
-.results dd { margin: 0; }
+.results dt { display: grid; grid-template-columns: 1fr 1.75rem; gap: .15rem; }
+.results dt span { font-variant-numeric: tabular-nums; color: #5f4f71; }
+.results dd { margin: 0; text-align: end; color: #5f4f71; }
+.results .carrier { color: #754408; font-weight: 700; }
+.results .risk { color: #962c47; font-weight: 750; }

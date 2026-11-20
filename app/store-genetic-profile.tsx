@@ -28,10 +28,13 @@ export function StoreGeneticsAndStats({ horseId, coat, children }: {horseId: str
   const current = result?.horseId === horseId ? result : null;
   return (
     <div className={styles.layout}>
-      {children}
-      <section className={styles.profile} aria-label="Genetic Profile">
+      <section className={styles.card} aria-label="Foundation Stats">
+        <h2>Foundation Stats</h2>
+        {children}
+      </section>
+      <section className={styles.card} aria-label="Genetic Profile">
         <h2>Genetic Profile</h2>
-        <p><strong>Coat &amp; pattern</strong> · {coat}</p>
+        <p className={styles.coat}><strong>Coat &amp; pattern</strong><span>{coat}</span></p>
         <h3>Inherited health variants</h3>
         {!current ? <p role="status">Loading genetic results…</p> : current.genetics === null ? (
           <p role="status">Genetic results unavailable. <button type="button" onClick={() => { setResult(null); setAttempt(value => value + 1); }}>Retry</button></p>
@@ -39,8 +42,8 @@ export function StoreGeneticsAndStats({ horseId, coat, children }: {horseId: str
           <dl className={styles.results}>
             {foundationGeneticHealth(current.genetics).map(({locus, genotype, status}) => (
               <div key={locus}>
-                <dt><strong>{locus}</strong>{genotype && <span>{genotype}</span>}</dt>
-                <dd>{status}</dd>
+                <dt><strong>{locus}</strong><span>{genotype ?? "—"}</span></dt>
+                <dd className={status === "Risk variant present" ? styles.risk : status === "Carrier" ? styles.carrier : undefined}>{status}</dd>
               </div>
             ))}
           </dl>

@@ -429,18 +429,20 @@ export function ProfessionalCenter({
       await openTest(p, qaLevel);
       return;
     }
+    const targetLevel = career?.qa ? qaLevel : p.next_level;
     const { error } = await supabase.rpc("complete_profession_study", {
       target_profession: p.id,
-      target_level: p.next_level,
+      target_level: targetLevel,
     });
     if (error) return notify(error.message);
     await load();
     refresh();
+    if (career?.qa) setQaStage("test");
     setCareerTab("test");
     setCareerNotice(
-      `Study Complete ✓ You’re ready for your ${["Basic", "Proficient", "Advanced", "Professional"][(p.next_level ?? 1) - 1]} ${p.name} Certification Test.`,
+      `Study Complete ✓ You’re ready for your ${["Basic", "Proficient", "Advanced", "Professional"][(targetLevel ?? 1) - 1]} ${p.name} Certification Test.`,
     );
-    await openTest(p, p.next_level);
+    await openTest(p, targetLevel);
   };
   const openQaCareer = async (professionId: string, level: number) => {
     const { error } = await supabase.rpc("open_profession_qa_career", {
@@ -482,11 +484,14 @@ export function ProfessionalCenter({
     if (error) return notify(error.message);
     setTestResult({ passed: Boolean(data.passed), score: Number(data.score) });
     if (data.passed) {
-      if (qa) {
+      if (career?.qa) {
         setQaStage("services");
-        setQaRateServices({});
-        setQaServiceCredit(0);
-      } else {
+        if (qa) {
+          setQaRateServices({});
+          setQaServiceCredit(0);
+        }
+      }
+      if (!qa) {
         await load();
         refresh();
       }
@@ -833,8 +838,9 @@ export function ProfessionalCenter({
           const p = professions.find((item) => item.id === career.id);
           if (!p) return null;
           const names = ["Basic", "Proficient", "Advanced", "Professional"];
-          const qa = career.qa && !runNormal;
-          const level = qa ? qaLevel : (p.next_level ?? 4);
+          const qaWorkspace = career.qa;
+          const qa = qaWorkspace && !runNormal;
+          const level = qaWorkspace ? qaLevel : (p.next_level ?? 4);
           const normalStage =
             {
               STUDY_REQUIRED: "study",
@@ -846,18 +852,18 @@ export function ProfessionalCenter({
               NEXT_LEVEL_STUDY: "study",
               PROFESSIONAL_CERTIFIED: "certified",
             }[p.career_state] ?? "study";
-          const stage = qa ? qaStage : normalStage;
+          const stage = qaWorkspace ? qaStage : normalStage;
           const displayLevel =
-            !qa && ["rates", "services", "advancement"].includes(stage)
+            !qaWorkspace && ["rates", "services", "advancement"].includes(stage)
               ? Math.max(1, p.level)
               : level;
           const levelName = names[displayLevel - 1];
           const requiredServices =
             requirements[`${p.id}:${displayLevel}`] ?? p.required_services;
-          const advanceName = qa
+          const advanceName = qaWorkspace
             ? names[Math.min(3, qaLevel)]
             : names[level - 1];
-          const atProfessional = qa ? qaLevel >= 4 : p.level >= 4;
+          const atProfessional = qaWorkspace ? qaLevel >= 4 : p.level >= 4;
           const step =
             stage === "study"
               ? 1
@@ -869,7 +875,7 @@ export function ProfessionalCenter({
           const studyContent = modules.find(
             (item) => item.profession_id === p.id && item.level === level,
           );
-          const rateLevel = qa ? qaLevel : p.level;
+          const rateLevel = qaWorkspace ? qaLevel : p.level;
           const rateServices = catalog.filter(
             (service) =>
               service.profession_id === p.id &&
@@ -888,7 +894,7 @@ export function ProfessionalCenter({
             serviceCredit >= requiredServices || (!qa && p.requirement_overridden);
           const allowed = (tab: string) =>
             tab === "overview" ||
-            (tab === "rates" && (qa || p.level > 0)) ||
+            (tab === "rates" && (qaWorkspace || p.level > 0)) ||
             (tab === "study" && ["study", "test"].includes(stage)) ||
             (tab === "test" && stage === "test") ||
             (tab === "services" &&
@@ -1446,12 +1452,17 @@ export function ProfessionalCenter({
                                     rateServices.every(
                                       (item) => nextOffered[item.id],
                                     )
-                                  )
+                                  ) {
+                                    if (qaWorkspace)
+                                      setQaStage(
+                                        atProfessional ? "certified" : "services",
+                                      );
                                     setCareerTab(
                                       atProfessional
                                         ? "progression"
                                         : "services",
                                     );
+                                  }
                                 })();
                               }}
                             >
@@ -1474,7 +1485,7 @@ export function ProfessionalCenter({
                         <button
                           className="primary"
                           onClick={() => {
-                            if (qa)
+                            if (qaWorkspace)
                               setQaStage(
                                 atProfessional ? "certified" : "services",
                               );

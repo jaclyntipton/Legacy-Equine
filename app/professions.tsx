@@ -1029,6 +1029,38 @@ export function ProfessionalCenter({
                           />{" "}
                           Run as Normal Gameplay
                         </label>
+                        {runNormal && (
+                          <div className="liveenrollmentprompt" role="status">
+                            <b>Live Gameplay follows your saved career.</b>
+                            <p>
+                              Your selected QA Level and Stage are available in
+                              Preview. A completed live career cannot repeat its
+                              certification levels.
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setRunNormal(false);
+                                setTesting(null);
+                                setTestResult(null);
+                                setCareerTab(
+                                  qaStage === "study"
+                                    ? "study"
+                                    : qaStage === "test"
+                                      ? "test"
+                                      : qaStage === "services"
+                                        ? "services"
+                                        : "progression",
+                                );
+                                setCareerNotice(
+                                  `QA Preview opened · ${names[qaLevel - 1]} ${p.name} · changes will not be saved.`,
+                                );
+                              }}
+                            >
+                              OPEN SELECTED QA PREVIEW — NOT SAVED
+                            </button>
+                          </div>
+                        )}
                         {!runNormal && ["services", "advancement"].includes(qaStage) && (
                           <button
                             type="button"

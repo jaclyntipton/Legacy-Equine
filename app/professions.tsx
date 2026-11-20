@@ -883,10 +883,12 @@ export function ProfessionalCenter({
             (item) => item.profession_id === p.id && item.level === level,
           );
           const rateLevel = earnedLevel;
+          const tackRateLevel = qa || practice ? qaLevel : displayLevel;
           const rateServices = catalog.filter(
             (service) =>
               service.profession_id === p.id &&
-              service.minimum_level <= rateLevel,
+              service.minimum_level <= rateLevel &&
+              (p.id !== "leatherworker" || service.minimum_level === tackRateLevel),
           );
           const allRequiredRatesConfigured = qa
             ? rateServices.length > 0 &&
@@ -1406,7 +1408,9 @@ export function ProfessionalCenter({
                   {careerTab === "rates" && (
                     <>
                       <h2>Set Your Rates</h2>
-                      <p>✓ {levelName} {p.name} Certified</p>
+                      {p.id === "leatherworker" ? (
+                        <p>{names[tackRateLevel - 1]} · {["Entry", "Quality", "Elite", "Legendary"][tackRateLevel - 1]} tack rates</p>
+                      ) : <p>✓ {levelName} {p.name} Certified</p>}
                       <p>
                         Rates are charged per {p.id==="leatherworker"?"crafted item":"horse"}. Enabled saved rates appear
                         in Find a Professional.

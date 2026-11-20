@@ -906,7 +906,7 @@ export function ProfessionalCenter({
             (tab === "test" && (practice || stage === "test")) ||
             (tab === "services" &&
               allRequiredRatesConfigured &&
-              ["services", "advancement"].includes(stage)) ||
+              ["services", "advancement", "certified"].includes(stage)) ||
             (tab === "progression" &&
               ["advancement", "certified"].includes(stage));
           return (
@@ -1378,13 +1378,14 @@ export function ProfessionalCenter({
                           Owner QA Override ✓
                         </p>
                       )}
-                      {!requirementMet && (
+                      {!atProfessional && !requirementMet && (
                         <p>
                           🔒 Advancement · Complete {requiredServices - serviceCredit}{" "}
                           additional {levelName} {p.name} client services to unlock {advanceName} certification training.
                         </p>
                       )}
-                      {stage === "advancement" && requirementMet && (
+                      {atProfessional && <p>Professional is the final certification level.</p>}
+                      {!atProfessional && stage === "advancement" && requirementMet && (
                         <button
                           className="primary"
                           onClick={() => setCareerTab("progression")}
@@ -1528,9 +1529,7 @@ export function ProfessionalCenter({
                               setQaStage(
                                 atProfessional ? "certified" : "services",
                               );
-                            setCareerTab(
-                              atProfessional ? "progression" : "services",
-                            );
+                            setCareerTab("services");
                           }}
                         >
                           CONTINUE TO SERVICES

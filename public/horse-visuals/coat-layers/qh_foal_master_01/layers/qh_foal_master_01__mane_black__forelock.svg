@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">
+<defs>
+<mask id="qh_foal_master_01__mane_black__near-ear-occlusion" maskUnits="userSpaceOnUse" x="0" y="0" width="1496" height="1051"><rect width="1496" height="1051" fill="white"/><path fill="black" d="M1188 113 C1192 105 1193 93 1197 82 C1203 66 1211 54 1226 46 C1226 54 1221 65 1221 75 C1221 87 1225 96 1220 105 C1217 112 1211 117 1204 117 C1198 119 1193 118 1188 113Z"/></mask>
+<linearGradient id="qh_foal_master_01__mane_black__forelock-root-fade" gradientUnits="userSpaceOnUse" x1="1109" x2="1162"><stop stop-color="#231e1d" stop-opacity="0"/><stop offset="1" stop-color="#231e1d"/></linearGradient>
+</defs>
+<path id="qh_foal_master_01__mane_black__forelock-repair" mask="url(#qh_foal_master_01__mane_black__near-ear-occlusion)" fill="url(#qh_foal_master_01__mane_black__forelock-root-fade)" d="M1109 95 C1129 92 1147 91 1162 96 C1175 100 1183 96 1193 91 C1203 89 1216 94 1227 94 C1243 94 1253 100 1257 111 C1262 123 1263 133 1274 143 C1261 139 1252 133 1248 125 C1247 134 1251 141 1258 147 C1245 144 1237 137 1232 128 C1226 118 1221 114 1210 113 C1195 112 1184 118 1168 120 C1147 123 1127 126 1109 127Z"/>
+<path id="qh_foal_master_01__mane_black__forelock-highlight" mask="url(#qh_foal_master_01__mane_black__near-ear-occlusion)" fill="#49403b" opacity=".60" d="M1130 99 C1155 95 1175 110 1196 104 C1210 101 1224 98 1236 102 C1253 107 1253 125 1264 135 C1253 128 1250 117 1244 111 C1231 98 1215 106 1199 108 C1176 113 1159 102 1130 99Z"/>
+</svg>

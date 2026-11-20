@@ -83,18 +83,29 @@ const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1214,10
 // intentionally broader than the silhouette bridge because the legacy base
 // masks omitted this region and otherwise leave white master pixels exposed.
 const foalPollCoatRepair = "M1164,119 C1178,109 1192,103 1207,104 C1218,101 1228,102 1236,107 L1244,114 L1241,123 L1234,130 L1228,124 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
-// Draw a continuous lock and let the ear mask occlude it at the poll.
+// Approved foal poll redraw. The near ear occludes the continuous lock.
+const foalFarEar = "M1218 104 C1226 91 1237 80 1247 71 C1254 64 1256 54 1264 46 C1262 60 1262 74 1258 87 C1255 98 1250 105 1243 109 C1234 112 1224 109 1218 104Z";
+const foalNearEar = "M1188 113 C1192 105 1193 93 1197 82 C1203 66 1211 54 1226 46 C1226 54 1221 65 1221 75 C1221 87 1225 96 1220 105 C1217 112 1211 117 1204 117 C1198 119 1193 118 1188 113Z";
+const foalEarArtwork = [
+  `<path id="ear-left" fill="#d7d0c7" stroke="#43362e" stroke-width="2.5" stroke-linejoin="round" d="${foalFarEar}"/>`,
+  '<path fill="#b7a89d" d="M1229 100 C1240 83 1255 75 1260 57 C1258 76 1253 92 1243 100 C1238 103 1234 103 1229 100Z"/>',
+  `<path id="ear-right" fill="#e9e7e1" d="${foalNearEar}"/>`,
+  '<path fill="#bcb0a4" d="M1195 110 C1199 97 1200 82 1209 67 C1213 61 1217 57 1221 54 C1216 66 1213 78 1214 89 C1216 99 1213 109 1207 113 C1203 116 1198 114 1195 110Z"/>',
+  '<path fill="#fcfffc" d="M1193 108 C1197 82 1207 62 1222 51 C1212 62 1204 84 1201 100 C1199 107 1196 110 1193 108Z"/>',
+  '<path fill="none" stroke="#4a3930" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" d="M1189 113 C1193 105 1194 92 1197 82 C1203 66 1212 54 1226 46 C1226 54 1221 65 1221 75 C1221 87 1225 96 1220 105 C1218 110 1214 113 1210 115"/>',
+].join("");
 const foalForelockRepair = [
-  "M1136,95 C1147,92 1159,96 1171,100 C1185,104 1197,101 1210,99",
-  "C1224,97 1230,96 1238,99 C1248,102 1250,110 1256,118",
-  "C1261,124 1266,128 1271,131 C1265,131 1261,129 1258,127",
-  "C1260,135 1264,141 1270,146 C1260,143 1252,138 1246,131",
-  "C1247,136 1250,141 1254,145 C1243,141 1235,132 1229,122",
-  "C1221,112 1212,111 1200,113 C1184,117 1170,124 1152,124",
-  "C1143,123 1138,113 1136,95Z",
+  "M1109 95 C1129 92 1147 91 1162 96 C1175 100 1183 96 1193 91 C1203 89 1216 94 1227 94",
+  "C1243 94 1253 100 1257 111 C1262 123 1263 133 1274 143 C1261 139 1252 133 1248 125",
+  "C1247 134 1251 141 1258 147 C1245 144 1237 137 1232 128 C1226 118 1221 114 1210 113",
+  "C1195 112 1184 118 1168 120 C1147 123 1127 126 1109 127Z",
 ].join(" ");
+const foalForelockHighlight = "M1130 99 C1155 95 1175 110 1196 104 C1210 101 1224 98 1236 102 C1253 107 1253 125 1264 135 C1253 128 1250 117 1244 111 C1231 98 1215 106 1199 108 C1176 113 1159 102 1130 99Z";
 const foalMasterPath = "public/horse-visuals/vector-masters/qh_01/qh_foal_master_01.svg";
 let foalMasterSvg = fs.readFileSync(foalMasterPath, "utf8");
+foalMasterSvg = foalMasterSvg.replace(/<g id="redrawn-ears">.*?<\/g>\n?/, "");
+foalMasterSvg = foalMasterSvg.replace(/<path id="ear-(left|right)"[^>]*\/>/g, "");
+foalMasterSvg = foalMasterSvg.replace("</svg>", `<g id="redrawn-ears">${foalEarArtwork}</g>\n</svg>`);
 foalMasterSvg = foalMasterSvg.replace(/<path id="poll-silhouette-repair"[^>]+\/>\n?/, "");
 foalMasterSvg = foalMasterSvg.replace('<path id="head-base"', `<path id="poll-silhouette-repair" fill="#ffffff" d="${foalPollSilhouetteRepair}"/>\n<path id="head-base"`);
 foalMasterSvg = foalMasterSvg.replace(/(<path id="mane-base"[^>]* d=")([^"]+)("\/?>)/, (match, prefix, d, suffix) => {
@@ -109,13 +120,20 @@ foalMasterSvg = foalMasterSvg.replace(/(<path id="outline-lines"[^>]* d=")([^"]+
       const start = subpath.match(/^M[-\d.]+,[-\d.]+/)?.[0];
       return start !== "M1149.4,97.8"
         && start !== "M1172.8,94.3"
+        && start !== "M1198.5,129.8"
+        && start !== "M1199.6,127.8"
         && !foalMalformedPollOutlineStarts.has(start);
     })
     .join("");
-  return `${prefix}${cleaned}${suffix}`;
+  const contour = cleaned.replace(
+    /(L1122\.9,124\.5) L1168\.8,115\.1 .*? (L1121\.4,122\.4)/,
+    "$1 C1146,119 1169,115 1193,107 C1170,113 1147,117 1128,121 $2",
+  );
+  return `${prefix}${contour}${suffix}`;
 });
 fs.writeFileSync(foalMasterPath, foalMasterSvg);
 foalManifest.master.sha256 = digest(foalMasterSvg);
+foalManifest.master.ear_pigment_paths = [foalFarEar, foalNearEar];
 for (const trait of ["bay", "black", "brown", "chestnut"]) {
   const layerId = `qh_foal_master_01__base_${trait}`;
   const file = path.join(foalDirectory, `${layerId}.svg`);
@@ -169,12 +187,27 @@ for (const trait of ["black", "chestnut"]) {
   svg = svg.replace(new RegExp(`<path id="${layerId}__forelock-repair"[^>]+/>\\n?`), "");
   const maneFill = svg.match(/fill="(#[0-9A-Fa-f]{6})"/)?.[1];
   if (!maneFill) throw new Error(`Missing mane fill for ${layerId}`);
-  const nearEar = foalMasterSvg.match(/<path id="ear-right"[^>]* d="([^"]+)"/)?.[1];
-  if (!nearEar) throw new Error("Missing near ear geometry for the foal");
   const earMask = `${layerId}__near-ear-occlusion`;
+  const rootFade = `${layerId}__forelock-root-fade`;
+  const highlight = `${layerId}__forelock-highlight`;
   svg = svg.replace(new RegExp(`<mask id="${earMask}"[^>]*>.*?</mask>\\n?`), "");
-  svg = svg.replace("</defs>", `<mask id="${earMask}" maskUnits="userSpaceOnUse" x="0" y="0" width="1496" height="1051"><rect width="1496" height="1051" fill="white"/><path fill="black" fill-rule="evenodd" d="${nearEar}"/></mask>\n</defs>`);
-  svg = svg.replace("</svg>", `<path id="${layerId}__forelock-repair" mask="url(#${earMask})" fill="${maneFill}" d="${foalForelockRepair}"/>\n</svg>`);
+  svg = svg.replace(new RegExp(`<linearGradient id="${rootFade}"[^>]*>.*?</linearGradient>\\n?`), "");
+  svg = svg.replace(new RegExp(`<path id="${highlight}"[^>]+/>\\n?`), "");
+  const hairColor = trait === "black" ? "#231e1d" : maneFill;
+  const highlightColor = trait === "black" ? "#49403b" : "#c17a50";
+  const foreground = [
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1496" height="1051" viewBox="0 0 1496 1051">',
+    "<defs>",
+    `<mask id="${earMask}" maskUnits="userSpaceOnUse" x="0" y="0" width="1496" height="1051"><rect width="1496" height="1051" fill="white"/><path fill="black" d="${foalNearEar}"/></mask>`,
+    `<linearGradient id="${rootFade}" gradientUnits="userSpaceOnUse" x1="1109" x2="1162"><stop stop-color="${hairColor}" stop-opacity="0"/><stop offset="1" stop-color="${hairColor}"/></linearGradient>`,
+    "</defs>",
+    `<path id="${layerId}__forelock-repair" mask="url(#${earMask})" fill="url(#${rootFade})" d="${foalForelockRepair}"/>`,
+    `<path id="${highlight}" mask="url(#${earMask})" fill="${highlightColor}" opacity=".60" d="${foalForelockHighlight}"/>`,
+    "</svg>",
+    "",
+  ].join("\n");
+  const foregroundName = `${layerId}__forelock.svg`;
+  fs.writeFileSync(path.join(foalDirectory, foregroundName), foreground);
   fs.writeFileSync(file, svg);
   const record = foalManifest.layers.find(layer => layer.layer_id === layerId);
   if (!record) throw new Error(`Missing manifest record ${layerId}`);
@@ -182,6 +215,6 @@ for (const trait of ["black", "chestnut"]) {
   record.svg_element_ids = (record.svg_element_ids ?? []).filter(id => id !== `${layerId}__poll_bridge`);
   record.svg_element_ids = record.svg_element_ids.filter(id => !id.startsWith(`${layerId}__forelock-`));
   record.svg_element_ids = record.svg_element_ids.filter(id => id !== earMask);
-  record.svg_element_ids.push(earMask, `${layerId}__forelock-repair`);
+  record.foreground = {file: `layers/${foregroundName}`, sha256: digest(foreground)};
 }
 fs.writeFileSync(foalManifestPath, `${JSON.stringify(foalManifest, null, 1)}\n`);

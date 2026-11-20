@@ -64,8 +64,9 @@ describe("registered coat-layer occlusion", () => {
 
       expect(svg).not.toContain(`${layerId}__poll_bridge`);
       expect(record.svg_element_ids).not.toContain(`${layerId}__poll_bridge`);
-      expect(svg).toContain(`${layerId}__forelock-repair`);
-      expect(record.svg_element_ids).toContain(`${layerId}__forelock-repair`);
+      const foreground = fs.readFileSync(`public/horse-visuals/coat-layers/${master}/${record.foreground.file}`, "utf8");
+      expect(foreground).toContain(`${layerId}__forelock-repair`);
+      expect(foreground).toContain(manifest.master.ear_pigment_paths[1]);
       expect(record.compositing_group).toBe("top");
     }
 
@@ -73,8 +74,9 @@ describe("registered coat-layer occlusion", () => {
     const registeredMaster = await sharp(`public/horse-visuals/vector-masters/qh_01/${master}.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const base = await sharp(`${root}/${master}__base_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const mane = await sharp(`${root}/${master}__mane_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
+    const forelock = await sharp(`${root}/${master}__mane_black__forelock.svg`).png().toBuffer();
     const {data, info} = await sharp({create: {width: 1496, height: 1051, channels: 4, background: {r: 0, g: 0, b: 0, alpha: 0}}})
-      .composite([{input: registeredMaster}, {input: base, blend: "multiply"}, {input: mane, blend: "multiply"}])
+      .composite([{input: registeredMaster}, {input: base, blend: "multiply"}, {input: mane, blend: "multiply"}, {input: forelock}])
       .raw()
       .toBuffer({resolveWithObject: true});
     for (const [x, y] of [[1172, 118], [1205, 110], [1235, 120], [1255, 130]]) {

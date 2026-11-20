@@ -83,9 +83,16 @@ const foalPollSilhouetteRepair = "M1164,119 C1178,109 1192,103 1207,104 C1214,10
 // intentionally broader than the silhouette bridge because the legacy base
 // masks omitted this region and otherwise leave white master pixels exposed.
 const foalPollCoatRepair = "M1164,119 C1178,109 1192,103 1207,104 C1218,101 1228,102 1236,107 L1244,114 L1241,123 L1234,130 L1228,124 L1222,117 L1216,113 L1207,110 L1198,111 L1190,118 L1184,126 L1168,129Z";
-// A compact mane-colored tuft covers the silhouette bridge between the ears.
-// It replaces the malformed legacy forelock without painting over the face.
-const foalForelockRepair = "M1221,113 C1227,105 1234,91 1243,87 C1247,92 1250,100 1250,106 C1254,111 1259,113 1262,116 L1257,117 C1258,122 1262,126 1264,128 L1258,127 C1258,130 1260,134 1263,136 C1254,135 1249,139 1243,137 C1234,135 1227,124 1221,113Z M1148,99 C1153,103 1158,101 1162,104 L1160,100 C1167,103 1171,106 1178,106 C1185,106 1190,103 1196,103 C1190,108 1188,113 1181,115 C1170,118 1162,120 1154,118Z";
+// Draw a continuous lock and let the ear mask occlude it at the poll.
+const foalForelockRepair = [
+  "M1136,95 C1147,92 1159,96 1171,100 C1185,104 1197,101 1210,99",
+  "C1224,97 1230,96 1238,99 C1248,102 1250,110 1256,118",
+  "C1261,124 1266,128 1271,131 C1265,131 1261,129 1258,127",
+  "C1260,135 1264,141 1270,146 C1260,143 1252,138 1246,131",
+  "C1247,136 1250,141 1254,145 C1243,141 1235,132 1229,122",
+  "C1221,112 1212,111 1200,113 C1184,117 1170,124 1152,124",
+  "C1143,123 1138,113 1136,95Z",
+].join(" ");
 const foalMasterPath = "public/horse-visuals/vector-masters/qh_01/qh_foal_master_01.svg";
 let foalMasterSvg = fs.readFileSync(foalMasterPath, "utf8");
 foalMasterSvg = foalMasterSvg.replace(/<path id="poll-silhouette-repair"[^>]+\/>\n?/, "");

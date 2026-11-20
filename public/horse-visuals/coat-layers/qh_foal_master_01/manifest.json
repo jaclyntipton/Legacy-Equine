@@ -645,7 +645,7 @@
    "notes": "Master mane-base. No withers gap fill derived for this master (only qh_mare rev2 has a hand-traced fill); check proofs.",
    "foreground": {
     "file": "layers/qh_foal_master_01__mane_black__forelock.svg",
-    "sha256": "fa4899a1d3f5490ea0b1f1ba2cb3941cf945e2f73be7b00569ca580e0897b865"
+    "sha256": "4614189d1c3ffb118998820b6cc4c6d8c1b7f70d3b0b2203582f67ab4c2bf074"
    }
   },
   {
@@ -714,7 +714,7 @@
    "notes": "Master mane-base. No withers gap fill derived for this master (only qh_mare rev2 has a hand-traced fill); check proofs.",
    "foreground": {
     "file": "layers/qh_foal_master_01__mane_chestnut__forelock.svg",
-    "sha256": "00175cfeccb38744c75d6b61a31c4073e15fce986315aed6435020458e446ca6"
+    "sha256": "15837d3fd4ed970f99bc8b32322baa2f6fb49d9f97aeb95aba1cabe0db6bcf46"
    }
   },
   {

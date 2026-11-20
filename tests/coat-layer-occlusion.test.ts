@@ -75,6 +75,11 @@ describe("registered coat-layer occlusion", () => {
     const base = await sharp(`${root}/${master}__base_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const mane = await sharp(`${root}/${master}__mane_black.svg`).resize(1496, 1051, {fit: "fill"}).png().toBuffer();
     const forelock = await sharp(`${root}/${master}__mane_black__forelock.svg`).png().toBuffer();
+    const hair = await sharp(forelock).raw().toBuffer({resolveWithObject: true});
+    // These two spots previously showed through at the hairline and between the tips.
+    for (const [x, y] of [[1228, 124], [1250, 132]]) {
+      expect(hair.data[(y * hair.info.width + x) * hair.info.channels + 3]).toBe(255);
+    }
     const {data, info} = await sharp({create: {width: 1496, height: 1051, channels: 4, background: {r: 0, g: 0, b: 0, alpha: 0}}})
       .composite([{input: registeredMaster}, {input: base, blend: "multiply"}, {input: mane, blend: "multiply"}, {input: forelock}])
       .raw()

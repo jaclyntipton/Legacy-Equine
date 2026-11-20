@@ -154,6 +154,9 @@
 }
 .businessworkspace :is(.businessservices, .listingcards) input::-webkit-inner-spin-button { appearance: none; }
 .businessworkspace .listingcards form { display: grid; gap: .5rem; align-content: start; }
+.businessworkspace .listingbulk { grid-column: 1 / -1; }
+.businessworkspace .listingcards label.listingselect { display: flex; align-items: center; gap: .5rem; min-height: 44px; }
+.businessworkspace .listingcards .listingselect input { width: 1.15rem; min-height: auto; accent-color: var(--workspace-accent); }
 .businessworkspace .listingcards article > span { min-width: 0; overflow-wrap: anywhere; }
 
 .businessworkspace .rateactions { display: flex; flex-wrap: wrap; gap: .5rem; }

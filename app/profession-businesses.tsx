@@ -36,6 +36,42 @@ function Rates({business,notify,reload}:{business:Business;notify:(m:string)=>vo
 function CreateTack({services,notify,reload}:{services:Service[];notify:(m:string)=>void;reload:()=>Promise<void>}){const[service,setService]=useState(services[0]?.id??""),[name,setName]=useState(""),[bonuses,setBonuses]=useState<Record<string,number>>({}),[busy,setBusy]=useState(false);const selected=services.find(s=>s.id===service)??services[0],types=[...new Set(services.map(s=>s.tack_slot).filter(Boolean))]as string[],tiers=[...new Set(services.filter(s=>s.tack_slot===selected?.tack_slot).map(s=>s.tack_tier).filter(Boolean))]as string[],budget=selected?.stat_budget??1,used=Object.values(bonuses).reduce((a,v)=>a+v,0),remaining=budget-used;const choose=(slot:string,tier:string)=>{const next=services.find(s=>s.tack_slot===slot&&s.tack_tier===tier)??services.find(s=>s.tack_slot===slot)??services[0];setService(next?.id??"");setBonuses({})};const change=(stat:string,amount:number)=>setBonuses(v=>({...v,[stat]:Math.max(0,Math.min((v[stat]??0)+amount,(v[stat]??0)+remaining))}));return <section className="panel crafttack"><p className="eyebrow">TACK SHOP WORKBENCH</p><h2>Tack Maker</h2><p>Create one finished unique item with fixed Effective Stat bonuses. It is delivered to Inventory / Listings.</p>{services.length&&selected?<><div className="tackmakerchoices"><label>Type<select value={selected.tack_slot??""} onChange={e=>choose(e.target.value,selected.tack_tier??"")}>{types.map(type=><option value={type} key={type}>{type.replaceAll("_"," ")}</option>)}</select></label><label>Quality<select value={selected.tack_tier??""} onChange={e=>choose(selected.tack_slot??"",e.target.value)}>{tiers.map(tier=><option value={tier} key={tier}>{tier}</option>)}</select></label></div><label>Custom item name (optional)<input maxLength={80} value={name} onChange={e=>setName(e.target.value)}/></label><div className="bonusbuilder"><b>{remaining} Bonus Point{remaining===1?"":"s"} Available · {used} / {budget} allocated</b>{stats.map(stat=><label key={stat}><span>{stat}</span><span className="bonusstepper"><button type="button" disabled={(bonuses[stat]??0)<=0} onClick={()=>change(stat,-1)}>−</button><input aria-label={`${stat} bonus`} inputMode="numeric" type="number" min="0" max={budget-used+(bonuses[stat]??0)} value={bonuses[stat]??0} onChange={e=>setBonuses(v=>({...v,[stat]:Math.max(0,Math.min(Number(e.target.value)||0,budget-used+(v[stat]??0)))}))}/><button type="button" disabled={remaining<=0} onClick={()=>change(stat,1)}>+</button></span></label>)}</div><div className="tackreview"><b>{name.trim()||`Custom ${selected.tack_tier} ${selected.tack_slot?.replaceAll("_"," ")}`}</b><span>{bonusText(bonuses)||"Allocate at least one bonus point"}</span></div><button className="primary" disabled={busy||used<1||used>budget} onClick={async()=>{setBusy(true);const{error}=await supabase.rpc("craft_leatherwork_item",{target_service:selected.id,p_bonuses:bonuses,p_custom_name:name||null,p_request_key:crypto.randomUUID()});setBusy(false);notify(error?.message??"Tack created in your Tack Shop inventory.");if(!error){setName("");setBonuses({});await reload()}}}>{busy?"CREATING…":"CREATE TACK"}</button></>:<p className="featurehint">No tack types are authorized for this certification.</p>}</section>}
 function TackInventory({items,services,notify,reload}:{items:TackItem[];services:Service[];notify:(m:string)=>void;reload:()=>Promise<void>}) {
   const [saving, setSaving] = useState<string | null>(null);
+  const [selection, setSelection] = useState<Set<string>>(new Set());
+  const [batchStatus, setBatchStatus] = useState("");
+  const unlisted = items.filter(item => !item.listed);
+  const selected = unlisted.filter(item => selection.has(item.id));
+  const listSelected = async () => {
+    const listings: {item: TackItem; price: number}[] = [];
+    for (const item of selected) {
+      const form = document.getElementById(`tack-listing-${item.id}`);
+      if (!(form instanceof HTMLFormElement)) return;
+      if (!form.reportValidity()) return;
+      listings.push({item, price: Number(new FormData(form).get("price"))});
+    }
+    setSaving("batch");
+    setBatchStatus("");
+    const completed = new Set<string>();
+    const errors: string[] = [];
+    try {
+      for (const {item, price} of listings) {
+        try {
+          const {error} = await supabase.rpc("set_leatherwork_item_listing", {
+            p_item: item.id, p_price: price, p_list: true,
+          });
+          if (error) errors.push(`${item.name}: ${error.message}`);
+          else completed.add(item.id);
+        } catch {
+          errors.push(`${item.name}: could not confirm the listing. Check its status before retrying.`);
+        }
+      }
+      setSelection(new Set(selected.map(item => item.id).filter(id => !completed.has(id))));
+      setBatchStatus(`Listed ${completed.size} of ${listings.length} items.`);
+      for (const message of errors.slice(0, 1)) notify(message);
+      await reload();
+    } finally {
+      setSaving(null);
+    }
+  };
   const save = async (item: TackItem, price: number, list: boolean) => {
     setSaving(item.id);
     try {
@@ -52,6 +88,14 @@ function TackInventory({items,services,notify,reload}:{items:TackItem[];services
     <section className="panel tackshopinventory listingcards">
       <h2>Inventory / Listings</h2>
       <p>Set the sale price for each finished item before listing it.</p>
+      {unlisted.length > 0 && (
+        <div className="rateactions listingbulk">
+          <button type="button" disabled={saving !== null} onClick={() => setSelection(new Set(unlisted.map(item => item.id)))}>Select all unlisted</button>
+          <button type="button" disabled={saving !== null || !selected.length} onClick={() => setSelection(new Set())}>Clear selection</button>
+          <button type="button" disabled={saving !== null || !selected.length} onClick={() => void listSelected()}>{saving === "batch" ? "Listing…" : `List selected (${selected.length})`}</button>
+        </div>
+      )}
+      {batchStatus && <p role="status">{batchStatus}</p>}
       {items.map(item => {
         const rate = services.find(service =>
           service.tack_slot === item.slot &&
@@ -61,12 +105,26 @@ function TackInventory({items,services,notify,reload}:{items:TackItem[];services
         const price = item.price ?? suggested;
         return (
           <article key={item.id}>
+            {!item.listed && (
+              <label className="listingselect">
+                <input type="checkbox" aria-label={`Select ${item.name}`} checked={selection.has(item.id)} disabled={saving !== null} onChange={event => {
+                  const checked = event.target.checked;
+                  setSelection(current => {
+                    const next = new Set(current);
+                    if (checked) next.add(item.id);
+                    else next.delete(item.id);
+                    return next;
+                  });
+                }}/>
+                Select item
+              </label>
+            )}
             <span>
               <b>{item.name}</b>
               <small>{item.tier} {item.slot.replaceAll("_"," ")} · {bonusText(item.bonuses)}</small>
               <small>Crafted by {item.maker_brand_code ? `${item.maker_brand_code} · ` : ""}{item.maker_stable_name} #{item.maker_account_number}</small>
             </span>
-            <form key={String(price)} onSubmit={event => {
+            <form id={`tack-listing-${item.id}`} key={String(price)} onSubmit={event => {
               event.preventDefault();
               const value = Number(new FormData(event.currentTarget).get("price"));
               void save(item, value, true);

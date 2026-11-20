@@ -135,7 +135,6 @@ export function ProfessionalCenter({
     [modules, setModules] = useState<StudyModule[]>([]),
     [requirements, setRequirements] = useState<Record<string, number>>({}),
     [rates, setRates] = useState<Record<string, number>>({}),
-    [offered, setOffered] = useState<Record<string, boolean>>({}),
     [filter, setFilter] = useState<string | null>(null),
     [directoryError, setDirectoryError] = useState(""),
     [search, setSearch] = useState(""),
@@ -176,6 +175,9 @@ export function ProfessionalCenter({
     [craftName,setCraftName]=useState(""),
     [craftPreview,setCraftPreview]=useState<CraftPreview|null>(null),
     [submitting, setSubmitting] = useState(false);
+  const [savedRates, setSavedRates] = useState<Record<string, number>>({});
+  const [savingRate, setSavingRate] = useState<string | null>(null);
+  const [rateError, setRateError] = useState<{ id: string; message: string } | null>(null);
   const load = useCallback(async () => {
     const {
       data: { user },
@@ -194,7 +196,7 @@ export function ProfessionalCenter({
       { data: listing, error: listingError },
       { data: services },
       { data: study },
-      { data: offerings },
+      { data: offerings, error: offeringsError },
       { data: levelRequirements },
     ] = await Promise.all([
       supabase.rpc("get_profession_dashboard"),
@@ -230,12 +232,12 @@ export function ProfessionalCenter({
       price: number;
       enabled: boolean;
     }[];
-    setRates(
-      Object.fromEntries(rows.map((row) => [row.service_id, row.price])),
-    );
-    setOffered(
-      Object.fromEntries(rows.map((row) => [row.service_id, row.enabled])),
-    );
+    if (offeringsError) notify(offeringsError.message);
+    else {
+      const prices = Object.fromEntries(rows.map((row) => [row.service_id, row.price]));
+      setRates(prices);
+      setSavedRates(prices);
+    }
     setRequirements(
       Object.fromEntries(
         (levelRequirements ?? []).map((row) => [
@@ -1416,6 +1418,12 @@ export function ProfessionalCenter({
                               <small>
                                 {service.min_price}–{service.max_price} LED per {p.id==="leatherworker"?"item":"horse"}
                               </small>
+                              {!qa && savedRates[service.id] !== undefined && (
+                                <small>Saved rate: {savedRates[service.id]} LED</small>
+                              )}
+                              {rateError?.id === service.id && !qa && (
+                                <small role="alert">{rateError.message}</small>
+                              )}
                             </span>
                             <label>
                               Price per {p.id==="leatherworker"?"item":"horse"}
@@ -1435,6 +1443,7 @@ export function ProfessionalCenter({
                             </label>
                             <button
                               className="primary"
+                              disabled={savingRate !== null}
                               onClick={() => {
                                 const price =
                                   rates[service.id] ?? service.min_price;
@@ -1471,6 +1480,8 @@ export function ProfessionalCenter({
                                   return;
                                 }
                                 void (async () => {
+                                  setRateError(null);
+                                  setSavingRate(service.id);
                                   const { error } = await supabase.rpc(
                                     "set_service_offering",
                                     {
@@ -1479,36 +1490,22 @@ export function ProfessionalCenter({
                                       is_enabled: true,
                                     },
                                   );
-                                  if (error) return notify(error.message);
-                                  const nextOffered = {
-                                    ...offered,
-                                    [service.id]: true,
-                                  };
-                                  setOffered(nextOffered);
+                                  if (error) {
+                                    setSavingRate(null);
+                                    setRateError({ id: service.id, message: error.message });
+                                    return notify(error.message);
+                                  }
+                                  setSavedRates((current) => ({ ...current, [service.id]: price }));
                                   notify(
-                                    `${service.name} saved at ${price} LED per horse.`,
+                                    `${service.name} saved at ${price} LED.`,
                                   );
                                   await load();
                                   refresh();
-                                  if (
-                                    rateServices.every(
-                                      (item) => nextOffered[item.id],
-                                    )
-                                  ) {
-                                    if (qaWorkspace)
-                                      setQaStage(
-                                        atProfessional ? "certified" : "services",
-                                      );
-                                    setCareerTab(
-                                      atProfessional
-                                        ? "progression"
-                                        : "services",
-                                    );
-                                  }
+                                  setSavingRate(null);
                                 })();
                               }}
                             >
-                              {career.qa && !runNormal
+                              {savingRate === service.id ? "Saving…" : career.qa && !runNormal
                                 ? "Save QA Rate — Not Saved"
                                 : career.qa
                                   ? "Save Rate — Permanently Saved"

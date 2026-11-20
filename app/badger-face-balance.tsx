@@ -49,14 +49,24 @@ export function BadgerFaceBalance() {
     }
   }
 
-  return <section className="panel settingsform" aria-label="Quarter Horse facial markings">
-    <h3>Badger Face</h3>
-    <p>Rare Quarter Horse facial marking. This setting affects new horses only.</p>
-    {loaded ? <>
-      <label><input type="checkbox" checked={enabled} disabled={busy} onChange={e=>setEnabled(e.target.checked)}/> Enable generation</label>
-      <label>Appearance rate (%)<input type="number" min="0" max="100" step="any" value={percent} disabled={busy} onChange={e=>setPercent(e.target.value)}/></label>
-      <button type="button" className="primary" disabled={busy} onClick={()=>void save()}>{busy?"Saving…":"Save Badger Face settings"}</button>
-    </> : busy ? <p>Loading Badger Face settings…</p> : <button type="button" onClick={()=>void load()}>Retry</button>}
-    {feedback && <p role="status">{feedback}</p>}
-  </section>;
+  return <div>
+    <span><b>Badger Face</b><small>badger_face_01</small></span>
+    <span>Face marking</span>
+    <label>
+      <input aria-label="Badger Face appearance rate (%)" type="number" min="0" max="100" step="any"
+        value={percent} disabled={busy || !loaded} onChange={e=>setPercent(e.target.value)}/>
+      <small>% per horse</small>
+    </label>
+    <span>Rare</span>
+    <label className="geneticstoggle">
+      <input type="checkbox" aria-label="Enable Badger Face generation" checked={enabled}
+        disabled={busy || !loaded} onChange={e=>setEnabled(e.target.checked)}/>
+      <span>{enabled ? "Generated" : "Excluded"}</span>
+    </label>
+    <span>
+      {loaded ? <button type="button" disabled={busy} aria-label="Save Badger Face settings" onClick={()=>void save()}>{busy?"Saving…":"Save"}</button>
+        : busy ? <small>Loading…</small> : <button type="button" onClick={()=>void load()}>Retry</button>}
+      {feedback && <small role="status">{feedback}</small>}
+    </span>
+  </div>;
 }
